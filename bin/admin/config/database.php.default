@@ -1,0 +1,13 @@
+<?php
+return array
+(
+	'driver' => 'mysql',
+	'hostname' => '127.0.0.1',
+	'database' => 'shop_v2',
+	'username' => 'root',
+	'password' => '',
+	'charset'  => 'utf8',
+	'rollback' => 5,
+	'alter_schema' => true,
+);
+?>

@@ -4,8 +4,7 @@
 	$path_config = '../config';
 
 	include $path_lib."/database/main.php";
-
-	DB::$config = include $path_config.'/database.php';
-	DB::connect();
+	
+	DB::connect(include $path_config.'/database.php');
 
 ?>

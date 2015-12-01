@@ -75,7 +75,8 @@ class TemplateEngine{
 			self::$path = self::$list[self::$name]."/";
 		}
 
-		TemplateEngine::$tmpl['style'] = self::loadAllStyle();
+		$GLOBALS['style'] = TemplateEngine::loadAllStyle();
+
 		TemplateEngine::compile();
 	}
 
@@ -94,7 +95,8 @@ class TemplateEngine{
 			if(!is_dir($k)){
 				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 
-				if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
+				// if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
+				if(true){
 					$c = file_get_contents($k);
 					$c = self::translate($c);
 					file_put_contents($fileCompiled,$c);
@@ -110,10 +112,16 @@ class TemplateEngine{
 	 */
 	private static function translate($c){
 		$a = array(
-			'/{{([^\}]*)}}/iU',
+			'/{{(?!#)([^\}]*)}}/iU',
+			'/{{#include ([^\}]*)}}/iU',
+			'/{{#for ([^\} ]*) as ([^\}]*)}}/iU',
+			'/{{#endfor}}/iU',
 		);
 		$r = array(
-			'<?php echo \$$1;?>'
+			'<?php echo \$$1;?>',
+			'<?php include \'$1.php\';?>',
+			'<?php foreach(\$$1 as \$$2){ ?>',
+			'<?php } ?>',
 		);
 		return preg_replace($a,$r,$c);
 	}

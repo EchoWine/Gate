@@ -1,3 +1,10 @@
 <html>
 c: {{element}}
+{{#include head}}
+
+<ul>
+{{#for user as y}}
+	<li>{{y}}</li>
+{{#endfor}}
+</ul>
 </html>

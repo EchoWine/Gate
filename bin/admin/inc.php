@@ -1,17 +1,34 @@
 <?php
-	
+		
+	# Path
+	define('PATH_MODULE','../../modules');
+	define('PATH_LIB','../../lib');
+	define('PATH_CONFIG','config');
+	define('PATH_TEMPLATES','templates');
+
 	$s = microtime(true);
 
-	$path_lib = '../../lib';
-	$path_config = 'config';
-
-	include $path_lib."/database/main.php";
-	include $path_lib."/TemplateEngine/main.php";
+	include PATH_LIB."/database/main.php";
+	include PATH_LIB."/TemplateEngine/main.php";
+	include PATH_LIB."/ModuleManager/main.php";
 	
-	DB::connect(include $path_config.'/database.php');
+	DB::connect(include PATH_CONFIG.'/database.php');
+
+
+	# modules
+
+	# Load all modules
+	# ModuleManager::loadAll(PATH_MODULE);
+
+	# Load manually a module
+	ModuleManager::load(PATH_MODULE."/Auth");
+
+	Auth::sayHello();
+
+	die();
 
 	// Load template
-	TemplateEngine::ini('templates');
+	TemplateEngine::ini(PATH_TEMPLATES);
 	TemplateEngine::load('default');
 
 	// Print html page

@@ -108,7 +108,7 @@ class TemplateEngine{
 				// if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
 				if(true){
 					$c = file_get_contents($k);
-					$c = self::translate(basename($k),$c);
+					$c = self::translate($k,$c);
 					file_put_contents($fileCompiled,$c);
 				}
 			}
@@ -128,13 +128,21 @@ class TemplateEngine{
 	 */
 	private static function translate($f,$c){
 
+		# include
+
+		preg_match_all('/{{#include ([^\}]*)}}/iU',$c,$r);
+		
+		foreach($r[0] as $n => $k){
+			$c = preg_replace('{'.$k.'}','<?php include \''.$r[1][$n].'.php\'; ?>',$c);
+		}
+
 		# for 
 		preg_match_all('/{{#for ([^\} ]*) as ([^\}]*)}}/iU',$c,$r);
 		
 		foreach($r[0] as $n => $k){
 			self::$checked[] = $r[2][$n];
 
-			$c = preg_replace($k,'<?php foreach((array)$'.$r[1][$n].' as $'.$r[2][$n].'){ ?>',$c);
+			$c = preg_replace('{'.$k.'}','<?php foreach((array)$'.$r[1][$n].' as $'.$r[2][$n].'){ ?>',$c);
 		}
 
 		# variables
@@ -146,26 +154,24 @@ class TemplateEngine{
 			$r = count($r[0])+1;
 
 			$v = preg_replace('/\.([\w]*)/','',$k);
-			$k = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
+			$e = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
 
 			# Check if defined
 			if(!in_array($v,self::$checked) && !isset($GLOBALS[$v])){
 				$e = new stdClass();
 				$e -> message = "Undefined variable {$v}";
 				$e -> row = $r;
-				$e -> file = $f;
+				$e -> file = basename($f);
 				self::$error[] = $e;
 			}
 
-			$c = str_ireplace($r[0][$n],'<?php echo $'.$k.'; ?>',$c);
+			$c = str_ireplace('{{'.$k.'}}','<?php echo $'.$e.'; ?>',$c);
 		}
 
 		$a = array(
-			'/{{#include ([^\}]*)}}/iU',
 			'/{{#endfor}}/iU',
 		);
 		$r = array(
-			'<?php include \'$1.php\';?>',
 			'<?php } ?>',
 		);
 

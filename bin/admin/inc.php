@@ -23,7 +23,7 @@
 		array('name' => 'dario','surname' => 'bianchi'),
 	);
 
-	 TemplateEngine::html();
+	include TemplateEngine::html();
 
 	# Provvisorio, debugging
 	echo "<script>console.log('Tempo di esecuzione: ".(microtime(true) - $s)."');</script>";

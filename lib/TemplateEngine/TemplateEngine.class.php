@@ -95,8 +95,7 @@ class TemplateEngine{
 			if(!is_dir($k)){
 				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 
-				// if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
-				if(true){
+				if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
 					$c = file_get_contents($k);
 					$c = self::translate($c);
 					file_put_contents($fileCompiled,$c);
@@ -111,14 +110,21 @@ class TemplateEngine{
 	 * @param (string) content translated
 	 */
 	private static function translate($c){
+
+
+		preg_match_all('/{{(?!#)([^\}]*)}}/iU',$c,$r);
+
+		foreach($r[1] as $n => $k){
+			$k = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
+			$c = str_ireplace($r[0][$n],'<?php echo $'.$k.'; ?>',$c);
+		}
+
 		$a = array(
-			'/{{(?!#)([^\}]*)}}/iU',
 			'/{{#include ([^\}]*)}}/iU',
 			'/{{#for ([^\} ]*) as ([^\}]*)}}/iU',
 			'/{{#endfor}}/iU',
 		);
 		$r = array(
-			'<?php echo \$$1;?>',
 			'<?php include \'$1.php\';?>',
 			'<?php foreach(\$$1 as \$$2){ ?>',
 			'<?php } ?>',

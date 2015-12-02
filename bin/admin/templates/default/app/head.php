@@ -1,4 +1,4 @@
 <head>
 <title>Title</title>
-<?php echo $style;?>
+<?php echo $style; ?>
 </head>

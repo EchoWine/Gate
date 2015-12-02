@@ -1,4 +1,6 @@
 <?php
+	
+	$s = microtime(true);
 
 	$path_lib = '../../lib';
 	$path_config = 'config';
@@ -14,15 +16,16 @@
 
 	// Print html page
 
+	# Provvisorio, testing template
 	$element = 'Hi';
-	/*
-	$tmpl['element'] = '';
-	$tmpl['head'] = TemplateEngine::loadHTML('head');
-	$tmpl['body'] = TemplateEngine::loadHTML('body');
-	*/
 	$user = array(
-		1,2,3,4,5,6,7,8,9,0
+		array('name' => 'luca','surname' => 'rossi'),
+		array('name' => 'dario','surname' => 'bianchi'),
 	);
+
 	include TemplateEngine::html();
+
+	# Provvisorio, debugging
+	echo "<script>console.log('Tempo di esecuzione: ".(microtime(true) - $s)."');</script>";
 
 ?>

@@ -55,6 +55,16 @@ class TemplateEngine{
 	public static $checked = array();
 
 	/**
+	 * List of all overwrited files
+	 */
+	public static $overwrite;
+
+	/**
+	 * List of all aggregated files
+	 */
+	public static $aggregated;
+
+	/**
 	 * Initialization
 	 * @param $b (string) directory name where templates is installed
 	 */
@@ -73,6 +83,26 @@ class TemplateEngine{
 		self::$files -> style = array();
 		self::$files -> script = array();
 
+	}
+
+	/**
+	 * Overwrite a basic template page
+	 * @param $nt (string) name of page that will be overwritten
+	 * @param $path (string) path of new page
+	 * @param $nf (string) name page that will overwrite
+	 */
+	public static function overwrite($nt,$path,$nf){
+		self::$overwrite[$nt] = $path."/".self::$name."/".$nf.".html";
+	}
+
+	/**
+	 * Aggregate a page to another
+	 * @param $nt (string) name of page that will be overwritten
+	 * @param $path (string) path of new page
+	 * @param $nf (string) name page that will overwrite
+	 */
+	public static function aggregate($nt,$path,$nf){
+		self::$aggregated[$nt][] = $path."/".self::$name."/".$nf.".html";
 	}
 
 	/**
@@ -107,10 +137,43 @@ class TemplateEngine{
 			if(!is_dir($k)){
 				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 
-				// if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
+
+				$b = basename($k,".html");
+
+				$s = array();
+
+				# Check source of file
+				if(isset(self::$overwrite[$b])){
+					$s[] = self::$overwrite[$b]; 
+				}else{
+					$s[] = $k;
+
+					if(!empty(self::$aggregated[$b]))
+						$s = array_merge($s,self::$aggregated[$b]);
+					
+				}
+
+				$t = false;
+
+				if(file_exists($fileCompiled)){
+					foreach($s as $tk){
+						$t = $t || filemtime($tk) > filemtime($fileCompiled);
+					}
+				}else{
+					$t = true;
+				}
+
+				# Per il momento è necessario che sia sempre attivo
+				//if($t){
 				if(true){
-					$c = file_get_contents($k);
-					$c = self::translate($k,$c);
+					
+					$c = array();
+
+					foreach($s as $tk)
+						$c[] = self::translate($tk,file_get_contents($tk));
+
+					$c = implode($c,'');
+
 					file_put_contents($fileCompiled,$c);
 				}
 			}
@@ -411,3 +474,5 @@ class TemplateEngine{
 }
 
 ?>
+
+

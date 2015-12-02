@@ -1,6 +1,7 @@
 <?php
 		
 	# Path
+	define('PATH',dirname(__FILE__));
 	define('PATH_MODULE','../../modules');
 	define('PATH_LIB','../../lib');
 	define('PATH_CONFIG','config');
@@ -23,13 +24,14 @@
 	# Load manually a module
 	ModuleManager::load(PATH_MODULE."/Auth");
 
-	Auth::sayHello();
 
-	die();
 
 	// Load template
 	TemplateEngine::ini(PATH_TEMPLATES);
+
 	TemplateEngine::load('default');
+
+	Auth::template();
 
 	// Print html page
 

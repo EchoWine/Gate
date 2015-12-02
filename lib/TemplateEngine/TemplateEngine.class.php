@@ -45,6 +45,16 @@ class TemplateEngine{
 	public static $dirCompiled = 'app';
 
 	/**
+	 * List of all error
+	 */
+	public static $error = array();
+
+	/**
+	 * List of all variables alredy checked
+	 */
+	public static $checked = array();
+
+	/**
 	 * Initialization
 	 * @param $b (string) directory name where templates is installed
 	 */
@@ -77,15 +87,15 @@ class TemplateEngine{
 
 		$GLOBALS['style'] = TemplateEngine::loadAllStyle();
 
-		TemplateEngine::compile();
 	}
 
 	/**
 	 * Compile all the page
 	 */
-	private static function compile(){
+	public static function compile(){
 
 		$pathCompiled = self::$path.self::$dirCompiled;
+
 
 		if(!file_exists($pathCompiled))
 			mkdir($pathCompiled);
@@ -95,41 +105,90 @@ class TemplateEngine{
 			if(!is_dir($k)){
 				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 
-				if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
+				// if(!file_exists($fileCompiled) || filemtime($k) > filemtime($fileCompiled)){
+				if(true){
 					$c = file_get_contents($k);
-					$c = self::translate($c);
+					$c = self::translate(basename($k),$c);
 					file_put_contents($fileCompiled,$c);
 				}
 			}
+		}
+
+		if(!empty(self::$error)){
+			self::printErrors(self::$error);
+			die();
 		}
 	}
 
 	/**
 	 * Translate the page
+	 * @param $f (string) file name
 	 * @param $c (string) content of the page
 	 * @param (string) content translated
 	 */
-	private static function translate($c){
+	private static function translate($f,$c){
 
+		# for 
+		preg_match_all('/{{#for ([^\} ]*) as ([^\}]*)}}/iU',$c,$r);
+		
+		foreach($r[0] as $n => $k){
+			self::$checked[] = $r[2][$n];
 
+			$c = preg_replace($k,'<?php foreach((array)$'.$r[1][$n].' as $'.$r[2][$n].'){ ?>',$c);
+		}
+
+		# variables
 		preg_match_all('/{{(?!#)([^\}]*)}}/iU',$c,$r);
-
 		foreach($r[1] as $n => $k){
+
+			# Count row
+			preg_match_all('/\n/',explode($k,$c)[0],$r);
+			$r = count($r[0])+1;
+
+			$v = preg_replace('/\.([\w]*)/','',$k);
 			$k = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
+
+			# Check if defined
+			if(!in_array($v,self::$checked) && !isset($GLOBALS[$v])){
+				$e = new stdClass();
+				$e -> message = "Undefined variable {$v}";
+				$e -> row = $r;
+				$e -> file = $f;
+				self::$error[] = $e;
+			}
+
 			$c = str_ireplace($r[0][$n],'<?php echo $'.$k.'; ?>',$c);
 		}
 
 		$a = array(
 			'/{{#include ([^\}]*)}}/iU',
-			'/{{#for ([^\} ]*) as ([^\}]*)}}/iU',
 			'/{{#endfor}}/iU',
 		);
 		$r = array(
 			'<?php include \'$1.php\';?>',
-			'<?php foreach(\$$1 as \$$2){ ?>',
 			'<?php } ?>',
 		);
+
 		return preg_replace($a,$r,$c);
+	}
+
+	/**
+	 * Print error
+	 * @param $e (array) list of all error
+	 */
+	public static function printErrors($e){
+	
+		echo 	"<div style='border: 1px solid black;margin: 0 auto;padding: 20px;'>
+					<h1>Template engine - Errors</h1>";
+
+
+		foreach($e as $k){
+			echo 
+				$k -> file."(".$k -> row."): ".$k -> message."<br>";
+		}
+
+		echo 	"</div>";
+		
 	}
 
 	/**
@@ -137,6 +196,8 @@ class TemplateEngine{
 	 * @return (string) page
 	 */
 	public static function html(){
+		TemplateEngine::compile();
+
 		return self::$path.''.self::$dirCompiled.'/html.php';
 	}
 

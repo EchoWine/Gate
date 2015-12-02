@@ -5,7 +5,7 @@
  * -1 : Disabled
  * >= 0: Enabled
 */
-define('TMPL_CACHE',0);
+define('TMPL_CACHE',-1);
 
 class TemplateEngine{
 
@@ -85,7 +85,9 @@ class TemplateEngine{
 			self::$path = self::$list[self::$name]."/";
 		}
 
-		$GLOBALS['style'] = TemplateEngine::loadAllStyle();
+		$GLOBALS['style'] = TemplateEngine::loadStyles();
+		$GLOBALS['script'] = TemplateEngine::loadScripts();
+		$GLOBALS['path'] = "templates/{$n}/";
 
 	}
 
@@ -208,12 +210,28 @@ class TemplateEngine{
 	}
 
 	/**
-	 * Load all style
+	 * Load all styles
 	 */
-	public static function loadAllStyle(){
+	public static function loadStyles(){
+		return self::loadResources('style','css');
+	}
+
+	/**
+	 * Load all scripts
+	 */
+	public static function loadScripts(){
+		return self::loadResources('script','js');
+	}
+
+	/**
+	 * Load all scripts
+	 * @param $folder (string) name of folder
+	 * @param $ext (string) type of file
+	 */
+	public static function loadResources($folder,$ext){
 
 		$r = array();
-		$path = self::$basePath.'/'.self::$name.'/style/src';
+		$path = self::$basePath.'/'.self::$name.'/'.$folder.'/src';
 		$name = self::$name;
 
 		foreach(glob($path.'/*') as $k){
@@ -223,31 +241,38 @@ class TemplateEngine{
 
 
 		if(TMPL_CACHE >= 0){
-			$a = self::loadStyle(
+			$r[] = self::loadResource(
 				$name,
-				'cache/'.
-				basename(self::cacheSystem($path,"css",self::$files -> style))
+				$folder.'/cache/'.
+				basename(self::cacheSystem($path,$ext,self::$files -> style))
 			);
 
-			return $a;
 		}else{
-			$r = '';
 			foreach(self::$files -> style as $k)
-				$r[] = self::loadStyle($name,'src/'.basename($k));
-
-			return $r;
+				$r[] = self::loadResource($name,$folder.'/src/'.basename($k));
 		}
 
 
-		return implode($r,",");
+		return implode($r,"");
 	}
 
 	/**
-	 * Load all style
-	 * @param $page (string) name of css file
+	 * Load a resource file
+	 * @param $name (string) name of template
+	 * @param $page (string) path file
 	 */
-	public static function loadStyle($name,$page){
-		return $path = "<link rel='stylesheet' href='templates/{$name}/style/{$page}'>";
+	public static function loadResource($name,$page){
+		$ext = pathinfo($page, PATHINFO_EXTENSION);
+		switch($ext){
+			case 'css':
+				return "<link rel='stylesheet' href='templates/{$name}/{$page}'>";
+			break;
+
+			case 'js':
+				return "<script src='templates/{$name}/{$page}'></script>";
+			break;
+		}
+		
 	}
 
 	/**
@@ -300,6 +325,16 @@ class TemplateEngine{
 
 		$s = preg_replace("%$r1%", '$1', $s);
 	   	$s = preg_replace("%$r2%", '$1$2$3$4$5$6$7', $s);
+	   	return $s;
+	}
+
+
+	/**
+	 * Minify JS code
+	 * @param $s (string) js code
+	 * @return (string) js minified
+	 */
+	public static function minifyJS($s){
 	   	return $s;
 	}
 
@@ -361,7 +396,7 @@ class TemplateEngine{
 		// Aggiorno il contenuto del file
 		switch($ext){
 			case "css": file_put_contents($path,self::minifyCSS($s)); break;
-			case "js": file_put_contents($path,self::minify_js($s)); break;
+			case "js": file_put_contents($path,self::minifyJS($s)); break;
 		}
 		
 

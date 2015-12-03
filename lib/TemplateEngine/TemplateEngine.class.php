@@ -277,12 +277,13 @@ class TemplateEngine{
 
 	/**
 	 * Main function that print the page
+	 * @param $page (string) name page
 	 * @return (string) page
 	 */
-	public static function html(){
+	public static function html($page){
 		TemplateEngine::compile();
 
-		return self::$path.''.self::$dirCompiled.'/html.php';
+		return self::$path.''.self::$dirCompiled.'/'.$page.'.php';
 	}
 
 	/**

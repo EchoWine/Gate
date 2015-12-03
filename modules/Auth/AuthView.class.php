@@ -21,7 +21,7 @@ class AuthView{
 
 		# If not logged
 		if(true){
-			TemplateEngine::overwrite('body',$path,'auth.login');
+			TemplateEngine::overwrite('main',$path,'auth.login');
 
 			TemplateEngine::aggregate('style',$path,'auth.style');
 		}

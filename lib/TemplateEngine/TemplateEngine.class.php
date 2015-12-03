@@ -65,6 +65,11 @@ class TemplateEngine{
 	public static $aggregated;
 
 	/**
+	 * List of all file compiled
+	 */
+	public static $compiled = array();
+
+	/**
 	 * Initialization
 	 * @param $b (string) directory name where templates is installed
 	 */
@@ -96,11 +101,14 @@ class TemplateEngine{
 	/**
 	 * Overwrite a basic template page
 	 * @param $nt (string) name of page that will be overwritten
-	 * @param $path (string) path of new page
 	 * @param $nf (string) name page that will overwrite
+	 * @param $c (string) condition of overwrite
 	 */
-	public static function overwrite($nt,$path,$nf){
-		self::$overwrite[$nt] = $path."/".self::$name."/".$nf.".html";
+	public static function overwrite($nt,$nf,$c = NULL){
+		self::$overwrite[$nt] = array(
+			'file' => $nf,
+			'condition' => $c,
+		);
 	}
 
 	/**
@@ -131,35 +139,39 @@ class TemplateEngine{
 
 	/**
 	 * Compile all the page
+	 * @param $pathSource (string) path where is located file .html to compile
 	 */
-	public static function compile(){
+	public static function compile($pathSource = ''){
+
+		if(empty($pathSource))
+			$pathSource = self::$path;
 
 		$pathCompiled = self::$path.self::$dirCompiled;
-
 
 		if(!file_exists($pathCompiled))
 			mkdir($pathCompiled);
 
 
-		foreach(glob(self::$path.'/*') as $k){
+		foreach(glob($pathSource.'/*') as $k){
 			if(!is_dir($k)){
 				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 
-
 				$b = basename($k,".html");
+
+				if(in_array($b,self::$compiled)){
+					# some error, already compiled, conflicts etc..
+				}
+
+				self::$compiled[] = $b;
 
 				$s = array();
 
 				# Check source of file
-				if(isset(self::$overwrite[$b])){
-					$s[] = self::$overwrite[$b]; 
-				}else{
-					$s[] = $k;
+				$s[] = $k;
 
-					if(!empty(self::$aggregated[$b]))
-						$s = array_merge($s,self::$aggregated[$b]);
+				if(!empty(self::$aggregated[$b]))
+					$s = array_merge($s,self::$aggregated[$b]);
 					
-				}
 
 				$t = false;
 
@@ -178,9 +190,11 @@ class TemplateEngine{
 					$c = array();
 
 					foreach($s as $tk){
-						if(file_exists($tk))
-							$c[] = self::translate($tk,file_get_contents($tk));
-						else{
+						if(file_exists($tk)){
+							$content = file_get_contents($tk);
+							$content = self::preCompile($tk,$content);
+							$c[] = self::translate($tk,$content);
+						}else{
 							# some error
 						}
 					}
@@ -199,6 +213,33 @@ class TemplateEngine{
 	}
 
 	/**
+	 * Precompile the page
+	 * @param $f (string) file name
+	 * @param $c (string) content of the page
+	 */
+	private static function preCompile($f,$c){
+		preg_match_all('/{{#include ([^\}]*)}}/iU',$c,$r);
+		
+		foreach($r[0] as $n => $k){
+
+			if(isset(self::$overwrite[$r[1][$n]])){
+				$l = self::$overwrite[$r[1][$n]];
+
+				$c = preg_replace('{'.$k.'}',''.
+					'{{#if '.$l['condition'].'}}'.
+					'	{{#include '.$l['file'].'}}'.
+					'{{#else}}'.
+					'	'.$k.
+					'{{#endif}}'
+				,$c);
+
+			}
+
+		}
+		return $c;
+	}
+
+	/**
 	 * Translate the page
 	 * @param $f (string) file name
 	 * @param $c (string) content of the page
@@ -206,12 +247,13 @@ class TemplateEngine{
 	 */
 	private static function translate($f,$c){
 
-		# include
 
+		# include
 		preg_match_all('/{{#include ([^\}]*)}}/iU',$c,$r);
 		
 		foreach($r[0] as $n => $k){
-			$c = preg_replace('{'.$k.'}','<?php include \''.$r[1][$n].'.php\'; ?>',$c);
+
+			$c = str_replace($k,'<?php include \''.$r[1][$n].'.php\'; ?>',$c);
 		}
 
 		# for 
@@ -220,8 +262,23 @@ class TemplateEngine{
 		foreach($r[0] as $n => $k){
 			self::$checked[] = $r[2][$n];
 
-			$c = preg_replace('{'.$k.'}','<?php foreach((array)$'.$r[1][$n].' as $'.$r[2][$n].'){ ?>',$c);
+			$c = str_replace($k,'<?php foreach((array)$'.$r[1][$n].' as $'.$r[2][$n].'){ ?>',$c);
 		}
+
+		# if
+		preg_match_all('/{{#if ([^\} ]*)}}/iU',$c,$r);
+	
+		foreach($r[0] as $n => $k){
+			$c = str_replace($k,'<?php if('.$r[1][$n].'){ ?>',$c);
+		}
+		
+
+		# else if
+		preg_match_all('/{{#elseif ([^\} ]*)}}/iU',$c,$r);
+	
+		foreach($r[0] as $n => $k)
+			$c = preg_replace('{'.$k.'}','<?php }else if('.$r[1][$n].'){ ?>',$c);
+
 
 		# variables
 		preg_match_all('/{{(?!#)([^\}]*)}}/iU',$c,$r);
@@ -243,14 +300,18 @@ class TemplateEngine{
 				self::$error[] = $e;
 			}
 
-			$c = str_ireplace('{{'.$k.'}}','<?php echo $'.$i.'; ?>',$c);
+			$c = str_replace('{{'.$k.'}}','<?php echo $'.$i.'; ?>',$c);
 		}
 
 		$a = array(
 			'/{{#endfor}}/iU',
+			'/{{#endif}}/iU',
+			'/{{#else}}/iU',
 		);
 		$r = array(
 			'<?php } ?>',
+			'<?php } ?>',
+			'<?php }else{ ?>',
 		);
 
 		return preg_replace($a,$r,$c);
@@ -281,7 +342,6 @@ class TemplateEngine{
 	 * @return (string) page
 	 */
 	public static function html($page){
-		TemplateEngine::compile();
 
 		return self::$path.''.self::$dirCompiled.'/'.$page.'.php';
 	}

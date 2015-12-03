@@ -1,5 +1,7 @@
+<!DOCTYPE html>
+<html>
+<?php include 'head.php'; ?>
 <body>
-
 	<div class="container">
 
 	<form class="form-signin">
@@ -20,3 +22,4 @@
 
 
 </body>
+</html>

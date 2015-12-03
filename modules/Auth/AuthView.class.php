@@ -16,15 +16,12 @@ class AuthView{
 
 	
 	public static function forceLogin($path){
-
 		$path = $path."/templates";
 
-		# If not logged
-		if(true){
-			TemplateEngine::overwrite('main',$path,'auth.login');
+		TemplateEngine::overwrite('container','auth.login','!$logged');
 
-			TemplateEngine::aggregate('style',$path,'auth.style');
-		}
+		TemplateEngine::aggregate('style',$path,'auth.style');
+		
 	}
 }
 

@@ -33,7 +33,7 @@
 
 	foreach(ModuleManager::loadTemplate('admin') as $k)
 		include $k;
-	
+
 
 	// Print html page
 
@@ -43,5 +43,8 @@
 		array('name' => 'luca','surname' => 'rossi'),
 		array('name' => 'dario','surname' => 'bianchi'),
 	);
+
+
+	TemplateEngine::compile();
 
 ?>

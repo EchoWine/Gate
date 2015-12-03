@@ -4,7 +4,7 @@
 
 $p = dirname(__FILE__);
 
-Auth::tmplForceLogin($p);
+// AuthView::forceLogin($p);
 
 
 $pathModuleAuth = ModuleManager::getPath()."/Auth/bin/admin/templates/".TemplateEngine::getName()."/";

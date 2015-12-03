@@ -86,6 +86,14 @@ class TemplateEngine{
 	}
 
 	/**
+	 * Get name of current template
+	 * @param (string) current template
+	 */
+	public static function getName(){
+		return self::$name;
+	}
+
+	/**
 	 * Overwrite a basic template page
 	 * @param $nt (string) name of page that will be overwritten
 	 * @param $path (string) path of new page
@@ -157,7 +165,7 @@ class TemplateEngine{
 
 				if(file_exists($fileCompiled)){
 					foreach($s as $tk){
-						$t = $t || filemtime($tk) > filemtime($fileCompiled);
+						$t = $t || (file_exists($tk) && filemtime($tk) > filemtime($fileCompiled));
 					}
 				}else{
 					$t = true;
@@ -169,8 +177,13 @@ class TemplateEngine{
 					
 					$c = array();
 
-					foreach($s as $tk)
-						$c[] = self::translate($tk,file_get_contents($tk));
+					foreach($s as $tk){
+						if(file_exists($tk))
+							$c[] = self::translate($tk,file_get_contents($tk));
+						else{
+							# some error
+						}
+					}
 
 					$c = implode($c,'');
 
@@ -219,7 +232,7 @@ class TemplateEngine{
 			$r = count($r[0])+1;
 
 			$v = preg_replace('/\.([\w]*)/','',$k);
-			$e = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
+			$i = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
 
 			# Check if defined
 			if(!in_array($v,self::$checked) && !isset($GLOBALS[$v])){
@@ -230,7 +243,7 @@ class TemplateEngine{
 				self::$error[] = $e;
 			}
 
-			$c = str_ireplace('{{'.$k.'}}','<?php echo $'.$e.'; ?>',$c);
+			$c = str_ireplace('{{'.$k.'}}','<?php echo $'.$i.'; ?>',$c);
 		}
 
 		$a = array(

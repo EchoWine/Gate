@@ -13,6 +13,22 @@ class ModuleManager{
   	public static $path;
 
   	/**
+  	 * Set path where are located modules
+  	 * @param $path (string) path
+  	 */
+  	public static function setPath($path){
+  		self::$path = $path;
+  	}
+
+	/**
+  	 * Get path where are located modules
+  	 * @return $path (string) path
+  	 */
+  	public static function getPath(){
+  		return self::$path;
+  	}
+
+  	/**
   	 * Load all modules
   	 * @param $path (string) path where are located modules
   	 */
@@ -20,7 +36,6 @@ class ModuleManager{
 		self::$path = $path;
 
 		foreach(glob($path.'/*') as $k){
-			self::$list[] = basename($k);
 			self::load($k);
 		}
 	}
@@ -30,8 +45,23 @@ class ModuleManager{
 	 * @param $path (string) path of module
 	 */
 	public static function load($path){
+		self::$list[basename($path)] = $path;
 		include $path."/main.php";
+
+		# Call load method
+		forward_static_call(basename($path)."::load");
 	}
 
+	/**
+	 * Call all template methods in module
+	 * @param $v (string) name of view
+	 */
+	public static function loadTemplate($v){
+		$r = array();
+		foreach(self::$list as $n => $k){
+			$r[] =  $k."/bin/{$v}/app.php";
+		}
+		return $r;
+	}
 }
 ?>

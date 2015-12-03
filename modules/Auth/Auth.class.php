@@ -3,11 +3,12 @@
 class Auth{
 	
 	public static function load(){
+
 	}
 
-	public static function template(){
+	public static function tmplForceLogin($path){
 
-		$path = dirname(__FILE__)."/templates";
+		$path = $path."/templates";
 
 		# If not logged
 		if(true){
@@ -15,9 +16,7 @@ class Auth{
 
 			TemplateEngine::aggregate('style',$path,'auth.style');
 		}
-
 	}
-
 
 }
 

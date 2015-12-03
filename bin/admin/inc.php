@@ -22,6 +22,7 @@
 	# ModuleManager::loadAll(PATH_MODULE);
 
 	# Load manually a module
+	ModuleManager::setPath(PATH_MODULE);
 	ModuleManager::load(PATH_MODULE."/Auth");
 
 
@@ -31,7 +32,9 @@
 
 	TemplateEngine::load('default');
 
-	Auth::template();
+	foreach(ModuleManager::loadTemplate('admin') as $k)
+		include $k;
+	
 
 	// Print html page
 

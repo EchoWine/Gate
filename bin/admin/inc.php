@@ -26,7 +26,6 @@
 	ModuleManager::load(PATH_MODULE."/Auth");
 
 
-
 	// Load template
 	TemplateEngine::ini(PATH_TEMPLATES);
 
@@ -44,9 +43,5 @@
 		array('name' => 'luca','surname' => 'rossi'),
 		array('name' => 'dario','surname' => 'bianchi'),
 	);
-
-
-	# Provvisorio, debugging
-	echo "<script>console.log('Tempo di esecuzione: ".(microtime(true) - $s)."');</script>";
 
 ?>

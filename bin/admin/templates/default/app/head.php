@@ -4,6 +4,4 @@
 
 	<title>Title</title>
 	<?php include 'style.php'; ?>
-	<!--<?php echo $style; ?>-->
-	<!--<?php echo $script; ?>-->
 </head>

@@ -488,5 +488,3 @@ class TemplateEngine{
 }
 
 ?>
-
-

@@ -1,4 +1,4 @@
 <?php
 	include 'inc.php';
-	include TemplateEngine::html('main');
+	include TemplateEngine::html('index');
 ?>

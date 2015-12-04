@@ -218,19 +218,18 @@ class TemplateEngine{
 	 * @param $c (string) content of the page
 	 */
 	private static function preCompile($f,$c){
-		preg_match_all('/{{#include ([^\}]*)}}/iU',$c,$r);
-		
+		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
 		foreach($r[0] as $n => $k){
 
 			if(isset(self::$overwrite[$r[1][$n]])){
 				$l = self::$overwrite[$r[1][$n]];
 
 				$c = preg_replace('{'.$k.'}',''.
-					'{{#if '.$l['condition'].'}}'.
-					'	{{#include '.$l['file'].'}}'.
-					'{{#else}}'.
+					'{{if '.$l['condition'].'}}'.
+					'	{{include '.$l['file'].'}}'.
+					'{{else}}'.
 					'	'.$k.
-					'{{#endif}}'
+					'{{endif}}'
 				,$c);
 
 			}

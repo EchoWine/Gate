@@ -116,9 +116,15 @@ class TemplateEngine{
 	 * @param $nt (string) name of page that will be overwritten
 	 * @param $path (string) path of new page
 	 * @param $nf (string) name page that will overwrite
+	 * @param $pos (int) position of aggregation
 	 */
-	public static function aggregate($nt,$path,$nf){
-		self::$aggregated[$nt][] = $path."/".self::$name."/".$nf.".html";
+	public static function aggregate($nt,$path,$nf,$pos = null){
+		$p = $path."/".self::$name."/".$nf.".html";
+		if($pos == null)
+			self::$aggregated[$nt][] = $p;
+		else
+			self::$aggregated[$nt][$pos] = $p;
+
 	}
 
 	/**
@@ -152,7 +158,7 @@ class TemplateEngine{
 			mkdir($pathCompiled);
 
 
-		foreach(glob($pathSource.'/*') as $k){
+		foreach(glob($pathSource.'/*.html') as $k){
 			if(!is_dir($k)){
 				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 

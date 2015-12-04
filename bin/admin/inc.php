@@ -19,32 +19,34 @@
 	# modules
 
 	# Load all modules
-	# ModuleManager::loadAll(PATH_MODULE);
+	ModuleManager::loadAll(PATH_MODULE);
 
 	# Load manually a module
-	ModuleManager::setPath(PATH_MODULE);
-	ModuleManager::load(PATH_MODULE."/Auth");
+	#ModuleManager::setPath(PATH_MODULE);
+	#ModuleManager::load(PATH_MODULE."/Auth");
 
-
-	// Load template
+	# Load template
 	TemplateEngine::ini(PATH_TEMPLATES);
 
 	TemplateEngine::load('lte');
 
+	# Navigation 
+	$nav = array(
+		array(
+			'name' => 'dashboard',
+			'label' => 'Dashboard',
+			'url' => 'index.php',
+			'icon' => 'home'
+		),
+	);
+
+	ksort($nav);
+
+
 	foreach(ModuleManager::loadTemplate('admin') as $k)
 		include $k;
 
-
-	// Print html page
-
-	# Provvisorio, testing template
-	$element = 'Hi';
-	$user = array(
-		array('name' => 'luca','surname' => 'rossi'),
-		array('name' => 'dario','surname' => 'bianchi'),
-	);
-
-
+	# Compile
 	TemplateEngine::compile();
 
 ?>

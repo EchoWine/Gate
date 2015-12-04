@@ -1,14 +1,14 @@
 <?php
 
-# Definition of some variables
+	# Definition of some variables
 
-$p = dirname(__FILE__);
+	$p = dirname(__FILE__);
 
-AuthView::forceLogin($p);
+	AuthView::forceLogin($p);
 
 
-$pathModuleAuth = ModuleManager::getPath()."/Auth/bin/admin/templates/".TemplateEngine::getName()."/";
-$logged = false;
+	$pathModuleAuth = ModuleManager::getPath()."/Auth/bin/admin/templates/".TemplateEngine::getName()."/";
+	$logged = true;
 
-TemplateEngine::compile($p."/templates/".TemplateEngine::getName());
+	TemplateEngine::compile($p."/templates/".TemplateEngine::getName());
 ?>

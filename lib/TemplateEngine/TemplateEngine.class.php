@@ -105,22 +105,22 @@ class TemplateEngine{
 	 * @param $c (string) condition of overwrite
 	 */
 	public static function overwrite($nt,$nf,$c = NULL){
-		self::$overwrite[$nt] = array(
+		self::$overwrite[$nt][] = [
 			'file' => $nf,
 			'condition' => $c,
-		);
+		];
 	}
 
 	/**
 	 * Aggregate a page to another
-	 * @param $nt (string) name of page that will be overwritten
+	 * @param $nt (string) name of page that will be aggregated
 	 * @param $path (string) path of new page
-	 * @param $nf (string) name page that will overwrite
+	 * @param $nf (string) name page that will aggregated
 	 * @param $pos (int) position of aggregation
 	 */
 	public static function aggregate($nt,$path,$nf,$pos = null){
 		$p = $path."/".self::$name."/".$nf.".html";
-		if($pos == null)
+		if($pos == null || isset(self::$aggregated[$nt][$pos]))
 			self::$aggregated[$nt][] = $p;
 		else
 			self::$aggregated[$nt][$pos] = $p;
@@ -230,13 +230,19 @@ class TemplateEngine{
 			if(isset(self::$overwrite[$r[1][$n]])){
 				$l = self::$overwrite[$r[1][$n]];
 
-				$c = preg_replace('{'.$k.'}',''.
-					'{{if '.$l['condition'].'}}'.
-					'	{{include '.$l['file'].'}}'.
-					'{{else}}'.
-					'	'.$k.
-					'{{endif}}'
-				,$c);
+				$s = '';
+				$e = '';
+				foreach($l as $v){
+					$s .= 	'{{'.$e.'if '.$v['condition'].'}}'.
+							'{{include '.$v['file'].'}}';
+
+					if($e == '')$e = 'else';
+				}
+
+				$s .= '{{else}}'.$k.'{{endif}}';
+				
+
+				$c = preg_replace('{'.$k.'}',$s,$c);
 
 			}
 
@@ -277,12 +283,11 @@ class TemplateEngine{
 			$c = str_replace($k,'<?php if('.$r[1][$n].'){ ?>',$c);
 		}
 		
-
 		# else if
-		preg_match_all('/{{elseif ([^\}]*)}}/iU',$c,$r);
+		preg_match_all('/{{elseif ([^\} ]*)}}/iU',$c,$r);
 	
 		foreach($r[0] as $n => $k)
-			$c = preg_replace('{'.$k.'}','<?php }else if('.$r[1][$n].'){ ?>',$c);
+			$c = str_replace($k,'<?php }else if('.$r[1][$n].'){ ?>',$c);
 
 
 		$a = array(

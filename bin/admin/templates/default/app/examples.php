@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html>
 <?php include 'head.php'; ?>
+<link rel='stylesheet' href='<?php echo $path; ?>style/src/examples.css'>
 <body>
-
-	<!--
-	<ul>
-	<?php foreach((array)$user as $y){ ?>
-		<li>Name: <?php echo $y['name']; ?>, Surname: <?php echo $y['surname']; ?></li>
-	<?php } ?>
-	</ul>
-	-->
 
  <!-- Fixed navbar -->
 	<nav class="navbar navbar-inverse navbar-fixed-top">

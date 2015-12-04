@@ -249,7 +249,7 @@ class TemplateEngine{
 
 
 		# include
-		preg_match_all('/{{#include ([^\}]*)}}/iU',$c,$r);
+		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
 		
 		foreach($r[0] as $n => $k){
 
@@ -257,7 +257,7 @@ class TemplateEngine{
 		}
 
 		# for 
-		preg_match_all('/{{#for ([^\} ]*) as ([^\}]*)}}/iU',$c,$r);
+		preg_match_all('/{{for ([^\} ]*) as ([^\}]*)}}/iU',$c,$r);
 		
 		foreach($r[0] as $n => $k){
 			self::$checked[] = $r[2][$n];
@@ -266,7 +266,7 @@ class TemplateEngine{
 		}
 
 		# if
-		preg_match_all('/{{#if ([^\} ]*)}}/iU',$c,$r);
+		preg_match_all('/{{if ([^\} ]*)}}/iU',$c,$r);
 	
 		foreach($r[0] as $n => $k){
 			$c = str_replace($k,'<?php if('.$r[1][$n].'){ ?>',$c);
@@ -274,14 +274,27 @@ class TemplateEngine{
 		
 
 		# else if
-		preg_match_all('/{{#elseif ([^\} ]*)}}/iU',$c,$r);
+		preg_match_all('/{{elseif ([^\}]*)}}/iU',$c,$r);
 	
 		foreach($r[0] as $n => $k)
 			$c = preg_replace('{'.$k.'}','<?php }else if('.$r[1][$n].'){ ?>',$c);
 
 
+		$a = array(
+			'/{{endfor}}/iU',
+			'/{{endif}}/iU',
+			'/{{else}}/iU',
+		);
+		$r = array(
+			'<?php } ?>',
+			'<?php } ?>',
+			'<?php }else{ ?>',
+		);
+
+		$c = preg_replace($a,$r,$c);
+
 		# variables
-		preg_match_all('/{{(?!#)([^\}]*)}}/iU',$c,$r);
+		preg_match_all('/{{([^\}]*)}}/iU',$c,$r);
 		foreach($r[1] as $n => $k){
 
 			# Count row
@@ -303,18 +316,8 @@ class TemplateEngine{
 			$c = str_replace('{{'.$k.'}}','<?php echo $'.$i.'; ?>',$c);
 		}
 
-		$a = array(
-			'/{{#endfor}}/iU',
-			'/{{#endif}}/iU',
-			'/{{#else}}/iU',
-		);
-		$r = array(
-			'<?php } ?>',
-			'<?php } ?>',
-			'<?php }else{ ?>',
-		);
+		return $c;
 
-		return preg_replace($a,$r,$c);
 	}
 
 	/**

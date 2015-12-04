@@ -1,3 +1,9 @@
 body{
-	background:rgba(0,0,0);
+	background:
+	background:#364150;
+}
+.block{
+	background:#364150;
+	display:flex;
+	padding:0;
 }

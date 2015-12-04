@@ -29,7 +29,7 @@
 	// Load template
 	TemplateEngine::ini(PATH_TEMPLATES);
 
-	TemplateEngine::load('default');
+	TemplateEngine::load('lte');
 
 	foreach(ModuleManager::loadTemplate('admin') as $k)
 		include $k;

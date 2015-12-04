@@ -11,7 +11,7 @@
 	</ul>
 	-->
 
-	<?php if(!$logged){ ?>	<?php include 'auth.login.php'; ?><?php }else{ ?>	<?php include 'container.php'; ?><?php } ?>
+	<?php include 'container.php'; ?>
 	<?php include 'script.php'; ?>
 </body>
 </html>

@@ -20,7 +20,7 @@ class AuthView{
 
 		TemplateEngine::overwrite('container','auth.login','!$logged');
 
-		TemplateEngine::aggregate('style',$path,'auth.style');
+		// TemplateEngine::aggregate('style',$path,'auth.style');
 		
 	}
 }

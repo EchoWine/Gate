@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <?php include 'head.php'; ?>
+<?php include 'auth.style.php'; ?>
 <body>
 	<div class="container">
 

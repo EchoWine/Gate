@@ -1,6 +1,6 @@
 <?php
 
-class CredentialController{
+class CredentialController extends Controller{
 	public $model;
 	public $cfg;
 

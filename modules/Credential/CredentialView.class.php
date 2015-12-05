@@ -1,6 +1,6 @@
 <?php
 
-class CredentialView{
+class CredentialView extends View{
 	
 	public $model;
 	public $controller;

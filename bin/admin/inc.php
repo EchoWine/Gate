@@ -12,6 +12,7 @@
 	include PATH_LIB."/database/main.php";
 	include PATH_LIB."/TemplateEngine/main.php";
 	include PATH_LIB."/ModuleManager/main.php";
+	include PATH_LIB."/Data/main.php";
 	
 	DB::connect(include PATH_CONFIG.'/database.php');
 
@@ -42,7 +43,7 @@
 
 	ksort($nav);
 
-
+	# Include template page of modules
 	foreach(ModuleManager::loadTemplate('admin') as $k){
 		include $k;
 		TemplateEngine::compile(

@@ -1,10 +1,29 @@
 <?php
+	
 
-	# Definition of some variables
+	# Initialization
+	$CredentialModel = new CredentialModel();
+
+	/*
+	$CredentialModel -> setField(new Field\Username('user'));
+	$CredentialModel -> setField(new Field\Password('pass'));
+	$CredentialModel -> setField(new Field\Email('email'));
+	*/
+
+	$CredentialModel -> setFields([
+		new Field\Username('user'),
+		new Field\Password('pass'),
+		new Field\Email('email')
+	]);
+	
+
+	$CredentialController = new CredentialController($CredentialModel);
+
+	$CredentialView = new CredentialView($CredentialModel,$CredentialController);
+
+	# Template
 
 	$p = dirname(__FILE__);
-
-	CredentialView::template($p);
 
 	$pageCredential = isset($_GET['p']) && $_GET['p'] == 'Credential';
 
@@ -14,4 +33,6 @@
 			'url' => 'index.php?p=Credential',
 		]
 	];
+
+	CredentialView::template($p);
 ?>

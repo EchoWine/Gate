@@ -21,6 +21,16 @@
 
 	$CredentialView = new CredentialView($CredentialModel,$CredentialController);
 
+	# Checks
+
+	echo DB::table('credential') -> countColumns();
+	die();
+	
+	$response = $CredentialController -> check();
+
+	$get = $CredentialModel -> getByPrimary();
+	$get = $CredentialModel -> getAll();
+
 	# Template
 
 	$p = dirname(__FILE__);
@@ -34,5 +44,5 @@
 		]
 	];
 
-	CredentialView::template($p);
+	$CredentialView -> template($p);
 ?>

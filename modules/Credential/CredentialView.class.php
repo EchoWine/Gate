@@ -15,7 +15,7 @@ class CredentialView extends View{
 	}
 
 	
-	public static function template($path){
+	public function template($path){
 
 		$path = $path."/templates";
 		TemplateEngine::overwrite('content','Credential.page','$pageCredential');

@@ -14,8 +14,4 @@
 			'url' => 'index.php?p=Credential',
 		]
 	];
-
-
-
-	TemplateEngine::compile($p."/templates/".TemplateEngine::getName());
 ?>

@@ -25,7 +25,4 @@
 
 	SystemInfo::template($p);
 
-	TemplateEngine::compile($p."/templates/".TemplateEngine::getName());
-
-
 ?>

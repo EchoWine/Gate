@@ -43,8 +43,12 @@
 	ksort($nav);
 
 
-	foreach(ModuleManager::loadTemplate('admin') as $k)
+	foreach(ModuleManager::loadTemplate('admin') as $k){
 		include $k;
+		TemplateEngine::compile(
+			dirname($k)."/bin/admin/templates/".TemplateEngine::getName()
+		);
+	}
 
 	# Compile
 	TemplateEngine::compile();

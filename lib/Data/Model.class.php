@@ -2,6 +2,7 @@
 class Model{
   	
   	public $name;
+  	public $primary;
   	public $fields;	
 
   	public function __construct($n){
@@ -29,6 +30,22 @@ class Model{
 			$k -> alterDatabase();
 		}
 
+	}
+
+	public function getByPrimary($p){
+
+		return DB::table($this -> name) -> where($this -> primary,$p) -> get();
+
+	}
+
+	public function getAll(){
+
+		return DB::table($this -> name) -> lists();
+
+	}
+
+	public function add(){
+		
 	}
 }
 ?>

@@ -8,7 +8,14 @@ class Controller{
 	}
 
 	public function check(){
+		$this -> checkData();
 		$this -> model -> check();
+	}
+
+	public function checkData(){
+		$this -> data = array(
+			'action' => 'add'
+		);
 	}
 
 

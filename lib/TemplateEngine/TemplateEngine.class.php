@@ -158,7 +158,8 @@ class TemplateEngine{
 			mkdir($pathCompiled);
 
 
-		foreach(glob($pathSource.'/*.html') as $k){
+		foreach(glob($pathSource.'*.html') as $k){
+
 			if(!is_dir($k)){
 				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 
@@ -267,13 +268,20 @@ class TemplateEngine{
 			$c = str_replace($k,'<?php include \''.$r[1][$n].'.php\'; ?>',$c);
 		}
 
+		# array
+		preg_match_all('/{{([^\}]*)}}/iU',$c,$r);
+		foreach($r[0] as $n => $k){
+			$i = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
+			$c = str_replace($k,$i,$c);
+		}
+
 		# for 
 		preg_match_all('/{{for ([^\} ]*) as ([^\}]*)}}/iU',$c,$r);
 		
 		foreach($r[0] as $n => $k){
 			self::$checked[] = $r[2][$n];
 
-			$c = str_replace($k,'<?php foreach((array)$'.$r[1][$n].' as $'.$r[2][$n].'){ ?>',$c);
+			$c = str_replace($k,'<?php foreach((array)'.$r[1][$n].' as '.$r[2][$n].'){ ?>',$c);
 		}
 
 		# if
@@ -302,7 +310,6 @@ class TemplateEngine{
 		);
 
 		$c = preg_replace($a,$r,$c);
-
 		# variables
 		preg_match_all('/{{([^\}]*)}}/iU',$c,$r);
 		foreach($r[1] as $n => $k){
@@ -312,18 +319,17 @@ class TemplateEngine{
 			$r = count($r[0])+1;
 
 			$v = preg_replace('/\.([\w]*)/','',$k);
-			$i = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
 
 			# Check if defined
-			if(!in_array($v,self::$checked) && !isset($GLOBALS[$v])){
+			/*if(!in_array($v,self::$checked) && !isset($GLOBALS[$v])){
 				$e = new stdClass();
 				$e -> message = "Undefined variable {$v}";
 				$e -> row = $r;
 				$e -> file = basename($f);
 				self::$error[] = $e;
-			}
+			}*/
 
-			$c = str_replace('{{'.$k.'}}','<?php echo $'.$i.'; ?>',$c);
+			$c = str_replace('{{'.$k.'}}','<?php echo '.$k.'; ?>',$c);
 		}
 
 		return $c;

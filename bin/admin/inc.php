@@ -42,15 +42,19 @@
 		),
 	);
 
+
+	define('path','templates/'.TemplateEngine::getName().'/');
+
 	ksort($nav);
 
 	# Include template page of modules
 	foreach(ModuleManager::loadTemplate('admin') as $k){
 		include $k;
 		TemplateEngine::compile(
-			dirname($k)."/bin/admin/templates/".TemplateEngine::getName()
+			dirname($k)."/templates/".TemplateEngine::getName()."/"
 		);
 	}
+
 
 	# Compile
 	TemplateEngine::compile();

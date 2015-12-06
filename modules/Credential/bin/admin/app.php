@@ -22,17 +22,22 @@
 	$CredentialView = new CredentialView($CredentialModel,$CredentialController);
 
 	# Checks
-
-	echo DB::table('credential') -> countColumns();
-	die();
-	
 	$response = $CredentialController -> check();
 
-	$get = $CredentialModel -> getByPrimary();
+	// $get = $CredentialModel -> getByPrimary(1);
 	$get = $CredentialModel -> getAll();
 
-	# Template
+	$data = [
+		'columns' => [
+			'a','b','c'
+		],
+		'result' => [
+			[1,2,3],
+			[4,5,6]
+		]
+	];
 
+	# Template
 	$p = dirname(__FILE__);
 
 	$pageCredential = isset($_GET['p']) && $_GET['p'] == 'Credential';

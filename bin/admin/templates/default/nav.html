@@ -48,12 +48,12 @@
 				</ul>
 			</li>
 
-			{{for nav as element}}
+			{{for $nav as $element}}
 
-				<li data-menu='{{element.name}}'>
-					<a class='href r' href='{{element.url}}'>
+				<li data-menu='{{$element.name}}'>
+					<a class='href r' href='{{$element.url}}'>
 						<span class='fa fa-home icon'></span>
-						<span>{{element.label}}</span>
+						<span>{{$element.label}}</span>
 					</a>
 				</li>
 

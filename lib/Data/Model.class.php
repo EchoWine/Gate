@@ -32,6 +32,10 @@ class Model{
 
 	}
 
+	public function setPrimary($p){
+		$this -> primary = $this -> fields[$p];
+	}
+
 	public function getByPrimary($p){
 
 		return DB::table($this -> name) -> where($this -> primary,$p) -> get();
@@ -43,6 +47,23 @@ class Model{
 		return DB::table($this -> name) -> lists();
 
 	}
+
+	public function getFieldsNameInList(){
+		$r = [];
+		foreach($this -> fields as $k){
+			if($k -> print -> list) $r[] = $k -> print -> list;
+		}
+		return $r;
+	}
+
+	public function getFieldsNameInGet(){
+		$r = [];
+		foreach($this -> fields as $k){
+			if($k -> print -> get) $r[] = $k -> print -> get;
+		}
+		return $r;
+	}
+
 
 	public function add(){
 		

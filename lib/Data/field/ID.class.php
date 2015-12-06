@@ -1,10 +1,10 @@
 <?php
 namespace Field;
 
-class Email extends String{
-		
+class ID extends Base{
+	
 	public function iniLabel(){
-		$this -> label = 'E-mail';
+		$this -> label = 'ID';
 	}
 }
 ?>

@@ -8,6 +8,24 @@ class Base{
 
 	public function __construct($n){
 		$this -> name = $n;
+
+		$this -> ini();
+	}
+
+	public function ini(){
+		$this -> iniLabel();
+		$this -> iniPrint();
+	}
+
+	public function iniLabel(){
+		$this -> label = '[undefined name]';
+	}
+
+	public function iniPrint(){
+		$this -> print = new \stdClass();
+		$this -> print -> list = $this -> label;
+		$this -> print -> get = $this -> label;
+		$this -> print -> form = $this -> label;
 	}
 
 	public function setModel($m){

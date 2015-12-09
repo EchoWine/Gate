@@ -24,30 +24,63 @@
 
 	$CredentialView = new CredentialView($CredentialModel,$CredentialController);
 
-	# Checks
-	$response = $CredentialController -> check();
+	# Category: list,get,add,edit ecc...
 
-	// $get = $CredentialModel -> getByPrimary(1);
-	$result = $CredentialModel -> getAll();
-
-	$data = ['columns' => $CredentialModel -> getFieldsNameInList(),'result' => []];
-
-	if(!empty($result))
-		$data['result'] = $result;
-	
-
-
-	# Template
 	$p = dirname(__FILE__);
 
-	$pageCredential = isset($_GET['p']) && $_GET['p'] == 'Credential';
+	$cat_get = 'cat';
+	$cat_list = 'list';
+	$cat_add = 'add';
+	$cat_edit = 'edit';
+	$cat_get = 'get';
+	$page_get = 'p';
+	$page_obj = 'Credential';
+	$label = 'Credential';
+	$cat = isset($_GET[$cat_get]) ? $_GET[$cat_get] : null;
 
+	$pageCredential = isset($_GET[$page_get]) && $_GET[$page_get] == $page_obj;
+	
+	$urlToAdd = '?'.$page_get.'='.$page_obj.'&'.$cat_get.'='.$cat_add;
+	$urlToList = '?'.$page_get.'='.$page_obj.'&'.$cat_get.'='.$cat_list;
+
+
+	# Menu
 	$Credential = [
 		'nav' => [
-			'label' => 'Credential',
-			'url' => 'index.php?p=Credential',
+			'label' => $label,
+			'url' => 'index.php?'.$page_get.'='.$page_obj,
 		]
 	];
 
-	$CredentialView -> template($p);
+	$CredentialView -> setPath($p);
+	$CredentialView -> setNav();
+
+	if(!$pageCredential)return;
+
+	switch($cat){
+		case $cat_add:
+
+		break;
+		default:
+
+			# Checks
+			$response = $CredentialController -> check();
+
+			// $get = $CredentialModel -> getByPrimary(1);
+			$result = $CredentialModel -> getAll();
+
+			$data = [
+				'columns' => $CredentialModel -> getFieldsNameInList(),
+				'result' => []
+			];
+
+			$data['result'] = $result;
+			
+
+
+
+			$CredentialView -> template();
+		break;
+	}
+
 ?>

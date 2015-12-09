@@ -4,18 +4,21 @@ class CredentialView extends View{
 	
 	public $model;
 	public $controller;
+	public $path;
 	
-	public function template($path){
-
-		$path = $path."/templates";
-
+	public function template(){
 
 		TemplateEngine::overwrite('content','Credential.page','$pageCredential');
 
-		TemplateEngine::aggregate('nav',$path,'Credential.nav',30);
-
-		// TemplateEngine::aggregate('style',$path,'auth.style');
 		
+	}
+
+	public function setPath($p){
+		$this -> path = $p."/templates";
+	}
+
+	public function setNav(){
+		TemplateEngine::aggregate('nav',$this -> path,'Credential.nav',30);
 	}
 }
 

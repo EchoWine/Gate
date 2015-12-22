@@ -9,6 +9,11 @@
 
 	$s = microtime(true);
 
+
+	include PATH_LIB."/main.fun.php";
+	include PATH_LIB."/stdObject.class.php";
+	
+	include PATH_LIB."/stdData/main.php";
 	
 	include PATH_LIB."/database/main.php";
 	include PATH_LIB."/TemplateEngine/main.php";
@@ -30,7 +35,7 @@
 	# Load template
 	TemplateEngine::ini(PATH_TEMPLATES);
 
-	TemplateEngine::load('lte');
+	TemplateEngine::load('default');
 
 	# Navigation 
 	$nav = array(

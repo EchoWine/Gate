@@ -1,17 +1,11 @@
 <?php
 
-include dirname(__FILE__)."/Auth.class.php";
+$dir = dirname(__FILE__);
 
-include dirname(__FILE__)."/AuthController.class.php";
-include dirname(__FILE__)."/AuthModel.class.php";
-include dirname(__FILE__)."/AuthView.class.php";
+include $dir."/Auth.class.php";
 
-$AuthModel = new AuthModel();
-$AuthController = new AuthController($AuthModel,array(
-	'user' => 'auth_username',
-	'pass' => 'auth_password'
-));
-
-$AuthView = new AuthView($AuthModel,$AuthController);
+include $dir."/AuthController.class.php";
+include $dir."/AuthModel.class.php";
+include $dir."/AuthView.class.php";
 
 ?>

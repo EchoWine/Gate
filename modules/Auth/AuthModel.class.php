@@ -1,9 +1,13 @@
 <?php
 
-class AuthModel{
+class AuthModel extends Model{
 	
 	public $data;
 
+	public function __construct(){
+		$this -> name = 'Auth';
+	}
+	
 	public function check(){
 		$this -> checkLogin();
 

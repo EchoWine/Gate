@@ -1,5 +1,5 @@
-<div id='container-content-left'>
-	<div id='content-left'>
+<div id='container-nav'>
+	<div id='nav'>
 		<div id='status'>
 			<button class='button s cl_st'><span class='fa fa-list'></span></button>
 		</div>
@@ -47,6 +47,18 @@
 					</li>
 				</ul>
 			</li>
+
+			<?php foreach((array)$nav as $element){ ?>
+
+				<li data-menu='<?php echo $element['name']; ?>'>
+					<a class='href r' href='<?php echo $element['url']; ?>'>
+						<span class='fa fa-home icon'></span>
+						<span><?php echo $element['label']; ?></span>
+					</a>
+				</li>
+
+			<?php } ?>
+			
 
 
 		</ul>

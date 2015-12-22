@@ -35,5 +35,9 @@ class Base{
 	public function alterDatabase(){
 		\DB::table($this -> model -> name) -> column($this -> name) -> type('string') -> alter();
 	}
+
+	public function getInput(){
+		return "<input name='{$this -> name}'>";
+	}
 }
 ?>

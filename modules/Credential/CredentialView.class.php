@@ -20,6 +20,12 @@ class CredentialView extends View{
 	public function setNav(){
 		TemplateEngine::aggregate('nav',$this -> path,'Credential.nav',30);
 	}
+
+	public function setPage(){
+
+		TemplateEngine::overwrite('content','Credential.page','$pageCredential');
+
+	}
 }
 
 ?>

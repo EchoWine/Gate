@@ -1,6 +1,6 @@
 <?php
 
-class AuthView{
+class AuthView extends View{
 	
 	public $model;
 	public $controller;
@@ -15,7 +15,7 @@ class AuthView{
 	}
 
 	
-	public static function forceLogin($path){
+	public function forceLogin($path){
 
 		$path = $path."/templates";
 

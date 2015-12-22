@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <?php include 'head.php'; ?>
-<link rel='stylesheet' href='<?php echo $path; ?>style/src/examples.css'>
+<link rel='stylesheet' href='<?php echo path; ?>style/src/examples.css'>
 <body>
 
  <!-- Fixed navbar -->

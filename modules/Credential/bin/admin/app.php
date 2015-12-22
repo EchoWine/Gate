@@ -59,7 +59,14 @@
 
 	switch($cat){
 		case $cat_add:
+			$data = [
+				'form' => [
+					0 => ['label' => 'nome','form' => 'input']
+				]
+			];
 
+
+			$CredentialView -> setAdd();
 		break;
 		default:
 

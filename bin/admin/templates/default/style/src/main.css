@@ -1,3 +1,7 @@
+html,body{
+	height:100%;
+}
+
 body{
 	background:
 	background:#364150;
@@ -6,4 +10,14 @@ body{
 	background:#364150;
 	display:flex;
 	padding:0;
+}
+
+#container{
+	display:flex;
+
+	height:100%;
+}
+
+#container > *{
+	height:100%;
 }

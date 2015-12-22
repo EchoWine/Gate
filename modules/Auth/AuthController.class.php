@@ -1,25 +1,26 @@
 <?php
 
-class AuthController{
+class AuthController extends Controller{
 	public $model;
 	public $cfg;
 
-	public function __constructor($model){
+	public function __constructor($model,$cfg){
 		$this -> model = $model;
-		$this -> checkData();
-		$model -> check();
+		$this -> cfg = $cfg;
 	}
 
-	public function checkData(){
-		$this -> model -> data = array(
 
-			'user' => isset($_POST[$this -> cfg['user']]) 
-				? $_POST[$this -> cfg['user']] : NULL,
+	public function setData(){
+		return [
 
-			'pass' => isset($_POST[$this -> cfg['pass']]) 
-				? $_POST[$this -> cfg['pass']] : NULL
+			# Username
+			'user' => new stdDataPost('Username',$this -> cfg['data']['post_user']),
+
+			# Username
+			'pass' => new stdData('Password',$this -> cfg['data']['post_pass'])
+
 				
-		);
+		];
 	}
 
 }

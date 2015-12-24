@@ -38,7 +38,8 @@
 	TemplateEngine::load('default');
 
 	# Navigation 
-	$nav = array(
+	$nav = [];
+	/*$nav = array(
 		array(
 			'name' => 'dashboard',
 			'label' => 'Dashboard',
@@ -47,10 +48,12 @@
 		),
 	);
 
+	ksort($nav);
+	*/
+
 
 	define('path','templates/'.TemplateEngine::getName().'/');
 
-	ksort($nav);
 
 	# Include template page of modules
 	foreach(ModuleManager::loadTemplate('admin') as $k){

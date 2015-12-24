@@ -171,14 +171,11 @@ class TemplateEngine{
 
 				self::$compiled[] = $b;
 
-				$s = array();
-
 				# Check source of file
-				$s[] = $k;
+				$s = [$k];
 
 				if(!empty(self::$aggregated[$b]))
 					$s = array_merge($s,self::$aggregated[$b]);
-					
 
 				$t = false;
 

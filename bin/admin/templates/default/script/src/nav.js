@@ -38,7 +38,7 @@ subMenu.status = function(){
 };
 
 subMenu.changeStatus = function(){
-	cl = document.getElementById('container-content-left');
+	cl = document.getElementById('container-nav');
 	subMenu.compact ? cl.addClass('compact') : cl.removeClass('compact');
 	subMenu.compact = subMenu.compact ? 0 : 1;
 }
@@ -54,15 +54,7 @@ subMenu.check = function(){
 
 	if(defined(data_menu)){
 		for(i = 0;i < data_menu.length; i++){
-
-			/*if(data_menu[i].dataset.menu == info['cat']){
-				this.active(data_menu[i]);
-				data_menu[i].className = 'active';
-				data_menu[i].addClass('pre-active');
-				if(defined(document.getElementById(info['page'])))
-					document.getElementById(info['page']).className = 'act';
-			}*/
-
+			
 			data_menu[i].addEventListener("click",function(e){
 				if(!subMenu.compact)return;
 				v = document.getElementsByClassName('pre-active');

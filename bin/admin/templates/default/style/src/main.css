@@ -14,7 +14,7 @@ body{
 
 #container{
 	display:flex;
-
+    margin-top: 45px;
 	height:100%;
 }
 

@@ -1,0 +1,159 @@
+
+#header{
+	background-color: #2B3643;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:45px;
+	z-index:5;
+	display:flex;
+}
+
+#header-main{
+	flex-grow:1;
+}
+#header-user{
+	display:flex;
+	height:100%;
+	margin-right:20px;
+}
+
+#header-user > ul{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+	height:100%;
+	display: flex;
+}
+#header-user > ul > li:not(.inactive){
+	height:100%;
+	display:flex;
+	align-items:center;
+}
+
+
+#header-user > ul > li > *{
+	font-size:14px;
+	color: #B4BCC8;
+	margin:5px;
+	text-decoration:none !important;
+}
+
+#header-user > ul > li > *:not(.inactive){
+	height:28px;
+	width:28px;
+	display:flex;
+	padding:7px;
+	text-decoration:none !important;
+	background: #364150;
+	border-radius:100%;
+	justify-content: center;
+
+}
+
+#header-user > ul > li > * > *{
+	align-self:center;
+}
+
+#header-user > ul > li > *:not(.inactive):hover{
+	background-color: #3F4F62;
+}
+
+
+#header-user .logout .fa{
+	margin-left: 2px;
+}
+
+#status_nav{
+	display:none;
+	height:100%;
+	align-items:center;
+}
+.header-user-name{
+	display:flex;
+	align-items:center;
+}
+.header-user-name img{
+	width:24px;
+	height:24px;
+	border-radius:100%;
+	margin:0 5px;
+}
+
+/* DROPDOWN MENU */
+.dropdown{
+	position:relative;
+}
+
+.dropdown .icon{
+	font-size:21px;
+	margin-top:2px;
+}
+.dropdown .amount{
+	position:absolute;
+	margin-top: -5px;
+    margin-left: -6px;
+    border-radius: 100%;
+    top: 0;
+    font-size: 11px;
+    padding: 1px 5px;
+    height: auto;
+    text-align: center;
+}
+
+.dropdown-menu{
+	box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
+    border: 1px solid  #e7eaf0;
+    min-width: 160px;
+    max-width: 315px;
+    width: 315px;
+    position:absolute;
+    right:-10px;
+    top:37px;
+    z-index:1;
+	visibility:hidden;
+	transition: 0.2s visibility;
+}
+.dropdown:hover .dropdown-menu{
+	visibility:visible;
+}
+
+.dropdown-menu > div{
+	position:relative;
+}
+
+.dropdown-menu > div::before{
+	content: '';
+	border-bottom: 9px solid #e7eaf0;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	position:absolute;
+	top:-9px;
+	right:10px;
+}
+
+.dropdown-menu .dropdown-title{
+	background: #eaedf2;
+	color: #62878f;
+    padding:10px;
+}
+
+.dropdown-menu .dropdown-title a{
+	float:right;
+}
+.dropdown-menu .dropdown-content{
+	background: #fff;
+}
+
+@media only screen and (max-width:600px){
+	.dropdown-menu{
+		width: 220px;
+    	left:-10px;
+    	right:auto;
+	}
+	.dropdown-menu > div::before {
+		left:10px;
+		right: auto;
+	}
+}

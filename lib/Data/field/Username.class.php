@@ -1,7 +1,7 @@
 <?php
 namespace Field;
 
-class Username extends String{
+class Username extends dString{
 		
 	public function iniLabel(){
 		$this -> label = 'Username';

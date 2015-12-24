@@ -1,7 +1,7 @@
 <?php
 namespace Field;
 
-class Email extends String{
+class Mail extends dString{
 		
 	public function iniLabel(){
 		$this -> label = 'E-mail';

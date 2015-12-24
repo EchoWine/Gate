@@ -9,16 +9,14 @@ class AuthController extends Controller{
 		$this -> cfg = $cfg;
 	}
 
-
 	public function setData(){
 		return [
 
 			# Username
-			'user' => new stdDataPost('Username',$this -> cfg['data']['post_user']),
+			'user' => new stdDataPost('Mail',$this -> cfg['data']['post_mail']),
 
 			# Username
-			'pass' => new stdData('Password',$this -> cfg['data']['post_pass'])
-
+			'pass' => new stdDataPost('Password',$this -> cfg['data']['post_pass'])
 				
 		];
 	}

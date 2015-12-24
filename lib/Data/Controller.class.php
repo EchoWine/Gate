@@ -28,6 +28,10 @@ class Controller{
 		return isset($this -> data[$v]) ? $this -> data[$v] -> value : 'null';
 	}
 
+	public function getLabelData($v){
+		return isset($this -> data[$v]) ? $this -> data[$v] -> label : 'null';
+	}
+
 
 }
 ?>

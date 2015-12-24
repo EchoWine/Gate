@@ -87,7 +87,7 @@
 	background: #2C3542;
 }
 
-#nav a:active{
+#nav a:active,#nav a:hover,#nav a:link{
 	text-decoration:none;
 }
 
@@ -159,74 +159,15 @@
 	height:360px;
 }
 
-
-#container-search{
-	color: #6B7C92;
-}
-
-#search{
-	border-bottom: 1px solid #6B7C92;
-	margin:20px;
-	display:flex;
-}
-
-#search .input{
-	flex-grow:1;
-	padding:3px 0;
-}
-
-#search .input::-webkit-input-placeholder{
-	color: #6B7C92;
-}
-
-
 #status{
-	padding:20px 20px 0 20px;
+	padding:20px;
 	text-align:right;
 }
 
-/* Versione compatta */
-#container-nav:not(.compact) #container-search .status_search{
-	display:none;
-}
-
-#container-nav.compact #container-search{
-	position:relative;
-}
-
-#container-nav.compact #container-search .status_search:not(.visible){
-	display:none;
-}
-
-#container-nav.compact #container-search > .button{
-	margin: 23.5px 13px;
-}
-
-#container-nav.compact #search{
-	display:none;
-}
-
-#container-nav.compact #container-search .status_search.visible.vis + #search{
-	position:absolute;
-	display: flex;
-	width: 205px;
-	top: 0;
-	margin-left: 45px;
-	background-color: #364150;
-}
-
-#container-nav.compact #search .input{
-	padding: 10px 5px;
-}
-
-#container-nav.compact #search{
-	margin:0;
-	margin-top:14.5px;
-	padding-right:5px;
-}
 
 #container-nav.compact #status{
-	padding:20px 8px 0 8px;
+	text-align:center;
+	padding:20px 0;
 }
 
 #container-nav.compact{

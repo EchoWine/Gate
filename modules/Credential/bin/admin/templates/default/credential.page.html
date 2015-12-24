@@ -1,0 +1,1 @@
+Contenuto di credential

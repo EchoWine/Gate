@@ -14,7 +14,7 @@
 		new Field\ID('id'),
 		new Field\Username('user'),
 		new Field\Password('pass'),
-		new Field\Email('email')
+		new Field\Mail('mail')
 	]);
 
 	$CredentialModel -> setPrimary('id');
@@ -45,8 +45,8 @@
 
 
 	# Menu
-	$Credential = [
-		'nav' => [
+	$Credential = (object)[
+		'nav' => (object)[
 			'label' => $label,
 			'url' => 'index.php?'.$page_get.'='.$page_obj,
 		]
@@ -54,6 +54,7 @@
 
 	$CredentialView -> setPath($p);
 	$CredentialView -> setNav();
+	$CredentialView -> setPage();
 
 	if(!$pageCredential)return;
 
@@ -66,7 +67,6 @@
 			];
 
 
-			$CredentialView -> setAdd();
 		break;
 		default:
 
@@ -86,7 +86,6 @@
 
 
 
-			$CredentialView -> template();
 		break;
 	}
 

@@ -24,6 +24,10 @@ class AuthView extends View{
 		// TemplateEngine::aggregate('style',$path,'auth.style');
 		
 	}
+
+	public function setHeader($path){
+		TemplateEngine::aggregate('header-nav',$path,'auth.header-nav',30);
+	}
 }
 
 ?>

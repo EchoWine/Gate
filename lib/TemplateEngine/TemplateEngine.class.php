@@ -222,6 +222,8 @@ class TemplateEngine{
 	 * @param $c (string) content of the page
 	 */
 	private static function preCompile($f,$c){
+
+		# Include
 		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
 		foreach($r[0] as $n => $k){
 
@@ -245,6 +247,12 @@ class TemplateEngine{
 			}
 
 		}
+
+		# Switch
+		# Remove space between switch and first case
+		$c = preg_replace('/{{switch ([^\} ]*)}}([^\{ ]*){{case/iU',"{{switch $1}}\n{{case",$c);
+		$c = preg_replace('/{{\/(case)}}([^\{ ]*){{(case)/iU','{{/case}}'."\n".'{{case',$c);
+		$c = preg_replace('/{{\/(case)}}([^\{ ]*){{\/switch}}/iU','{{/case}}'."\n".'{{/switch}}',$c);
 		return $c;
 	}
 
@@ -281,6 +289,19 @@ class TemplateEngine{
 			$c = str_replace($k,'<?php foreach((array)'.$r[1][$n].' as '.$r[2][$n].'){ ?>',$c);
 		}
 
+		# switch
+		preg_match_all('/{{switch ([^\} ]*)}}/iU',$c,$r);
+	
+		foreach($r[0] as $n => $k){
+			$c = str_replace($k,'<?php switch('.$r[1][$n].'){ ?>',$c);
+		}
+
+		$c = preg_replace('/{{case default}}/iU','<?php default: ?>',$c);
+		preg_match_all('/{{case ([^\} ]*)}}/iU',$c,$r);
+	
+		foreach($r[0] as $n => $k)
+			$c = str_replace($k,'<?php case '.$r[1][$n].': ?>',$c);
+		
 		# if
 		preg_match_all('/{{if ([^\} ]*)}}/iU',$c,$r);
 	
@@ -299,11 +320,18 @@ class TemplateEngine{
 			'/{{endfor}}/iU',
 			'/{{endif}}/iU',
 			'/{{else}}/iU',
+			'/{{\/switch}}/iU',
+			'/{{\/}}/iU',
+			'/{{\/case}}/iU',
+
 		);
 		$r = array(
 			'<?php } ?>',
 			'<?php } ?>',
 			'<?php }else{ ?>',
+			'<?php } ?>',
+			'<?php } ?>',
+			'<?php break; ?>',
 		);
 
 		$c = preg_replace($a,$r,$c);

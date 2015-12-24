@@ -4,6 +4,12 @@
 	# Initialization
 	$CredentialModel = new CredentialModel();
 
+	/*
+	$CredentialModel -> setField(new Field\Username('user'));
+	$CredentialModel -> setField(new Field\Password('pass'));
+	$CredentialModel -> setField(new Field\Email('email'));
+	*/
+
 	$CredentialModel -> setFields([
 		new Field\ID('id'),
 		new Field\Username('user'),

@@ -1,6 +1,6 @@
 <?php
 
-class CredentialView extends View{
+class CredentialView extends ItemView{
 	
 	public $model;
 	public $controller;

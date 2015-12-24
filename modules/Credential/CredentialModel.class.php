@@ -1,6 +1,6 @@
 <?php
 
-class CredentialModel extends Model{
+class CredentialModel extends ItemModel{
 	
 	public $data;
 

@@ -23,14 +23,19 @@
 	DB::connect(include PATH_CONFIG.'/database.php');
 
 
+	define('PAGE','p');
+	$pageValue = isset($_GET[PAGE]) ? $_GET[PAGE] : '';
+
 	# modules
+
+
+	# Load primary module
+	ModuleManager::setPath(PATH_MODULE);
+	ModuleManager::load(PATH_MODULE."/Item");
+	ModuleManager::load(PATH_MODULE."/Auth");
 
 	# Load all modules
 	ModuleManager::loadAll(PATH_MODULE);
-
-	# Load manually a module
-	#ModuleManager::setPath(PATH_MODULE);
-	#ModuleManager::load(PATH_MODULE."/Auth");
 
 	# Load template
 	TemplateEngine::ini(PATH_TEMPLATES);
@@ -57,9 +62,10 @@
 
 	# Include template page of modules
 	foreach(ModuleManager::loadTemplate('admin') as $k){
-		include $k;
+		include $k -> app;
 		TemplateEngine::compile(
-			dirname($k)."/templates/".TemplateEngine::getName()."/"
+			dirname($k -> app)."/templates/".TemplateEngine::getName()."/",
+			strtolower($k -> name)
 		);
 	}
 

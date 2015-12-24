@@ -20,7 +20,7 @@
 
 	$pathModuleAuth = ModuleManager::getPath()."/Auth/bin/admin/templates/".TemplateEngine::getName()."/";
 
-	$logged = true;
+	$logged = false;
 
 
 

@@ -1,86 +1,42 @@
 <?php
 	
+	
 
-	# Initialization
-	$CredentialModel = new CredentialModel();
+	# Initialization	
+	$Model = new CredentialModel();
 
-	$CredentialModel -> setFields([
+	$Model -> setFields([
 		new Field\ID('id'),
 		new Field\Username('user'),
 		new Field\Password('pass'),
 		new Field\Mail('mail')
 	]);
 
-	$CredentialModel -> setPrimary('id');
+	$Model -> setPrimary('id');
 	
 
-	$CredentialController = new CredentialController($CredentialModel);
+	$Controller = new CredentialController($Model);
 
-	$CredentialView = new CredentialView($CredentialModel,$CredentialController);
+	$View = new CredentialView($Model,$Controller);
 
-	# Category: list,get,add,edit ecc...
+	$Controller -> setNamePage('credential');
 
-	$p = dirname(__FILE__);
+	$page_obj = 'credential';
+	$label = 'credential';
 
-	$cat_get = 'cat';
-	$cat_list = 'list';
-	$cat_add = 'add';
-	$cat_edit = 'edit';
-	$cat_get = 'get';
-	$page_get = 'p';
-	$page_obj = 'Credential';
-	$label = 'Credential';
-	$cat = isset($_GET[$cat_get]) ? $_GET[$cat_get] : null;
+	$pageCredential = $pageValue == $page_obj;
 
-	$pageCredential = isset($_GET[$page_get]) && $_GET[$page_get] == $page_obj;
-	
-	$urlToAdd = '?'.$page_get.'='.$page_obj.'&'.$cat_get.'='.$cat_add;
-	$urlToList = '?'.$page_get.'='.$page_obj.'&'.$cat_get.'='.$cat_list;
 
+	$View -> setPath($p);
+	$View -> setNav();
+	$View -> setPage();
 
 	# Menu
 	$Credential = (object)[
 		'nav' => (object)[
 			'label' => $label,
-			'url' => 'index.php?'.$page_get.'='.$page_obj,
+			'url' => 'index.php'.$Controller -> getUrlMainPage(),
 		]
 	];
-
-	$CredentialView -> setPath($p);
-	$CredentialView -> setNav();
-	$CredentialView -> setPage();
-
-	if(!$pageCredential)return;
-
-	switch($cat){
-		case $cat_add:
-			$data = [
-				'form' => [
-					0 => ['label' => 'nome','form' => 'input']
-				]
-			];
-
-
-		break;
-		default:
-
-			# Checks
-			$response = $CredentialController -> check();
-
-			// $get = $CredentialModel -> getByPrimary(1);
-			$result = $CredentialModel -> getAll();
-
-			$data = [
-				'columns' => $CredentialModel -> getFieldsNameInList(),
-				'result' => []
-			];
-
-			$data['result'] = $result;
-			
-
-
-
-		break;
-	}
 
 ?>

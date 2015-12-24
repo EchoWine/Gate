@@ -45,11 +45,14 @@ class ModuleManager{
 	 * @param $path (string) path of module
 	 */
 	public static function load($path){
-		self::$list[basename($path)] = $path;
-		include $path."/main.php";
+		$basePath = basename($path);
+		if(empty(self::$list[$basePath])){
+			self::$list[$basePath] = $path;
+			include $path."/main.php";
 
-		# Call load method
-		forward_static_call(basename($path)."::load");
+			# Call load method
+			forward_static_call(basename($path)."::load");
+		}
 	}
 
 	/**
@@ -59,7 +62,10 @@ class ModuleManager{
 	public static function loadTemplate($v){
 		$r = array();
 		foreach(self::$list as $n => $k){
-			$r[] =  $k."/bin/{$v}/app.php";
+			$r[] = (object)[
+				'name' => $n,
+				'app' => $k."/bin/{$v}/app.php",
+			];
 		}
 		return $r;
 	}

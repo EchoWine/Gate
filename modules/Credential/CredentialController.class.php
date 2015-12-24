@@ -1,6 +1,6 @@
 <?php
 
-class CredentialController extends Controller{
+class CredentialController extends ItemController{
 
 }
 

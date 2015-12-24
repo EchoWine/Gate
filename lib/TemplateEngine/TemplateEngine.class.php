@@ -146,8 +146,9 @@ class TemplateEngine{
 	/**
 	 * Compile all the page
 	 * @param $pathSource (string) path where is located file .html to compile
+	 * @param $subClass (string) name of "class of files"
 	 */
-	public static function compile($pathSource = ''){
+	public static function compile($pathSource = '',$subClass = ''){
 
 		if(empty($pathSource))
 			$pathSource = self::$path;
@@ -161,9 +162,11 @@ class TemplateEngine{
 		foreach(glob($pathSource.'*.html') as $k){
 
 			if(!is_dir($k)){
-				$fileCompiled = $pathCompiled."/".basename($k,".html").".php";
 
 				$b = basename($k,".html");
+				if(!empty($subClass))$b = $subClass.".".$b;
+
+				$fileCompiled = $pathCompiled."/".$b.".php";
 
 				if(in_array($b,self::$compiled)){
 					# some error, already compiled, conflicts etc..
@@ -196,7 +199,7 @@ class TemplateEngine{
 					foreach($s as $tk){
 						if(file_exists($tk)){
 							$content = file_get_contents($tk);
-							$content = self::preCompile($tk,$content);
+							$content = self::preCompile($tk,$content,$subClass);
 							$c[] = self::translate($tk,$content);
 						}else{
 							# some error
@@ -220,8 +223,9 @@ class TemplateEngine{
 	 * Precompile the page
 	 * @param $f (string) file name
 	 * @param $c (string) content of the page
+	 * @param $subClass (string) name of "class of files"
 	 */
-	private static function preCompile($f,$c){
+	private static function preCompile($f,$c,$subClass){
 
 		# Include
 		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
@@ -247,6 +251,18 @@ class TemplateEngine{
 			}
 
 		}
+
+
+		if(!empty($subClass)){
+			# Include sub Class
+			preg_match_all('/{{include \.([^\}]*)}}/iU',$c,$r);
+			foreach($r[0] as $n => $k){
+
+				$c = preg_replace($k,"{include ".$subClass.".".$r[1][$n]."}",$c);
+				
+			}
+		}
+		
 
 		# Switch
 		# Remove space between switch and first case

@@ -19,7 +19,7 @@ class AuthView extends View{
 
 		$path = $path."/templates";
 
-		if(false){
+		if(!$this -> controller -> logged){
 			Module::TemplateOverwrite('main','login');
 		}
 		

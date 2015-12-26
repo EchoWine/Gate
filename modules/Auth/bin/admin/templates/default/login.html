@@ -9,11 +9,12 @@
 		<form class='form-signin' method='POST'>
 			<h2 class='form-signin-heading'>{{$auth -> title}}</h2>
 
-			<label class='sr-only'>{{$auth -> mail -> label}}</label>
-			<input type='email' name='{{$auth -> mail -> name}}' value='{{$auth -> mail -> value}}' class='form-control' placeholder='Email address' required autofocus>
+			{{include .response}}
+			<label class='sr-only'>{{$auth -> user -> label}}</label>
+			<input type='text' name='{{$auth -> user -> name}}' value='{{$auth -> user -> value}}' class='form-control' placeholder='Email address or Username' required autofocus>
 
 			<label class='sr-only'>{{$auth -> pass -> label}}</label>
-			<input type='password' name='{{$auth -> pass -> name}}' value='{{$auth -> mail -> value}}' class='form-control' placeholder='Password' required>
+			<input type='password' name='{{$auth -> pass -> name}}' value='{{$auth -> pass -> value}}' class='form-control' placeholder='Password' required>
 			
 			<div class='checkbox'>
 				<input type='checkbox' id='rememberme' name='{{$auth -> remember -> name}}'>

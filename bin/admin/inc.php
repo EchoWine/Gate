@@ -12,9 +12,12 @@
 
 	include PATH_LIB."/main.fun.php";
 	include PATH_LIB."/stdObject.class.php";
+	include PATH_LIB."/stdResponse.class.php";
+	include PATH_LIB."/Cookie.class.php";
+	include PATH_LIB."/http.class.php";
 	
 	include PATH_LIB."/stdData/main.php";
-	
+
 	include PATH_LIB."/database/main.php";
 	include PATH_LIB."/TemplateEngine/main.php";
 	include PATH_LIB."/ModuleManager/main.php";
@@ -23,6 +26,10 @@
 	DB::connect(include PATH_CONFIG.'/database.php');
 
 
+	# Ini Cookie
+	Cookie::ini();
+
+	# Ini Pages
 	define('PAGE','p');
 	$pageValue = isset($_GET[PAGE]) ? $_GET[PAGE] : '';
 
@@ -35,7 +42,7 @@
 	ModuleManager::load(PATH_MODULE."/Auth");
 
 	# Load all modules
-	ModuleManager::loadAll(PATH_MODULE);
+	//ModuleManager::loadAll(PATH_MODULE);
 
 	# Load template
 	TemplateEngine::ini(PATH_TEMPLATES);

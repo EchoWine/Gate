@@ -9,6 +9,7 @@ class Controller{
 	}
 
 	public function check(){
+		$this -> model -> alterTable();
 		$this -> updateData();
 	}
 
@@ -35,7 +36,6 @@ class Controller{
 	public function getLabelData($v){
 		return isset($this -> data[$v]) ? $this -> data[$v] -> label : 'null';
 	}
-
 
 }
 ?>

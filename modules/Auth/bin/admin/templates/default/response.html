@@ -1,7 +1,30 @@
-<div>
-	<ul>
-		{{for $auth -> response -> list as $mex}}
-			<li>{{$mex}}</li>
-		{{endfor}}
-	</ul>
-</div>
+{{for $auth -> response as $response}}
+	
+	<div class='alert alert-{{switch $response -> type}}
+
+		{{case 0}}danger{{/case}}
+
+		{{case 1}}success{{/case}}
+
+		{{case 2}}warning{{/case}}
+
+		{{case 3}}info{{/case}}
+
+	{{/switch}}'>
+
+		<strong>{{$response -> title}}</strong>
+
+		<br><br>
+		{{if $response -> count == 1}}
+			{{$response -> message}}
+		{{else}}
+
+			<ul>
+				{{for $response -> message as $mex}}
+					<li>{{$mex}}</li>
+				{{endfor}}
+			</ul>
+
+		{{endif}}
+	</div>
+{{endfor}}

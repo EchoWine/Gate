@@ -5,7 +5,7 @@
 	$Model = new AuthModel();
 
 	$Controller = new AuthController($Model,include $dir."/_config.php");
-	$Controller -> check();
+	$Response = $Controller -> check();
 
 	$View = new AuthView($Model,$Controller);
 
@@ -26,24 +26,16 @@
 
 	$auth = (object)[
 		'title' => 'Sign in',
-		'mail' => (object)[
-			'name' => 'mail',
-			'label' => 'Email address',
-			'value' => '',
-		],
-		'pass' => (object)[
-			'name' => $Controller -> getNameData('pass'),
-			'label' => $Controller -> getLabelData('pass'),
-			'value' => $Controller -> getValueData('pass'),
-		],
+		'user' => $Controller -> getData('user'),
+		'pass' => $Controller -> getData('pass'),
+		'login' => $Controller -> getData('login'),
+		'logout' => $Controller -> getData('logout'),
 		'remember' => (object)[
 			'name' => 'remember_me',
 			'label' => 'Remember me'
 		],
-		'login' => (object)[
-			'name' => 'login',
-			'label' => 'Sign in'
-		],
+
+		'response' => $Response
 
 	];
 ?>

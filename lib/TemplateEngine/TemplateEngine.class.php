@@ -245,9 +245,9 @@ class TemplateEngine{
 
 		# Switch
 		# Remove space between switch and first case
-		$c = preg_replace('/{{switch ([^\} ]*)}}([^\{ ]*){{case/iU',"{{switch $1}}\n{{case",$c);
-		$c = preg_replace('/{{\/(case)}}([^\{ ]*){{(case)/iU','{{/case}}'."\n".'{{case',$c);
-		$c = preg_replace('/{{\/(case)}}([^\{ ]*){{\/switch}}/iU','{{/case}}'."\n".'{{/switch}}',$c);
+		$c = preg_replace('/{{switch ([^\}]*)}}([^\{]*){{case/iU',"{{switch $1}}\n{{case",$c);
+		$c = preg_replace('/{{\/(case)}}([^\{]*){{(case)/iU','{{/case}}'."\n".'{{case',$c);
+		$c = preg_replace('/{{\/(case)}}([^\{]*){{\/switch}}/iU','{{/case}}'."\n".'{{/switch}}',$c);
 		return $c;
 	}
 
@@ -302,7 +302,7 @@ class TemplateEngine{
 		}
 
 		# switch
-		preg_match_all('/{{switch ([^\} ]*)}}/iU',$c,$r);
+		preg_match_all('/{{switch ([^\}]*)}}/iU',$c,$r);
 	
 		foreach($r[0] as $n => $k){
 			$c = str_replace($k,'<?php switch('.$r[1][$n].'){ ?>',$c);
@@ -315,7 +315,7 @@ class TemplateEngine{
 			$c = str_replace($k,'<?php case '.$r[1][$n].': ?>',$c);
 		
 		# if
-		preg_match_all('/{{if ([^\} ]*)}}/iU',$c,$r);
+		preg_match_all('/{{if ([^\}]*)}}/iU',$c,$r);
 	
 		foreach($r[0] as $n => $k){
 			$c = str_replace($k,'<?php if('.$r[1][$n].'){ ?>',$c);

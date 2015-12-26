@@ -1,1 +1,1 @@
-<?php if(!$logged){ ?><?php include 'auth.login.php'; ?><?php }else{ ?><?php include 'main.php'; ?><?php } ?>
+<?php include $include_fad58de7366495db4650cfefac2fcd61; ?>

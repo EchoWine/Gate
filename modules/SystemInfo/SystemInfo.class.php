@@ -1,17 +1,7 @@
 <?php
 
-class SystemInfo{
+class SystemInfo extends Module{
 	
-	public static function load(){
-
-	}
-
-	public static function template($path){
-		TemplateEngine::overwrite('content','SystemInfo.page','$pageSystemInfo');
-
-		$path = $path."/templates";
-		TemplateEngine::aggregate('nav',$path,'SystemInfo.nav',99);
-	}
 
 	public static function getDatabaseInfo(){
 		return DB::getServerInfo();

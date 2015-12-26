@@ -4,5 +4,5 @@
 	</span>
 </li>
 <li class='logout'>
-	<?php include 'auth.logout.php'; ?>
+	<?php include $include_672766bbc648de66a99b7e53b376121a; ?>
 </li>

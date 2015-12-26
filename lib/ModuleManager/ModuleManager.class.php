@@ -51,7 +51,7 @@ class ModuleManager{
 			include $path."/main.php";
 
 			# Call load method
-			forward_static_call(basename($path)."::load");
+			forward_static_call(basename($path)."::load",$path);
 		}
 	}
 

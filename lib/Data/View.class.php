@@ -5,6 +5,6 @@ class View{
 		$this -> model = $model;
 		$this -> controller = $controller;
 	}
-	
+
 }
 ?>

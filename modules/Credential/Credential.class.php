@@ -1,11 +1,7 @@
 <?php
 
-class Credential{
+class Credential extends Module{
 	
-	public static function load(){
-
-	}
-
 }
 
 ?>

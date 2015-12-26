@@ -23,6 +23,6 @@
 	];
 
 
-	SystemInfo::template($p);
+	SystemInfoView::template($p);
 
 ?>

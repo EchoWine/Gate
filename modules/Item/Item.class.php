@@ -1,10 +1,6 @@
 <?php
 
-class Item{
-	
-	public static function load(){
-
-	}
+class Item extends Module{
 
 }
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include 'head.php'; ?>
+<?php include $include_96e89a298e0a9f469b9ae458d6afae9f; ?>
 <link rel='stylesheet' href='<?php echo path; ?>style/src/examples.css'>
 <body>
 
@@ -805,6 +805,6 @@
     </form>
 	</div> <!-- /container -->
 
-	<?php include 'script.php'; ?>
+	<?php include $include_3205c0ded576131ea255ad2bd38b0fb2; ?>
 </body>
 </html>

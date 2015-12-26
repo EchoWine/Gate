@@ -11,12 +11,13 @@ class CredentialView extends ItemView{
 	}
 
 	public function setNav(){
-		TemplateEngine::aggregate('nav',$this -> path,'credential.nav',30);
+		Module::TemplateAggregate('nav',$this -> path,'nav',30);
 	}
 
 	public function setPage(){
 
-		TemplateEngine::overwrite('content','credential.page','$pageCredential');
+		if(true)
+			Module::TemplateOverwrite('content','page');
 
 	}
 }

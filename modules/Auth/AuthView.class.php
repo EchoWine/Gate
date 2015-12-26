@@ -19,14 +19,14 @@ class AuthView extends View{
 
 		$path = $path."/templates";
 
-		TemplateEngine::overwrite('main','auth.login','!$logged');
-
-		// TemplateEngine::aggregate('style',$path,'auth.style');
+		if(true){
+			Module::TemplateOverwrite('main','login');
+		}
 		
 	}
 
 	public function setHeader($path){
-		TemplateEngine::aggregate('header-nav',$path,'auth.header-nav',30);
+		Module::TemplateAggregate('header-nav',$path,'header-nav',30);
 	}
 }
 

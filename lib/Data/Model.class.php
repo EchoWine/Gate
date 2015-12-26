@@ -14,7 +14,7 @@ class Model{
 	/**
 	 * List of all fields
 	 */
-	public $fields;	
+	public $fields;
 
 	/**
 	 * Construct

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-<?php include 'head.php'; ?>
-<?php include 'auth.style.php'; ?>
+<?php include $include_96e89a298e0a9f469b9ae458d6afae9f; ?>
+<?php include $include_be74e18eaceb2d44b0dc12fbf183e6b4; ?>
 
 <body>
 	<div class='container'>

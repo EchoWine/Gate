@@ -65,7 +65,7 @@
 		include $k -> app;
 		TemplateEngine::compile(
 			dirname($k -> app)."/templates/".TemplateEngine::getName()."/",
-			strtolower($k -> name)
+			TemplateEngine::parseSubClass($k -> name)
 		);
 	}
 

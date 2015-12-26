@@ -60,6 +60,11 @@ class TemplateEngine{
 	public static $overwrite;
 
 	/**
+	 * List of all included files
+	 */
+	public static $include;
+
+	/**
 	 * List of all aggregated files
 	 */
 	public static $aggregated;
@@ -102,13 +107,12 @@ class TemplateEngine{
 	 * Overwrite a basic template page
 	 * @param $nt (string) name of page that will be overwritten
 	 * @param $nf (string) name page that will overwrite
-	 * @param $c (string) condition of overwrite
 	 */
-	public static function overwrite($nt,$nf,$c = NULL){
-		self::$overwrite[$nt][] = [
-			'file' => $nf,
-			'condition' => $c,
-		];
+	public static function overwrite($nt,$nf){
+
+		$s = self::getNameInclude($nt);
+
+		$GLOBALS[$s] = $nf.".php";
 	}
 
 	/**
@@ -227,30 +231,6 @@ class TemplateEngine{
 	 */
 	private static function preCompile($f,$c,$subClass){
 
-		# Include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
-		foreach($r[0] as $n => $k){
-
-			if(isset(self::$overwrite[$r[1][$n]])){
-				$l = self::$overwrite[$r[1][$n]];
-
-				$s = '';
-				$e = '';
-				foreach($l as $v){
-					$s .= 	'{{'.$e.'if '.$v['condition'].'}}'.
-							'{{include '.$v['file'].'}}';
-
-					if($e == '')$e = 'else';
-				}
-
-				$s .= '{{else}}'.$k.'{{endif}}';
-				
-
-				$c = preg_replace('{'.$k.'}',$s,$c);
-
-			}
-
-		}
 
 
 		if(!empty($subClass)){
@@ -264,6 +244,20 @@ class TemplateEngine{
 		}
 		
 
+		# Include
+		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
+		foreach($r[0] as $n => $k){
+
+			$s = self::getNameInclude($r[1][$n]);
+
+			if(empty($GLOBALS[$s]))
+				$GLOBALS[$s] = $r[1][$n].".php";
+			
+			
+			$c = preg_replace('{'.$k.'}','{{include $'.$s.'}}',$c);
+
+		}
+
 		# Switch
 		# Remove space between switch and first case
 		$c = preg_replace('/{{switch ([^\} ]*)}}([^\{ ]*){{case/iU',"{{switch $1}}\n{{case",$c);
@@ -271,6 +265,15 @@ class TemplateEngine{
 		$c = preg_replace('/{{\/(case)}}([^\{ ]*){{\/switch}}/iU','{{/case}}'."\n".'{{/switch}}',$c);
 		return $c;
 	}
+
+	public static function parseSubClass($n){
+		return strtolower($n);
+	}
+
+	public static function getNameInclude($n){
+		return 'include_'.md5($n);
+	}
+
 
 	/**
 	 * Translate the page
@@ -286,7 +289,7 @@ class TemplateEngine{
 		
 		foreach($r[0] as $n => $k){
 
-			$c = str_replace($k,'<?php include \''.$r[1][$n].'.php\'; ?>',$c);
+			$c = str_replace($k,'<?php include '.$r[1][$n].'; ?>',$c);
 		}
 
 		# array

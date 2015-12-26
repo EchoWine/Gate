@@ -2,20 +2,20 @@
 
 	$dir = dirname(__FILE__);
 
-	$AuthModel = new AuthModel();
+	$Model = new AuthModel();
 
-	$AuthController = new AuthController($AuthModel,include $dir."/_config.php");
-	$AuthController -> check();
+	$Controller = new AuthController($Model,include $dir."/_config.php");
+	$Controller -> check();
 
-	$AuthView = new AuthView($AuthModel,$AuthController);
+	$View = new AuthView($Model,$Controller);
 
 
 	# Definition of some variables
 
 	$p = dirname(__FILE__).'/templates';
 
-	$AuthView -> forceLogin($p);
-	$AuthView -> setHeader($p);
+	$View -> forceLogin($p);
+	$View -> setHeader($p);
 
 
 	$pathModuleAuth = ModuleManager::getPath()."/Auth/bin/admin/templates/".TemplateEngine::getName()."/";
@@ -32,9 +32,9 @@
 			'value' => '',
 		],
 		'pass' => (object)[
-			'name' => $AuthController -> getNameData('pass'),
-			'label' => $AuthController -> getLabelData('pass'),
-			'value' => $AuthController -> getValueData('pass'),
+			'name' => $Controller -> getNameData('pass'),
+			'label' => $Controller -> getLabelData('pass'),
+			'value' => $Controller -> getValueData('pass'),
 		],
 		'remember' => (object)[
 			'name' => 'remember_me',

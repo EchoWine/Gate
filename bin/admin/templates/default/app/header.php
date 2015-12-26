@@ -4,7 +4,7 @@
 	</div>
 	<form method='POST' id='header-user'>
 		<ul>
-			<?php include 'header-nav.php'; ?>
+			<?php include $include_8239fd28cea7495abe846bdb01f58f3b; ?>
 
 			<li id='status_nav' class='inactive'>
 				<button type='button' class='button r cl_st'>

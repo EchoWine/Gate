@@ -15,12 +15,12 @@ class Module{
 		TemplateEngine::overwrite($n,$sub.".".$c);
 	}
 
-	public static function TemplateAggregate($n,$p,$c,$p){
+	public static function TemplateAggregate($n,$c,$pos){
 
 		$sub = basename(dirname(debug_backtrace()[0]['file']));
 		$sub = TemplateEngine::parseSubClass($sub);
 
-		TemplateEngine::aggregate($n,$p,$sub.".".$c,30);
+		TemplateEngine::aggregate($n,$sub.".".$c,$pos);
 	}
 
 }

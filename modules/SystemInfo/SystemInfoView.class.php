@@ -9,7 +9,7 @@ class SystemInfoView extends View{
 			Module::TemplateOverwrite('content','page');
 
 		$path = $path."/templates";
-		Module::TemplateAggregate('nav',$path,'nav',99);
+		Module::TemplateAggregate('nav','nav',99);
 	}
 
 }

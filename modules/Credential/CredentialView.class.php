@@ -11,7 +11,7 @@ class CredentialView extends ItemView{
 	}
 
 	public function setNav(){
-		Module::TemplateAggregate('nav',$this -> path,'nav',30);
+		Module::TemplateAggregate('nav','nav',30);
 	}
 
 	public function setPage(){

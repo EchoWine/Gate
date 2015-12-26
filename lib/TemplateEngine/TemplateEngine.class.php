@@ -67,7 +67,7 @@ class TemplateEngine{
 	/**
 	 * List of all aggregated files
 	 */
-	public static $aggregated;
+	public static $aggregate;
 
 	/**
 	 * List of all file compiled
@@ -116,16 +116,14 @@ class TemplateEngine{
 	/**
 	 * Aggregate a page to another
 	 * @param $nt (string) name of page that will be aggregated
-	 * @param $path (string) path of new page
 	 * @param $nf (string) name page that will aggregated
 	 * @param $pos (int) position of aggregation
 	 */
-	public static function aggregate($nt,$path,$nf,$pos = null){
-		$p = $path."/".self::$name."/".$nf.".html";
-		if($pos == null || isset(self::$aggregated[$nt][$pos]))
-			self::$aggregated[$nt][] = $p;
+	public static function aggregate($nt,$nf,$pos = null){
+		if($pos == null || isset(self::$aggregate[$nt][$pos]))
+			self::$aggregate[$nt][] = $nf;
 		else
-			self::$aggregated[$nt][$pos] = $p;
+			self::$aggregate[$nt][$pos] = $nf;
 
 	}
 
@@ -177,38 +175,21 @@ class TemplateEngine{
 				self::$compiled[] = $b;
 
 				# Check source of file
-				$s = [$k];
-
-				if(!empty(self::$aggregated[$b]))
-					$s = array_merge($s,self::$aggregated[$b]);
-
-				$t = false;
-
-				if(file_exists($fileCompiled)){
-					foreach($s as $tk){
-						$t = $t || (file_exists($tk) && filemtime($tk) > filemtime($fileCompiled));
-					}
-				}else{
-					$t = true;
-				}
+				$t = file_exists($k) && filemtime($k) > filemtime($fileCompiled);
 
 				# Per il momento è necessario che sia sempre attivo
 				//if($t){
 				if(true){
 					
-					$c = array();
 
-					foreach($s as $tk){
-						if(file_exists($tk)){
-							$content = file_get_contents($tk);
-							$content = self::preCompile($tk,$content,$subClass);
-							$c[] = self::translate($tk,$content);
-						}else{
-							# some error
-						}
+					if(file_exists($k)){
+						$content = file_get_contents($k);
+						$content = self::preCompile($k,$content,$subClass);
+						$c = self::translate($k,$content);
+					}else{
+						# some error
 					}
-
-					$c = implode($c,'');
+					
 
 					file_put_contents($fileCompiled,$c);
 				}
@@ -227,8 +208,17 @@ class TemplateEngine{
 	 * @param $c (string) content of the page
 	 * @param $subClass (string) name of "class of files"
 	 */
-	private static function preCompile($f,$c,$subClass){
+	private static function preCompile($f,$c,$subClass = ''){
 
+
+
+		$b = empty($subClass) ? basename($f,".html") : $subClass.".".basename($f,".html");
+
+		if(!empty(self::$aggregate[$b])){
+			foreach(self::$aggregate[$b] as $k){
+				$c .= "{{include $k}}";
+			}
+		}
 
 
 		if(!empty($subClass)){
@@ -246,7 +236,7 @@ class TemplateEngine{
 		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
 		foreach($r[1] as $n => $k){
 
-			if(empty(self::getInclude($k)))
+			if(empty(self::$include[$k]))
 				TemplateEngine::setInclude($k,$k);
 			
 			$c = preg_replace('{'.$r[0][$n].'}','{{include TemplateEngine::getInclude(\''.$k.'\')}}',$c);
@@ -266,7 +256,7 @@ class TemplateEngine{
 	}
 
 	public static function getInclude($p){
-		return isset(self::$include[$p]) ? self::$include[$p] : '';
+		return isset(self::$include[$p]) ? self::$include[$p] : $p.".php";
 	}
 
 	public static function parseSubClass($n){

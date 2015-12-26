@@ -22,7 +22,7 @@
 	$Controller -> setNamePage('credential');
 
 	$page_obj = 'credential';
-	$label = 'credential';
+	$label = 'Credential';
 
 	$pageCredential = $pageValue == $page_obj;
 

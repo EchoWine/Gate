@@ -1,1 +1,0 @@
-<link rel='stylesheet' href='<?php echo $pathModuleAuth; ?>style/src/main.css'>

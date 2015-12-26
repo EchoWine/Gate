@@ -1,1 +1,0 @@
-<link rel='stylesheet' href='<?php echo $pathModuleItem; ?>style/src/main.css'>

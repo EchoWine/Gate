@@ -110,9 +110,7 @@ class TemplateEngine{
 	 */
 	public static function overwrite($nt,$nf){
 
-		$s = self::getNameInclude($nt);
-
-		$GLOBALS[$s] = $nf.".php";
+		self::setInclude($nt,$nf);
 	}
 
 	/**
@@ -246,15 +244,12 @@ class TemplateEngine{
 
 		# Include
 		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
-		foreach($r[0] as $n => $k){
+		foreach($r[1] as $n => $k){
 
-			$s = self::getNameInclude($r[1][$n]);
-
-			if(empty($GLOBALS[$s]))
-				$GLOBALS[$s] = $r[1][$n].".php";
+			if(empty(self::getInclude($k)))
+				TemplateEngine::setInclude($k,$k);
 			
-			
-			$c = preg_replace('{'.$k.'}','{{include $'.$s.'}}',$c);
+			$c = preg_replace('{'.$r[0][$n].'}','{{include TemplateEngine::getInclude(\''.$k.'\')}}',$c);
 
 		}
 
@@ -266,12 +261,20 @@ class TemplateEngine{
 		return $c;
 	}
 
+	public static function setInclude($p,$f){
+		self::$include[$p] = self::getNameInclude($f).".php";
+	}
+
+	public static function getInclude($p){
+		return isset(self::$include[$p]) ? self::$include[$p] : '';
+	}
+
 	public static function parseSubClass($n){
 		return strtolower($n);
 	}
 
 	public static function getNameInclude($n){
-		return 'include_'.md5($n);
+		return strtolower($n);
 	}
 
 

@@ -175,7 +175,7 @@ class TemplateEngine{
 				self::$compiled[] = $b;
 
 				# Check source of file
-				$t = file_exists($k) && filemtime($k) > filemtime($fileCompiled);
+				$t = file_exists($k) && file_exists($fileCompiled) && filemtime($k) > filemtime($fileCompiled);
 
 				# Per il momento è necessario che sia sempre attivo
 				//if($t){
@@ -293,12 +293,12 @@ class TemplateEngine{
 		}
 
 		# for 
-		preg_match_all('/{{for ([^\} ]*) as ([^\}]*)}}/iU',$c,$r);
+		preg_match_all('/{{for ([^\}]*) as ([^\}]*)}}/iU',$c,$r);
 		
 		foreach($r[0] as $n => $k){
 			self::$checked[] = $r[2][$n];
 
-			$c = str_replace($k,'<?php foreach((array)'.$r[1][$n].' as '.$r[2][$n].'){ ?>',$c);
+			$c = str_replace("{$k}",'<?php foreach((array)'.$r[1][$n].' as '.$r[2][$n].'){ ?>',$c);
 		}
 
 		# switch

@@ -2,17 +2,21 @@
 class Controller{
   	
 	public $model;
+	public $data;
 
 	public function __construct($model){
 		$this -> model = $model;
 	}
 
 	public function check(){
-		$this -> model -> data = $this -> setData();
-		$this -> model -> check();
+		$this -> updateData();
 	}
 
-	public function setData(){
+	public function updateData(){
+		$this -> data = $this -> retrieveData();
+	}
+
+	public function retrieveData(){
 		return [];
 	}
 

@@ -4,14 +4,14 @@ class stdData extends stdObject{
 
 	public $label;
 
-	public $form;
+	public $name;
 
 	public $value;
 
 	public function __construct($l = null,$f = null,$v = null){
 
 		$this -> setLabel($l);
-		$this -> setForm($f);
+		$this -> setName($f);
 		$this -> setValue($f,$v);
 	}
 
@@ -20,11 +20,12 @@ class stdData extends stdObject{
 	}
 
 
-	public function setForm($v = ''){
-		$this -> form = $v;
+	public function setName($v = ''){
+		$this -> name = $v;
 	}
 
 	public function setValue($f,$v){
+		
 
 		if(is_closure($v)){
 			$v = $v($f);

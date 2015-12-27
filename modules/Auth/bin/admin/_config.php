@@ -21,8 +21,16 @@ return [
 		'data' => 0,
 	],
 
-	# Login with -> 0: Username, 1: Mail, 2: All
-	'user' => 0,
+	# Login with username: 1 yes, 0 no
+	'login_user' => 1,
+
+	# Login with mail: 1 yes, 0 no
+	'login_mail' => 1,
+
+	# Display as user -> 0: Username, 1: Mail
+	'display' => 0,
+
+
 
 	'credential' => [
 		'table' => 'credential',
@@ -34,7 +42,7 @@ return [
 		],
 		'default' => [
 			'user' => 'admin',
-			'mail' => 'admin',
+			'mail' => 'admin@admin.com',
 			'pass' => 'admin',
 		]
 		

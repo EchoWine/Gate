@@ -208,5 +208,14 @@ class Cookie{
 	
 		return $returnCode;
 	}
+
+	/**
+	 * Delete a session
+	 * 
+	 * @param string $name Name of session
+	 */
+	public static function removeSession($name){
+		unset($_SESSION[$name]);
+	}
 	
 }

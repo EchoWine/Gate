@@ -66,15 +66,26 @@ class AuthModel extends Model{
 	}
 
 	/**
-	 * Check if current user is logged
-	 * @return (bool) is user logged
+	 * Get current SID saved in cookie or session
+	 * @return (string) sid
 	 */
-	public function checkSession(){
+	public function getSID(){
+
 		$sid = Cookie::getCookie($this -> cfg['cookie']);
 
 		if(empty($sid))
 			$sid = Cookie::getSession($this -> cfg['cookie']);
 
+		return $sid;
+	}
+
+	/**
+	 * Check if current user is logged
+	 * @return (bool) is user logged
+	 */
+	public function checkSession(){
+
+		$sid = $this -> getSID();
 
 		if(!empty($sid)){
 			$s_col = $this -> cfg['session']['col'];
@@ -108,10 +119,11 @@ class AuthModel extends Model{
 	public function checkAttemptLogout(){
 
 		# Delete from table
-		$this -> deleteSessionByUID(Cookie::getCookie($this -> cfg['cookie']));
+		$this -> deleteSessionByUID($sid = $this -> getSID());
 
 		# Delete from cookies
 		Cookie::removeCookie($this -> cfg['cookie']);
+		Cookie::removeSession($this -> cfg['cookie']);
 
 		# Refresh
 		http::refresh();
@@ -126,25 +138,35 @@ class AuthModel extends Model{
 	public function checkAttemptLogin($user,$pass,$type){
 
 
+		$cfg = $this -> cfg;
+		$c_col = $cfg['credential']['col'];
+		$c_table = $cfg['credential']['table'];
+		$s_col = $cfg['session']['col'];
+		$s_table = $cfg['session']['table'];
 
-		$c_col = $this -> cfg['credential']['col'];
-		$c_table = $this -> cfg['credential']['table'];
-		$s_col = $this -> cfg['session']['col'];
-		$s_table = $this -> cfg['session']['table'];
+		$type = $type == 1 ? $cfg['remember'] : $cfg['normal'];
 
-		$type = $type == 1 ? $this -> cfg['remember'] : $this -> cfg['normal'];
+		$q = DB::table($c_table) -> where($c_col['pass'],$pass);
+		
+		if($cfg['login_user'] == 1)
+			$q = $q -> orWhere($c_col['user'],$user);
 
-		$q = DB::table($c_table)
-			-> where($c_col['user'],$user)
-			-> where($c_col['pass'],$pass)
-			-> get();		
+		if($cfg['login_mail'] == 1)
+			$q = $q -> orWhere($c_col['mail'],$user);
+
+		$q = $q -> lists();		
 
 		$r = [];
 
 		$pass = self::getHashPass($pass);
 		
+		$cq = count($q);
 
-		if(!empty($q)){
+		if($cq > 1){
+			$r[] = 'Unable to determine a single user with this data';
+
+		}else if($cq == 1){
+			$q = $q[0];
 
 			# User id
 			$uid = $q[$c_col['id']];

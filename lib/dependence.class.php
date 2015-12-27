@@ -8,7 +8,7 @@ class dependence {
 	public static $dep = [
 		'php_version' => 5.5,
 		'function' => ['fopen'],
-		'extension' => ['imap', 'openssl', 'pdo', 'pdo_mysql'],
+		'extension' => ['imap', 'openssl', 'pdo', 'pdo_mysql','gettext'],
 		'apache_module' => ['mod_rewrite']
 	];
 

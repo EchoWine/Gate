@@ -4,7 +4,7 @@
 	font-weight:300;
 	background-color: #364150;
 	position:relative;
-	z-index:100000;
+	z-index:4;
 }
 
 #nav ul {

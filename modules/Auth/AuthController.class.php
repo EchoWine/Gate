@@ -1,10 +1,22 @@
 <?php
 
 class AuthController extends Controller{
-	public $model;
+
+	/**
+	 * Is user logged
+	 */
 	public $logged;
+
+	/**
+	 * Config
+	 */
 	public $cfg;
 
+	/**
+	 * Construct
+	 * @param $model (object) model
+	 * @param $cfg (array) set of config
+	 */
 	public function __construct($model,$cfg){
 		$this -> model = $model;
 		$this -> cfg = $cfg['data'];
@@ -12,6 +24,10 @@ class AuthController extends Controller{
 		$this -> model -> cfg = $cfg;
 	}
 
+	/**
+	 * Check all the interaction with user
+	 * @return (array) response of interaction
+	 */
 	public function check(){
 		$this -> model -> alterTable();
 		$this -> updateData();
@@ -29,14 +45,18 @@ class AuthController extends Controller{
 		if(!$this -> logged && $this -> data['login'] -> value !== null)
 			$r[] = $this -> model -> checkAttemptLogin(
 				$this -> data['user'] -> value,
-				$this -> data['pass'] -> value
+				$this -> data['pass'] -> value,
+				$this -> data['remember'] -> value !== null
 			);
 
 
 		return $r;
 	}
 
-
+	/**
+	 * Retrieve all data sent by user
+	 * @return (array) data
+	 */
 	public function retrieveData(){
 		return [
 
@@ -50,7 +70,10 @@ class AuthController extends Controller{
 			'login' => new stdDataPost('Login',$this -> cfg['post_login']),
 
 			# Logout
-			'logout' => new stdDataPost('Logout',$this -> cfg['post_logout'])
+			'logout' => new stdDataPost('Logout',$this -> cfg['post_logout']),
+
+			# Remember me
+			'remember' => new stdDataPost('Remember me',$this -> cfg['post_remember'])
 				
 		];
 	}

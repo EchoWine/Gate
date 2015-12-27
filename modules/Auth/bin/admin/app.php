@@ -12,15 +12,10 @@
 
 	# Definition of some variables
 
-	$p = dirname(__FILE__).'/templates';
-
-	$View -> forceLogin($p);
-	$View -> setHeader($p);
-
+	$View -> setLogin();
+	$View -> setHeader();
 
 	$pathModuleAuth = ModuleManager::getPath()."/Auth/bin/admin/templates/".TemplateEngine::getName()."/";
-
-	$logged = false;
 
 
 
@@ -30,11 +25,7 @@
 		'pass' => $Controller -> getData('pass'),
 		'login' => $Controller -> getData('login'),
 		'logout' => $Controller -> getData('logout'),
-		'remember' => (object)[
-			'name' => 'remember_me',
-			'label' => 'Remember me'
-		],
-
+		'remember' => $Controller -> getData('remember'),
 		'response' => $Response
 
 	];

@@ -4,9 +4,22 @@ return [
 	
 	'ambiguous' => true,
 
-	'expire' => 60*60*24*3,
-
+	# Name of cookie
 	'cookie' => 'session',
+
+	'normal' => [
+		'expire' => 60*60*24,
+
+
+		# 0: Cookie, 1: Session
+		'data' => 1,
+	],
+	'remember' => [
+		'expire' => 60*60*24*7*30,
+
+		# 0: Cookie, 1: Session
+		'data' => 0,
+	],
 
 	# Login with -> 0: Username, 1: Mail, 2: All
 	'user' => 0,
@@ -41,6 +54,7 @@ return [
 		'post_pass' => 'pass',
 		'post_mail' => 'mail',
 		'post_login' => 'login',
+		'post_remember' => 'remember',
 		'post_logout' => 'logout',
 	]
 ];

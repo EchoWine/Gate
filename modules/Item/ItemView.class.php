@@ -2,12 +2,13 @@
 
 class ItemView extends View{
 	
-	public $model;
-	public $controller;
-	
-	public function __construct($model,$controller){
-		$this -> model = $model;
-		$this -> controller = $controller;
+	public function setPage(){
+		$this -> setStyle();
+		Module::TemplateOverwrite('content','page');
+	}
+
+	public function setStyle(){
+		Module::TemplateAggregate('style','style',1);
 	}
 }
 

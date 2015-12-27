@@ -1,0 +1,284 @@
+/* ------------------------------------------------------------------------- */
+/*
+/*		Tabella dei dati
+/*	
+/* ------------------------------------------------------------------------- */
+
+
+@media only screen and (max-width:1000px){
+	.page-res{
+    	margin-bottom: 50px !important;
+	}
+}
+@media only screen and (max-width:600px){
+	.page-res{
+		text-align:center;
+	}
+	.page-separator{
+		display:block;
+		margin:10px 0;
+	}
+	.page-separator::before{
+		content: '' !important;
+	}
+	.content-header {
+    	display: block !important;
+    }
+
+    .title{
+    	margin-bottom:5px;
+    }
+}
+
+.data-table{	
+	width:100%;
+	word-break: break-word;
+	font-size:12px;
+
+}
+
+.data-table .head > *{
+	display:block;
+	color:rgb(51, 51, 51);
+	font-weight:600;
+	font-size:14px;
+	text-decoration:none !important;
+}
+
+.data-table .head > * > .button.inactive{
+	opacity:0.3;
+}
+.data-table .head .title{
+	margin-right:8px;
+}
+
+.data-table .head > *:not(.sort) > .title{
+	flex-grow: 1;
+}
+
+
+.data-table .head > *, .data-table .row > *{
+	border: 1px solid #DDD;
+	border-width:1px 1px 0 0;
+	padding:6px 8px 5px 8px;
+	display:flex;
+  	align-items: center;
+}
+
+.data-table > * > *:nth-child(2).sort,.data-table > * > *:nth-child(2).action{
+	max-width:none;
+}
+
+.data-table .sw-m{
+	text-decoration:underline;
+}
+
+.data-table .head > *:first-child, .data-table .row > *:first-child{
+	border-left: 1px solid #DDD;
+}
+
+.data-table .head .button[value='update']{
+	margin-left:4px;
+}
+
+
+.data-table .row:last-child > *{
+	border-bottom: 1px solid #DDD;
+}
+
+.data-table .check-row{
+	max-width:44px;
+}
+
+.data-table .row, .data-table .head{
+	display:flex;
+}
+
+.data-table .head{
+	background:rgb(238, 238, 238);
+  	color: #333;
+  	font-size:14px;
+}
+
+.data-table .row:nth-child(even){
+	background:#F9F9F9;
+}
+.data-table .row:nth-child(odd){
+	background:#FFFFFF;
+}
+
+.data-table .row:hover{
+	background:#F5F5F5;
+}
+
+.data-table .row > div{
+	display: flex;
+	align-items: flex-start;
+}
+
+.data-table .a{
+	margin:0 3px;
+	min-width:24px;
+}
+
+.data-table .row.search > * .input,.data-table .row.search > * .select{
+	width:100%;
+	display:block;
+}
+
+.data-table .row.search > * > div{
+	width:100%;
+	display:block;
+}
+.data-table .row.search > * > div > *:not(:last-child){
+	margin-bottom:7px;
+}
+
+.data-table .action{
+	justify-content:flex-end;
+	max-width:227px;
+	min-width:201px;
+}
+
+.data-table .sort{
+	justify-content:flex-end;
+	max-width:140px;
+	min-width:140px;
+}
+
+
+.data-table .sort .input{
+	width:40px;
+	padding:0 3px;
+	text-align:right;
+}
+
+.data-table .row .check-row{
+	padding-top:7px;
+}
+
+.data-table .row .string{
+	padding:12px 10px 0;
+}
+
+.data-table .row .string > *{
+    word-break:break-word;
+}
+
+.data-table img{
+	background-color: #fff;
+	border:1px solid #DADADA;
+	padding:2px;
+	border-radius:2px;
+}
+
+.data-table .row .m{
+	text-align:center;
+	display:block;
+}
+
+
+
+.data-table{
+	display:table !important;
+}
+
+.data-table .head,.data-table .row{
+	height:42px;
+	display:table-row !important;
+}
+.data-table .head > *, .data-table .row > *{
+	width:auto;
+	vertical-align:middle;
+  	display:table-cell !important;
+}
+ 
+.data-table .row > *{
+	vertical-align:top;
+}
+.data-table .button.r{
+	float:right;
+}
+
+.data-table .check-row{
+	width:44px;
+}
+.data-table .action{
+	text-align: right;
+	width:227px;
+}
+.data-table .row .string{
+	padding-bottom:5px;
+
+}
+.data-table .a{
+	margin:0 1px;
+}
+
+.data-table .row .action .button{
+	margin-top: 2px;
+}
+
+.one-row{
+	border: 1px solid #DDD;
+	border-width:0px 1px 1px 1px;
+	padding:6px 8px 5px 8px;
+	display:flex;
+  	align-items: center;
+}
+
+.page-res{
+	margin:10px 0;
+}
+
+.page-separator::before{
+	content: '|';
+}
+
+.data-table .sort{
+	display:flex;
+	width:140px;
+	max-width:100% !important;
+	min-width:auto !important;
+}
+
+.data-table .row .sort .input{
+	min-height: 24px;
+}
+
+.data-table .row .sort .button{
+	margin: 2px 3px 0 3px;
+}
+
+.data-table .row .id{
+	width:60px;
+}
+
+.data-table .row .c-select > div{
+	margin-top:-4px;
+}
+
+.data-table .row .c-select .select{
+	height:28px;
+	width:100%;
+}
+.data-table .row .c-select .tag{
+	margin: 3px 0;
+}
+.data-table .check + label{
+	transition:border-color 0.2s linear;
+}
+.data-table .check[data-hover] + label{
+	border-color:#525B65;
+}
+
+.data-table .row > *{
+	min-width:50px;
+}
+
+.data-table .select{
+	min-width:120px;
+}
+.data-table .row .c-select > div > span{
+	margin-top:4px;
+}

@@ -1,3 +1,15 @@
+@font-face {
+	font-family: 'Open Sans';
+	src: url('../../font/OpenSans-Light.ttf');
+}
+
+body{
+	margin:0 auto;
+	font-size:12px;
+	font-family:verdana;
+	background-color: #364150;
+	min-width:310px;
+}
 html,body{
 	height:100%;
 }
@@ -5,7 +17,9 @@ html,body{
 body{
 	background:
 	background:#364150;
+	font-family: 'Open Sans',sans-serif;
 }
+
 .block{
 	background:#364150;
 	display:flex;

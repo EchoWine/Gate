@@ -1,59 +1,194 @@
-<div class='title'>
-	<h1><span>Titolo</span></h1>
-</div>
+<div id='content'>
+	<div class='title'> <h1><span>Titolo</span> </h1> </div>
 
-<form method='POST'>
-	
-	<div class='alert alert-warning'>
-		<div class='title'><div>Titolo</div></div>
-		Contenuto
-	</div>
-</form>
+	<form method='POST'></form>
+	<form method='POST'>
+		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
+		<div class='content-header'>
 
-<form method='POST'>
-	<input type='hidden' name='nome transazione' value='valore transazione'>
-	<div class='content-header'>
-		<div class='title'>
-			<h3>Titolo</h3>
-			<span class='small'>Categoria</span>
-		</div>
-
-		<a href='aggiungi' class='button a success'>
-			<span class='fa fa-plus-circle'></span> Aggiungi
-		</a>
-	</div>
-</form>
-
-<form method='POST' id='AP_FormINFO'>
-	<input type='hidden' name='sortBy'>
-</form>
-
-<form method='POST' enctype='multipart/form-data'>
-
-	<div class='table-data-filter'>
-
-	</div>
-
-	<div class='data-table' id='1'>
-		<div class='head'>
-			<div class='check-row' data-select-all='a'>
-				<input type='checkbox' class='check b d' id='b}'><label class='noselect m-5' for='check-allc'><span></span></label>
+			<div class='title'>
+				<span class='fa fa-diamond'></span>
+				<h3>Data</h3>
+				<span class='small'>lista</span>
 			</div>
-			<div class='last action'>
-				<a href=''>
-					<span class='title'>Titolo</span>
+
+			<a class='button a primary' href='data.php?p=data_sett'>
+				<span class='fa fa-cogs'></span>
+				Preferenze
+			</a>
+
+			<a href='?p=data&amp;cat=add' class='button a success'>
+				<span class='fa fa-plus-circle'></span> Aggiungi
+			</a>
+
+			<span class='button a primary' type='button'>
+				<span class='fa fa-upload'></span>Importa
+			</span>
+
+			<span class='button a primary' type='button'>
+				<span class='fa fa-download'></span> Esporta
+			</span>
+
+			<span class='b-button button a danger'>
+				<span class='fa fa-trash'></span> Formatta
+			</span>
+		</div>
+	</form>
+	<form method='POST' id='AP_FormINFO'>
+		<input type='hidden' name='sortBy'>
+	</form>
+
+	<div class='page-res'>
+		Pagina:
+		<form method='GET'>
+			<input type='hidden' name='p' value='data'>
+			<span name='sp' value='0' class='tag n'>
+				<span class='fa fa-angle-left'></span>
+			</span>
+		</form>
+		<form method='GET'>
+			<input type='hidden' name='p' value='data'>
+			<input type='text' value='1' class='input n' name='sp'>
+		</form>
+		<form method='GET'>
+			<input type='hidden' name='p' value='data'>
+			<span name='sp' value='1' class='tag n'>
+				<span class='fa fa-angle-right'></span>
+			</span>
+		</form> di 1 
+		<span class='page-separator'></span> 
+		<form method='POST'> Mostra:
+			<select name='N_RESULTS' id='n_results' class='select n' >
+				<option >5</option>
+				<option selected>25</option>
+				<option >100</option>
+			</select> risultati
+		</form>
+		<span class='page-separator'></span>
+		<span class='cmex'>Ci sono un totale di 3 risultati</span>
+	</div>
+
+	<form method='POST' enctype='multipart/form-data'>
+		<div class='table-data-filter'>
+			<select class='select n' name='ACTION' id='value_operationMultiple'>
+				<option value=''>Seleziona...</option>
+				<option value='export_xml_m'> Esporta XML </option>
+				<option value='export_csv_m'> Esporta CSV </option>
+				<option value='del_m' data-button-window='SURE' data-window-value='del_m' data-multiple-button> Elimina </option>
+				<option value='copy_m'> Copia </option>
+				<option value='edit_multiple'> Modifica </option> 
+			</select>
+
+			<button class='button n' id='button_operationMultiple' data-multiple-button>Invia</button>
+			<button type='submit' name='force_update' class='button lf'>
+				<div class='button a info'> <span class='fa fa-terminal'></span>Forza aggiornamento </div>
+			</button> 
+		</div>
+		<div class='data-table' id='data'>
+			<div class='head'>
+				<div class='check-row' data-select-all='0'>
+					<input type='checkbox' class='check b d' id='check-all0'>
+					<label class='noselect m-5' for='check-all0'><span></span></label>
+				</div>
+
+				<a href='?p=data&amp;sort=id_DESC' class='id sort'> 
+					<span class='title'>ID</span>
+					<button class='button r'> <span class='fa fa-sort-asc'></span> </button>
 				</a>
+
+				<a href='?p=data&amp;sort=name_ASC'>
+					<span class='title'>Nome</span> 
+					<button class='button r inactive'> <span class='fa fa-sort'></span> </button>
+				</a>
+				<div class='last action'> Azione </div>
+			</div>
+			<div class='row search' id='dataTable_searchBar'>
+				<div class='check-row'></div>
+				<div data-search-data='search_button_send'>
+					<div class='container-input-search'>
+						<input type='text' name='id[]' value='' class='input n ' >
+					</div> 
+					<div class='container-key-search'></div>
+				</div>
+				<div data-search-data='search_button_send'> 
+					<div class='container-input-search'>
+					<input type='text' name='name[]' value="" class='input n ' ></div>
+					<div class='container-key-search'></div>
+				</div>
+				<div class='last action'>
+					<button type='submit' name='ACTION' value='search'>
+						<div class='button a i primary'>
+							<span class='fa fa-search'></span>
+						</div>
+					</button>
+					<span id='resetSearch' class='button a i warning' data-search-class=''>
+						<span class='fa fa-eraser'></span>
+					</span>
+					<span class='button a i primary'>
+						<span class='fa fa-link'></span>
+					</span>
+				</div>
+			</div>
+			<div class='row' data-hide-click='1'>
+				<div class='check-row'>
+					<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_0' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_0'><span></span></label>
+				</div>
+
+				<div class='info string'><div>#1</div></div>
+				<div class='info string'><div>Record</div></div>
+				<div class='last action'>
+					<span class='button a i primary' data-button-action='1'>
+						<span class='fa fa-download'></span>
+					</span>
+					<a data-button href='?p=data&amp;cat=add&amp;id=1' class='button a i success'>
+						<span class='fa fa-plus-square'></span>
+					</a>
+					<button type='submit' name='ACTION' value='copy_s' class='button'>
+					<div class='button a i success' data-button-action='1'> <span class='fa fa-copy'></span>
+					</div> 
+					</button>
+					<a data-button href='?p=data&amp;cat=view&amp;id=1' class='button a i info' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per visualizzare i dettagli di questo record' > <span class='fa fa-file-text'></span> 
+					</a>
+					<a data-button href='?p=data&amp;cat=edit&amp;id=1' class='button a i warning' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per modificare il record' >
+					<span class='fa fa-pencil'></span>
+					</a>
+					<span type='button' data-button-window='SURE' data-window-value='del_s' class='button a i danger' data-button-action='1' >
+						<span class='fa fa-trash'></span>
+					</span>
+					<input type='hidden' name='item[]' value='1'>
+				</div>
 			</div>
 		</div>
-		<div class='row' data-hide-click='a'>
-			<div class='check-row'>Checkbox</div>
-			<div class='info string'><div>Valore</div></div>
-			<div class='last action'>
-				<button type='button' class='button a i danger'>
-					<span class='fa fa-trash'></span>
-				</button>
-			</div>
-		</div>
-	</div>
-	
-</form>
+		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
+		<input type='hidden' id='primary_p' name='PRIMARY_POST' value='0'>
+	</form>
+
+	<div class='page-res'>
+	Pagina:
+	<form method='GET'>
+		<input type='hidden' name='p' value='data'>
+		<span name='sp' value='0' class='tag n'>
+			<span class='fa fa-angle-left'></span>
+		</span>
+	</form>
+	<form method='GET'>
+		<input type='hidden' name='p' value='data'>
+		<input type='text' value='1' class='input n' name='sp'>
+	</form>
+	<form method='GET'>
+		<input type='hidden' name='p' value='data'>
+		<span name='sp' value='1' class='tag n'>
+			<span class='fa fa-angle-right'></span>
+		</span>
+	</form> di 1 
+	<span class='page-separator'></span> 
+	<form method='POST'> Mostra:
+		<select name='N_RESULTS' id='n_results' class='select n' >
+			<option >5</option>
+			<option selected>25</option>
+			<option >100</option>
+		</select> risultati
+	</form>
+	<span class='page-separator'></span>
+	<span class='cmex'>Ci sono un totale di 3 risultati</span>
+</div>

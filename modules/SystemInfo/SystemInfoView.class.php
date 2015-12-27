@@ -3,13 +3,14 @@
 class SystemInfoView extends View{
 	
 
-	public static function template($path){
-
-		if(true)
-			Module::TemplateOverwrite('content','page');
-
-		$path = $path."/templates";
+	public function __construct(){}
+	public function setNav(){
 		Module::TemplateAggregate('nav','nav',99);
+	}
+
+
+	public function setPage(){
+		Module::TemplateOverwrite('content','page');
 	}
 
 }

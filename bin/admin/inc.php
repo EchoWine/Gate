@@ -42,7 +42,7 @@
 	ModuleManager::load(PATH_MODULE."/Auth");
 
 	# Load all modules
-	//ModuleManager::loadAll(PATH_MODULE);
+	ModuleManager::loadAll(PATH_MODULE);
 
 	# Load template
 	TemplateEngine::ini(PATH_TEMPLATES);
@@ -51,7 +51,7 @@
 
 	# Navigation 
 	$nav = [];
-	/*$nav = array(
+	/* $nav = array(
 		array(
 			'name' => 'dashboard',
 			'label' => 'Dashboard',

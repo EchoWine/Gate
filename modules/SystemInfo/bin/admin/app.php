@@ -4,8 +4,14 @@
 
 	$p = dirname(__FILE__);
 
-	$pageSystemInfo = isset($_GET['p']) && $_GET['p'] == 'SystemInfo';
 
+	$View = new SystemInfoView();
+
+	$page_obj = 'info';
+
+	$View -> setNav();
+	if($pageValue == $page_obj)
+		$View -> setPage();
 
 	$SystemInfo = [
 		'Server_Label' => 'Server',
@@ -18,11 +24,10 @@
 		'DB_Info' => SystemInfo::getDatabaseInfo(),
 		'nav' => [
 			'label' => 'System Info',
-			'url' => 'index.php?p=SystemInfo',
+			'url' => 'index.php?p='.$page_obj,
 		]
 	];
 
 
-	SystemInfoView::template($p);
 
 ?>

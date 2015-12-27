@@ -24,12 +24,10 @@
 	$page_obj = 'credential';
 	$label = 'Credential';
 
-	$pageCredential = $pageValue == $page_obj;
-
-
-	$View -> setPath($p);
 	$View -> setNav();
-	$View -> setPage();
+
+	if($pageValue == $page_obj)
+		$View -> setPage();
 
 	# Menu
 	$Credential = (object)[

@@ -90,16 +90,25 @@ class AuthModel extends Model{
 		if(!empty($sid)){
 			$s_col = $this -> cfg['session']['col'];
 			$s_table = $this -> cfg['session']['table'];
+			$c_col = $this -> cfg['credential']['col'];
+			$c_table = $this -> cfg['credential']['table'];
 
-			$q = DB::table($s_table) -> where($s_col['sid'],$sid);
-			if($q -> count() == 1){
-				return true;
+			$q = DB::table($s_table) -> where($s_col['sid'],$sid) 
+			-> leftJoin($c_table,$s_col['uid'],$c_col['id'])
+			-> get();
+			if(count($q) > 0){
+				
+				return (object)[
+					'user' => $q[$c_col['user']],
+					'mail' => $q[$c_col['mail']],
+				];
+
 			}else
 				Cookie::removeCookie($this -> cfg['cookie']);
 			
 		}
 
-		return false;
+		return [];
 	}
 
 	/**
@@ -240,6 +249,17 @@ class AuthModel extends Model{
 		# return sha1($p);
 		return $p;
 	}
+
+	/**
+	 * Get current display name (user or email)
+	 * @param (object) current info of user
+	 * @return (string) display name
+	 */
+	public function getUserDisplay($i){
+		return $this -> cfg['display'] == 0 ? $i -> user : $i -> mail;
+	}
+
+	
 }
 
 ?>

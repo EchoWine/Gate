@@ -27,7 +27,7 @@
 		'logout' => $Controller -> getData('logout'),
 		'remember' => $Controller -> getData('remember'),
 		'response' => $Response,
-		'display' => 'user',
+		'display' => $Controller -> getUserDisplay(),
 
 	];
 ?>

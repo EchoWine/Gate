@@ -8,6 +8,11 @@ class AuthController extends Controller{
 	public $logged;
 
 	/**
+	 * Information about current user
+	 */
+	public $info;
+
+	/**
 	 * Config
 	 */
 	public $cfg;
@@ -35,7 +40,8 @@ class AuthController extends Controller{
 		$r = [];
 
 		$this -> model -> cleanSession();
-		$this -> logged = $this -> model -> checkSession();
+		$this -> info = $this -> model -> checkSession();
+		$this -> logged = !empty($this -> info);
 
 		# Check for logout
 		if($this -> logged && $this -> data['logout'] -> value !== null)
@@ -78,6 +84,21 @@ class AuthController extends Controller{
 		];
 	}
 
+	/**
+	 * Get current info about user
+	 * @return (object) info
+	 */
+	public function getUserInfo(){
+		return $this -> info;
+	}
+
+	/**
+	 * Get current display name (user or email)
+	 * @return (string) display name
+	 */
+	public function getUserDisplay(){
+		return !empty($this -> info) ? $this -> model -> getUserDisplay($this -> info) : '';
+	}
 }
 
 ?>

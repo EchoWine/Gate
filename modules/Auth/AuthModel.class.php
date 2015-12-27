@@ -112,13 +112,13 @@ class AuthModel extends Model{
 	}
 
 	/**
-	 * Delete session of user using uid
+	 * Delete session of user using sid
 	 * @param (int) user id
 	 */
-	public function deleteSessionByUID($uid){
+	public function deleteSessionBySID($sid){
 		
 		DB::table($this -> cfg['session']['table'])
-		-> where($this -> cfg['session']['col']['uid'],$uid) 
+		-> where($this -> cfg['session']['col']['sid'],$sid) 
 		-> delete();
 	}
 
@@ -128,7 +128,7 @@ class AuthModel extends Model{
 	public function checkAttemptLogout(){
 
 		# Delete from table
-		$this -> deleteSessionByUID($sid = $this -> getSID());
+		$this -> deleteSessionBySID($sid = $this -> getSID());
 
 		# Delete from cookies
 		Cookie::removeCookie($this -> cfg['cookie']);

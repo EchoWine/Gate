@@ -10,6 +10,9 @@
 	$s = microtime(true);
 
 
+	include PATH_LIB."/dependence.class.php";
+	dependence::load();
+
 	include PATH_LIB."/main.fun.php";
 	include PATH_LIB."/stdObject.class.php";
 	include PATH_LIB."/stdResponse.class.php";

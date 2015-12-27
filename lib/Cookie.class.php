@@ -153,42 +153,43 @@ class Cookie{
 	/**
 	 * Imposta un cookie (lo crea se non esiste, altrimenti lo aggiorna)
 	 * 
-	 * @param string $name	  Il nome del cookie
-	 * @param string $value	 Il valore del cookie
-	 * @param int $expiry	   [opzionale] Fra quanto tempo deve scadere il cookie (default = un giorno)
-	 * @param string $path	  [opzionale] Il percorso nel quale il cookie sarà valido (default = /)
-	 * @param bool $forceSSL	[opzionale] Imposta se il cookie è utilizzabile solo durante connessioni sicure (SSL) (default = false, ottiene dal config)
-	 * @param bool $httpOnly	[opzionale] Se attivo impedisce l'utilizzo di cookie al di fuori delle chiamate http (es. javascript) (default = false, ottiene dal config)
-	 * @return bool			 Ritorna false se ci sono stati problemi, true altrimenti
+	 * @param string $name Il nome del cookie
+	 * @param string $value	Il valore del cookie
+	 * @param int $expiry [opzionale] Fra quanto tempo deve scadere il cookie (default = un giorno)
+	 * @param string $path [opzionale] Il percorso nel quale il cookie sarà valido (default = /)
+	 * @param bool $forceSSL [opzionale] Imposta se il cookie è utilizzabile solo durante connessioni sicure (SSL) (default = false, ottiene dal config)
+	 * @param bool $httpOnly [opzionale] Se attivo impedisce l'utilizzo di cookie al di fuori delle chiamate http (es. javascript) (default = false, ottiene dal config)
+	 * @return bool Ritorna false se ci sono stati problemi, true altrimenti
 	 */
 	public static function setCookie($name, $value, $expiry = 86400, $path = '/', $forceSSL = '', $httpOnly = ''){
-		$returnCode = false;
-		if (!headers_sent()){ //Impedisce l'invio dei cookie se sono già stati inviati degli header
+		
+
+		if(!headers_sent()){ # Impedisce l'invio dei cookie se sono già stati inviati degli header
+
 			# Se non è stato assegnato alcun valore a $forceSSL, controlla nel config
-			if($forceSSL==''){
+			if($forceSSL == ''){
 				$forceSSL = self::$CONFIG['FORCE_SSL'];
 			}
+
 			# Se non è stato assegnato alcun valore a $httpOnly, controlla nel config
-			if($httpOnly==''){
+			if($httpOnly == ''){
 			   $httpOnly = self::$CONFIG['COOKIES_HTTP_ONLY'];
 			}
+			
 			# Ottiene il dominio tramite la classe 'information'
 			$domain = $_SERVER['SERVER_NAME'] == "localhost" ? NULL : $_SERVER['SERVER_NAME'];
 			
-			# Calcola la scadenza del cookie
-			if ($expiry === -1){
-				# Se viene passato come durata il valore '-1' allora imposta un timestamp equivalente alla durata 'per sempre'
-				$expiry = 1893456000; // Per sempre = 2030-01-01 00:00:00
-			} elseif (is_numeric($expiry)){ 
-				# Se il tempo è un numero, lo somma al 'timestamp' attuale per ottenere la durata "definitiva"
-				$expiry += time();
-			} else { 
-				# Se il tempo non è un numero lo converte in numero (es. now o tomorrow)
-				$expiry = strtotime($expiry);
-			}
-			$returnCode = setcookie($name, $value, $expiry, $path, $domain, $forceSSL, $httpOnly);
+			$expiry = (int)$expiry;
+
+			# Always
+			if($expiry === -1)
+				$expiry = 1893456000; # 2030-01-01 00:00:00
+			
+
+			return setcookie($name, $value, $expiry, $path, $domain, $forceSSL, $httpOnly);
 		}
-		return $returnCode;			
+
+		return false;			
 	}
 
 	/**

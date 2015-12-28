@@ -6,6 +6,14 @@ class ItemController extends Controller{
 	public $button;
 	public static $cfg;
 
+
+	/**
+	 * Check all the interaction with user
+	 */
+	public function check(){
+		$this -> updateData();
+	}
+
 	/**
 	 * Retrieve all data sent by user
 	 * @return (array) data
@@ -18,6 +26,10 @@ class ItemController extends Controller{
 
 
 		];
+	}
+
+	public function getResults(){
+		return $this -> model -> getResults();
 	}
 
 	public function setNamePage($p){
@@ -37,21 +49,24 @@ class ItemController extends Controller{
 		return self::$cfg['page']['add'];
 	}
 
-
-
 	public function ini(){
-		$this -> button = new stdClass();
-		$this -> setToAdd();
-		$this -> setToList();
+		$this -> iniButton();
+		$this -> iniFieldsList();
 	}
 
-	public function setToAdd(){
+	public function iniButton(){
+		$this -> button = new stdClass();
+		$this -> iniToAdd();
+		$this -> iniToList();
+	}
+
+	public function iniToAdd(){
 		$this -> button -> toAdd = (object)[
 			'url' => $this -> getUrlPageAdd(),
 		];
 	}
 
-	public function setToList(){
+	public function iniToList(){
 		$this -> button -> toList = (object)[
 			'url' => $this -> getUrlPageList(),
 		];
@@ -63,6 +78,19 @@ class ItemController extends Controller{
 
 	public function getUrlPageList(){
 		return $this -> getUrlMainPage();
+	}
+
+	public function iniFieldsList(){
+		$this -> fieldsList = $this -> getFieldsList();
+	}
+
+	public function getFieldsList(){
+		$r = [];
+		foreach($this -> model -> fields as $k){
+			$r[] = $k;
+		}
+
+		return $r;
 	}
 }
 

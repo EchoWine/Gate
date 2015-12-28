@@ -1,7 +1,6 @@
 <?php
-namespace Field;
 
-class Password extends dString{
+class Password extends _String{
 		
 	public function iniLabel(){
 		$this -> label = 'Password';

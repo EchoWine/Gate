@@ -18,7 +18,7 @@
 				Preferenze
 			</a>
 
-			<a href='{{$item -> toAdd -> url}}' class='button a success'>
+			<a href='{{$item -> button -> toAdd -> url}}' class='button a success'>
 				<span class='fa fa-plus-circle'></span> Aggiungi
 			</a>
 
@@ -92,30 +92,34 @@
 					<label class='noselect m-5' for='check-all0'><span></span></label>
 				</div>
 
-				<a href='?p=data&amp;sort=id_DESC' class='id sort'> 
-					<span class='title'>ID</span>
-					<button class='button r'> <span class='fa fa-sort-asc'></span> </button>
-				</a>
+				{{for $item -> fieldsList as $field}}
 
-				<a href='?p=data&amp;sort=name_ASC'>
-					<span class='title'>Nome</span> 
-					<button class='button r inactive'> <span class='fa fa-sort'></span> </button>
-				</a>
+					<a href='#' class='id sort'> 
+						<span class='title'>{{$field -> label}}</span>
+						<button class='button r'>
+							<span class='fa fa-sort-asc'></span>
+						</button>
+					</a>
+
+				{{endfor}}
+
 				<div class='last action'> Azione </div>
 			</div>
 			<div class='row search' id='dataTable_searchBar'>
 				<div class='check-row'></div>
-				<div data-search-data='search_button_send'>
-					<div class='container-input-search'>
-						<input type='text' name='id[]' value='' class='input n ' >
-					</div> 
-					<div class='container-key-search'></div>
-				</div>
-				<div data-search-data='search_button_send'> 
-					<div class='container-input-search'>
-					<input type='text' name='name[]' value="" class='input n ' ></div>
-					<div class='container-key-search'></div>
-				</div>
+
+				{{for $item -> fieldsList as $field}}
+
+					
+					<div data-search-data='search_button_send'>
+						<div class='container-input-search'>
+							<input type='text' name='id[]' value='' class='input n ' >
+						</div> 
+						<div class='container-key-search'></div>
+					</div>
+
+				{{endfor}}
+
 				<div class='last action'>
 					<button type='submit' name='ACTION' value='search' class='button'>
 						<div class='button a i primary'>
@@ -130,35 +134,41 @@
 					</span>
 				</div>
 			</div>
-			<div class='row' data-hide-click='1'>
-				<div class='check-row'>
-					<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_0' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_0'><span></span></label>
-				</div>
 
-				<div class='info string'><div>#1</div></div>
-				<div class='info string'><div>Record</div></div>
-				<div class='last action'>
-					<span class='button a i primary' data-button-action='1'>
-						<span class='fa fa-download'></span>
-					</span>
-					<a data-button href='?p=data&amp;cat=add&amp;id=1' class='button a i success'>
-						<span class='fa fa-plus-square'></span>
-					</a>
-					<button type='submit' name='ACTION' value='copy_s' class='button'>
-					<div class='button a i success' data-button-action='1'> <span class='fa fa-copy'></span>
-					</div> 
-					</button>
-					<a data-button href='?p=data&amp;cat=view&amp;id=1' class='button a i info' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per visualizzare i dettagli di questo record' > <span class='fa fa-file-text'></span> 
-					</a>
-					<a data-button href='?p=data&amp;cat=edit&amp;id=1' class='button a i warning' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per modificare il record' >
-					<span class='fa fa-pencil'></span>
-					</a>
-					<span type='button' data-button-window='SURE' data-window-value='del_s' class='button a i danger' data-button-action='1' >
-						<span class='fa fa-trash'></span>
-					</span>
-					<input type='hidden' name='item[]' value='1'>
+
+			{{for $results as $result}}
+				<div class='row' data-hide-click='1'>
+					<div class='check-row'>
+						<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_0' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_0'><span></span></label>
+					</div>
+
+					{{for $item -> fieldsList as $field}}
+						<div class='info string'><div>{{$result[$field -> column]}}</div></div>
+					{{endfor}}
+
+					<div class='last action'>
+						<span class='button a i primary' data-button-action='1'>
+							<span class='fa fa-download'></span>
+						</span>
+						<a data-button href='?p=data&amp;cat=add&amp;id=1' class='button a i success'>
+							<span class='fa fa-plus-square'></span>
+						</a>
+						<button type='submit' name='ACTION' value='copy_s' class='button'>
+						<div class='button a i success' data-button-action='1'> <span class='fa fa-copy'></span>
+						</div> 
+						</button>
+						<a data-button href='?p=data&amp;cat=view&amp;id=1' class='button a i info' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per visualizzare i dettagli di questo record' > <span class='fa fa-file-text'></span> 
+						</a>
+						<a data-button href='?p=data&amp;cat=edit&amp;id=1' class='button a i warning' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per modificare il record' >
+						<span class='fa fa-pencil'></span>
+						</a>
+						<span type='button' data-button-window='SURE' data-window-value='del_s' class='button a i danger' data-button-action='1' >
+							<span class='fa fa-trash'></span>
+						</span>
+						<input type='hidden' name='item[]' value='1'>
+					</div>
 				</div>
-			</div>
+			{{endfor}}
 		</div>
 		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
 		<input type='hidden' id='primary_p' name='PRIMARY_POST' value='0'>

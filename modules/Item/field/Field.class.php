@@ -1,7 +1,6 @@
 <?php
-namespace Field;
 
-class Base{
+class Field{
 	
 	public $name;
 	public $model;
@@ -15,6 +14,11 @@ class Base{
 	public function ini(){
 		$this -> iniLabel();
 		$this -> iniPrint();
+		$this -> iniColumn();
+	}
+
+	public function iniColumn(){
+		$this -> column = $this -> name;
 	}
 
 	public function iniLabel(){
@@ -33,7 +37,7 @@ class Base{
 	}
 
 	public function alterDatabase(){
-		\DB::table($this -> model -> name) -> column($this -> name) -> type('string') -> alter();
+		DB::table($this -> model -> name) -> column($this -> column) -> type('string') -> alter();
 	}
 
 	public function getInput(){

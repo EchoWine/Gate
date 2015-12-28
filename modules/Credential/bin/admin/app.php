@@ -6,14 +6,13 @@
 	$Model = new CredentialModel();
 
 	$Model -> setFields([
-		new Field\ID('id'),
-		new Field\Username('user'),
-		new Field\Password('pass'),
-		new Field\Mail('mail')
+		new ID('id'),
+		new Username('user'),
+		new Password('pass'),
+		new Mail('mail')
 	]);
 
 	$Model -> setPrimary('id');
-	
 
 	$Controller = new CredentialController($Model);
 
@@ -27,9 +26,10 @@
 	$View -> setNav();
 	$Controller -> ini();
 
-	$item = new stdClass();
-	$item -> toAdd = $Controller -> button -> toAdd;
-	$item -> toList = $Controller -> button -> toList;
+	$item = $Controller;
+
+	$results = $Controller -> getResults();
+
 
 	if($pageValue == $page_obj){
 

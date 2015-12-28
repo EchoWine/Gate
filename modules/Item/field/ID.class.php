@@ -1,7 +1,6 @@
 <?php
-namespace Field;
 
-class ID extends Base{
+class ID extends Field{
 	
 	public function iniLabel(){
 		$this -> label = 'ID';

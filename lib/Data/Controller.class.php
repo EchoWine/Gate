@@ -20,13 +20,6 @@ class Controller{
 	}
 
 	/**
-	 * Check all the interaction with user
-	 */
-	public function check(){
-		$this -> updateData();
-	}
-
-	/**
 	 * Update the data
 	 */
 	public function updateData(){

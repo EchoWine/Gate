@@ -23,7 +23,6 @@ class Controller{
 	 * Check all the interaction with user
 	 */
 	public function check(){
-		$this -> model -> alterTable();
 		$this -> updateData();
 	}
 

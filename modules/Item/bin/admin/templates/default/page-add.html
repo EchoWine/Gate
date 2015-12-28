@@ -1,0 +1,45 @@
+<div id='content'>
+	<div class='title'>
+		<h1><span>Libreria</span> </h1>
+	</div>
+	<form method='POST'></form> <form method='POST' enctype='multipart/form-data'>
+	<div class='content-header'>
+		<div class='title'>
+			<span class='fa fa-diamond'></span>
+				<h3>Serie</h3>
+			<span class='small'>aggiungi</span>
+		</div>
+		<a class='button a primary' href='data.php?p=series_sett'>
+			<span class='fa fa-cogs'></span>
+			Preferenze 
+		</a>
+		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
+		<input type='hidden' name='ACTION' value='add'>
+			<a href='{{$item -> toList -> url}}' class='button a primary'>
+				<span class='fa fa-arrow-circle-left'></span> Torna alla lista
+			</a>
+
+			<button type='submit' class='button'>
+				<div class='button a success'>
+					<span class='fa fa-plus-circle'></span> Aggiungi
+				</div>
+			</button>
+			<button type='submit' name='TO_LIST' class='button'>
+				<div class='button a success'>
+					<span class='fa fa-plus-circle'></span>
+					Aggiungi e torna indietro 
+				</div>
+			</button>
+			</div>
+			<div class='manage-data'>
+				<fieldset class='manage-data'>
+					<legend> Generale </legend>
+					<div class='field'>
+						<label>Nome: </label>
+						<div class='data'><input type='text' name='name' value="" class='input n ' ></div>
+					</div>
+				</fieldset>
+			</div>
+		</form>
+	</div>
+</div>

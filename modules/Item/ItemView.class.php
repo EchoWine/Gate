@@ -2,9 +2,12 @@
 
 class ItemView extends View{
 	
-	public function setPage(){
-		$this -> setStyle();
-		Module::TemplateOverwrite('content','page');
+	public function setPageList(){
+		Module::TemplateOverwrite('content','page-list');
+	}
+
+	public function setPageAdd(){
+		Module::TemplateOverwrite('content','page-add');
 	}
 
 	public function setStyle(){

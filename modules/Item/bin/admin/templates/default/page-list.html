@@ -12,12 +12,13 @@
 				<span class='small'>lista</span>
 			</div>
 
+
 			<a class='button a primary' href='data.php?p=data_sett'>
 				<span class='fa fa-cogs'></span>
 				Preferenze
 			</a>
 
-			<a href='?p=data&amp;cat=add' class='button a success'>
+			<a href='{{$item -> toAdd -> url}}' class='button a success'>
 				<span class='fa fa-plus-circle'></span> Aggiungi
 			</a>
 
@@ -116,7 +117,7 @@
 					<div class='container-key-search'></div>
 				</div>
 				<div class='last action'>
-					<button type='submit' name='ACTION' value='search'>
+					<button type='submit' name='ACTION' value='search' class='button'>
 						<div class='button a i primary'>
 							<span class='fa fa-search'></span>
 						</div>

@@ -2,7 +2,10 @@
 
 return [
 
-	'a' => 'b'
+	'post_page' => 'a',
+	'page' => [
+		'add' => 'add',
+	]
 	
 ];
 

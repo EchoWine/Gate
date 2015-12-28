@@ -25,9 +25,26 @@
 	$label = 'Credential';
 
 	$View -> setNav();
+	$Controller -> ini();
 
-	if($pageValue == $page_obj)
-		$View -> setPage();
+	$item = new stdClass();
+	$item -> toAdd = $Controller -> button -> toAdd;
+	$item -> toList = $Controller -> button -> toList;
+
+	if($pageValue == $page_obj){
+
+		$Controller -> check();
+		$View -> setStyle();
+
+		switch($Controller -> getPageValue()){
+			case $Controller -> getPageParamAdd():
+				$View -> setPageAdd();
+			break;
+			default:
+				$View -> setPageList();
+			break;
+		}
+	}
 
 	# Menu
 	$Credential = (object)[

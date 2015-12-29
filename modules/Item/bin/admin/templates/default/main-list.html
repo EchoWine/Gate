@@ -1,16 +1,12 @@
 <div id='content'>
-	<div class='title'> <h1><span>Titolo</span> </h1> </div>
+	{{include .main.cat}}
 
 	<form method='POST'></form>
 	<form method='POST'>
 		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
 		<div class='content-header'>
 
-			<div class='title'>
-				<span class='fa fa-diamond'></span>
-				<h3>Data</h3>
-				<span class='small'>lista</span>
-			</div>
+			{{include .main.title}}
 
 
 			<a href='{{$item -> button -> toAdd -> url}}' class='button a success'>

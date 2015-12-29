@@ -33,6 +33,9 @@
 
 	if($pageValue == $page_obj){
 
+		$View -> setCat();
+		$View -> setTitle();
+		
 		# Check all information (data)
 		$Controller -> check();
 

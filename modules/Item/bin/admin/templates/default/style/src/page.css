@@ -22,6 +22,10 @@
   	font-weight: 100;
 }
 
+#content .title h3{
+	margin-top:11px;
+}
+
 .content-header{
 	display:flex;
 	align-items: center;

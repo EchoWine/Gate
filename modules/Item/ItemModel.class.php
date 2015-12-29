@@ -73,12 +73,18 @@ class ItemModel extends Model{
 
 	/**
 	 * Select all record
+	 * @param (int) $s start from
+	 * @param (int) $n take n element
 	 * @return (array) query result
 	 */
-	public function getResults(){
+	public function getResults($s = 0,$n = 5){
 
-		return DB::table($this -> name) -> lists();
+		return DB::table($this -> name) -> skip($s) -> take($n) -> lists();
 
+	}
+
+	public function countAll(){
+		return DB::table($this -> name) -> count();
 	}
 
 	/**

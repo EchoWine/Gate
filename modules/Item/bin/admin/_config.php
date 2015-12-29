@@ -2,8 +2,11 @@
 
 return [
 
-	'post_page' => 'a',
-	'page' => [
+	'get_action' => 'a',
+	'get_page' => 's',
+
+	'result_page' => 5,
+	'action' => [
 		'add' => 'add',
 	]
 	

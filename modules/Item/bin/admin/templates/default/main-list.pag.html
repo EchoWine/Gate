@@ -1,0 +1,33 @@
+<div class='page-res'>
+	Pagina:
+	<form method='GET'>
+		<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
+		<button type='submit' name='{{$item -> list -> pagName}}' value='{{$item -> list -> pagValuePrev}}' class='button'>
+			<span class='tag n'>
+				<span class='fa fa-angle-left'></span>
+			</span>
+		</button>
+	</form>
+	<form method='GET'>
+		<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
+		<input type='text' name='{{$item -> list -> pagName}}' value='{{$item -> list -> pagValue}}' class='input n' >
+	</form>
+	<form method='GET'>
+		<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
+		<button type='submit' name='{{$item -> list -> pagName}}' value='{{$item -> list -> pagValueNext}}' class='button'>
+			<span class='tag n'>
+				<span class='fa fa-angle-right'></span>
+			</span>
+		</button>
+	</form> di {{$item -> list -> pagTotal}} 
+	<span class='page-separator'></span> 
+	<form method='POST'> Mostra:
+		<select name='N_RESULTS' id='n_results' class='select n' >
+			<option >5</option>
+			<option selected>25</option>
+			<option >100</option>
+		</select> risultati
+	</form>
+	<span class='page-separator'></span>
+	<span class='cmex'>Ci sono un totale di {{$results -> count}} risultati</span>
+</div>

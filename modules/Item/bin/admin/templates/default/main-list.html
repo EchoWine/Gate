@@ -13,14 +13,16 @@
 			</div>
 
 
+			<a href='{{$item -> button -> toAdd -> url}}' class='button a success'>
+				<span class='fa fa-plus-circle'></span> Aggiungi
+			</a>
+			
+			<!--
 			<a class='button a primary' href='data.php?p=data_sett'>
 				<span class='fa fa-cogs'></span>
 				Preferenze
 			</a>
 
-			<a href='{{$item -> button -> toAdd -> url}}' class='button a success'>
-				<span class='fa fa-plus-circle'></span> Aggiungi
-			</a>
 
 			<span class='button a primary' type='button'>
 				<span class='fa fa-upload'></span>Importa
@@ -33,57 +35,35 @@
 			<span class='b-button button a danger'>
 				<span class='fa fa-trash'></span> Formatta
 			</span>
+			-->
 		</div>
 	</form>
 	<form method='POST' id='AP_FormINFO'>
 		<input type='hidden' name='sortBy'>
 	</form>
 
-	<div class='page-res'>
-		Pagina:
-		<form method='GET'>
-			<input type='hidden' name='p' value='data'>
-			<span name='sp' value='0' class='tag n'>
-				<span class='fa fa-angle-left'></span>
-			</span>
-		</form>
-		<form method='GET'>
-			<input type='hidden' name='p' value='data'>
-			<input type='text' value='1' class='input n' name='sp'>
-		</form>
-		<form method='GET'>
-			<input type='hidden' name='p' value='data'>
-			<span name='sp' value='1' class='tag n'>
-				<span class='fa fa-angle-right'></span>
-			</span>
-		</form> di 1 
-		<span class='page-separator'></span> 
-		<form method='POST'> Mostra:
-			<select name='N_RESULTS' id='n_results' class='select n' >
-				<option >5</option>
-				<option selected>25</option>
-				<option >100</option>
-			</select> risultati
-		</form>
-		<span class='page-separator'></span>
-		<span class='cmex'>Ci sono un totale di 3 risultati</span>
-	</div>
+	{{include .main-list.pag}}
 
 	<form method='POST' enctype='multipart/form-data'>
 		<div class='table-data-filter'>
 			<select class='select n' name='ACTION' id='value_operationMultiple'>
 				<option value=''>Seleziona...</option>
+				<!--
 				<option value='export_xml_m'> Esporta XML </option>
 				<option value='export_csv_m'> Esporta CSV </option>
 				<option value='del_m' data-button-window='SURE' data-window-value='del_m' data-multiple-button> Elimina </option>
 				<option value='copy_m'> Copia </option>
 				<option value='edit_multiple'> Modifica </option> 
+				-->
 			</select>
 
 			<button class='button n' id='button_operationMultiple' data-multiple-button>Invia</button>
+
+			<!--
 			<button type='submit' name='force_update' class='button lf'>
 				<div class='button a info'> <span class='fa fa-terminal'></span>Forza aggiornamento </div>
 			</button> 
+			-->
 		</div>
 		<div class='data-table' id='data'>
 			<div class='head'>
@@ -96,15 +76,18 @@
 
 					<a href='#' class='id sort'> 
 						<span class='title'>{{$field -> label}}</span>
+						<!--
 						<button class='button r'>
 							<span class='fa fa-sort-asc'></span>
 						</button>
+						-->
 					</a>
 
 				{{endfor}}
 
 				<div class='last action'> Azione </div>
 			</div>
+			<!--
 			<div class='row search' id='dataTable_searchBar'>
 				<div class='check-row'></div>
 
@@ -134,19 +117,21 @@
 					</span>
 				</div>
 			</div>
+			-->
 
 
-			{{for $results as $result}}
+			{{for $results -> records as $record}}
 				<div class='row' data-hide-click='1'>
 					<div class='check-row'>
 						<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_0' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_0'><span></span></label>
 					</div>
 
 					{{for $item -> fieldsList as $field}}
-						<div class='info string'><div>{{$result[$field -> column]}}</div></div>
+						<div class='info string'><div>{{$record[$field -> column]}}</div></div>
 					{{endfor}}
 
 					<div class='last action'>
+						<!--
 						<span class='button a i primary' data-button-action='1'>
 							<span class='fa fa-download'></span>
 						</span>
@@ -162,10 +147,12 @@
 						<a data-button href='?p=data&amp;cat=edit&amp;id=1' class='button a i warning' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per modificare il record' >
 						<span class='fa fa-pencil'></span>
 						</a>
+						
+						<input type='hidden' name='item[]' value='1'>
+						-->
 						<span type='button' data-button-window='SURE' data-window-value='del_s' class='button a i danger' data-button-action='1' >
 							<span class='fa fa-trash'></span>
 						</span>
-						<input type='hidden' name='item[]' value='1'>
 					</div>
 				</div>
 			{{endfor}}
@@ -174,32 +161,6 @@
 		<input type='hidden' id='primary_p' name='PRIMARY_POST' value='0'>
 	</form>
 
-	<div class='page-res'>
-	Pagina:
-	<form method='GET'>
-		<input type='hidden' name='p' value='data'>
-		<span name='sp' value='0' class='tag n'>
-			<span class='fa fa-angle-left'></span>
-		</span>
-	</form>
-	<form method='GET'>
-		<input type='hidden' name='p' value='data'>
-		<input type='text' value='1' class='input n' name='sp'>
-	</form>
-	<form method='GET'>
-		<input type='hidden' name='p' value='data'>
-		<span name='sp' value='1' class='tag n'>
-			<span class='fa fa-angle-right'></span>
-		</span>
-	</form> di 1 
-	<span class='page-separator'></span> 
-	<form method='POST'> Mostra:
-		<select name='N_RESULTS' id='n_results' class='select n' >
-			<option >5</option>
-			<option selected>25</option>
-			<option >100</option>
-		</select> risultati
-	</form>
-	<span class='page-separator'></span>
-	<span class='cmex'>Ci sono un totale di 3 risultati</span>
+	{{include .main-list.pag}}
+	
 </div>

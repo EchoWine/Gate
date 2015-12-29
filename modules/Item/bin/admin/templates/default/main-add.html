@@ -34,10 +34,13 @@
 			<div class='manage-data'>
 				<fieldset class='manage-data'>
 					<legend> Generale </legend>
+
+					{{for $item -> fieldsList as $field}}
 					<div class='field'>
 						<label>Nome: </label>
-						<div class='data'><input type='text' name='name' value="" class='input n ' ></div>
+						<div class='data'><input type='text' name='name' value='' class='input n ' ></div>
 					</div>
+					{{endfor}}
 				</fieldset>
 			</div>
 		</form>

@@ -18,35 +18,51 @@
 
 	$View = new CredentialView($Model,$Controller);
 
-	$Controller -> setNamePage('credential');
-
+	# Url item
 	$page_obj = 'credential';
+
+	$Controller -> setNameURL($page_obj);
+
+	# Label item
 	$label = 'Credential';
 
-	$View -> setNav();
+	# Initialization Controller
 	$Controller -> ini();
-
 	$item = $Controller;
-
-	$results = $Controller -> getResults();
 
 
 	if($pageValue == $page_obj){
 
+		# Check all information (data)
 		$Controller -> check();
+
+		# Add style
 		$View -> setStyle();
 
-		switch($Controller -> getPageValue()){
+		switch($Controller -> getPageActionValue()){
 			case $Controller -> getPageParamAdd():
+
+				# Set current page to Add
 				$View -> setPageAdd();
 			break;
 			default:
+
+				# Ini list
+				$Controller -> iniList();
+
+				# Get results for list
+				$results = $Controller -> getResults();
+
+				# Set current page to List
 				$View -> setPageList();
 			break;
 		}
 	}
 
-	# Menu
+
+	# Add left menu
+	$View -> setNav();
+
 	$Credential = (object)[
 		'nav' => (object)[
 			'label' => $label,

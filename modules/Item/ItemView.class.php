@@ -3,11 +3,11 @@
 class ItemView extends View{
 	
 	public function setPageList(){
-		Module::TemplateOverwrite('content','page-list');
+		Module::TemplateOverwrite('content','main-list');
 	}
 
 	public function setPageAdd(){
-		Module::TemplateOverwrite('content','page-add');
+		Module::TemplateOverwrite('content','main-add');
 	}
 
 	public function setStyle(){

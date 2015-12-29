@@ -7,22 +7,40 @@ Version 1.0
 
 Library:
 	- [x] DataBase
-	- [ ] TemplateEngine
-	- [ ] ModuleManager
+	- [x] TemplateEngine
+	- [x] ModuleManager
 	- [ ] Lang
 	- [ ] Model, Controller, View
 
 Modules: 
-	- [ ] Authentication, Registration, Recovery
+	- [x] Authentication
+	- [ ] Registration
+	- [ ] Recovery
 	- [ ] Credential
 	- [ ] Profile
 	- [ ] Permission single & group
 	- [ ] Log
 	- [ ] Backup
-	- [ ] SystemInfo
+	- [x] SystemInfo
 	- [ ] SessionTable
 	- [ ] Import/Export
 	- [ ] Custom Page
+	- [ ] Item
+		- [ ] Add
+		- [ ] Add as
+		- [ ] Copy
+		- [ ] Export
+		- [ ] Delete
+		- [ ] Edit
+		- [ ] Edit multiple
+		- [ ] List
+			- [ ] Pagination
+			- [ ] Search
+			- [ ] SortBy
+		- [ ] View
+		- [ ] Import
+		- [ ] Export
+		- [ ] Format
 
 Version 2.0
 

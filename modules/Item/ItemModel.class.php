@@ -13,6 +13,9 @@ class ItemModel extends Model{
 	 */
 	public $fields;
 
+	/**
+	 * Config
+	 */
 	public static $config;
 
 	/**
@@ -66,9 +69,7 @@ class ItemModel extends Model{
 	 * @return (array) query result
 	 */
 	public function getByPrimary($p){
-
 		return DB::table($this -> name) -> where($this -> primary,$p) -> get();
-
 	}
 
 	/**
@@ -78,11 +79,13 @@ class ItemModel extends Model{
 	 * @return (array) query result
 	 */
 	public function getResults($s = 0,$n = 5){
-
 		return DB::table($this -> name) -> skip($s) -> take($n) -> lists();
-
 	}
 
+	/**
+	 * Count all record
+	 * @return (int) number of records
+	 */
 	public function countAll(){
 		return DB::table($this -> name) -> count();
 	}

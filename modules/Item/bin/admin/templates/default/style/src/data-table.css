@@ -1,15 +1,9 @@
-/* ------------------------------------------------------------------------- */
-/*
-/*		Tabella dei dati
-/*	
-/* ------------------------------------------------------------------------- */
-
-
 @media only screen and (max-width:1000px){
 	.page-res{
     	margin-bottom: 50px !important;
 	}
 }
+
 @media only screen and (max-width:600px){
 	.page-res{
 		text-align:center;
@@ -88,6 +82,10 @@
 
 .data-table .check-row{
 	max-width:44px;
+}
+
+.data-table .check-row > label{
+	margin:5px;
 }
 
 .data-table .row, .data-table .head{

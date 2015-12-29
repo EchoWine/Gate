@@ -6,7 +6,7 @@
 		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
 		<div class='content-header'>
 
-			{{include .main.title}}
+			{{include .main.title ($actionPage = 'list')}}
 
 
 			<a href='{{$item -> button -> toAdd -> url}}' class='button a success'>
@@ -70,7 +70,7 @@
 
 				{{for $item -> fieldsList as $field}}
 
-					<a href='#' class='id sort'> 
+					<a href='#' > 
 						<span class='title'>{{$field -> label}}</span>
 						<!--
 						<button class='button r'>
@@ -115,11 +115,11 @@
 			</div>
 			-->
 
-
+			<?php $i = 0;?>
 			{{for $results -> records as $record}}
 				<div class='row' data-hide-click='1'>
 					<div class='check-row'>
-						<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_0' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_0'><span></span></label>
+						<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_{{$i}}' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_{{$i++}}'><span></span></label>
 					</div>
 
 					{{for $item -> fieldsList as $field}}

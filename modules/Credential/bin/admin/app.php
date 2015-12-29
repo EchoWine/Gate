@@ -43,7 +43,7 @@
 		$View -> setStyle();
 
 		switch($Controller -> getPageActionValue()){
-			case $Controller -> getPageParamAdd():
+			case $Controller -> getPageActionAdd():
 
 				# Set current page to Add
 				$View -> setPageAdd();

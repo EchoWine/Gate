@@ -23,6 +23,11 @@ class Field{
 	public static $template = 'item.field';
 
 	/**
+	 * Is operation add enabled
+	 */
+	public $add = true;
+
+	/**
 	 * Construct
 	 * @param $n name
 	 */
@@ -133,6 +138,24 @@ class Field{
 	 */
 	public function getFormValue(){
 		return $this -> form -> value;
+	}
+
+	/**
+	 * Add the field to the query 'add'
+	 * @param $a (array) array used in the query
+	 */
+	public function add(&$a){
+		if($this -> getAdd()){
+			$a[$this -> getColumnName()] = $this -> getFormValue();
+		}
+	}
+
+	/**
+	 * Is operation add enabled
+	 * @return (bool) result
+	 */
+	public function getAdd(){
+		return $this -> add;
 	}
 
 }

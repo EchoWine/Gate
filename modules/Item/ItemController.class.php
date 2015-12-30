@@ -303,7 +303,8 @@ class ItemController extends Controller{
 	public function getFieldsAdd(){
 		$r = [];
 		foreach($this -> model -> fields as $k){
-			$r[] = $k;
+			if($k -> getAdd())
+				$r[] = $k;
 		}
 
 		return $r;

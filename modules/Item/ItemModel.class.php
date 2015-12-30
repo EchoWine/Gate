@@ -118,7 +118,7 @@ class ItemModel extends Model{
 
 		$a = [];
 		foreach($f as $k){
-			$a[$k -> getColumnName()] = $k -> getFormValue();
+			$k -> add($a);
 		}
 
 		if(DB::table($this -> name) -> insert($a)){

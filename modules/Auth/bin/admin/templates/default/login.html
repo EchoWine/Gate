@@ -11,10 +11,10 @@
 
 			{{include .response}}
 			<label class='sr-only'>{{$auth -> user -> label}}</label>
-			<input type='text' name='{{$auth -> user -> name}}' value='{{$auth -> user -> value}}' class='form-control' placeholder='Email address or Username' required autofocus>
+			<input type='text' name='{{$auth -> user -> name}}' value='{{$auth -> user -> value}}' class='form-control' placeholder='Email address or Username' required autofocus autocomplete='off'>
 
 			<label class='sr-only'>{{$auth -> pass -> label}}</label>
-			<input type='password' name='{{$auth -> pass -> name}}' value='{{$auth -> pass -> value}}' class='form-control' placeholder='Password' required>
+			<input type='password' name='{{$auth -> pass -> name}}' value='{{$auth -> pass -> value}}' class='form-control' placeholder='Password' required autocomplete='off'>
 			
 			<div class='checkbox'>
 				<input type='checkbox' id='rememberme' name='{{$auth -> remember -> name}}'>

@@ -123,9 +123,9 @@ class AuthModel extends Model{
 	}
 
 	/**
-	 * Check attempt logout
+	 * Check logout
 	 */
-	public function checkAttemptLogout(){
+	public function logout(){
 
 		# Delete from table
 		$this -> deleteSessionBySID($sid = $this -> getSID());
@@ -139,12 +139,12 @@ class AuthModel extends Model{
 	}
 
 	/**
-	 * Check attempt login
+	 * Check login
 	 * @param (string $user username or email
 	 * @param (string) $pass password
 	 * @return (object) response
 	 */
-	public function checkAttemptLogin($user,$pass,$type){
+	public function login($user,$pass,$type){
 
 
 		$cfg = $this -> cfg;

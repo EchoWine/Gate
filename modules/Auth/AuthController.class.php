@@ -18,6 +18,11 @@ class AuthController extends Controller{
 	public $cfg;
 
 	/**
+	 * Response
+	 */
+	public $response = [];
+
+	/**
 	 * Construct
 	 * @param $model (object) model
 	 * @param $cfg (array) set of config
@@ -37,26 +42,34 @@ class AuthController extends Controller{
 		$this -> model -> alterTable();
 		$this -> updateData();
 
-		$r = [];
-
 		$this -> model -> cleanSession();
 		$this -> info = $this -> model -> checkSession();
 		$this -> logged = !empty($this -> info);
 
-		# Check for logout
-		if($this -> logged && $this -> data['logout'] -> value !== null)
-			$this -> model -> checkAttemptLogout();
+		$this -> checkAttemptLogout();
+		$this -> checkAttemptLogin();
+	}
 
-		# Check for login
+	/**
+	 * Check attempt logout
+	 */
+	public function checkAttemptLogout(){
+		if($this -> logged && $this -> data['logout'] -> value !== null)
+			$this -> model -> logout();
+	}
+
+	/**
+	 * Check attempt login
+	 */
+	public function checkAttemptLogin(){
+		
 		if(!$this -> logged && $this -> data['login'] -> value !== null)
-			$r[] = $this -> model -> checkAttemptLogin(
+			$this -> response[] =  $this -> model -> login(
 				$this -> data['user'] -> value,
 				$this -> data['pass'] -> value,
 				$this -> data['remember'] -> value !== null
 			);
 
-
-		return $r;
 	}
 
 	/**

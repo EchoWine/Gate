@@ -5,7 +5,8 @@
 	$Model = new AuthModel();
 
 	$Controller = new AuthController($Model,include $dir."/_config.php");
-	$Response = $Controller -> check();
+	$Controller -> check();
+	$Response = $Controller -> response;
 
 	$View = new AuthView($Model,$Controller);
 

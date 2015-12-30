@@ -215,8 +215,11 @@ class TemplateEngine{
 		# Variable scope include
 		preg_match_all('/{{include ([^\}]*)}}}/iU',$c,$r);
 		foreach($r[1] as $n => $k){
+
+			$k = preg_replace("/[\t\n\r]/iU","",$k);
 			preg_match_all('/^(.*) \{(.*)$/iU',$k,$r1);
 			if(!empty($r1[2][0])){
+				$t = $r1[2][0];
 				$t = "<?php ".str_replace(",",";",$r1[2][0])."; ?>";
 				$c = str_replace($r[0][$n],$t."{{include ".$r1[1][0]."}}",$c);
 			}

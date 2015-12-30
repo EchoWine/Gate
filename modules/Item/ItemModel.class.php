@@ -114,6 +114,21 @@ class ItemModel extends Model{
 		return $r;
 	}
 
+	public function add($f){
+
+		$a = [];
+		foreach($f as $k){
+			$a[$k -> getColumnName()] = $k -> getFormValue();
+		}
+
+		if(DB::table($this -> name) -> insert($a)){
+			die('Success');
+		}
+		die('Error');
+
+
+	}
+
 
 }
 

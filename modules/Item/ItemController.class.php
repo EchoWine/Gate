@@ -23,6 +23,19 @@ class ItemController extends Controller{
 	 */
 	public function check(){
 		$this -> updateData();
+		$this -> checkAttemptAdd();
+	}
+
+	/**
+	 * Check attempt add new data
+	 */
+	public function checkAttemptAdd(){
+
+		if($this -> getData('action') -> value == $this -> getActionAdd()){
+
+			$this -> model -> add($this -> model -> fields);
+
+		}
 	}
 
 	/**
@@ -32,8 +45,11 @@ class ItemController extends Controller{
 	public function retrieveData(){
 		return [
 
+			# Page action
+			'page_action' => new stdDataGet('action',Item::$cfg['get_action'],null),
+
 			# Action
-			'action' => new stdDataGet('action',Item::$cfg['get_action'],null),
+			'action' => new stdDataPost('action',Item::$cfg['post_action'],null),
 
 			# Page
 			'page' => new stdDataGet('page',Item::$cfg['get_page'],1),
@@ -47,6 +63,7 @@ class ItemController extends Controller{
 	public function ini(){
 		$this -> iniButton();
 		$this -> iniFieldsList();
+		$this -> iniFieldsAdd();
 	}
 
 	/**
@@ -70,6 +87,7 @@ class ItemController extends Controller{
 	 */
 	public function iniButton(){
 		$this -> button = new stdClass();
+		$this -> iniAdd();
 		$this -> iniToAdd();
 		$this -> iniToList();
 	}
@@ -82,6 +100,25 @@ class ItemController extends Controller{
 			'url' => $this -> getUrlPageAdd(),
 		];
 	}
+
+	/**
+	 * Initialize button action
+	 */
+	public function iniAdd(){
+		$this -> button -> action = (object)[
+			'name' => Item::$cfg['post_action'],
+			'valueAdd' => $this -> getActionAdd(),
+		];
+	}
+
+	/**
+	 * Get the value of action add
+	 * @return (string) action add
+	 */
+	public function getActionAdd(){
+		return Item::$cfg['action']['add'];
+	}
+
 
 	/**
 	 * Initialize button toList
@@ -198,7 +235,7 @@ class ItemController extends Controller{
 	 * @return (string) action page
 	 */
 	public function getPageActionValue(){
-		return $this -> getData('action') -> value;
+		return $this -> getData('page_action') -> value;
 	}
 
 	/**
@@ -237,6 +274,26 @@ class ItemController extends Controller{
 	 * @return (array) array of fields
 	 */
 	public function getFieldsList(){
+		$r = [];
+		foreach($this -> model -> fields as $k){
+			$r[] = $k;
+		}
+
+		return $r;
+	}
+
+	/**
+	 * Initialize the field add
+	 */
+	public function iniFieldsAdd(){
+		$this -> fieldsAdd = $this -> getFieldsAdd();
+	}
+
+	/**
+	 * Get all fields 
+	 * @return (array) array of fields
+	 */
+	public function getFieldsAdd(){
 		$r = [];
 		foreach($this -> model -> fields as $k){
 			$r[] = $k;

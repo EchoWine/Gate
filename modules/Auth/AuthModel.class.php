@@ -94,8 +94,9 @@ class AuthModel extends Model{
 			$c_table = $this -> cfg['credential']['table'];
 
 			$q = DB::table($s_table) -> where($s_col['sid'],$sid) 
-			-> leftJoin($c_table,$s_col['uid'],$c_col['id'])
+			-> rightJoin($c_table,$s_col['uid'],$c_col['id'])
 			-> get();
+			
 			if(count($q) > 0){
 				
 				return (object)[

@@ -211,22 +211,17 @@ class TemplateEngine{
 	private static function preCompile($f,$c,$subClass = ''){
 
 
+
 		# Variable scope include
-
-		# Include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
+		preg_match_all('/{{include ([^\}]*)}}}/iU',$c,$r);
 		foreach($r[1] as $n => $k){
-
-			preg_match_all('/([^\()]*) \((.*)\)/iU',$k,$r1);
-
+			preg_match_all('/^(.*) \{(.*)$/iU',$k,$r1);
 			if(!empty($r1[2][0])){
 				$t = "<?php ".str_replace(",",";",$r1[2][0])."; ?>";
 				$c = str_replace($r[0][$n],$t."{{include ".$r1[1][0]."}}",$c);
 			}
-			
-
-
 		}
+
 
 		$b = empty($subClass) ? basename($f,".html") : $subClass.".".basename($f,".html");
 
@@ -243,7 +238,7 @@ class TemplateEngine{
 			preg_match_all('/{{include \.([^\}]*)}}/iU',$c,$r);
 			foreach($r[0] as $n => $k){
 
-				$c = preg_replace($k,"{include ".$subClass.".".$r[1][$n]."}",$c);
+				$c = str_replace($k,"{{include ".$subClass.".".$r[1][$n]."}}",$c);
 				
 			}
 		}
@@ -255,8 +250,10 @@ class TemplateEngine{
 
 			if(empty(self::$include[$k]))
 				TemplateEngine::setInclude($k,$k);
+
+			$h = $k[0] == "$" ? '' : '"';
 			
-			$c = preg_replace('{'.$r[0][$n].'}','{{include TemplateEngine::getInclude(\''.$k.'\')}}',$c);
+			$c = str_replace($r[0][$n],'{{include TemplateEngine::getInclude('.$h.$k.$h.')}}',$c);
 
 		}
 
@@ -274,6 +271,7 @@ class TemplateEngine{
 
 	public static function getInclude($p){
 		return isset(self::$include[$p]) ? self::$include[$p] : $p.".php";
+
 	}
 
 	public static function parseSubClass($n){

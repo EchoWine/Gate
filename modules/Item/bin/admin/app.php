@@ -5,4 +5,10 @@
 
 	$pathModuleItem = ModuleManager::getPath()."/Item/bin/admin/templates/".TemplateEngine::getName()."/";
 
+	TemplateEngine::compile(
+		$dir."/templates/".TemplateEngine::getName()."/field/",
+		Field::$template
+	);
+
+	
 ?>

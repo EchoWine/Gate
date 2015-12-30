@@ -5,7 +5,7 @@
 	<form method='POST'></form>
 	<form method='POST' enctype='multipart/form-data'>
 		<div class='content-header'>
-			{{include .main.title ($actionPage = 'add')}}
+			{{include .main.title {$actionPage = 'add'}}}
 			<!--<a class='button a primary' href='data.php?p=series_sett'>
 				<span class='fa fa-cogs'></span>
 				Preferenze 
@@ -37,7 +37,7 @@
 					{{for $item -> fieldsList as $field}}
 						<div class='field'>
 							<label>{{$field -> label}}: </label>
-							<div class='data'><input type='text' name='name' value='' class='input n ' ></div>
+							<div class='data'>{{include $field -> getInputData() {$name = 'a'}}}</div>
 						</div>
 					{{endfor}}
 				</fieldset>

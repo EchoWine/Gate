@@ -6,7 +6,7 @@
 		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
 		<div class='content-header'>
 
-			{{include .main.title ($actionPage = 'list')}}
+			{{include .main.title {$actionPage = 'list'}}}
 
 
 			<a href='{{$item -> button -> toAdd -> url}}' class='button a success'>

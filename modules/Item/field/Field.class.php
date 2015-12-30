@@ -3,7 +3,10 @@
 class Field{
 	
 	public $name;
+
 	public $model;
+
+	public static $template = 'item.field';
 
 	public function __construct($n){
 		$this -> name = $n;
@@ -42,6 +45,10 @@ class Field{
 
 	public function getInput(){
 		return "<input name='{$this -> name}'>";
+	}
+
+	public function getInputData(){
+		return self::$template.'.Field';
 	}
 }
 ?>

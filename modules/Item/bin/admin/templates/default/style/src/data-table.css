@@ -229,6 +229,10 @@
 	margin:10px 0;
 }
 
+.page-res .tag{
+	cursor:pointer;
+}
+
 .page-separator::before{
 	content: '|';
 }

@@ -39,9 +39,6 @@
 		# Check all information (data)
 		$Controller -> check();
 
-		# Add style
-		$View -> setStyle();
-
 		switch($Controller -> getPageActionValue()){
 			case $Controller -> getPageActionAdd():
 

@@ -80,19 +80,19 @@ class AuthController extends Controller{
 		return [
 
 			# User: Username or Email (depends on config)
-			'user' => new stdDataPost('User',$this -> cfg['post_user']),
+			'user' => new stdDataPost($this -> cfg['post_user'],null,'User'),
 
 			# Password
-			'pass' => new stdDataPost('Password',$this -> cfg['post_pass']),
+			'pass' => new stdDataPost($this -> cfg['post_pass'],null,'Password'),
 
 			# Login
-			'login' => new stdDataPost('Login',$this -> cfg['post_login']),
+			'login' => new stdDataPost($this -> cfg['post_login'],null,'Login'),
 
 			# Logout
-			'logout' => new stdDataPost('Logout',$this -> cfg['post_logout']),
+			'logout' => new stdDataPost($this -> cfg['post_logout'],null,'Logout'),
 
 			# Remember me
-			'remember' => new stdDataPost('Remember me',$this -> cfg['post_remember'])
+			'remember' => new stdDataPost($this -> cfg['post_remember'],null,'Remember me')
 				
 		];
 	}

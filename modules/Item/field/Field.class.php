@@ -64,7 +64,7 @@ class Field{
 	 * Initialize print
 	 */
 	public function iniPrint(){
-		$this -> print = new \stdClass();
+		$this -> print = new stdClass();
 		$this -> print -> list = $this -> label;
 		$this -> print -> get = $this -> label;
 		$this -> print -> form = $this -> label;

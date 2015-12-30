@@ -114,6 +114,11 @@ class ItemModel extends Model{
 		return $r;
 	}
 
+	/**
+	 * Add new record
+	 * @param (array) list of all fields
+	 * @return (object stdResponse) result of request
+	 */
 	public function add($f){
 
 		$a = [];
@@ -122,11 +127,29 @@ class ItemModel extends Model{
 		}
 
 		if(DB::table($this -> name) -> insert($a)){
-			return new stdResponse(1,'Added','Success');
+			return new stdResponse(1,'Success','Added');
 		}
 
-		return new stdResponse(0,'Not Added','Error');
+		return new stdResponse(0,'Error','Not Added');
 
+	}
+
+	/**
+	 * Delete a record
+	 * @param (array) list of all fields
+	 * @param (mixed) value of primary key
+	 * @return (object stdResponse) result of request
+	 */
+	public function delete($f,$p){
+
+		$q = DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> delete();
+
+		if($q){
+			return new stdResponse(1,'Success','Deleted');
+		}
+		
+
+		return new stdResponse(0,'Error','Not Deleted');
 
 	}
 

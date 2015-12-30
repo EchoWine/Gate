@@ -8,7 +8,7 @@ class stdData extends stdObject{
 
 	public $value;
 
-	public function __construct($l = null,$f = null,$v = null){
+	public function __construct($f = null,$v = null,$l = null){
 
 		$this -> setLabel($l);
 		$this -> setName($f);

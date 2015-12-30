@@ -1,6 +1,7 @@
 <div id='content'>
 	{{include .main.cat}}
 
+	{{include .response}}
 	<form method='POST'></form>
 	<form method='POST'>
 		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
@@ -41,6 +42,7 @@
 	{{include .main-list.pag}}
 
 	<form method='POST' enctype='multipart/form-data'>
+		<input type='hidden' data-item-table-primary name='{{$item -> button -> primary -> name}}' value='0'>
 		<div class='table-data-filter'>
 			<select class='select n' name='ACTION' id='value_operationMultiple'>
 				<option value=''>Seleziona...</option>
@@ -146,9 +148,11 @@
 						
 						<input type='hidden' name='item[]' value='1'>
 						-->
-						<span type='button' data-button-window='SURE' data-window-value='del_s' class='button a i danger' data-button-action='1' >
-							<span class='fa fa-trash'></span>
-						</span>
+						<button type='submit' class='button' name='{{$item -> button -> action -> name}}' value='{{$item -> button -> action -> valueDelete}}' data-item-table-action='{{$record[$item -> primary -> column]}}'>
+							<span class='button a i danger'>
+								<span class='fa fa-trash'></span>
+							</span>
+						</button>
 					</div>
 				</div>
 			{{endfor}}

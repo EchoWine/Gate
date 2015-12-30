@@ -23,14 +23,21 @@ class ItemController extends Controller{
 	 */
 	public $response = [];
 
+	/**
+	 * Primary
+	 */
+	public $primary;
+
 
 	/**
 	 * Check all the interaction with user
 	 */
 	public function check(){
 		$this -> updateData();
+		$this -> iniButton();
 		
 		$this -> checkAttemptAdd();
+		$this -> checkAttemptDelete();
 	}
 
 	/**
@@ -46,6 +53,18 @@ class ItemController extends Controller{
 	}
 
 	/**
+	 * Check attempt delete
+	 */
+	public function checkAttemptDelete(){
+
+		if($this -> getData('action') -> value == $this -> getActionDelete()){
+
+			$this -> response[] = $this -> model -> delete($this -> model -> fields,$this -> getData('post_primary') -> value);
+
+		}
+	}
+
+	/**
 	 * Retrieve all data sent by user
 	 * @return (array) data
 	 */
@@ -53,13 +72,16 @@ class ItemController extends Controller{
 		return [
 
 			# Page action
-			'page_action' => new stdDataGet('action',Item::$cfg['get_action'],null),
+			'page_action' => new stdDataGet(Item::$cfg['get_action']),
 
 			# Action
-			'action' => new stdDataPost('action',Item::$cfg['post_action'],null),
+			'action' => new stdDataPost(Item::$cfg['post_action']),
 
 			# Page
-			'page' => new stdDataGet('page',Item::$cfg['get_page'],1),
+			'page' => new stdDataGet(Item::$cfg['get_page'],1),
+
+			# Post primary
+			'post_primary' => new stdDataPost(Item::$cfg['post_primary']),
 
 		];
 	}
@@ -68,9 +90,16 @@ class ItemController extends Controller{
 	 * Initialize
 	 */
 	public function ini(){
-		$this -> iniButton();
+		$this -> iniPrimary();
 		$this -> iniFieldsList();
 		$this -> iniFieldsAdd();
+	}
+
+	/**
+	 * Initialize primary
+	 */
+	public function iniPrimary(){
+		$this -> primary = $this -> model -> primary;
 	}
 
 	/**
@@ -78,7 +107,6 @@ class ItemController extends Controller{
 	 */
 	public function iniList(){
 		$this -> list = new stdClass();
-
 		$this -> iniPagination();
 	}
 
@@ -94,27 +122,46 @@ class ItemController extends Controller{
 	 */
 	public function iniButton(){
 		$this -> button = new stdClass();
-		$this -> iniAdd();
-		$this -> iniToAdd();
-		$this -> iniToList();
+		$this -> iniButtonAdd();
+		$this -> iniButtonToAdd();
+		$this -> iniButtonToList();
+		$this -> iniButtonPrimary();
 	}
 
 	/**
 	 * Initialize button toAdd
 	 */
-	public function iniToAdd(){
+	public function iniButtonToAdd(){
 		$this -> button -> toAdd = (object)[
 			'url' => $this -> getUrlPageAdd(),
 		];
 	}
 
 	/**
+	 * Initialize button primary
+	 */
+	public function iniButtonPrimary(){
+		$this -> button -> primary = $this -> getData('post_primary');
+	}
+
+	/**
 	 * Initialize button action
 	 */
-	public function iniAdd(){
+	public function iniButtonAdd(){
 		$this -> button -> action = (object)[
-			'name' => Item::$cfg['post_action'],
+			'name' => $this -> getData('action') -> name,
+			'value' => $this -> getData('action') -> value,
 			'valueAdd' => $this -> getActionAdd(),
+			'valueDelete' => $this -> getActionDelete(),
+		];
+	}
+
+	/**
+	 * Initialize button toList
+	 */
+	public function iniButtonToList(){
+		$this -> button -> toList = (object)[
+			'url' => $this -> getUrlPageList(),
 		];
 	}
 
@@ -126,14 +173,12 @@ class ItemController extends Controller{
 		return Item::$cfg['action']['add'];
 	}
 
-
 	/**
-	 * Initialize button toList
+	 * Get the value of action delete
+	 * @return (string) action delete
 	 */
-	public function iniToList(){
-		$this -> button -> toList = (object)[
-			'url' => $this -> getUrlPageList(),
-		];
+	public function getActionDelete(){
+		return Item::$cfg['action']['delete'];
 	}
 
 	/**

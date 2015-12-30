@@ -9,6 +9,14 @@ class View{
 	public function __construct($model,$controller){
 		$this -> model = $model;
 		$this -> controller = $controller;
+		$this -> ini();
+	}
+
+	/** 
+	 * Initialization
+	 */
+	public function ini(){
+
 	}
 
 }

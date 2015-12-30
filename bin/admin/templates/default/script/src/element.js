@@ -15,18 +15,29 @@ Element.prototype.remove = function(){
 };
 
 
-getElementsByAttribute = function(att){
-	matchingElements = [];
-	allElements = document.getElementsByTagName('*');
-	for(i = 0, n = allElements.length; i < n; i++){
-		if(allElements[i].hasAttribute(att)){
-			matchingElements.push(allElements[i]);
+Element.prototype.getElementsByAttribute = function(att){
+	r = [];
+	a = this.getElementsByTagName('*');
+	for(i = 0, n = a.length; i < n; i++){
+		if(a[i].hasAttribute(att)){
+			r.push(a[i]);
 		}
 	}
 	
-	if(isEmpty(matchingElements)) return null;
-	return matchingElements;
+	if(isEmpty(r)) return null;
+	return r;
 };
+
+Document.prototype.getElementsByAttribute = Element.prototype.getElementsByAttribute;
+
+Element.prototype.getParentWithTag = function(tagName){
+	node = this;
+	while(node != null &&  node.tagName != tagName){
+		node = node.parentNode;
+	}
+	return node;
+};
+
 
 Array.prototype.remove = function() {
 	var what, a = arguments, L = a.length, ax;

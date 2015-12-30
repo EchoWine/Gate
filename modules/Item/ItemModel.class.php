@@ -122,9 +122,10 @@ class ItemModel extends Model{
 		}
 
 		if(DB::table($this -> name) -> insert($a)){
-			die('Success');
+			return new stdResponse(1,'Added','Success');
 		}
-		die('Error');
+
+		return new stdResponse(0,'Not Added','Error');
 
 
 	}

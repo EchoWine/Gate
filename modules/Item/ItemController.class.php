@@ -19,10 +19,17 @@ class ItemController extends Controller{
 	public $button;
 
 	/**
+	 * Response
+	 */
+	public $response = [];
+
+
+	/**
 	 * Check all the interaction with user
 	 */
 	public function check(){
 		$this -> updateData();
+		
 		$this -> checkAttemptAdd();
 	}
 
@@ -33,7 +40,7 @@ class ItemController extends Controller{
 
 		if($this -> getData('action') -> value == $this -> getActionAdd()){
 
-			$this -> model -> add($this -> model -> fields);
+			$this -> response[] = $this -> model -> add($this -> model -> fields);
 
 		}
 	}

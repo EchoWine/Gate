@@ -35,7 +35,7 @@
 
 		$View -> setCat();
 		$View -> setTitle();
-		
+
 		# Check all information (data)
 		$Controller -> check();
 

@@ -2,19 +2,30 @@
 
 class Password extends _String{
 	
-	
+
 	public function iniLabel(){
 		$this -> label = 'Password';
 	}
 
 	/**
-	 * Add the field to the query 'add'
-	 * @param $a (array) array used in the query
+	 * Initialize print
 	 */
-	public function add(&$a){
-		if($this -> getAdd()){
-			$a[$this -> getColumnName()] = AuthModel::getHashPass($this -> getFormValue());
-		}
+	public function iniPrint(){
+		$this -> print = (object)[
+			'list' => null,
+			'get' => null,
+			'form' => $this -> label,
+			'value' => false
+		];
+	}
+
+	/**
+	 * Prepare value field to query
+	 * @param $v (mixed) value of field
+	 * @param (mixed) value prepared
+	 */
+	public function dbValue($v){
+		return AuthModel::getHashPass($v);
 	}
 }
 ?>

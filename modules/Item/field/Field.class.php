@@ -32,6 +32,12 @@ class Field{
 	 */
 	public $edit = true;
 
+
+	/**
+	 * Where print the field
+	 */
+	public $print = [];
+
 	/**
 	 * Construct
 	 * @param $n name
@@ -69,11 +75,42 @@ class Field{
 	 * Initialize print
 	 */
 	public function iniPrint(){
-		$this -> print = new stdClass();
-		$this -> print -> list = $this -> label;
-		$this -> print -> get = $this -> label;
-		$this -> print -> form = $this -> label;
+		$this -> print = (object)[
+			'list' => $this -> label,
+			'get' => $this -> label,
+			'form' => $this -> label,
+			'value' => true,
+		];
 	}
+
+	/**
+	 * Get printList
+	 */
+	public function getPrintList(){
+		return $this -> print -> list;
+	}
+
+	/**
+	 * Get printGet
+	 */
+	public function getPrintGet(){
+		return $this -> print -> get;
+	}
+
+	/**
+	 * Get printForm
+	 */
+	public function getPrintForm(){
+		return $this -> print -> form;
+	}
+
+	/**
+	 * Get printValue
+	 */
+	public function getPrintValue(){
+		return $this -> print -> value;
+	}
+
 
 	/**
 	 * Set model
@@ -122,6 +159,23 @@ class Field{
 	}
 
 	/**
+	 * Get form value
+	 * @return (mixed) form value
+	 */
+	public function getFormValue(){
+		return $this -> form -> value;
+	}
+
+	/**
+	 * Get form value to print
+	 * @param $r (array) result
+	 * @return (mixed) form value
+	 */
+	public function printValue($r){
+		return $this -> getPrintValue() ? $r[$this -> getColumnName()] : '';
+	}
+
+	/**
 	 * Get path of input
 	 * @return (string) path
 	 */
@@ -138,20 +192,12 @@ class Field{
 	}
 
 	/**
-	 * Get form value
-	 * @return (mixed) form value
-	 */
-	public function getFormValue(){
-		return $this -> form -> value;
-	}
-
-	/**
 	 * Add the field to the query 'add'
 	 * @param $a (array) array used in the query
 	 */
 	public function add(&$a){
 		if($this -> getAdd()){
-			$a[$this -> getColumnName()] = $this -> getFormValue();
+			$a[$this -> getColumnName()] = $this -> dbValue($this -> getFormValue());
 		}
 	}
 
@@ -169,9 +215,20 @@ class Field{
 	 */
 	public function edit(&$a){
 		if($this -> getEdit()){
-			$a[$this -> getColumnName()] = $this -> getFormValue();
+			$a[$this -> getColumnName()] = $this -> dbValue($this -> getFormValue());
 		}
 	}
+
+	/**
+	 * Prepare value field to query
+	 * @param $v (mixed) value of field
+	 * @param (mixed) value prepared
+	 */
+	public function dbValue($v){
+		return $v;
+	}
+	
+
 	/**
 	 * Is operation edit enabled
 	 * @return (bool) result

@@ -308,7 +308,8 @@ class ItemController extends Controller{
 	public function getFieldsList(){
 		$r = [];
 		foreach($this -> model -> fields as $k){
-			$r[] = $k;
+			if($k -> getPrintList() !== null)
+				$r[] = $k;
 		}
 
 		return $r;
@@ -321,7 +322,7 @@ class ItemController extends Controller{
 	public function getFieldsAdd(){
 		$r = [];
 		foreach($this -> model -> fields as $k){
-			if($k -> getAdd())
+			if($k -> getPrintForm() !== null && $k -> getAdd())
 				$r[] = $k;
 		}
 
@@ -335,7 +336,7 @@ class ItemController extends Controller{
 	public function getFieldsEdit(){
 		$r = [];
 		foreach($this -> model -> fields as $k){
-			if($k -> getEdit())
+			if($k -> getPrintForm() !== null && $k -> getEdit())
 				$r[] = $k;
 		}
 

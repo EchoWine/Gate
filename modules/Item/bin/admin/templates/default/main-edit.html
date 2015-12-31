@@ -44,7 +44,7 @@
 							<div class='data'>
 								{{include $field -> getPathInputData() {
 									$name = $field -> getFormName(),
-									$value = $result -> record[$field -> getColumnName()]
+									$value = $field -> printValue($result -> record)
 								}}}
 							</div>
 						</div>

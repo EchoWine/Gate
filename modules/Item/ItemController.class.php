@@ -88,7 +88,11 @@ class ItemController extends Controller{
 			'page_action' => new stdDataGet(Item::$cfg['get_action']),
 
 			# Action
-			'action' => new stdDataPost(Item::$cfg['post_action']),
+			'action' => new stdDataPost(Item::$cfg['post_action'],null,null,[
+				'add' => 'add',
+				'edit' => 'edit',
+				'delete' => 'del',
+			]),
 
 			# Page
 			'page' => new stdDataGet(Item::$cfg['get_page'],1),

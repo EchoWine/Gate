@@ -8,11 +8,14 @@ class stdData extends stdObject{
 
 	public $value;
 
-	public function __construct($f = null,$v = null,$l = null){
+	public $option;
+
+	public function __construct($f = null,$v = null,$l = null,$o = null){
 
 		$this -> setLabel($l);
 		$this -> setName($f);
 		$this -> setValue($f,$v);
+		$this -> setOption($o);
 	}
 
 	public function setLabel($v = 'Default Label'){
@@ -32,6 +35,12 @@ class stdData extends stdObject{
 		}
 
 		$this -> value = $v;
+
+	}
+
+	public function setOption($v){
+
+		$this -> option = $v;
 
 	}
 }

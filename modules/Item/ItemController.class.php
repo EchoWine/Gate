@@ -38,6 +38,7 @@ class ItemController extends Controller{
 		
 		$this -> checkAttemptAdd();
 		$this -> checkAttemptDelete();
+		$this -> checkAttemptEdit();
 	}
 
 	/**
@@ -48,6 +49,18 @@ class ItemController extends Controller{
 		if($this -> getData('action') -> value == $this -> getActionAdd()){
 
 			$this -> response[] = $this -> model -> add($this -> model -> fields);
+
+		}
+	}
+
+	/**
+	 * Check attempt edit data
+	 */
+	public function checkAttemptEdit(){
+
+		if($this -> getData('action') -> value == $this -> getActionEdit()){
+
+			$this -> response[] = $this -> model -> edit($this -> model -> fields,$this -> getData('post_primary') -> value);
 
 		}
 	}
@@ -83,6 +96,9 @@ class ItemController extends Controller{
 			# Post primary
 			'post_primary' => new stdDataPost(Item::$cfg['post_primary']),
 
+			# get primary
+			'get_primary' => new stdDataGet(Item::$cfg['get_primary']),
+
 		];
 	}
 
@@ -93,6 +109,7 @@ class ItemController extends Controller{
 		$this -> iniPrimary();
 		$this -> iniFieldsList();
 		$this -> iniFieldsAdd();
+		$this -> iniFieldsEdit();
 	}
 
 	/**
@@ -123,6 +140,7 @@ class ItemController extends Controller{
 	public function iniButton(){
 		$this -> button = new stdClass();
 		$this -> iniButtonAdd();
+		$this -> iniButtonToEdit();
 		$this -> iniButtonToAdd();
 		$this -> iniButtonToList();
 		$this -> iniButtonPrimary();
@@ -134,6 +152,15 @@ class ItemController extends Controller{
 	public function iniButtonToAdd(){
 		$this -> button -> toAdd = (object)[
 			'url' => $this -> getUrlPageAdd(),
+		];
+	}
+
+	/**
+	 * Initialize button toEdit
+	 */
+	public function iniButtonToEdit(){
+		$this -> button -> toEdit = (object)[
+			'url' => $this -> getUrlPageEdit(),
 		];
 	}
 
@@ -153,6 +180,7 @@ class ItemController extends Controller{
 			'value' => $this -> getData('action') -> value,
 			'valueAdd' => $this -> getActionAdd(),
 			'valueDelete' => $this -> getActionDelete(),
+			'valueEdit' => $this -> getActionEdit(),
 		];
 	}
 
@@ -182,6 +210,14 @@ class ItemController extends Controller{
 	}
 
 	/**
+	 * Get the value of action edit
+	 * @return (string) action edit
+	 */
+	public function getActionEdit(){
+		return Item::$cfg['action']['edit'];
+	}
+
+	/**
 	 * Get all result
 	 * @return (object) results
 	 */
@@ -198,6 +234,21 @@ class ItemController extends Controller{
 
 		# Get records
 		$r -> records = $this -> model -> getResults($this -> getResultStartFrom(),$this -> getResultPerPage());
+
+		return $r;
+	}
+
+	/**
+	 * Get result by primary
+	 * @return (object) results
+	 */
+	public function getResultByPrimary(){
+
+		# Initialization
+		$r = new stdClass();
+
+		# Get records
+		$r -> record = $this -> model -> getResultByPrimary($this -> getData('get_primary') -> value);
 
 		return $r;
 	}
@@ -299,11 +350,30 @@ class ItemController extends Controller{
 	}
 
 	/**
+	 * Get the value of action page edit
+	 * @return (string) action page edit
+	 */
+	public function getPageActionEdit(){
+		return Item::$cfg['action']['edit'];
+	}
+
+	/**
 	 * Get the url to the add action page
 	 * @return (string) url
 	 */
 	public function getUrlPageAdd(){
-		return $this -> getUrlMainPage().'&amp;'.Item::$cfg['get_action'].'='.Item::$cfg['action']['add'];
+		return $this -> getUrlMainPage().'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionAdd();
+	}
+
+	/**
+	 * Get the url to the edit action page
+	 * @param $p (mixed) primary key value
+	 * @return (string) url
+	 */
+	public function getUrlPageEdit($p = ''){
+		return $this -> getUrlMainPage().
+		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionEdit().
+		'&amp;'.Item::$cfg['get_primary'].'='.$p;
 	}
 	
 	/**
@@ -349,6 +419,27 @@ class ItemController extends Controller{
 		$r = [];
 		foreach($this -> model -> fields as $k){
 			if($k -> getAdd())
+				$r[] = $k;
+		}
+
+		return $r;
+	}
+
+	/**
+	 * Initialize the field edit
+	 */
+	public function iniFieldsEdit(){
+		$this -> fieldsEdit = $this -> getFieldsAdd();
+	}
+
+	/**
+	 * Get all fields 
+	 * @return (array) array of fields
+	 */
+	public function getFieldsEdit(){
+		$r = [];
+		foreach($this -> model -> fields as $k){
+			if($k -> getEdit())
 				$r[] = $k;
 		}
 

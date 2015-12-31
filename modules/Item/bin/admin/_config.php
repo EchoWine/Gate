@@ -6,6 +6,7 @@ return [
 	'post_action' => 'a',
 
 
+	'get_primary' => 'id',
 	'post_primary' => 'primary',
 	'get_page' => 's',
 
@@ -13,6 +14,7 @@ return [
 	'action' => [
 		'add' => 'add',
 		'delete' => 'del',
+		'edit' => 'edit',
 	]
 	
 ];

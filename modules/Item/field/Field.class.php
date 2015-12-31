@@ -28,6 +28,11 @@ class Field{
 	public $add = true;
 
 	/**
+	 * Is operation edit enabled
+	 */
+	public $edit = true;
+
+	/**
 	 * Construct
 	 * @param $n name
 	 */
@@ -157,6 +162,25 @@ class Field{
 	public function getAdd(){
 		return $this -> add;
 	}
+
+	/**
+	 * Add the field to the query 'edit'
+	 * @param $a (array) array used in the query
+	 */
+	public function edit(&$a){
+		if($this -> getEdit()){
+			$a[$this -> getColumnName()] = $this -> getFormValue();
+		}
+	}
+	/**
+	 * Is operation edit enabled
+	 * @return (bool) result
+	 */
+	public function getEdit(){
+		return $this -> edit;
+	}
+
+
 
 }
 ?>

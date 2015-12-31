@@ -68,8 +68,8 @@ class ItemModel extends Model{
 	 * @param $p (mixed) value of primary key
 	 * @return (array) query result
 	 */
-	public function getByPrimary($p){
-		return DB::table($this -> name) -> where($this -> primary,$p) -> get();
+	public function getResultByPrimary($p){
+		return DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> get();
 	}
 
 	/**
@@ -116,7 +116,7 @@ class ItemModel extends Model{
 
 	/**
 	 * Add new record
-	 * @param (array) list of all fields
+	 * @param $f (array) list of all fields
 	 * @return (object stdResponse) result of request
 	 */
 	public function add($f){
@@ -136,8 +136,8 @@ class ItemModel extends Model{
 
 	/**
 	 * Delete a record
-	 * @param (array) list of all fields
-	 * @param (mixed) value of primary key
+	 * @param $f (array) list of all fields
+	 * @param $p (mixed) value of primary key
 	 * @return (object stdResponse) result of request
 	 */
 	public function delete($f,$p){
@@ -153,6 +153,30 @@ class ItemModel extends Model{
 
 	}
 
+
+	/**
+	 * Edit a record
+	 * @param $f (array) list of all fields
+	 * @param $p (mixed) value of primary key
+	 * @return (object stdResponse) result of request
+	 */
+	public function edit($f,$p){
+
+		$a = [];
+		foreach($f as $k){
+			$k -> edit($a);
+		}
+
+		$q = DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> update($a);
+
+		if($q){
+			return new stdResponse(1,'Success','Edited');
+		}
+
+
+		return new stdResponse(0,'Error','Not Edited');
+
+	}
 
 }
 

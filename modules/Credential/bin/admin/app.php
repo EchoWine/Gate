@@ -45,6 +45,14 @@
 				# Set current page to Add
 				$View -> setPageAdd();
 			break;
+			case $Controller -> getPageActionEdit():
+
+				# Get results for list
+				$result = $Controller -> getResultByPrimary();
+				
+				# Set current page to Add
+				$View -> setPageEdit();
+			break;
 			default:
 
 				# Ini list

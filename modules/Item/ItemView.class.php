@@ -26,6 +26,10 @@ class ItemView extends View{
 		Module::TemplateOverwrite('content','main-add');
 	}
 
+	public function setPageEdit(){
+		Module::TemplateOverwrite('content','main-edit');
+	}
+
 }
 
 ?>

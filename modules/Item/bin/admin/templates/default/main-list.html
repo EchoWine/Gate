@@ -142,12 +142,13 @@
 						</button>
 						<a data-button href='?p=data&amp;cat=view&amp;id=1' class='button a i info' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per visualizzare i dettagli di questo record' > <span class='fa fa-file-text'></span> 
 						</a>
-						<a data-button href='?p=data&amp;cat=edit&amp;id=1' class='button a i warning' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per modificare il record' >
-						<span class='fa fa-pencil'></span>
+						-->
+						<a data-button href='{{$item -> button -> toEdit -> url}}{{$record[$item -> primary -> column]}}' class='button a i warning'>
+							<span class='fa fa-pencil'></span>
 						</a>
 						
 						<input type='hidden' name='item[]' value='1'>
-						-->
+						
 						<button type='submit' class='button' name='{{$item -> button -> action -> name}}' value='{{$item -> button -> action -> valueDelete}}' data-item-table-action='{{$record[$item -> primary -> column]}}'>
 							<span class='button a i danger'>
 								<span class='fa fa-trash'></span>

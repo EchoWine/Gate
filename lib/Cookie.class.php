@@ -1,13 +1,13 @@
 <?php
 /**
- * Libreria che gestisce cookie e sessioni
+ * Cookie and session managment
  */
 class Cookie{
 
 	public static $CONFIG;
 
 	/**
-	 * Inizializza la classe
+	 * Initialization
 	 */
 	public static function ini(){
 
@@ -28,7 +28,7 @@ class Cookie{
 	}
 
 	/**
-	 * Avvia una sessione
+	 * Start a session
 	 */
 	public static function startSession(){
 
@@ -36,7 +36,7 @@ class Cookie{
 	}
 			
 	/**
-	 * Distrugge ed elimina ogni valore della sessione
+	 * Destroy a session
 	 */
 	public static function destroySession(){
 		session_unset();
@@ -45,63 +45,63 @@ class Cookie{
 
 
 	/**
-	 * "unsetta" una sessione
+	 * Unset session
 	 * 
-	 * @param string $name	  Il nome della sessione
+	 * @param string $name	  Session name
 	 */
 	public static function sessionUnset($name){
 		unset($_SESSION[$name]);
 	}
 
 	/**
-	 * Ritorna true se esiste un cookie con quel nome, altrimenti ritorna false.
+	 * Check if the cookie exists
 	 * 
-	 * @param $name	 Il nome del cookie
-	 * @return bool	 True se esiste, false altrimenti
+	 * @param $name	 Cookie name
+	 * @return bool	 True if exists, else otherwise
 	 */
 	public static function exist($name){
 		return isset($_COOKIE[$name]);
 	}
 
 	/**
-	 * Ritorna vero se non esiste un cookie con quel nome oppure se è vuoto (vedi http://php.net/empty ) o ha valore 0
+	 * Check if the cookie is empty or if it doesn't exist
 	 * 
-	 * @param $name			 Il nome del cookie
-	 * @return bool			 Vero se non esiste, ha valore zero o se è vuoto. False altrimenti.
+	 * @param $name			Cookie name
+	 * @return bool			True if is empty or if it doens't exists, false otherwise
 	 */
 	public static function isEmpty($name){
 		$cookie = self::getCookie($name);
-		return empty($cookie); // In alcune versioni di PHP bisogna usare una variabile altrimenti si ottiene un errore
+		return empty($cookie);
 	}
 
 	/**
-	 * Restituisce il valore di una sessione
+	 * Return a session value
 	 * 
-	 * @param string $name	  Il nome della sessione
-	 * @param string $default   [opzionale] Il valore che viene ritornato se la sessione non esiste
-	 * @return string		   Il valore della sessione
+	 * @param string $name	  Session name
+	 * @param string $default  [optional] Default value if the session doesn't exist
+	 * @return string		  Session value
 	 */
 	public static function getSession($name, $default = ''){
 		return (isset($_SESSION[$name]) ? $_SESSION[$name] : $default);
 	}
 	
 	/**
-	 * Imposta una sessione (la crea se non esiste, altrimenti la aggiorna)
+	 * Set or update a session
 	 * 
-	 * @param string $name	  Il nome della sessione
-	 * @param string $value	 Il valore della sessione
+	 * @param string $name	  Session name
+	 * @param string $value	  Session value
 	 */
 	public static function setSession($name, $value){
 		$_SESSION[$name] = $value;
 	}
 	
 	/**
-	 * Funzione che restituisce il valore del cookie o della sessione
+	 * Return the value of a cookie or a session
 	 * 
-	 * @param string $type	  Sesisone o Cookie
-	 * @param string $name	  Nome della sessione o del cookie
-	 * @param string $default   [opzionale] Il valore che viene ritornato se il cookie o la sessione non esiste.
-	 * @return string		   Il valore del cookie o della sessione
+	 * @param string $type	  Session or cookie
+	 * @param string $name	  Session/cookie name
+	 * @param string $default  [optional] Default value if the cookie/session doesn't exist
+	 * @return string		  Session/cookie value
 	 */
 	public static function get($type, $name, $default){
 		switch($type){
@@ -116,16 +116,16 @@ class Cookie{
 	}   
 	
 	/**
-	 * Imposta un cookie o una sessione (aggiornando se già esistenti)
+	 * Set a cookie or a session
 	 * 
-	 * @param string $type	  Sessione o Cookie
-	 * @param string $name	  Il nome del cookie/sessione
-	 * @param string $value	 Il valore del cookie/sessione
-	 * @param int $expiry	   [cookie only][opzionale] Fra quanto tempo deve scadere il cookie (default = un giorno)
-	 * @param string $path	  [cookie only][opzionale] Il percorso nel quale il cookie sarà valido (default = /)
-	 * @param bool $forceSSL	[cookie only][opzionale] Imposta se il cookie è utilizzabile solo durante connessioni sicure (SSL) (default = false, ottiene dal config)
-	 * @param bool $httpOnly	[cookie only][opzionale] Se attivo impedisce l'utilizzo di cookie al di fuori delle chiamate http (es. javascript) (default = false, ottiene dal config)
-	 * @return bool			 Ritorna false se ci sono stati problemi, true altrimenti
+	 * @param string $type	       Session or cookie
+	 * @param string $name	       Session/cookie name
+	 * @param string $value	       Session/cookie value
+	 * @param int $expiry	       [cookie only][optional] Duration of a cookie (example: one day)
+	 * @param string $path	       [cookie only][optional] Cookie path
+	 * @param bool $forceSSL      [cookie only][optional] Cookie is valid only on SSL connection
+	 * @param bool $httpOnly      [cookie only][optional] Cookie valid only inside HTTP calls (no JavaScript)
+	 * @return bool		       True if there is an error, false otherwise
 	 */
 	public static function set($type, $name, $expiry = 86400, $path = '/', $forceSSL = '', $httpOnly = ''){
 		switch($type){
@@ -140,26 +140,26 @@ class Cookie{
 	} 
 	
 	/**
-	 * Funzione che restituisce il valore del cookie
+	 * Return the value of a cookie
 	 * 
-	 * @param string $name	  Nome del cookie
-	 * @param string $default   [opzionale] Il valore che viene ritornato se il cookie non esiste.
-	 * @return string		   Il valore del cookie
+	 * @param string $name	    Cookie name
+	 * @param string $default   [optional] Default value if the cookie doesn't exist
+	 * @return string		    Cookie value
 	 */
 	public static function getCookie($name, $default = ''){
 		return (isset($_COOKIE[$name]) ? $_COOKIE[$name] : $default);
 	}
 
 	/**
-	 * Imposta un cookie (lo crea se non esiste, altrimenti lo aggiorna)
+	 * Set or update a cookie
 	 * 
-	 * @param string $name Il nome del cookie
-	 * @param string $value	Il valore del cookie
-	 * @param int $expiry [opzionale] Fra quanto tempo deve scadere il cookie (default = un giorno)
-	 * @param string $path [opzionale] Il percorso nel quale il cookie sarà valido (default = /)
-	 * @param bool $forceSSL [opzionale] Imposta se il cookie è utilizzabile solo durante connessioni sicure (SSL) (default = false, ottiene dal config)
-	 * @param bool $httpOnly [opzionale] Se attivo impedisce l'utilizzo di cookie al di fuori delle chiamate http (es. javascript) (default = false, ottiene dal config)
-	 * @return bool Ritorna false se ci sono stati problemi, true altrimenti
+	 * @param string $name  Cookie name
+	 * @param string $value	Cookie value
+	 * @param int $expiry	       [cookie only][optional] Duration of a cookie (example: one day)
+	 * @param string $path	       [cookie only][optional] Cookie path
+	 * @param bool $forceSSL      [cookie only][optional] Cookie is valid only on SSL connection
+	 * @param bool $httpOnly      [cookie only][optional] Cookie valid only inside HTTP calls (no JavaScript)
+	 * @return bool		       True if there is an error, false otherwise
 	 */
 	public static function setCookie($name, $value, $expiry = 86400, $path = '/', $forceSSL = '', $httpOnly = ''){
 		
@@ -176,7 +176,7 @@ class Cookie{
 			   $httpOnly = self::$CONFIG['COOKIES_HTTP_ONLY'];
 			}
 			
-			# Ottiene il dominio tramite la classe 'information'
+			# Ottiene il dominio tramite la classe 'information' <-- deprecated
 			$domain = $_SERVER['SERVER_NAME'] == "localhost" ? NULL : $_SERVER['SERVER_NAME'];
 			
 			$expiry = (int)$expiry;
@@ -193,12 +193,12 @@ class Cookie{
 	}
 
 	/**
-	 * Elimina un cookie
+	 * Delete a cookie
 	 *
-	 * @param string $name		  Il nome del cookie
-	 * @param string $path		  [opzionale] Il percorso nel quale il cookie sarà valido (default = /)
-	 * @param bool $removeNow	   Se true rimuove il cookie anche dal global (senza ricaricare la pagina)   
-	 * @return bool				 Ritorna false se ci sono stati problemi, true altrimenti
+	 * @param string $name		  Cookie name
+	 * @param string $path		  [cookie only][optional] Cookie path
+	 * @param bool $removeNow	  If true remove cookie without reloading the page  
+	 * @return bool		          True if there is an error, false otherwise
 	 */
 	public static function removeCookie($name, $path = '/', $removeNow = false){
 		$returnCode = false;
@@ -213,7 +213,7 @@ class Cookie{
 	/**
 	 * Delete a session
 	 * 
-	 * @param string $name Name of session
+	 * @param string $name Session name
 	 */
 	public static function removeSession($name){
 		unset($_SESSION[$name]);

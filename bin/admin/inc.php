@@ -11,7 +11,7 @@
 
 
 	include PATH_LIB."/dependence.class.php";
-	dependence::load();
+	dependence::ini();
 
 	include PATH_LIB."/main.fun.php";
 	include PATH_LIB."/stdObject.class.php";

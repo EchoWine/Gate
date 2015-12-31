@@ -42,7 +42,7 @@ class AuthModel extends Model{
 
 		DB::table($table) -> column($col['id']) -> type('id') -> alter();
 		DB::table($table) -> column($col['user']) -> type('string') -> alter();
-		DB::table($table) -> column($col['pass']) -> type('string') -> alter();
+		DB::table($table) -> column($col['pass']) -> type('VARCHAR(128)') -> alter();
 		DB::table($table) -> column($col['mail']) -> type('string') -> alter();
 
 		if(DB::table($table) -> count() == 0){
@@ -156,6 +156,8 @@ class AuthModel extends Model{
 
 		$type = $type == 1 ? $cfg['remember'] : $cfg['normal'];
 
+		$pass = self::getHashPass($pass);
+		
 		$q = DB::table($c_table) -> where($c_col['pass'],$pass);
 		
 		if($cfg['login_user'] == 1)
@@ -168,7 +170,6 @@ class AuthModel extends Model{
 
 		$r = [];
 
-		$pass = self::getHashPass($pass);
 		
 		$cq = count($q);
 
@@ -243,12 +244,11 @@ class AuthModel extends Model{
 
 	/**
 	 * Get hash password
-	 * @param (string) password
+	 * @param $v (string) password
 	 * @return (string) hash password
 	 */
-	public static function getHashPass($p){
-		# return sha1($p);
-		return $p;
+	public static function getHashPass($v){
+		return hash('sha512',sha1($v).$v); 
 	}
 
 	/**

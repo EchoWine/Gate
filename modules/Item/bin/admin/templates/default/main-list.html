@@ -10,7 +10,7 @@
 			{{include .main.title {$actionPage = 'list'}}}
 
 
-			<a href='{{$item -> button -> toAdd -> url}}' class='button a success'>
+			<a href='{{$item -> getUrlPageAdd()}}' class='button a success'>
 				<span class='fa fa-plus-circle'></span> Aggiungi
 			</a>
 			
@@ -42,7 +42,7 @@
 	{{include .main-list.pag}}
 
 	<form method='POST' enctype='multipart/form-data'>
-		<input type='hidden' data-item-table-primary name='{{$item -> button -> primary -> name}}' value='0'>
+		<input type='hidden' data-item-table-primary name="{{$item -> getDataName('post_primary')}}" value='0'>
 		<div class='table-data-filter'>
 			<select class='select n' name='ACTION' id='value_operationMultiple'>
 				<option value=''>Seleziona...</option>
@@ -69,9 +69,9 @@
 					<input type='checkbox' class='check b d' id='check-all0'>
 					<label class='noselect m-5' for='check-all0'><span></span></label>
 				</div>
-
-				{{for $item -> fieldsList as $field}}
-
+				
+				{{for $item -> getFieldsList() as $field}}
+					
 					<a href='#' > 
 						<span class='title'>{{$field -> label}}</span>
 						<!--
@@ -89,7 +89,7 @@
 			<div class='row search' id='dataTable_searchBar'>
 				<div class='check-row'></div>
 
-				{{for $item -> fieldsList as $field}}
+				{{for $item -> getFieldsList() as $field}}
 
 					
 					<div data-search-data='search_button_send'>
@@ -124,7 +124,7 @@
 						<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_{{$i}}' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_{{$i++}}'><span></span></label>
 					</div>
 
-					{{for $item -> fieldsList as $field}}
+					{{for $item -> getFieldsList() as $field}}
 						<div class='info string'><div>{{$record[$field -> column]}}</div></div>
 					{{endfor}}
 
@@ -143,13 +143,13 @@
 						<a data-button href='?p=data&amp;cat=view&amp;id=1' class='button a i info' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per visualizzare i dettagli di questo record' > <span class='fa fa-file-text'></span> 
 						</a>
 						-->
-						<a data-button href='{{$item -> button -> toEdit -> url}}{{$record[$item -> primary -> column]}}' class='button a i warning'>
+						<a data-button href='{{$item -> getUrlPageEdit($record[$item -> primary -> column])}}' class='button a i warning'>
 							<span class='fa fa-pencil'></span>
 						</a>
 						
 						<input type='hidden' name='item[]' value='1'>
 						
-						<button type='submit' class='button' name='{{$item -> button -> action -> name}}' value='{{$item -> button -> action -> valueDelete}}' data-item-table-action='{{$record[$item -> primary -> column]}}'>
+						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete')}}' data-item-table-action='{{$record[$item -> primary -> column]}}'>
 							<span class='button a i danger'>
 								<span class='fa fa-trash'></span>
 							</span>

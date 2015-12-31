@@ -44,31 +44,40 @@ class Controller{
 	}
 
 	/**
-	 * Get name (used in form) of data
-	 * @param (string) $v name of data
+	 * Get name (used in form) data
+	 * @param $v (string)  name data
 	 * @return (string) name
 	 */
-	public function getNameData($v){
+	public function getDataName($v){
 		return isset($this -> data[$v]) ? $this -> data[$v] -> name : 'null';
 	}
 	
 	/**
-	 * Get value (get by form) of data
-	 * @param (string) $v name of data
+	 * Get value (get by form) data
+	 * @param $v (string) name data
 	 * @return (mixed) value
 	 */
-	public function getValueData($v){
+	public function getDataValue($v){
 		return isset($this -> data[$v]) ? $this -> data[$v] -> value : 'null';
 	}
 
 	/**
-	 * Get label (used in form) of data
-	 * @param (string) $v name of data
+	 * Get label (used in form) data
+	 * @param $v (string) name data
 	 * @return (string) label
 	 */
-	public function getLabelData($v){
+	public function getDataLabel($v){
 		return isset($this -> data[$v]) ? $this -> data[$v] -> label : 'null';
 	}
 
+	/**
+	 * Get option of data
+	 * @param $v (string) name data
+	 * @param $o (string) name option
+	 * @return (string) option
+	 */
+	public function getDataOption($v,$o){
+		return isset($this -> data[$v]) ? $this -> data[$v] -> option[$o] : 'null';
+	}
 }
 ?>

@@ -10,13 +10,14 @@
 				<span class='fa fa-cogs'></span>
 				Preferenze 
 			</a>-->
-			<input type='hidden' name='{{$item -> button -> primary -> name}}' value='{{$result -> record[$item -> primary -> getColumnName()]}}'>
 
-			<a href='{{$item -> button -> toList -> url}}' class='button a primary'>
+			<input type='hidden' name="{{$item -> getDataName('post_primary')}}" value='{{$result -> record[$item -> primary -> getColumnName()]}}'>
+
+			<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
 				<span class='fa fa-arrow-circle-left'></span> Torna alla lista
 			</a>
 
-			<button type='submit' class='button' name='{{$item -> button -> action -> name}}' value='{{$item -> button -> action -> valueEdit}}'>
+			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','edit')}}'>
 				<div class='button a warning'>
 					<span class='fa fa-plus-circle'></span> Salva le modifiche
 				</div>
@@ -37,7 +38,7 @@
 				<fieldset class='manage-data'>
 					<legend> Generale </legend>
 
-					{{for $item -> fieldsEdit as $field}}
+					{{for $item -> getFieldsEdit() as $field}}
 						<div class='field'>
 							<label>{{$field -> label}}: </label>
 							<div class='data'>

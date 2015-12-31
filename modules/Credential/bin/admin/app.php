@@ -54,10 +54,6 @@
 				$View -> setPageEdit();
 			break;
 			default:
-
-				# Ini list
-				$Controller -> iniList();
-
 				# Get results for list
 				$results = $Controller -> getResults();
 

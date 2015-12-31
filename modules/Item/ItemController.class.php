@@ -14,11 +14,6 @@ class ItemController extends Controller{
 	public $nameURL;
 
 	/**
-	 * All information about button
-	 */
-	public $button;
-
-	/**
 	 * Response
 	 */
 	public $response = [];
@@ -34,7 +29,6 @@ class ItemController extends Controller{
 	 */
 	public function check(){
 		$this -> updateData();
-		$this -> iniButton();
 		
 		$this -> checkAttemptAdd();
 		$this -> checkAttemptDelete();
@@ -95,7 +89,11 @@ class ItemController extends Controller{
 			]),
 
 			# Page
-			'page' => new stdDataGet(Item::$cfg['get_page'],1),
+			'page' => new stdDataGet(Item::$cfg['get_page'],1,null,[
+				'prev' => 0,
+				'actual' => 0,
+				'next' => 0,
+			]),
 
 			# Post primary
 			'post_primary' => new stdDataPost(Item::$cfg['post_primary']),
@@ -110,91 +108,7 @@ class ItemController extends Controller{
 	 * Initialize
 	 */
 	public function ini(){
-		$this -> iniPrimary();
-		$this -> iniFieldsList();
-		$this -> iniFieldsAdd();
-		$this -> iniFieldsEdit();
-	}
-
-	/**
-	 * Initialize primary
-	 */
-	public function iniPrimary(){
 		$this -> primary = $this -> model -> primary;
-	}
-
-	/**
-	 * Initialize list
-	 */
-	public function iniList(){
-		$this -> list = new stdClass();
-		$this -> iniPagination();
-	}
-
-	/**
-	 * Initialize pagination
-	 */
-	public function iniPagination(){
-		$this -> list -> pagName = Item::$cfg['get_page'];
-	}
-
-	/**
-	 * Initialize Button
-	 */
-	public function iniButton(){
-		$this -> button = new stdClass();
-		$this -> iniButtonAdd();
-		$this -> iniButtonToEdit();
-		$this -> iniButtonToAdd();
-		$this -> iniButtonToList();
-		$this -> iniButtonPrimary();
-	}
-
-	/**
-	 * Initialize button toAdd
-	 */
-	public function iniButtonToAdd(){
-		$this -> button -> toAdd = (object)[
-			'url' => $this -> getUrlPageAdd(),
-		];
-	}
-
-	/**
-	 * Initialize button toEdit
-	 */
-	public function iniButtonToEdit(){
-		$this -> button -> toEdit = (object)[
-			'url' => $this -> getUrlPageEdit(),
-		];
-	}
-
-	/**
-	 * Initialize button primary
-	 */
-	public function iniButtonPrimary(){
-		$this -> button -> primary = $this -> getData('post_primary');
-	}
-
-	/**
-	 * Initialize button action
-	 */
-	public function iniButtonAdd(){
-		$this -> button -> action = (object)[
-			'name' => $this -> getData('action') -> name,
-			'value' => $this -> getData('action') -> value,
-			'valueAdd' => $this -> getActionAdd(),
-			'valueDelete' => $this -> getActionDelete(),
-			'valueEdit' => $this -> getActionEdit(),
-		];
-	}
-
-	/**
-	 * Initialize button toList
-	 */
-	public function iniButtonToList(){
-		$this -> button -> toList = (object)[
-			'url' => $this -> getUrlPageList(),
-		];
 	}
 
 	/**
@@ -233,8 +147,9 @@ class ItemController extends Controller{
 		# Set count
 		$r -> count = $this -> model -> countAll();
 
-		# Set list
-		$this -> setList($r -> count);
+		# Set pages
+		$r -> pages = $this -> getTotalPages($r -> count);
+		$this -> iniPages($r -> pages);
 
 		# Get records
 		$r -> records = $this -> model -> getResults($this -> getResultStartFrom(),$this -> getResultPerPage());
@@ -273,26 +188,24 @@ class ItemController extends Controller{
 	}
 
 	/**
-	 * Set all information about list
-	 * @param $r (int) number of all results
+	 * Set all information about pages
+	 * @param $t (int) number of pages
 	 */
-	public function setList($r){
+	public function iniPages($t){
+
+		$v = $this -> getData('page') -> value;
 
 
-		$this -> list -> pagTotal = $this -> getTotalPages($r);
+		$this -> getData('page') -> option['actual'] = $v;
 
-		$this -> checkPage($this -> list -> pagTotal);
-
-		$this -> list -> pagValue = $this -> getData('page') -> value;
-
-
-		$this -> list -> pagValuePrev = $this -> list -> pagValue == 1 
+		$this -> getData('page') -> option['prev'] = $v == 1 
 			? 1 
-			: $this -> list -> pagValue - 1;
+			: $v - 1;
 
-		$this -> list -> pagValueNext = $this -> list -> pagValue == $this -> list -> pagTotal 
-			? $this -> list -> pagTotal
-			: $this -> list -> pagValue + 1;
+		$this -> getData('page') -> option['next'] = $v == $t 
+			? $t
+			: $v + 1;
+
 	}
 
 	/**
@@ -389,13 +302,6 @@ class ItemController extends Controller{
 	}
 
 	/**
-	 * Initialize the field list
-	 */
-	public function iniFieldsList(){
-		$this -> fieldsList = $this -> getFieldsList();
-	}
-
-	/**
 	 * Get all fields
 	 * @return (array) array of fields
 	 */
@@ -406,13 +312,6 @@ class ItemController extends Controller{
 		}
 
 		return $r;
-	}
-
-	/**
-	 * Initialize the field add
-	 */
-	public function iniFieldsAdd(){
-		$this -> fieldsAdd = $this -> getFieldsAdd();
 	}
 
 	/**
@@ -427,13 +326,6 @@ class ItemController extends Controller{
 		}
 
 		return $r;
-	}
-
-	/**
-	 * Initialize the field edit
-	 */
-	public function iniFieldsEdit(){
-		$this -> fieldsEdit = $this -> getFieldsAdd();
 	}
 
 	/**

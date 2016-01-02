@@ -54,7 +54,10 @@ class ItemController extends Controller{
 
 		if($this -> getData('action') -> value == $this -> getActionEdit()){
 
-			$this -> response[] = $this -> model -> edit($this -> model -> fields,$this -> getData('post_primary') -> value);
+			$p = $this -> getData('post_primary') -> value;
+			if($this -> checkExists($p)){
+				$this -> response[] = $this -> model -> edit($this -> model -> fields,$p);
+			}
 
 		}
 	}
@@ -66,7 +69,11 @@ class ItemController extends Controller{
 
 		if($this -> getData('action') -> value == $this -> getActionDelete()){
 
-			$this -> response[] = $this -> model -> delete($this -> model -> fields,$this -> getData('post_primary') -> value);
+			$p = $this -> getData('post_primary') -> value;
+
+			if($this -> checkExists($p)){
+				$this -> response[] = $this -> model -> delete($this -> model -> fields,$p);
+			}
 
 		}
 	}
@@ -166,10 +173,28 @@ class ItemController extends Controller{
 		# Initialization
 		$r = new stdClass();
 
-		# Get records
-		$r -> record = $this -> model -> getResultByPrimary($this -> getData('get_primary') -> value);
+		# Check if exists
+		if($this -> checkExists($this -> getData('get_primary') -> value)){
+
+			# Get records
+			$r -> record = $this -> model -> getResultByPrimary($this -> getData('get_primary') -> value);
+		}
 
 		return $r;
+	}
+
+	/**
+	 * Check if record exists
+	 * @param $p (mixed) primary key value
+	 */
+	public function checkExists($p){
+		if(!$this -> model -> exists($p)){
+			$this -> response[] = new stdResponse(0,'Error',"[{$p}] Not exists");
+			return false;
+		}
+
+		return true;
+		
 	}
 
 	/**

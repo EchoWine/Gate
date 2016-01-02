@@ -169,12 +169,21 @@ class ItemModel extends Model{
 		if($q){
 			return new stdResponse(1,'Success','Deleted');
 		}
-		
 
 		return new stdResponse(0,'Error','Not Deleted');
 
 	}
 
+	/**
+	 * Check if a record exists
+	 * @param $p (mixed) value of primary key
+	 * @return (bool) result of query
+	 */
+	public function exists($p){
+		
+		return DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> count() > 0;
+
+	}
 
 	/**
 	 * Edit a record

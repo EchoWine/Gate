@@ -30,6 +30,10 @@ class ItemView extends View{
 		Module::TemplateOverwrite('content','main-edit');
 	}
 
+	public function setPageEmpty(){
+		Module::TemplateOverwrite('content','main-empty');
+	}
+
 }
 
 ?>

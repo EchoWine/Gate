@@ -1,0 +1,14 @@
+<div id='content'>
+	
+	{{include .main.cat}}
+
+	<div class='content-header'>
+		{{include .main.title {$actionPage = ''}}}
+
+		<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
+			<span class='fa fa-arrow-circle-left'></span> Torna alla lista
+		</a>
+
+	</div>
+		{{include .response}}
+</div>

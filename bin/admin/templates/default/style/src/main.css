@@ -40,3 +40,8 @@ body{
 	padding:10px 25px;
 	background:white;
 }
+
+.alert{
+	border-radius:0 !important;
+	background-image:none !important;
+}

@@ -50,8 +50,15 @@
 				# Get results for list
 				$result = $Controller -> getResultByPrimary();
 				
-				# Set current page to Add
-				$View -> setPageEdit();
+				if(empty($result -> record)){
+
+					# Set current page to Empty
+					$View -> setPageEmpty();
+				}else{
+
+					# Set current page to Edit
+					$View -> setPageEdit();
+				}
 			break;
 			default:
 				# Get results for list

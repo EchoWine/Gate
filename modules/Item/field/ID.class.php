@@ -12,9 +12,25 @@ class ID extends Field{
 	 */
 	public $edit = false;
 
+	/**
+	 * Initialize label
+	 */
 	public function iniLabel(){
 		$this -> label = 'ID';
 	}
+	
+	/**
+	 * Initialize print
+	 */
+	public function iniPrint(){
+		$this -> print = (object)[
+			'list' => $this -> label,
+			'get' => $this -> label,
+			'form' => null,
+			'value' => null,
+		];
+	}
+
 
 }
 ?>

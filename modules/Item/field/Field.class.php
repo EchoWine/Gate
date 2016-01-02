@@ -32,6 +32,25 @@ class Field{
 	 */
 	public $edit = true;
 
+	/**
+	 * Basic pattern
+	 */
+	public $_pattern = "(.)";
+
+	/**
+	 * Pattern complete
+	 */
+	public $pattern;
+
+	/**
+	 * Min length value
+	 */
+	public $minLength = 0;
+
+	/**
+	 * Max length value
+	 */
+	public $maxLength = 128;
 
 	/**
 	 * Where print the field
@@ -55,6 +74,7 @@ class Field{
 		$this -> iniForm();
 		$this -> iniPrint();
 		$this -> iniColumn();
+		$this -> iniPattern();
 	}
 
 	/**
@@ -69,6 +89,13 @@ class Field{
 	 */
 	public function iniLabel(){
 		$this -> label = '[undefined name]';
+	}
+
+	/**
+	 * Initialize pattern
+	 */
+	public function iniPattern(){
+		$this -> pattern = "/^".$this -> _pattern."{".$this -> minLength.",".$this -> maxLength."}$/iU";;
 	}
 
 	/**
@@ -124,7 +151,7 @@ class Field{
 	 * Alter the database to add column
 	 */
 	public function alterDatabase(){
-		DB::table($this -> model -> name) -> column($this -> column) -> type('string') -> alter();
+		DB::table($this -> model -> name) -> column($this -> column) -> type('VARCHAR('.$this -> maxLength.')') -> alter();
 	}
 
 	/**
@@ -181,6 +208,23 @@ class Field{
 	 */
 	public function getPathInputData(){
 		return self::$template.'.Field';
+	}
+
+	/**
+	 * Check if value is valid
+	 * @param $v (mixed) value to validate
+	 * @return (bool) is value valid
+	 */
+	public function checkForm($v){
+		return preg_match($this -> pattern,$v);
+	}
+
+	/**
+	 * Return the error message 
+	 * @return (string) error message
+	 */
+	public function errorForm(){
+		return "Field <b>{$this -> label}</b> not valid";
 	}
 
 	/**

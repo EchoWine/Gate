@@ -2,7 +2,14 @@
 
 class Password extends _String{
 	
+	/**
+	 * Min length value
+	 */
+	public $minLength = 1;
 
+	/**
+	 * Initialize label
+	 */
 	public function iniLabel(){
 		$this -> label = 'Password';
 	}

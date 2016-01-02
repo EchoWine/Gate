@@ -115,11 +115,33 @@ class ItemModel extends Model{
 	}
 
 	/**
+	 * Check form
+	 * @param $f (array) list of all fields
+	 * @return (object stdResponse) result of request
+	 */
+	public function checkForm($f){
+
+		$r = [];
+		foreach($f as $k){
+			if($k -> getPrintForm() && !$k -> checkForm($k -> getFormValue())){
+				$r[] = $k -> errorForm();
+			}
+		}
+
+		if(!empty($r))
+			return new stdResponse(0,'Error form',$r);
+
+	}
+
+
+	/**
 	 * Add new record
 	 * @param $f (array) list of all fields
 	 * @return (object stdResponse) result of request
 	 */
 	public function add($f){
+
+		if(($r = $this -> checkForm($f)) !== null)return $r;
 
 		$a = [];
 		foreach($f as $k){

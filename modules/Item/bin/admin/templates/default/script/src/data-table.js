@@ -10,6 +10,7 @@ item.dataTable = function(){
 item.actionByPrimary = function(){
 	t = document.getElementsByAttribute('data-item-table-action');
 
+	if(!defined(t))return;
 	for(i=0;i<t.length;i++){
 		t[i].addEventListener('click',function(){
 			f = this.getParentWithTag('FORM');
@@ -21,7 +22,8 @@ item.actionByPrimary = function(){
 
 item.checkAll = function(){
 	t = document.getElementsByAttribute('data-item-table-checkAll');
-
+	
+	if(!defined(t))return;
 	for(i=0;i<t.length;i++){
 		t[i].addEventListener('click',function(){
 			f = this.getParentWithTag('FORM');

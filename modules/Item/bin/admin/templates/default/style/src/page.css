@@ -91,47 +91,6 @@
 	height: 0;*/
 }
 
-/* Ricerca */
-*[data-search-data]{
-	position:relative;
-	z-index:3;
-}
-
-.container-key-search:not([active]){
-	display:none !important;
-}
-
-.container-key-search[active]{
-	border:1px solid rgb(229, 229, 229);
-	box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
-}
-
-.container-key-search{
-	position:absolute;
-	background:white;
-}
-
-.container-key-search .container-input-search{
-	margin-bottom:2px;
-	margin-top:2px;
-	padding:5px;
-	padding-left:35px;
-	position:relative;
-}
-
-.container-input-search .container-key-search{
-}
-
-.container-key-search .container-delete-key{
-	position:absolute;
-	top:5px;
-	left:4px;
-}
-
-.container-key-search .container-input-search > .input{
-	height:24px;
-}
-
 /* Impaginazione */
 .page-res form{
 	display:inline-block;

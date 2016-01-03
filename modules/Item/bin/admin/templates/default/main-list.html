@@ -91,37 +91,44 @@
 
 				<div class='last action'> Azione </div>
 			</div>
-			<!--
+			
 			<div class='row search' id='dataTable_searchBar'>
 				<div class='check-row'></div>
 
-				{{for $item -> getFieldsList() as $field}}
+				{{for $item -> getFieldsSearch() as $field}}
 
-					
 					<div data-search-data='search_button_send'>
-						<div class='container-input-search'>
-							<input type='text' name='id[]' value='' class='input n ' >
-						</div> 
-						<div class='container-key-search'></div>
+						<div class='container-input-search'>{{include $field -> getPathInputData() {
+							$name = $field -> getFormNameSearch(),
+							$value = ''
+						}}}</div> 
+						<div class='container-key-search'>{{for $item -> getSearched($field -> name) as $searched}}
+							<div class='container-input-search'>
+								{{include $field -> getPathInputData() {
+									$name = $field -> getFormNameSearch(),
+									$value = $field -> printInputValueSearch($searched)
+								}}}
+								<div class="container-delete-key"><button type="button" class="button a i danger"><span class="fa fa-trash"></span></button></div>
+							</div>
+						{{endfor}}</div>
 					</div>
 
 				{{endfor}}
 
 				<div class='last action'>
-					<button type='submit' name='ACTION' value='search' class='button'>
+					<button type='submit' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','search')}}' class='button'>
 						<div class='button a i primary'>
 							<span class='fa fa-search'></span>
 						</div>
 					</button>
-					<span id='resetSearch' class='button a i warning' data-search-class=''>
-						<span class='fa fa-eraser'></span>
-					</span>
+					<a href='{{$item -> getUrlPageList()}}' class='button a i warning' data-search-class=''>
+							<span class='fa fa-eraser'></span>
+					</a>
 					<span class='button a i primary'>
 						<span class='fa fa-link'></span>
 					</span>
 				</div>
 			</div>
-			-->
 
 			<?php $i = 0;?>
 			{{for $results -> records as $record}}

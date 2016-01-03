@@ -7,6 +7,7 @@
 	box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
 	background: #FFF;
 	outline: none;
+	text-decoration:none;
 }
 
 .b-input.square,.b-check.square + label,.b-text.square{

@@ -37,8 +37,8 @@ Modules:
 		- [ ] Edit multiple
 		- [x] List
 		- [x] Page 
-		- [ ] Search single
-		- [ ] Search multiple
+		- [x] Search single
+		- [x] Search multiple
 		- [x] OrderBy
 		- [x] View
 		- [ ] Import

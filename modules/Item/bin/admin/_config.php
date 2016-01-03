@@ -22,6 +22,7 @@ return [
 		'view' => 'view',
 		'copy_s' => 'copy_s',
 		'copy_m' => 'copy_m',
+		'search' => 'search',
 	]
 	
 ];

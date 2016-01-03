@@ -23,6 +23,11 @@ class ID extends Field{
 	public $unique = true;
 
 	/**
+	 * Basic pattern
+	 */
+	public $_pattern = "[0-9]";
+
+	/**
 	 * Initialization
 	 */
 	public function _ini(){
@@ -47,9 +52,19 @@ class ID extends Field{
 		$this -> print = (object)[
 			'list' => $this -> label,
 			'view' => $this -> label,
-			'form' => null,
+			'form' => $this -> label,
 			'inputValue' => null,
 		];
+	}
+
+	/**
+	 * Add the field to the query 'search'
+	 * @param $q (object) query builder
+	 * @param $v (mixed) value searched
+	 * @return (object) query builder
+	 */
+	public function search($q,$v){
+		return $q -> where($this -> getColumnName(),$v);
 	}
 
 

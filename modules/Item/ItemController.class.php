@@ -29,11 +29,25 @@ class ItemController extends Controller{
 	public function check(){
 		$this -> updateData();
 		
+
+		$this -> checkAttemptSearch();
 		$this -> checkAttemptOrder();
 		$this -> checkAttemptAdd();
 		$this -> checkAttemptDelete();
 		$this -> checkAttemptEdit();
 		$this -> checkAttemptCopy();
+	}
+
+	/**
+	 * Check attempt search
+	 */
+	public function checkAttemptSearch(){
+		if($this -> getData('action') -> value == $this -> getActionSearch()){
+
+			if(($r = $this -> model -> search($this -> model -> fields)) !== null)
+				$this -> response[] = $r;
+
+		}
 	}
 
 	/**
@@ -63,8 +77,9 @@ class ItemController extends Controller{
 
 		if($this -> getData('action') -> value == $this -> getActionAdd()){
 
-			$this -> response[] = $this -> model -> add($this -> model -> fields);
-
+			if(($r = $this -> model -> search($this -> model -> fields)) !== null)
+				$this -> response[] = $r;
+			
 		}
 	}
 
@@ -153,6 +168,7 @@ class ItemController extends Controller{
 				'delete_m' => 'del_m',
 				'copy_s' => 'copy_s',
 				'copy_m' => 'copy_m',
+				'search' => 'search',
 			]),
 
 			# Page
@@ -190,6 +206,14 @@ class ItemController extends Controller{
 	 */
 	public function getActionAdd(){
 		return Item::$cfg['action']['add'];
+	}
+
+	/**
+	 * Get the value of action search
+	 * @return (string) action search
+	 */
+	public function getActionSearch(){
+		return Item::$cfg['action']['search'];
 	}
 
 	/**
@@ -253,7 +277,8 @@ class ItemController extends Controller{
 			$this -> getResultStartFrom(),
 			$this -> getResultPerPage(),
 			$this -> model -> orderByField,
-			$this -> model -> orderDirection
+			$this -> model -> orderDirection,
+			$this -> model -> searched
 		);
 
 		return $r;
@@ -541,6 +566,29 @@ class ItemController extends Controller{
 		}
 
 		return $r;
+	}
+
+	/**
+	 * Get all fields 
+	 * @return (array) array of fields
+	 */
+	public function getFieldsSearch(){
+		$r = [];
+		foreach($this -> model -> fields as $k){
+			if($k -> getPrintList() !== null && $k -> getSearch() != 0)
+				$r[] = $k;
+		}
+
+		return $r;
+	}
+
+	/**
+	 * Get all fields 
+	 * @param $n (string) name of field
+	 * @return (array) array of searched word
+	 */
+	public function getSearched($n){
+		return isset($this -> model -> searched[$n]) ? $this -> model -> searched[$n] : [];
 	}
 }
 

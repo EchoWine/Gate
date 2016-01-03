@@ -43,6 +43,11 @@ class Field{
 	public $unique = false;
 
 	/**
+	 * Search type {0: Disabled, 1: Single, 2: Multiple}
+	 */
+	public $search = 2;
+
+	/**
 	 * Print the value in the input
 	 */
 	public $printInputValue = true;
@@ -197,6 +202,14 @@ class Field{
 	}
 
 	/**
+	 * Get form name search
+	 * @return (string) form name
+	 */
+	public function getFormNameSearch(){
+		return $this -> getFormName()."[]";
+	}
+
+	/**
 	 * Get form value
 	 * @return (mixed) form value
 	 */
@@ -211,6 +224,15 @@ class Field{
 	 */
 	public function printInputValue($r){
 		return $this -> printInputValue ? $r[$this -> getColumnName()] : '';
+	}
+
+	/**
+	 * Get form value to print in search
+	 * @param $v (mixed) value
+	 * @return (mixed) form value
+	 */
+	public function printInputValueSearch($v){
+		return $this -> printInputValue ? $v : '';
 	}
 
 	/**
@@ -292,6 +314,16 @@ class Field{
 	}
 
 	/**
+	 * Add the field to the query 'search'
+	 * @param $q (object) query builder
+	 * @param $v (mixed) value searched
+	 * @return (object) query builder
+	 */
+	public function search($q,$v){
+		return $q -> whereLike($this -> getColumnName(),'%'.$v.'%');
+	}
+
+	/**
 	 * Find a unique value for field
 	 * @param $b (string) base value
 	 * @return (string) string unique
@@ -352,6 +384,15 @@ class Field{
 	public function getCopy(){
 		return $this -> copy;
 	}
+
+	/**
+	 * Type of search operation
+	 * @return (bool) result
+	 */
+	public function getSearch(){
+		return $this -> search;
+	}
+
 
 	/**
 	 * Is operation view enabled

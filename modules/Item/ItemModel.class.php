@@ -28,6 +28,11 @@ class ItemModel extends Model{
 	public $orderDirection;
 
 	/**
+	 * List of all field searched
+	 */
+	public $searched = [];
+
+	/**
 	 * Add fields
 	 * @param $a (array) list of fields to add
 	 */
@@ -106,9 +111,10 @@ class ItemModel extends Model{
 	 * @param (int) $n take n element
 	 * @param (object) $oField field sort
 	 * @param (string) $oDir sorting direction
+	 * @param (array) $search searched
 	 * @return (array) query result
 	 */
-	public function getResults($s = 0,$n = 5,$oField = null,$oDir = 'asc'){
+	public function getResults($s = 0,$n = 5,$oField = null,$oDir = 'asc',$search = []){
 
 		$q = DB::table($this -> name) -> skip($s) -> take($n);
 
@@ -116,6 +122,11 @@ class ItemModel extends Model{
 			$q = $oDir == 'asc' 
 				? $q -> orderByAsc($oField -> getColumnName()) 
 				: $q -> orderByDesc($oField -> getColumnName());
+		}
+
+		foreach((array)$search as $n => $k){
+			foreach((array)$k as $k1)
+				$q = $this -> getField($n) -> search($q,$k1);
 		}
 
 		return $q -> lists();
@@ -156,14 +167,22 @@ class ItemModel extends Model{
 	/**
 	 * Check form
 	 * @param $f (array) list of all fields
+	 * @param $req (bool) required
+	 * @param $mul (bool) multiple
 	 * @return (object stdResponse) result of request
 	 */
-	public function checkForm($f){
+	public function checkForm($f,$req = true,$mul = false){
 
 		$r = [];
 		foreach($f as $k){
-			if($k -> getPrintForm() && !$k -> checkForm($k -> getFormValue())){
-				$r[] = $k -> errorForm();
+			$v = $k -> getFormValue();
+			if(!$mul || $k -> getSearch() != 2)$v = [$v];
+
+			foreach((array)$v as $k1){
+
+				if((!$req && !empty($k1) || $req) && $k -> getPrintForm() && !$k -> checkForm($k1)){
+					$r[] = $k -> errorForm();
+				}
 			}
 		}
 
@@ -225,12 +244,36 @@ class ItemModel extends Model{
 	}
 
 	/**
+	 * Search
+	 * @param $f (array) list of all fields
+	 * @return (object stdResponse) result of request
+	 */
+	public function search($f){
+
+		if(($r = $this -> checkForm($f,false,true)) !== null)return $r;
+		
+		$a = [];
+		foreach($f as $k){
+			foreach((array)$k -> getFormValue() as $k1)
+				if(!empty($k1))$a[$k -> name][] = $k1;
+		}
+
+		$this -> searched = $a;
+
+		return null;
+
+
+	}
+
+	/**
 	 * Edit a record
 	 * @param $f (array) list of all fields
 	 * @param $p (mixed) value of primary key
 	 * @return (object stdResponse) result of request
 	 */
 	public function edit($f,$p){
+
+		if(($r = $this -> checkForm($f)) !== null)return $r;
 
 		$a = [];
 		foreach($f as $k){
@@ -247,7 +290,6 @@ class ItemModel extends Model{
 		return new stdResponse(0,'Error','Not Edited');
 
 	}
-
 
 	/**
 	 * Copy a record

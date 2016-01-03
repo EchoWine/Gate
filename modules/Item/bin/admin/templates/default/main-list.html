@@ -137,12 +137,12 @@
 						<a data-button href='{{$item -> getUrlPageAdd($record[$item -> primary -> column])}}' class='button a i success'>
 							<span class='fa fa-plus-square'></span>
 						</a>
-						<!--
-						<button type='submit' name='ACTION' value='copy_s' class='button'>
-						<div class='button a i success' data-button-action='1'> <span class='fa fa-copy'></span>
-						</div> 
+						
+						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','copy_s')}}' data-item-table-action='{{$record[$item -> primary -> column]}}'>
+							<span class='button a i success'>
+								<span class='fa fa-copy'></span>
+							</span>
 						</button>
-						-->
 
 						<a data-button href='{{$item -> getUrlPageView($record[$item -> primary -> column])}}' class='button a i info'>
 							<span class='fa fa-file-text'></span> 

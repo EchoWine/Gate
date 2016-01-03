@@ -33,6 +33,16 @@ class Field{
 	public $edit = true;
 
 	/**
+	 * Is operation copy enabled
+	 */
+	public $copy = true;
+
+	/**
+	 * Is field unique
+	 */
+	public $unique = false;
+
+	/**
 	 * Print the value in the input
 	 */
 	public $printInputValue = true;
@@ -261,6 +271,51 @@ class Field{
 	}
 
 	/**
+	 * Add the field to the query 'copy'
+	 * @param $a (array) array used in the query
+	 * @param $r (array) result from select
+	 */
+	public function copy(&$a,$r){
+		if($this -> getCopy()){
+			$b = $r[$this -> getColumnName()];
+
+			if($this -> unique)
+				$b = $this -> checkUnique($b);
+
+			$a[$this -> getColumnName()] = $b;
+		}
+	}
+
+	/**
+	 * Find a unique value for field
+	 * @param $b (string) base value
+	 * @return (string) string unique
+	 */
+	public function checkUnique($b){
+		$i = 0;
+
+		do{
+			$n = $this -> getPatternCopy($b,$i++);
+		}while(
+			DB::table($this -> model -> name)
+			-> where($this -> getColumnName(),$n) 
+			-> count() > 0
+		);
+
+		return $n;
+	}
+
+	/**
+	 * Get string to use in search for unique value
+	 * @param $b (string) base value
+	 * @param $i (int) counter
+	 * @return (string) result
+	 */
+	public function getPatternCopy($b,$i){
+		return $b."".$i;
+	}
+
+	/**
 	 * Prepare value field to query
 	 * @param $v (mixed) value of field
 	 * @param (mixed) value prepared
@@ -283,6 +338,14 @@ class Field{
 	 */
 	public function getEdit(){
 		return $this -> getPrintForm() && $this -> edit;
+	}
+
+	/**
+	 * Is operation copy enabled
+	 * @return (bool) result
+	 */
+	public function getCopy(){
+		return $this -> copy;
 	}
 
 	/**

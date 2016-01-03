@@ -28,7 +28,7 @@ Modules:
 	- [ ] Item
 		- [x] Add
 		- [x] Add as
-		- [ ] Copy single
+		- [x] Copy single
 		- [ ] Copy multiple
 		- [x] Delete single
 		- [ ] Delete multiple

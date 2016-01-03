@@ -209,6 +209,47 @@ class ItemModel extends Model{
 
 	}
 
+
+	/**
+	 * Copy a record
+	 * @param $f (array) list of all fields
+	 * @param $p (mixed) value of primary key
+	 * @return (object stdResponse) result of request
+	 */
+	public function copy($f,$p){
+
+
+			
+		$c = [];
+
+		$q = DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> lists();
+
+		foreach($q as $r){
+
+			$a = [];
+
+			foreach($f as $k){
+				$k -> copy($a,$r);
+			}
+
+			$h[] = array_values($a);
+
+			if(empty($c))
+				$c = array_keys($a);
+
+		}
+
+		$q = DB::table($this -> name) -> insertMultiple($c,$h);
+
+		if($q){
+			return new stdResponse(1,'Success','Copied');
+		}
+
+
+		return new stdResponse(0,'Error','Not Copied');
+
+	}
+
 }
 
 ?>

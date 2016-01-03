@@ -2,10 +2,15 @@
 class Mail extends _String{
 	
 	/**
+	 * Is unique value
+	 */
+	public $unique = true;
+
+	/**
 	 * Min length value
 	 */
 	public $minLength = 1;
-	
+
 	/**
 	 * Initialize label
 	 */

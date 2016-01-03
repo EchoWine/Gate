@@ -11,6 +11,16 @@ class ID extends Field{
 	 * Is operation edit enabled
 	 */
 	public $edit = false;
+	
+	/**
+	 * Is operation copy enabled
+	 */
+	public $copy = false;
+
+	/**
+	 * Is unique value
+	 */
+	public $unique = true;
 
 	/**
 	 * Initialize label

@@ -32,6 +32,7 @@ class ItemController extends Controller{
 		$this -> checkAttemptAdd();
 		$this -> checkAttemptDelete();
 		$this -> checkAttemptEdit();
+		$this -> checkAttemptCopy();
 	}
 
 	/**
@@ -78,6 +79,22 @@ class ItemController extends Controller{
 	}
 
 	/**
+	 * Check attempt copy
+	 */
+	public function checkAttemptCopy(){
+
+		if($this -> getData('action') -> value == $this -> getActionCopyS()){
+
+			$p = $this -> getData('post_primary') -> value;
+
+			if($this -> checkExists($p)){
+				$this -> response[] = $this -> model -> copy($this -> model -> fields,$p);
+			}
+
+		}
+	}
+
+	/**
 	 * Retrieve all data sent by user
 	 * @return (array) data
 	 */
@@ -92,6 +109,7 @@ class ItemController extends Controller{
 				'add' => 'add',
 				'edit' => 'edit',
 				'delete' => 'del',
+				'copy_s' => 'copy_s',
 			]),
 
 			# Page
@@ -139,6 +157,14 @@ class ItemController extends Controller{
 	 */
 	public function getActionEdit(){
 		return Item::$cfg['action']['edit'];
+	}
+
+	/**
+	 * Get the value of action copy_s
+	 * @return (string) action copy_s
+	 */
+	public function getActionCopyS(){
+		return Item::$cfg['action']['copy_s'];
 	}
 
 	/**

@@ -35,14 +35,13 @@
 		<div class='manage-data'>
 			<fieldset class='manage-data'>
 				<legend> Generale </legend>
-
 				{{for $item -> getFieldsAdd() as $field}}
 					<div class='field'>
 						<label>{{$field -> label}}: </label>
 						<div class='data'>
 							{{include $field -> getPathInputData() {
 								$name = $field -> getFormName(),
-								$value = ''
+								$value = $field -> printInputValue($result -> record)
 							}}}
 						</div>
 					</div>

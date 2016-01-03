@@ -133,9 +133,11 @@
 						<span class='button a i primary' data-button-action='1'>
 							<span class='fa fa-download'></span>
 						</span>
-						<a data-button href='?p=data&amp;cat=add&amp;id=1' class='button a i success'>
+						-->
+						<a data-button href='{{$item -> getUrlPageAdd($record[$item -> primary -> column])}}' class='button a i success'>
 							<span class='fa fa-plus-square'></span>
 						</a>
+						<!--
 						<button type='submit' name='ACTION' value='copy_s' class='button'>
 						<div class='button a i success' data-button-action='1'> <span class='fa fa-copy'></span>
 						</div> 

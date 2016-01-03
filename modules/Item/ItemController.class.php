@@ -22,7 +22,7 @@ class ItemController extends Controller{
 	 * Primary
 	 */
 	public $primary;
-	
+
 	/**
 	 * Check all the interaction with user
 	 */
@@ -171,12 +171,17 @@ class ItemController extends Controller{
 
 		# Initialization
 		$r = new stdClass();
+		$r -> record = [];
+
+		$v = $this -> getData('get_primary') -> value;
+
+		if($v === null) return $r;
 
 		# Check if exists
-		if($this -> checkExists($this -> getData('get_primary') -> value)){
+		if($this -> checkExists($v)){
 
 			# Get records
-			$r -> record = $this -> model -> getResultByPrimary($this -> getData('get_primary') -> value);
+			$r -> record = $this -> model -> getResultByPrimary($v);
 		}
 
 		return $r;
@@ -309,10 +314,17 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the url to the add action page
+	 * @param $p (mixed) optional primary key value
 	 * @return (string) url
 	 */
-	public function getUrlPageAdd(){
-		return $this -> getUrlMainPage().'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionAdd();
+	public function getUrlPageAdd($p = null){
+		$r = $this -> getUrlMainPage().
+		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionAdd();
+
+		if($p !== null)
+			$r .= '&amp;'.Item::$cfg['get_primary'].'='.$p;
+
+		return $r;
 	}
 
 	/**

@@ -35,7 +35,7 @@ class Field{
 	/**
 	 * Print the value in the input
 	 */
-	public $printInputValue = false;
+	public $printInputValue = true;
 
 	/**
 	 * Basic pattern

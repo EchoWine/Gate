@@ -27,7 +27,7 @@ Modules:
 	- [ ] Custom Page
 	- [ ] Item
 		- [x] Add
-		- [ ] Add as
+		- [x] Add as
 		- [ ] Copy single
 		- [ ] Copy multiple
 		- [x] Delete single

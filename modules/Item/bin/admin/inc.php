@@ -22,7 +22,7 @@
 				$result = $Controller -> getResultByPrimary();
 
 
-				if($Controller -> getData('get_primary') -> value !== null && empty($result -> record)){
+				if($Controller -> getData('g_primary') -> value !== null && empty($result -> record)){
 
 					# Set current page to Empty
 					$View -> setPageEmpty();

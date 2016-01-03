@@ -11,7 +11,7 @@
 				Preferenze 
 			</a>-->
 
-			<input type='hidden' name="{{$item -> getDataName('post_primary')}}" value='{{$result -> record[$item -> primary -> getColumnName()]}}'>
+			<input type='hidden' name="{{$item -> getDataName('p_primary')}}" value='{{$result -> record[$item -> primary -> getColumnName()]}}'>
 
 			<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
 				<span class='fa fa-arrow-circle-left'></span> Torna alla lista

@@ -54,7 +54,7 @@ class ItemController extends Controller{
 
 		if($this -> getData('action') -> value == $this -> getActionEdit()){
 
-			$p = $this -> getData('post_primary') -> value;
+			$p = $this -> getData('p_primary') -> value;
 			if($this -> checkExists($p)){
 				$this -> response[] = $this -> model -> edit($this -> model -> fields,$p);
 			}
@@ -67,13 +67,26 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptDelete(){
 
-		if($this -> getData('action') -> value == $this -> getActionDelete()){
+		$a = $this -> getData('action') -> value;
+		$p = null;
 
-			$p = $this -> getData('post_primary') -> value;
+		if($a == $this -> getActionDeleteM()){
+			$p = $this -> getData('p_primary_m') -> value;
+		}
 
-			if($this -> checkExists($p)){
-				$this -> response[] = $this -> model -> delete($this -> model -> fields,$p);
+		if($a == $this -> getActionDeleteS()){
+			$p = [$this -> getData('p_primary') -> value];
+		}
+
+		if($p !== null){
+
+			$r = [];
+			foreach($p as $k){
+				if($this -> checkExists($k))$r[] = $k;
 			}
+
+			if(!empty($r))
+				$this -> response[] = $this -> model -> delete($this -> model -> fields,$r);
 
 		}
 	}
@@ -85,7 +98,7 @@ class ItemController extends Controller{
 
 		if($this -> getData('action') -> value == $this -> getActionCopyS()){
 
-			$p = $this -> getData('post_primary') -> value;
+			$p = $this -> getData('p_primary') -> value;
 
 			if($this -> checkExists($p)){
 				$this -> response[] = $this -> model -> copy($this -> model -> fields,$p);
@@ -108,7 +121,8 @@ class ItemController extends Controller{
 			'action' => new stdDataPost(Item::$cfg['post_action'],null,null,[
 				'add' => 'add',
 				'edit' => 'edit',
-				'delete' => 'del',
+				'delete_s' => 'del_s',
+				'delete_m' => 'del_m',
 				'copy_s' => 'copy_s',
 			]),
 
@@ -120,10 +134,13 @@ class ItemController extends Controller{
 			]),
 
 			# Post primary
-			'post_primary' => new stdDataPost(Item::$cfg['post_primary']),
+			'p_primary' => new stdDataPost(Item::$cfg['p_primary']),
+
+			# Post primary multiple
+			'p_primary_m' => new stdDataPost(Item::$cfg['p_primary_m']),
 
 			# get primary
-			'get_primary' => new stdDataGet(Item::$cfg['get_primary']),
+			'g_primary' => new stdDataGet(Item::$cfg['g_primary']),
 
 		];
 	}
@@ -144,11 +161,19 @@ class ItemController extends Controller{
 	}
 
 	/**
-	 * Get the value of action delete
-	 * @return (string) action delete
+	 * Get the value of action delete_s
+	 * @return (string) action delete_s
 	 */
-	public function getActionDelete(){
-		return Item::$cfg['action']['delete'];
+	public function getActionDeleteS(){
+		return Item::$cfg['action']['delete_s'];
+	}
+
+	/**
+	 * Get the value of action delete_m
+	 * @return (string) action delete_m
+	 */
+	public function getActionDeleteM(){
+		return Item::$cfg['action']['delete_m'];
 	}
 
 	/**
@@ -199,7 +224,7 @@ class ItemController extends Controller{
 		$r = new stdClass();
 		$r -> record = [];
 
-		$v = $this -> getData('get_primary') -> value;
+		$v = $this -> getData('g_primary') -> value;
 
 		if($v === null) return $r;
 
@@ -219,7 +244,13 @@ class ItemController extends Controller{
 	 */
 	public function checkExists($p){
 		if(!$this -> model -> exists($p)){
-			$this -> response[] = new stdResponse(0,'Error',"[{$p}] Not exists");
+
+			if(empty($this -> response['error_exists']))
+				$this -> response['error_exists'] = new stdResponse(0,'Error');
+			
+			$r = $this -> response['error_exists'];
+			$r -> addMessage("[{$p}] Not exists");
+
 			return false;
 		}
 
@@ -348,7 +379,7 @@ class ItemController extends Controller{
 		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionAdd();
 
 		if($p !== null)
-			$r .= '&amp;'.Item::$cfg['get_primary'].'='.$p;
+			$r .= '&amp;'.Item::$cfg['g_primary'].'='.$p;
 
 		return $r;
 	}
@@ -361,7 +392,7 @@ class ItemController extends Controller{
 	public function getUrlPageEdit($p = ''){
 		return $this -> getUrlMainPage().
 		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionEdit().
-		'&amp;'.Item::$cfg['get_primary'].'='.$p;
+		'&amp;'.Item::$cfg['g_primary'].'='.$p;
 	}
 
 	/**
@@ -372,7 +403,7 @@ class ItemController extends Controller{
 	public function getUrlPageView($p = ''){
 		return $this -> getUrlMainPage().
 		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionView().
-		'&amp;'.Item::$cfg['get_primary'].'='.$p;
+		'&amp;'.Item::$cfg['g_primary'].'='.$p;
 	}
 	
 	

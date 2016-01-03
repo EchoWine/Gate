@@ -31,7 +31,7 @@ Modules:
 		- [x] Copy single
 		- [ ] Copy multiple
 		- [x] Delete single
-		- [ ] Delete multiple
+		- [x] Delete multiple
 		- [x] Edit single
 		- [ ] Edit multiple
 		- [x] List

@@ -6,14 +6,17 @@ return [
 	'post_action' => 'a',
 
 
-	'get_primary' => 'id',
-	'post_primary' => 'primary',
+	'g_primary' => 'id',
+	'p_primary' => 'primary',
+	'p_primary_m' => 'primary_m',
+
 	'get_page' => 's',
 
 	'result_page' => 5,
 	'action' => [
 		'add' => 'add',
-		'delete' => 'del',
+		'delete_s' => 'del_s',
+		'delete_m' => 'del_m',
 		'edit' => 'edit',
 		'view' => 'view',
 		'copy_s' => 'copy_s',

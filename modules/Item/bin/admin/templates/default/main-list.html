@@ -42,17 +42,18 @@
 	{{include .main-list.pag}}
 
 	<form method='POST' enctype='multipart/form-data'>
-		<input type='hidden' data-item-table-primary name="{{$item -> getDataName('post_primary')}}" value='0'>
+		<input type='hidden' data-item-table-primary name="{{$item -> getDataName('p_primary')}}" value='0'>
 		<div class='table-data-filter'>
-			<select class='select n' name='ACTION' id='value_operationMultiple'>
+		
+			<select class='select n' name='{{$item -> getDataName('action')}}' id='value_operationMultiple'>
 				<option value=''>Seleziona...</option>
 				<!--
 				<option value='export_xml_m'> Esporta XML </option>
 				<option value='export_csv_m'> Esporta CSV </option>
-				<option value='del_m' data-button-window='SURE' data-window-value='del_m' data-multiple-button> Elimina </option>
 				<option value='copy_m'> Copia </option>
 				<option value='edit_multiple'> Modifica </option> 
 				-->
+				<option value='{{$item -> getDataOption('action','delete_m')}}' data-button-window='SURE' data-window-value='del_m' data-multiple-button> Elimina </option>
 			</select>
 
 			<button class='button n' id='button_operationMultiple' data-multiple-button>Invia</button>
@@ -65,8 +66,8 @@
 		</div>
 		<div class='data-table' id='data'>
 			<div class='head'>
-				<div class='check-row' data-select-all='0'>
-					<input type='checkbox' class='check b d' id='check-all0'>
+				<div class='check-row'>
+					<input type='checkbox' class='check b d' id='check-all0' data-item-table-checkAll='0'>
 					<label class='noselect m-5' for='check-all0'><span></span></label>
 				</div>
 				
@@ -121,7 +122,7 @@
 			{{for $results -> records as $record}}
 				<div class='row' data-hide-click='1'>
 					<div class='check-row'>
-						<input type='checkbox' name='primary_s[]' value='1' id='selectItem_0_{{$i}}' class='check b d' data-multiple-check='0'><label class='noselect m-5' for='selectItem_0_{{$i++}}'><span></span></label>
+						<input type='checkbox' name="{{$item -> getDataName('p_primary_m')}}[]" value='{{$record[$item -> primary -> column]}}' id='selectItem_0_{{$i}}' class='check b d' data-item-table-check='0'><label class='noselect m-5' for='selectItem_0_{{$i++}}'><span></span></label>
 					</div>
 
 					{{for $item -> getFieldsList() as $field}}
@@ -154,7 +155,7 @@
 						
 						<input type='hidden' name='item[]' value='1'>
 						
-						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete')}}' data-item-table-action='{{$record[$item -> primary -> column]}}'>
+						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' data-item-table-action='{{$record[$item -> primary -> column]}}'>
 							<span class='button a i danger'>
 								<span class='fa fa-trash'></span>
 							</span>

@@ -15,7 +15,7 @@
 		<strong>{{$response -> title}}</strong>
 
 		<br><br>
-		{{if $response -> count == 1}}
+		{{if !is_array($response -> message)}}
 			{{$response -> message}}
 		{{else}}
 

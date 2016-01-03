@@ -15,12 +15,12 @@ class stdResponse{
 	/**
 	 * Message
 	 */
-	public $message;
+	public $message = [];
 
 	/**
 	 * Number of message
 	 */
-	public $count;
+	public $count = 0;
 
 	/**
 	 * Construct
@@ -28,11 +28,24 @@ class stdResponse{
 	 * @param $title (string) title of message
 	 * @param $message (mixed) array or a single text that contains the message
 	 */
-	public function __construct($type,$title,$message){
+	public function __construct($type,$title,$message = null){
 		$this -> title = $title;
 		$this -> type = $type;
-		$this -> count = is_array($message) ? count($message) : 1;
-		$this -> message = is_array($message) && $this -> count == 1 ? $message[0] : $message;
+
+		if($message !== null){
+
+			$this -> count = is_array($message) ? count($message) : 1;
+			$this -> message = is_array($message) && $this -> count == 1 ? $message[0] : $message;
+		}
+	}
+
+	/**
+	 * Add a message
+	 * @param $message (string) message
+	 */
+	public function addMessage($message){
+		$this -> message[] = $message;
+		$this -> count++;
 	}
 }
 

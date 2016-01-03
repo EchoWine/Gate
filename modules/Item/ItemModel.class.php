@@ -2,7 +2,6 @@
 
 class ItemModel extends Model{
 
-
 	/**
 	 * Primary key
 	 */
@@ -164,13 +163,13 @@ class ItemModel extends Model{
 	 */
 	public function delete($f,$p){
 
-		$q = DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> delete();
+		$q = DB::table($this -> name) -> whereIn($this -> primary -> getColumnName(),$p) -> delete();
 
 		if($q){
-			return new stdResponse(1,'Success','Deleted');
+			return new stdResponse(1,'Success','Deleted: '.implode(",",$p));
 		}
 
-		return new stdResponse(0,'Error','Not Deleted');
+		return new stdResponse(0,'Error','Not Deleted: '.implode(",",$p));
 
 	}
 

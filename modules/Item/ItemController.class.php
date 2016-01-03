@@ -300,6 +300,15 @@ class ItemController extends Controller{
 	}
 
 	/**
+	 * Get the value of action page view
+	 * @return (string) action page view
+	 */
+	public function getPageActionView(){
+		return Item::$cfg['action']['view'];
+	}
+
+
+	/**
 	 * Get the url to the add action page
 	 * @return (string) url
 	 */
@@ -317,6 +326,18 @@ class ItemController extends Controller{
 		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionEdit().
 		'&amp;'.Item::$cfg['get_primary'].'='.$p;
 	}
+
+	/**
+	 * Get the url to the view action page
+	 * @param $p (mixed) primary key value
+	 * @return (string) url
+	 */
+	public function getUrlPageView($p = ''){
+		return $this -> getUrlMainPage().
+		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionView().
+		'&amp;'.Item::$cfg['get_primary'].'='.$p;
+	}
+	
 	
 	/**
 	 * Get the url to the list action page
@@ -347,7 +368,7 @@ class ItemController extends Controller{
 	public function getFieldsAdd(){
 		$r = [];
 		foreach($this -> model -> fields as $k){
-			if($k -> getPrintForm() !== null && $k -> getAdd())
+			if($k -> getAdd())
 				$r[] = $k;
 		}
 
@@ -361,7 +382,22 @@ class ItemController extends Controller{
 	public function getFieldsEdit(){
 		$r = [];
 		foreach($this -> model -> fields as $k){
-			if($k -> getPrintForm() !== null && $k -> getEdit())
+			if($k -> getEdit())
+				$r[] = $k;
+		}
+
+		return $r;
+	}
+
+
+	/**
+	 * Get all fields 
+	 * @return (array) array of fields
+	 */
+	public function getFieldsView(){
+		$r = [];
+		foreach($this -> model -> fields as $k){
+			if($k -> getView())
 				$r[] = $k;
 		}
 

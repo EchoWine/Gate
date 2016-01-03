@@ -2,6 +2,12 @@
 
 class Password extends _String{
 	
+
+	/**
+	 * Print the value in the input
+	 */
+	public $printInputValue = false;
+
 	/**
 	 * Min length value
 	 */
@@ -20,9 +26,8 @@ class Password extends _String{
 	public function iniPrint(){
 		$this -> print = (object)[
 			'list' => null,
-			'get' => null,
+			'view' => null,
 			'form' => $this -> label,
-			'value' => false
 		];
 	}
 

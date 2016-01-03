@@ -5,45 +5,35 @@
 	<form method='POST'></form>
 	<form method='POST' enctype='multipart/form-data'>
 		<div class='content-header'>
-			{{include .main.title {$actionPage = 'add'}}}
+			{{include .main.title {$actionPage = 'view'}}}
 			<!--<a class='button a primary' href='data.php?p=series_sett'>
 				<span class='fa fa-cogs'></span>
 				Preferenze 
 			</a>-->
 
+			<input type='hidden' name="{{$item -> getDataName('post_primary')}}" value='{{$result -> record[$item -> primary -> getColumnName()]}}'>
+
 			<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
 				<span class='fa fa-arrow-circle-left'></span> Torna alla lista
 			</a>
 
-			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','add')}}'>
-				<div class='button a success'>
-					<span class='fa fa-plus-circle'></span> Aggiungi
+			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','edit')}}'>
+				<div class='button a warning'>
+					<span class='fa fa-plus-circle'></span> Salva le modifiche
 				</div>
 			</button>
-			<!--
-			<button type='submit' name='TO_LIST' class='button'>
-				<div class='button a success'>
-					<span class='fa fa-plus-circle'></span>
-					Aggiungi e torna indietro 
-				</div>
-			</button>
-			-->
 		</div>
-
 
 		{{include .response}}
 		<div class='manage-data'>
 			<fieldset class='manage-data'>
 				<legend> Generale </legend>
 
-				{{for $item -> getFieldsAdd() as $field}}
+				{{for $item -> getFieldsView() as $field}}
 					<div class='field'>
 						<label>{{$field -> label}}: </label>
-						<div class='data'>
-							{{include $field -> getPathInputData() {
-								$name = $field -> getFormName(),
-								$value = ''
-							}}}
+						<div class='data value'>
+							{{$field -> printValue($result -> record)}}
 						</div>
 					</div>
 				{{endfor}}

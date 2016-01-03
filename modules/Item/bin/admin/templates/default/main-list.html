@@ -140,9 +140,12 @@
 						<div class='button a i success' data-button-action='1'> <span class='fa fa-copy'></span>
 						</div> 
 						</button>
-						<a data-button href='?p=data&amp;cat=view&amp;id=1' class='button a i info' data-tooltip-pos='top-left' data-tooltip='Clicca su questo bottone per visualizzare i dettagli di questo record' > <span class='fa fa-file-text'></span> 
-						</a>
 						-->
+
+						<a data-button href='{{$item -> getUrlPageView($record[$item -> primary -> column])}}' class='button a i info'>
+							<span class='fa fa-file-text'></span> 
+						</a>
+
 						<a data-button href='{{$item -> getUrlPageEdit($record[$item -> primary -> column])}}' class='button a i warning'>
 							<span class='fa fa-pencil'></span>
 						</a>

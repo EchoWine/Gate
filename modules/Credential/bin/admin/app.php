@@ -60,6 +60,21 @@
 					$View -> setPageEdit();
 				}
 			break;
+			case $Controller -> getPageActionView():
+
+				# Get results for list
+				$result = $Controller -> getResultByPrimary();
+				
+				if(empty($result -> record)){
+
+					# Set current page to Empty
+					$View -> setPageEmpty();
+				}else{
+
+					# Set current page to Edit
+					$View -> setPageView();
+				}
+			break;
 			default:
 				# Get results for list
 				$results = $Controller -> getResults();

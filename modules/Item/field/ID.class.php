@@ -25,9 +25,9 @@ class ID extends Field{
 	public function iniPrint(){
 		$this -> print = (object)[
 			'list' => $this -> label,
-			'get' => $this -> label,
+			'view' => $this -> label,
 			'form' => null,
-			'value' => null,
+			'inputValue' => null,
 		];
 	}
 

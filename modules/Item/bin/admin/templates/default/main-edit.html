@@ -30,27 +30,26 @@
 				</div>
 			</button>
 			-->
-			</div>
+		</div>
 
 
-			{{include .response}}
-			<div class='manage-data'>
-				<fieldset class='manage-data'>
-					<legend> Generale </legend>
+		{{include .response}}
+		<div class='manage-data'>
+			<fieldset class='manage-data'>
+				<legend> Generale </legend>
 
-					{{for $item -> getFieldsEdit() as $field}}
-						<div class='field'>
-							<label>{{$field -> label}}: </label>
-							<div class='data'>
-								{{include $field -> getPathInputData() {
-									$name = $field -> getFormName(),
-									$value = $field -> printValue($result -> record)
-								}}}
-							</div>
+				{{for $item -> getFieldsEdit() as $field}}
+					<div class='field'>
+						<label>{{$field -> label}}: </label>
+						<div class='data'>
+							{{include $field -> getPathInputData() {
+								$name = $field -> getFormName(),
+								$value = $field -> printInputValue($result -> record)
+							}}}
 						</div>
-					{{endfor}}
-				</fieldset>
-			</div>
-		</form>
-	</div>
+					</div>
+				{{endfor}}
+			</fieldset>
+		</div>
+	</form>
 </div>

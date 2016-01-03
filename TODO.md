@@ -26,21 +26,25 @@ Modules:
 	- [ ] Import/Export
 	- [ ] Custom Page
 	- [ ] Item
-		- [ ] Add
+		- [x] Add
 		- [ ] Add as
-		- [ ] Copy
-		- [ ] Export
-		- [ ] Delete
-		- [ ] Edit
+		- [ ] Copy single
+		- [ ] Copy multiple
+		- [x] Delete single
+		- [ ] Delete multiple
+		- [x] Edit single
 		- [ ] Edit multiple
-		- [ ] List
-			- [ ] Pagination
-			- [ ] Search
-			- [ ] SortBy
-		- [ ] View
+		- [x] List
+		- [ ] Search single
+		- [ ] Search multiple
+		- [ ] SortBy
+		- [x] View
 		- [ ] Import
 		- [ ] Export
 		- [ ] Format
+		- [x] checkForm
+		- [x] checkExists
+		- [x] response system
 
 Version 2.0
 

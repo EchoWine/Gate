@@ -33,6 +33,11 @@ class Field{
 	public $edit = true;
 
 	/**
+	 * Print the value in the input
+	 */
+	public $printInputValue = false;
+
+	/**
 	 * Basic pattern
 	 */
 	public $_pattern = "(.)";
@@ -104,40 +109,31 @@ class Field{
 	public function iniPrint(){
 		$this -> print = (object)[
 			'list' => $this -> label,
-			'get' => $this -> label,
+			'view' => $this -> label,
 			'form' => $this -> label,
-			'value' => true,
 		];
 	}
 
 	/**
-	 * Get printList
+	 * Get print List
 	 */
 	public function getPrintList(){
 		return $this -> print -> list;
 	}
 
 	/**
-	 * Get printGet
+	 * Get print View
 	 */
-	public function getPrintGet(){
-		return $this -> print -> get;
+	public function getPrintView(){
+		return $this -> print -> view;
 	}
 
 	/**
-	 * Get printForm
+	 * Get print Form
 	 */
 	public function getPrintForm(){
 		return $this -> print -> form;
 	}
-
-	/**
-	 * Get printValue
-	 */
-	public function getPrintValue(){
-		return $this -> print -> value;
-	}
-
 
 	/**
 	 * Set model
@@ -198,8 +194,17 @@ class Field{
 	 * @param $r (array) result
 	 * @return (mixed) form value
 	 */
+	public function printInputValue($r){
+		return $this -> printInputValue ? $r[$this -> getColumnName()] : '';
+	}
+
+	/**
+	 * Get value to print
+	 * @param $r (array) result
+	 * @return (mixed) value
+	 */
 	public function printValue($r){
-		return $this -> getPrintValue() ? $r[$this -> getColumnName()] : '';
+		return $r[$this -> getColumnName()];
 	}
 
 	/**
@@ -246,14 +251,6 @@ class Field{
 	}
 
 	/**
-	 * Is operation add enabled
-	 * @return (bool) result
-	 */
-	public function getAdd(){
-		return $this -> add;
-	}
-
-	/**
 	 * Add the field to the query 'edit'
 	 * @param $a (array) array used in the query
 	 */
@@ -271,16 +268,30 @@ class Field{
 	public function dbValue($v){
 		return $v;
 	}
-	
+
+	/**
+	 * Is operation add enabled
+	 * @return (bool) result
+	 */
+	public function getAdd(){
+		return $this -> getPrintForm() && $this -> add;
+	}
 
 	/**
 	 * Is operation edit enabled
 	 * @return (bool) result
 	 */
 	public function getEdit(){
-		return $this -> edit;
+		return $this -> getPrintForm() && $this -> edit;
 	}
 
+	/**
+	 * Is operation view enabled
+	 * @return (bool) result
+	 */
+	public function getView(){
+		return $this -> getPrintView();
+	}
 
 
 }

@@ -15,6 +15,7 @@ return [
 		'add' => 'add',
 		'delete' => 'del',
 		'edit' => 'edit',
+		'view' => 'view',
 	]
 	
 ];

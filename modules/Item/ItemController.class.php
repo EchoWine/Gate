@@ -22,8 +22,7 @@ class ItemController extends Controller{
 	 * Primary
 	 */
 	public $primary;
-
-
+	
 	/**
 	 * Check all the interaction with user
 	 */

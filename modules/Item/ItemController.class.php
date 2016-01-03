@@ -67,44 +67,51 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptDelete(){
 
-		$a = $this -> getData('action') -> value;
-		$p = null;
-
-		if($a == $this -> getActionDeleteM()){
-			$p = $this -> getData('p_primary_m') -> value;
-		}
-
-		if($a == $this -> getActionDeleteS()){
-			$p = [$this -> getData('p_primary') -> value];
-		}
-
-		if($p !== null){
-
-			$r = [];
-			foreach($p as $k){
-				if($this -> checkExists($k))$r[] = $k;
-			}
-
-			if(!empty($r))
-				$this -> response[] = $this -> model -> delete($this -> model -> fields,$r);
-
-		}
+		$r = $this -> checkAttemptSM($this -> getActionDeleteS(),$this -> getActionDeleteM());
+		
+		if(!empty($r))
+			$this -> response[] = $this -> model -> delete($this -> model -> fields,$r);
 	}
 
 	/**
 	 * Check attempt copy
 	 */
 	public function checkAttemptCopy(){
+		
+		$r = $this -> checkAttemptSM($this -> getActionCopyS(),$this -> getActionCopyM());
 
-		if($this -> getData('action') -> value == $this -> getActionCopyS()){
+		if(!empty($r))
+			$this -> response[] = $this -> model -> copy($this -> model -> fields,$r);
+	}
 
-			$p = $this -> getData('p_primary') -> value;
 
-			if($this -> checkExists($p)){
-				$this -> response[] = $this -> model -> copy($this -> model -> fields,$p);
+
+	/**
+	 * Check attempt single/multiple operation
+	 * @param $s (string) value action single
+	 * @param $m (string) value action multiple
+	 * @return (array) primary key
+	 */
+	public function checkAttemptSM($s,$m){
+		$a = $this -> getData('action') -> value;
+		$p = null;
+
+		if($a == $m)
+			$p = $this -> getData('p_primary_m') -> value;
+
+		if($a == $s)
+			$p = [$this -> getData('p_primary') -> value];
+		
+
+		$r = [];
+		if($p !== null){
+
+			foreach($p as $k){
+				if($this -> checkExists($k))$r[] = $k;
 			}
 
 		}
+		return $r;
 	}
 
 	/**
@@ -124,6 +131,7 @@ class ItemController extends Controller{
 				'delete_s' => 'del_s',
 				'delete_m' => 'del_m',
 				'copy_s' => 'copy_s',
+				'copy_m' => 'copy_m',
 			]),
 
 			# Page
@@ -190,6 +198,14 @@ class ItemController extends Controller{
 	 */
 	public function getActionCopyS(){
 		return Item::$cfg['action']['copy_s'];
+	}
+
+	/**
+	 * Get the value of action copy_m
+	 * @return (string) action copy_m
+	 */
+	public function getActionCopyM(){
+		return Item::$cfg['action']['copy_m'];
 	}
 
 	/**

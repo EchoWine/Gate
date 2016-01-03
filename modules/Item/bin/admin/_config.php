@@ -20,6 +20,7 @@ return [
 		'edit' => 'edit',
 		'view' => 'view',
 		'copy_s' => 'copy_s',
+		'copy_m' => 'copy_m',
 	]
 	
 ];

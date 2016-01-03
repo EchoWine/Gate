@@ -50,9 +50,10 @@
 				<!--
 				<option value='export_xml_m'> Esporta XML </option>
 				<option value='export_csv_m'> Esporta CSV </option>
-				<option value='copy_m'> Copia </option>
 				<option value='edit_multiple'> Modifica </option> 
 				-->
+
+				<option value='{{$item -> getDataOption('action','copy_m')}}'> Copia </option>
 				<option value='{{$item -> getDataOption('action','delete_m')}}' data-button-window='SURE' data-window-value='del_m' data-multiple-button> Elimina </option>
 			</select>
 

@@ -158,7 +158,7 @@ class ItemModel extends Model{
 	/**
 	 * Delete a record
 	 * @param $f (array) list of all fields
-	 * @param $p (mixed) value of primary key
+	 * @param $p (array) value of primary key
 	 * @return (object stdResponse) result of request
 	 */
 	public function delete($f,$p){
@@ -212,16 +212,15 @@ class ItemModel extends Model{
 	/**
 	 * Copy a record
 	 * @param $f (array) list of all fields
-	 * @param $p (mixed) value of primary key
+	 * @param $p (array) value of primary key
 	 * @return (object stdResponse) result of request
 	 */
 	public function copy($f,$p){
-
-
-			
+		
+		
 		$c = [];
 
-		$q = DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> lists();
+		$q = DB::table($this -> name) -> whereIn($this -> primary -> getColumnName(),$p) -> lists();
 
 		foreach($q as $r){
 

@@ -23,6 +23,17 @@ class ID extends Field{
 	public $unique = true;
 
 	/**
+	 * Initialization
+	 */
+	public function _ini(){
+
+		if($this -> model -> orderByField == null){
+			$this -> model -> orderByField = $this;
+			$this -> model -> orderDirection = 'asc';
+		}
+	}
+
+	/**
 	 * Initialize label
 	 */
 	public function iniLabel(){

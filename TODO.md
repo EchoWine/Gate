@@ -16,7 +16,7 @@ Modules:
 	- [x] Authentication
 	- [ ] Registration
 	- [ ] Recovery
-	- [ ] Credential
+	- [x] Credential
 	- [ ] Profile
 	- [ ] Permission single & group
 	- [ ] Log
@@ -26,18 +26,20 @@ Modules:
 	- [ ] Import/Export
 	- [ ] Custom Page
 	- [ ] Item
+		- [x] Action Page
 		- [x] Add
 		- [x] Add as
 		- [x] Copy single
-		- [ ] Copy multiple
+		- [x] Copy multiple
 		- [x] Delete single
 		- [x] Delete multiple
 		- [x] Edit single
 		- [ ] Edit multiple
 		- [x] List
+		- [x] Page 
 		- [ ] Search single
 		- [ ] Search multiple
-		- [ ] SortBy
+		- [x] OrderBy
 		- [x] View
 		- [ ] Import
 		- [ ] Export
@@ -45,7 +47,9 @@ Modules:
 		- [x] checkForm
 		- [x] checkExists
 		- [x] response system
-		- [ ] inputValue form if failed
+		- [ ] checkForm return false => inputValue = $_POST
+		- [ ] No checkbox => multiple action disabled
+		- [ ] Are you sure? Delete single/Delete multiple
 		- [ ] Rollback
 
 Version 2.0

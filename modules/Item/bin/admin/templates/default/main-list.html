@@ -35,9 +35,6 @@
 			-->
 		</div>
 	</form>
-	<form method='POST' id='AP_FormINFO'>
-		<input type='hidden' name='sortBy'>
-	</form>
 
 	{{include .main-list.pag}}
 
@@ -74,13 +71,20 @@
 				
 				{{for $item -> getFieldsList() as $field}}
 					
-					<a href='#' > 
+					<a href='{{$item -> getUrlPageList($field -> name)}}'> 
 						<span class='title'>{{$field -> label}}</span>
-						<!--
+						
 						<button class='button r'>
-							<span class='fa fa-sort-asc'></span>
+
+							<span class='fa fa-sort-{{switch $item -> getOrderField($field -> name)}}
+
+								{{case 'desc'}}desc{{/case}}
+
+								{{case 'asc'}}asc{{/case}}
+
+							{{/switch}}'></span>
 						</button>
-						-->
+						
 					</a>
 
 				{{endfor}}

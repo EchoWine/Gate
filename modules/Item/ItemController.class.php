@@ -29,10 +29,31 @@ class ItemController extends Controller{
 	public function check(){
 		$this -> updateData();
 		
+		$this -> checkAttemptOrder();
 		$this -> checkAttemptAdd();
 		$this -> checkAttemptDelete();
 		$this -> checkAttemptEdit();
 		$this -> checkAttemptCopy();
+	}
+
+	/**
+	 * Check attempt sort
+	 */
+	public function checkAttemptOrder(){
+
+		$v = $this -> getData('g_order') -> value;
+
+		if($v !== null && preg_match("/^(.*)_(d|a)$/",$v,$r)){
+
+			if($this -> model -> isField($r[1])){
+				$f = $this -> model -> getField($r[1]);
+				$s = $r[2] == 'd' ? 'desc' : 'asc';
+
+				$this -> model -> orderByField = $f;
+				$this -> model -> orderDirection = $s;
+			}
+
+		}
 	}
 
 	/**
@@ -147,8 +168,11 @@ class ItemController extends Controller{
 			# Post primary multiple
 			'p_primary_m' => new stdDataPost(Item::$cfg['p_primary_m']),
 
-			# get primary
+			# Get primary
 			'g_primary' => new stdDataGet(Item::$cfg['g_primary']),
+
+			# Get order
+			'g_order' => new stdDataGet(Item::$cfg['g_order']),
 
 		];
 	}
@@ -225,7 +249,12 @@ class ItemController extends Controller{
 		$this -> iniPages($r -> pages);
 
 		# Get records
-		$r -> records = $this -> model -> getResults($this -> getResultStartFrom(),$this -> getResultPerPage());
+		$r -> records = $this -> model -> getResults(
+			$this -> getResultStartFrom(),
+			$this -> getResultPerPage(),
+			$this -> model -> orderByField,
+			$this -> model -> orderDirection
+		);
 
 		return $r;
 	}
@@ -425,10 +454,36 @@ class ItemController extends Controller{
 	
 	/**
 	 * Get the url to the list action page
+	 * @param $oField (string) order by field 
 	 * @return (string) url
 	 */
-	public function getUrlPageList(){
-		return $this -> getUrlMainPage();
+	public function getUrlPageList($oField = null){
+		$r = $this -> getUrlMainPage();
+
+		if($oField !== null && $this -> model -> isField($oField))
+			$r .= '&amp;'.Item::$cfg['g_order'].'='.$this -> getParamOrder($this -> model -> getField($oField));
+
+		return $r;
+	}
+
+	/**
+	 * Get param order
+	 * @param $f (string) name field
+	 * @return (string) param
+	 */
+	public function getParamOrder($f){
+		return $this -> model -> orderByField == $f && $this -> model -> orderDirection !== 'desc' 
+			? $f -> name."_d" 
+			: $f -> name."_a";
+	}
+
+	/**
+	 * Get status order of field
+	 * @param $f (string) name field
+	 * @return (string) param
+	 */
+	public function getOrderField($f){
+		return $this -> model -> orderByField -> name == $f ? $this -> model -> orderDirection : '';
 	}
 
 	/**

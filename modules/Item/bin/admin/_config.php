@@ -9,6 +9,7 @@ return [
 	'g_primary' => 'id',
 	'p_primary' => 'primary',
 	'p_primary_m' => 'primary_m',
+	'g_order' => 'sort',
 
 	'get_page' => 's',
 

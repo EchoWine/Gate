@@ -18,6 +18,16 @@ class ItemModel extends Model{
 	public static $config;
 
 	/**
+	 * Field that order the result
+	 */
+	public $orderByField;
+
+	/**
+	 * Direction order (asc, desc)
+	 */
+	public $orderDirection;
+
+	/**
 	 * Add fields
 	 * @param $a (array) list of fields to add
 	 */
@@ -34,6 +44,25 @@ class ItemModel extends Model{
 	public function setField($k){
 		$this -> fields[$k -> name] = $k;
 		$k -> setModel($this);
+		$k -> ini();
+	}
+
+	/**
+	 * Get a field
+	 * @param $v (string) name field
+	 * @return (object) field
+	 */
+	public function getField($v){
+		return isset($this -> fields[$v]) ? $this -> fields[$v] : null;
+	}
+
+	/**
+	 * Return if field exists
+	 * @param $v (string) name field
+	 * @return (object) field
+	 */
+	public function isField($v){
+		return isset($this -> fields[$v]);
 	}
 
 	/**
@@ -75,10 +104,21 @@ class ItemModel extends Model{
 	 * Select all record
 	 * @param (int) $s start from
 	 * @param (int) $n take n element
+	 * @param (object) $oField field sort
+	 * @param (string) $oDir sorting direction
 	 * @return (array) query result
 	 */
-	public function getResults($s = 0,$n = 5){
-		return DB::table($this -> name) -> skip($s) -> take($n) -> lists();
+	public function getResults($s = 0,$n = 5,$oField = null,$oDir = 'asc'){
+
+		$q = DB::table($this -> name) -> skip($s) -> take($n);
+
+		if($oField !== null){
+			$q = $oDir == 'asc' 
+				? $q -> orderByAsc($oField -> getColumnName()) 
+				: $q -> orderByDesc($oField -> getColumnName());
+		}
+
+		return $q -> lists();
 	}
 
 	/**
@@ -217,7 +257,7 @@ class ItemModel extends Model{
 	 */
 	public function copy($f,$p){
 		
-		
+
 		$c = [];
 
 		$q = DB::table($this -> name) -> whereIn($this -> primary -> getColumnName(),$p) -> lists();

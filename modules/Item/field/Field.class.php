@@ -78,19 +78,24 @@ class Field{
 	 */
 	public function __construct($n){
 		$this -> name = $n;
-		$this -> ini();
 	}
 
 	/**
 	 * Initialization
 	 */
 	public function ini(){
+		$this -> _ini();
 		$this -> iniLabel();
 		$this -> iniForm();
 		$this -> iniPrint();
 		$this -> iniColumn();
 		$this -> iniPattern();
 	}
+
+	/**
+	 * Extension of initialization
+	 */
+	public function _ini(){}
 
 	/**
 	 * Initialize column

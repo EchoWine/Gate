@@ -64,7 +64,7 @@ class ID extends Field{
 	 * @return (object) query builder
 	 */
 	public function search($q,$v){
-		return $q -> where($this -> getColumnName(),$v);
+		return $q -> orWhere($this -> getColumnName(),$v);
 	}
 
 

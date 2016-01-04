@@ -125,8 +125,13 @@ class ItemModel extends Model{
 		}
 
 		foreach((array)$search as $n => $k){
-			foreach((array)$k as $k1)
-				$q = $this -> getField($n) -> search($q,$k1);
+
+			$q = $q -> where(function($q) use ($n,$k){
+				foreach((array)$k as $k1)
+					$q = $this -> getField($n) -> search($q,$k1);
+
+				return $q;
+			});
 		}
 
 		return $q -> lists();

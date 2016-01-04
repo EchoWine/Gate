@@ -19,11 +19,6 @@ class ItemController extends Controller{
 	public $response = [];
 
 	/**
-	 * Primary
-	 */
-	public $primary;
-
-	/**
 	 * Check all the interaction with user
 	 */
 	public function check(){
@@ -197,7 +192,7 @@ class ItemController extends Controller{
 	 * Initialize
 	 */
 	public function ini(){
-		$this -> primary = $this -> model -> primary;
+
 	}
 
 	/**

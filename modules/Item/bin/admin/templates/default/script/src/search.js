@@ -34,35 +34,6 @@ item.search = function(){
 		},false);
 	}
 
-
-	// Submit on "enter" key
-	/*
-	data_search = getAllElementsWithAttribute('data-search-data');
-
-	if(defined(data_search)){
-		for(i = 0;i < data_search.length; i++){
-
-			for(y = 0;y < data_search[i].childNodes.length;y++){
-				data_search[i].childNodes[y].addEventListener("keypress",function(e){
-				
-					keyCode = e.keyCode;
-					if(keyCode == 13){
-						id = this.parentNode.dataset.searchData;
-						e.preventDefault();
-			        	t = document.getElementById(id);
-
-			        	c = document.createElement('INPUT');
-			        	c.setAttribute('type','hidden');
-			        	c.setAttribute('name',t.getAttribute('name'));
-			        	c.setAttribute('value',t.getAttribute('value'));
-			        	t.form.appendChild(c);
-			        	t.form.submit();
-			        }
-				},false);
-			}
-		}
-	}*/
-
 	item.multipleSearch();
 };
 

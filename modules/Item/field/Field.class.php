@@ -320,7 +320,7 @@ class Field{
 	 * @return (object) query builder
 	 */
 	public function search($q,$v){
-		return $q -> whereLike($this -> getColumnName(),'%'.$v.'%');
+		return $q -> orWhereLike($this -> getColumnName(),'%'.$v.'%');
 	}
 
 	/**

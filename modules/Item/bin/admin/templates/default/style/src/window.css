@@ -1,0 +1,129 @@
+@media only screen and (max-width:420px){
+	.c-window{
+		left:0 !important;
+		top:50px !important;
+		margin:0 !important;
+		padding:10px;
+	}
+}
+
+@media only screen and (max-width:900px){
+	.c-window{
+		top:50% !important;
+		margin-top:-100px !important;
+	}
+}
+@media only screen and (max-height:200px){
+	.c-window{
+		top:10px !important;
+		margin-top:0 !important;
+	}
+}
+.c-window{
+	position:fixed;
+	top:200px;
+	left:50%;
+	margin-left:-200px;
+	max-width:400px;
+	width:100%;
+	z-index:-1;
+	opacity:0;
+	transition:opacity 0.5s linear;
+}
+
+.c-window[active]{
+	opacity:1;
+	z-index:3;
+}
+
+
+.window{
+	width:100%;
+	height:100%;
+	background:white;
+}
+
+.window h1{
+	display:inline-block;
+	font-size:20px;
+	color: #666;
+	font-weight: bold;
+	margin:0;
+}
+.window > div:first-child{
+	cursor: default;
+	padding:10px 15px;
+}
+
+.window > div:first-child .button{
+	float:right;
+	cursor:pointer;
+}
+
+.window > div:last-child{
+	padding:5px 15px 15px 15px;
+}
+
+.window .input.n,.window .select.n{
+    flex-grow:1;
+}
+
+.window .button.a{
+    margin-left:10px;
+}
+
+#mex_import > div{
+	word-wrap: break-word;
+}
+
+
+/* import */
+.window-import-content{
+	
+}
+
+#mex_import > div:last-child{
+	display:flex;
+	align-items:center;
+}
+#mex_import > div:last-child > input{
+	flex-grow:1;
+}
+
+/* export */
+#mex_export{
+    display:flex;
+    width:100%;
+}
+
+/* sure */
+#mex_sure > div{
+	padding-top: 5px;
+    width:100%;
+}
+
+.window .window-sure-button{
+    width: 100%;
+    padding-top: 10px;
+    justify-content: flex-end;
+    display:flex;
+}
+
+		
+
+#obfuscator{
+	width:100%;
+	height:0%;
+	position:fixed;
+	top:0;
+	left:0;
+	background:rgba(0,0,0,0.4);
+	opacity:0;
+	transition:z-index 0.5s, opacity 0.5s;
+}
+
+#obfuscator[active]{
+	opacity:1;
+	z-index:99;
+	height:100%;
+}

@@ -167,7 +167,8 @@
 						
 						<input type='hidden' name='item[]' value='1'>
 						
-						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' data-item-table-action='{{$record[$item -> getFieldPrimary() -> column]}}'>
+						<button type='button' class='button' name='{{$item -> getDataName('action')}}' data-item-table-action='{{$record[$item -> getFieldPrimary() -> column]}}' data-button-window='sure' data-window-value='{{$item -> getDataOption('action','delete_s')}}'
+						>
 							<span class='button a i danger'>
 								<span class='fa fa-trash'></span>
 							</span>
@@ -182,4 +183,24 @@
 
 	{{include .main-list.pag}}
 	
+</div>
+<div id='obfuscator'>
+	<div class='c-window' id='sure'>
+		<div class='window'>
+			<div><h1>Conferma azione</h1><button class='button a i danger  wClose'><span class='fa fa-close'></span></button></div>
+			<div class='window-content'>
+				
+				<form data-window-form id='mex_sure'>
+		
+				Sei sicuro di voler eseguire questa azione?
+				<input type='hidden' name='{{$item -> getDataName('action')}}' class='wData'>
+				<div class='window-sure-button'>
+					<button type='submit' class='button a danger wSubmit wClose'>Sì</button>
+					<button type='button' class='button a info  wClose'>No</button>
+				</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
 </div>

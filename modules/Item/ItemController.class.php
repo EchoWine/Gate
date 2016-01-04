@@ -298,10 +298,8 @@ class ItemController extends Controller{
 
 		$v = $this -> getData('g_primary') -> value;
 
-		if($v === null) return $r;
-
 		# Check if exists
-		if($this -> checkExists($v)){
+		if($v !== null && $this -> checkExists($v)){
 
 			# Get records
 			$r -> record = $this -> model -> getResultByPrimary($v);

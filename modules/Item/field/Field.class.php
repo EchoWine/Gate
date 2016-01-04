@@ -53,6 +53,11 @@ class Field{
 	public $printInputValue = true;
 
 	/**
+	 * Print the value sent by user if checkForm return false
+	 */
+	public $printInputValueData = true;
+
+	/**
 	 * Basic pattern
 	 */
 	public $_pattern = "(.)";
@@ -223,7 +228,17 @@ class Field{
 	 * @return (mixed) form value
 	 */
 	public function printInputValue($r){
-		return $this -> printInputValue ? $r[$this -> getColumnName()] : '';
+		
+		if($this -> printInputValue){
+			if($this -> printInputValueData && $this -> getFormValue() !== null)
+				return $this -> getFormValue();
+
+			if(!empty($r) && isset($r[$this -> getColumnName()]))
+				return $r[$this -> getColumnName()];
+		}
+
+		return '';
+
 	}
 
 	/**

@@ -47,7 +47,7 @@ Modules:
 		- [x] checkForm
 		- [x] checkExists
 		- [x] response system
-		- [ ] checkForm return false => inputValue = $_POST
+		- [x] checkForm return false => inputValue = $_POST
 		- [ ] No checkbox => multiple action disabled
 		- [ ] Are you sure? Delete single/Delete multiple
 		- [ ] Rollback

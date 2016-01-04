@@ -2,42 +2,38 @@
 	
 	{{include .main.cat}}
 
-	<form method='POST'></form>
-	<form method='POST' enctype='multipart/form-data'>
-		<div class='content-header'>
-			{{include .main.title {$actionPage = 'view'}}}
-			<!--<a class='button a primary' href='data.php?p=series_sett'>
-				<span class='fa fa-cogs'></span>
-				Preferenze 
-			</a>-->
+	
+	<div class='content-header'>
+		{{include .main.title {$actionPage = 'view'}}}
 
-			<input type='hidden' name="{{$item -> getDataName('p_primary')}}" value='{{$result -> record[$item -> primary -> getColumnName()]}}'>
 
-			<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
-				<span class='fa fa-arrow-circle-left'></span> Torna alla lista
-			</a>
+		<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
+			<span class='fa fa-arrow-circle-left'></span> Torna alla lista
+		</a>
 
-			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','edit')}}'>
-				<div class='button a warning'>
-					<span class='fa fa-plus-circle'></span> Salva le modifiche
+		<form method='POST' action='{{$item -> getUrlPageList()}}'>
+			<input type='hidden' name="{{$item -> getDataName('p_primary')}}" value='{{$item -> results -> record[$item -> getFieldPrimary() -> getColumnName()]}}'>
+			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}'>
+				<div class='button a danger'>
+					<span class='fa fa-trash'></span> Elimina
 				</div>
 			</button>
-		</div>
+		</form>
+	</div>
 
-		{{include .response}}
-		<div class='manage-data'>
-			<fieldset class='manage-data'>
-				<legend> Generale </legend>
+	{{include .response}}
+	<div class='manage-data'>
+		<fieldset class='manage-data'>
+			<legend> Generale </legend>
 
-				{{for $item -> getFieldsView() as $field}}
-					<div class='field'>
-						<label>{{$field -> label}}: </label>
-						<div class='data value'>
-							{{$field -> printValue($result -> record)}}
-						</div>
+			{{for $item -> getFieldsView() as $field}}
+				<div class='field'>
+					<label>{{$field -> label}}: </label>
+					<div class='data value'>
+						{{$field -> printValue($item -> results -> record)}}
 					</div>
-				{{endfor}}
-			</fieldset>
-		</div>
-	</form>
+				</div>
+			{{endfor}}
+		</fieldset>
+	</div>
 </div>

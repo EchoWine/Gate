@@ -19,6 +19,11 @@ class ItemController extends Controller{
 	public $response = [];
 
 	/**
+	 * Results
+	 */
+	public $results = [];
+
+	/**
 	 * Check all the interaction with user
 	 */
 	public function check(){
@@ -276,6 +281,8 @@ class ItemController extends Controller{
 			$this -> model -> searched
 		);
 
+		$this -> results = $r;
+
 		return $r;
 	}
 
@@ -299,6 +306,8 @@ class ItemController extends Controller{
 			# Get records
 			$r -> record = $this -> model -> getResultByPrimary($v);
 		}
+
+		$this -> results = $r;
 
 		return $r;
 	}
@@ -584,6 +593,14 @@ class ItemController extends Controller{
 	 */
 	public function getSearched($n){
 		return isset($this -> model -> searched[$n]) ? $this -> model -> searched[$n] : [];
+	}
+
+	/**
+	 * Return the primary field
+	 * @return (object) primary field
+	 */
+	public function getFieldPrimary(){
+		return $this -> model -> primary;
 	}
 }
 

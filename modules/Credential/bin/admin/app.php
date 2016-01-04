@@ -19,8 +19,8 @@
 	$View = new CredentialView($Model,$Controller);
 
 	# Url item
-	$page_obj = 'credential';
-
+	$Controller -> setNameURL('credential');
+	
 	# Label item
 	$label = 'Credential';
 

@@ -51,6 +51,9 @@ Modules:
 		- [ ] No checkbox => multiple action disabled
 		- [ ] Are you sure? Delete single/Delete multiple
 		- [ ] Rollback
+		- [ ] Field
+			- [ ] Sort
+			- [ ] Image
 
 Version 2.0
 

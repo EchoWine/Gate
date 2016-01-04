@@ -1,12 +1,11 @@
 <?php
 
-	$Controller -> setNameURL($page_obj);
 
 	# Initialization Controller
 	$Controller -> ini();
 	$item = $Controller;
 
-	if($pageValue == $page_obj){
+	if($pageValue == $Controller -> nameURL){
 
 		$View -> setCat();
 		$View -> setTitle();
@@ -22,7 +21,7 @@
 				$result = $Controller -> getResultByPrimary();
 
 
-				if($Controller -> getData('g_primary') -> value !== null && empty($result -> record)){
+				if($Controller -> getData('g_primary') -> value !== null && empty($item -> results -> record)){
 
 					# Set current page to Empty
 					$View -> setPageEmpty();
@@ -39,7 +38,7 @@
 				# Get results
 				$result = $Controller -> getResultByPrimary();
 				
-				if(empty($result -> record)){
+				if(empty($item -> results -> record)){
 
 					# Set current page to Empty
 					$View -> setPageEmpty();
@@ -55,7 +54,7 @@
 				# Get results
 				$result = $Controller -> getResultByPrimary();
 				
-				if(empty($result -> record)){
+				if(empty($item -> results -> record)){
 
 					# Set current page to Empty
 					$View -> setPageEmpty();

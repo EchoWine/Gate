@@ -19,7 +19,7 @@
 				<span class='fa fa-angle-right'></span>
 			</span>
 		</button>
-	</form> di {{$results -> pages}} 
+	</form> di {{$item -> results -> pages}} 
 	<span class='page-separator'></span> 
 	<form method='POST'> Mostra:
 		<select name='N_RESULTS' id='n_results' class='select n' >
@@ -29,5 +29,5 @@
 		</select> risultati
 	</form>
 	<span class='page-separator'></span>
-	<span class='cmex'>Ci sono un totale di {{$results -> count}} risultati</span>
+	<span class='cmex'>Ci sono un totale di {{$item -> results -> count}} risultati</span>
 </div>

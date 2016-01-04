@@ -11,5 +11,8 @@
 		Field::$template
 	);
 
+	$itemScript = (object)[
+		'' => '',
+	];
 	
 ?>

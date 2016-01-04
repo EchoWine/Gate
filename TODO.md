@@ -48,8 +48,8 @@ Modules:
 		- [x] checkExists
 		- [x] response system
 		- [x] checkForm return false => inputValue = $_POST
-		- [ ] No checkbox => multiple action disabled
-		- [ ] Are you sure? Delete single/Delete multiple
+		- [x] Disabilitare operazioni multiple se checkbox non attivi
+		- [ ] Are you sure? Messaggio di conferma per operazioni pericolose "eliminazione"
 		- [ ] Rollback
 		- [ ] Field
 			- [ ] Sort

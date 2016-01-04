@@ -141,12 +141,13 @@ class Auth extends Module{
 
 	/**
 	 * Check if data is correct login
-	 * @param (string $user username or email
-	 * @param (string) $pass password
-	 * @param (int) $type username = 0, mail = 1, all = 2
+	 * @param $user (string) username or email
+	 * @param $pass (string) $pass password
+	 * @param $checkName (bool) check the name
+	 * @param $checkMail (bool) check the mail
 	 * @return (array) result
 	 */
-	public function getUserDataFromLogin($user,$pass,$type){
+	public function getUserDataFromLogin($user,$pass,$type,$checkName = 1,$checkMail = 1){
 
 		# Ini var
 		$cfg = $this -> cfg;
@@ -159,10 +160,10 @@ class Auth extends Module{
 		# Building query
 		$q = DB::table($c_table) -> where($c_col['pass'],$pass);
 		
-		if($type != 1)
+		if($checkName)
 			$q = $q -> orWhere($c_col['user'],$user);
 
-		if($type != 0)
+		if($checkMail)
 			$q = $q -> orWhere($c_col['mail'],$user);
 
 		# Execute query
@@ -179,8 +180,8 @@ class Auth extends Module{
 
 	/**
 	 * Check login
-	 * @param (string $user username or email
-	 * @param (string) $pass password
+	 * @param $user (string) username or email
+	 * @param $pass (string) password
 	 * @return (object) response
 	 */
 	public function login($user,$pass,$type){
@@ -190,11 +191,7 @@ class Auth extends Module{
 		$c_col = $cfg['credential']['col'];
 		$s_table = $cfg['session']['table'];
 
-		$t = 2;
-		if($cfg['login_user'] == 0)$t = 1;
-		if($cfg['login_mail'] == 1)$t = 0;
-
-		list($c,$q) = $this -> getUserDataFromLogin($user,$pass,$t);
+		list($c,$q) = $this -> getUserDataFromLogin($user,$pass,$cfg['login_user'],$cfg['login_mail']);
 
 		$r = [];
 

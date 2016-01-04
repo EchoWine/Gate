@@ -6,7 +6,14 @@
 	}
 
 	function is_closure($t) {
-    	return is_object($t) && ($t instanceof Closure);
+		return is_object($t) && ($t instanceof Closure);
+	}
+	
+	function dirname_r($f,$i) {
+    	for(;$i>0;$i--)
+    		$f = dirname($f);
+
+    	return $f;
 	}
 
 ?>

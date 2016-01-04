@@ -1,7 +1,14 @@
 <?php
 
-class Credential extends Module{
+class Credential extends Item{
 	
+	
+	public $data;
+
+	public function __construct(){
+		$this -> name = 'credential';
+	}
+
 }
 
 ?>

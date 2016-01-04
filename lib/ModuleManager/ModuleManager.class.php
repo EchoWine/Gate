@@ -69,5 +69,15 @@ class ModuleManager{
 		}
 		return $r;
 	}
+
+	/**
+  	 * Get path of a module
+  	 * @param $n (string) name of module
+  	 * @return $path (string) path
+  	 */
+  	public static function getPathModule($m){
+  		return isset(self::$list[$m]) ? self::$list[$m] : null;
+  	}
+
 }
 ?>

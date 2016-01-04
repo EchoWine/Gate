@@ -2,33 +2,17 @@
 
 	$dir = dirname(__FILE__);
 
-	$Model = new AuthModel();
+	$model = new Auth();
 
-	$Controller = new AuthController($Model,include $dir."/_config.php");
-	$Controller -> check();
-	$Response = $Controller -> response;
+	$auth = new AuthController($model,include $dir."/_config.php");
+	$auth -> check();
+	$auth -> updatePathTemplate('admin');
 
-	$View = new AuthView($Model,$Controller);
+	$view = new AuthView($model,$auth);
 
-
-	# Definition of some variables
-
-	$View -> setLogin();
-	$View -> setHeader();
-
-	$pathModuleAuth = ModuleManager::getPath()."/Auth/bin/admin/templates/".TemplateEngine::getName()."/";
+	# Definition pages
+	$view -> setLogin();
+	$view -> setHeader();
 
 
-
-	$auth = (object)[
-		'title' => 'Sign in',
-		'user' => $Controller -> getData('user'),
-		'pass' => $Controller -> getData('pass'),
-		'login' => $Controller -> getData('login'),
-		'logout' => $Controller -> getData('logout'),
-		'remember' => $Controller -> getData('remember'),
-		'response' => $Response,
-		'display' => $Controller -> getUserDisplay(),
-
-	];
 ?>

@@ -29,8 +29,8 @@ class AuthController extends Controller{
 	 */
 	public function __construct($model,$cfg){
 		$this -> model = $model;
-		$this -> cfg = $cfg['data'];
-		unset($cfg['data']);
+
+		$this -> cfg = $cfg;
 		$this -> model -> cfg = $cfg;
 	}
 
@@ -54,7 +54,7 @@ class AuthController extends Controller{
 	 * Check attempt logout
 	 */
 	public function checkAttemptLogout(){
-		if($this -> logged && $this -> data['logout'] -> value !== null)
+		if($this -> logged && $this -> getData('logout') -> value !== null)
 			$this -> model -> logout();
 	}
 
@@ -65,9 +65,9 @@ class AuthController extends Controller{
 		
 		if(!$this -> logged && $this -> data['login'] -> value !== null)
 			$this -> response[] =  $this -> model -> login(
-				$this -> data['user'] -> value,
-				$this -> data['pass'] -> value,
-				$this -> data['remember'] -> value !== null
+				$this -> getData('user') -> value,
+				$this -> getData('pass') -> value,
+				$this -> getData('remember') -> value !== null
 			);
 
 	}
@@ -77,22 +77,23 @@ class AuthController extends Controller{
 	 * @return (array) data
 	 */
 	public function retrieveData(){
+		$c = $this -> cfg['data'];
 		return [
 
 			# User: Username or Email (depends on config)
-			'user' => new stdDataPost($this -> cfg['post_user'],null,'User'),
+			'user' => new stdDataPost($c['post_user'],null,'User'),
 
 			# Password
-			'pass' => new stdDataPost($this -> cfg['post_pass'],null,'Password'),
+			'pass' => new stdDataPost($c['post_pass'],null,'Password'),
 
 			# Login
-			'login' => new stdDataPost($this -> cfg['post_login'],null,'Login'),
+			'login' => new stdDataPost($c['post_login'],null,'Login'),
 
 			# Logout
-			'logout' => new stdDataPost($this -> cfg['post_logout'],null,'Logout'),
+			'logout' => new stdDataPost($c['post_logout'],null,'Logout'),
 
 			# Remember me
-			'remember' => new stdDataPost($this -> cfg['post_remember'],null,'Remember me')
+			'remember' => new stdDataPost($c['post_remember'],null,'Remember me')
 				
 		];
 	}

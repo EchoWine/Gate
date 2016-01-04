@@ -18,11 +18,6 @@ class stdResponse{
 	public $message = [];
 
 	/**
-	 * Number of message
-	 */
-	public $count = 0;
-
-	/**
 	 * Construct
 	 * @param $type (int) type of messages [0-3]
 	 * @param $title (string) title of message
@@ -32,11 +27,9 @@ class stdResponse{
 		$this -> title = $title;
 		$this -> type = $type;
 
-		if($message !== null){
-
-			$this -> count = is_array($message) ? count($message) : 1;
-			$this -> message = is_array($message) && $this -> count == 1 ? $message[0] : $message;
-		}
+		if($message !== null)
+			$this -> message = is_array($message) && count($message) == 1 ? $message[0] : $message;
+		
 	}
 
 	/**
@@ -45,7 +38,16 @@ class stdResponse{
 	 */
 	public function addMessage($message){
 		$this -> message[] = $message;
-		$this -> count++;
+
+	}
+
+
+	/**
+	 * Get count of messages
+	 * @return (int) count
+	 */
+	public function getCount(){
+		return is_array($this -> message) ? count($this -> message) : 1;
 	}
 }
 

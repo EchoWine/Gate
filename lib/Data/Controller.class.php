@@ -20,6 +20,16 @@ class Controller{
 	}
 
 	/**
+	 * Update the path
+	 * @param $v (string) name of view
+	 */
+	public function updatePathTemplate($v){
+
+		# Get name of module with path
+		$n = basename(dirname_r(debug_backtrace()[0]['file'],3));
+		$this -> setPathTemplate($v,ModuleManager::getPathModule($n)."/bin/{$v}/templates/".TemplateEngine::getName()."/");
+	}
+	/**
 	 * Update the data
 	 */
 	public function updateData(){
@@ -78,6 +88,24 @@ class Controller{
 	 */
 	public function getDataOption($v,$o){
 		return isset($this -> data[$v]) ? $this -> data[$v] -> option[$o] : 'null';
+	}
+
+	/**
+	 * Return the path to template
+	 * @param $v (string) name of view
+	 * @return (string) path
+	 */
+	public function getPathTemplate($v){
+		return isset($this -> pathTemplate[$v]) ? $this -> pathTemplate[$v] : '';
+	}
+
+	/**
+	 * Set template path
+	 * @param $v (string) name of view
+	 * @param (string) path
+	 */
+	public function setPathTemplate($v,$p){
+		$this -> pathTemplate[$v] = $p;
 	}
 }
 ?>

@@ -7,9 +7,8 @@ class AuthView extends View{
 	 */
 	public function setLogin(){
 
-		if(!$this -> controller -> logged){
+		if(!$this -> controller -> logged)
 			Module::TemplateOverwrite('main','login');
-		}
 		
 	}
 

@@ -3,7 +3,7 @@
 	
 
 	# Initialization	
-	$Model = new CredentialModel();
+	$Model = new Credential();
 
 	$Model -> setFields([
 		new ID('id'),

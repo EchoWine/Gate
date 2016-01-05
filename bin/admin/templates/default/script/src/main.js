@@ -68,3 +68,42 @@ function isEmpty(obj) {
 	if (obj.length === 0)  return true;
 	return false;
 };
+
+/**
+ * Add an event to all elements
+ * @param {array} elements 
+ * @param {string} event
+ * @param {function} callback
+ */
+function addEventToElements(elements,event,callback){
+	if(!defined(elements))return;
+	for(var i = 0;i < elements.length; i++){
+		elements[i].addEventListener(event,callback,false);
+	}
+}
+
+/**
+ * Add an event to element
+ * @param {element} element 
+ * @param {string} event
+ * @param {function} callback
+ */
+function addEventToElement(element,event,callback){
+	if(!defined(element))return;
+
+	element.addEventListener(event,callback,false);
+}
+
+
+/**
+ * foreach
+ * @param {array} elements
+ * @param {function} callback
+ */
+function foreach(array,callback){
+	if(!defined(array))return;
+
+	for(var i = 0;i < array.length;i++)
+		callback(array[i]);
+	
+}

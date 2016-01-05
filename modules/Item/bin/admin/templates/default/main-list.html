@@ -42,7 +42,7 @@
 
 		<div class='table-data-filter'>
 		
-			<select class='select n' name='{{$item -> getDataName('action')}}' id='value_operationMultiple'>
+			<select class='select n' name='{{$item -> getDataName('action')}}' id='value_operationMultiple' item-primary-value='0'>
 				<option value=''>Seleziona...</option>
 				<!--
 				<option value='export_xml_m'> Esporta XML </option>
@@ -51,10 +51,10 @@
 				-->
 
 				<option value='{{$item -> getDataOption('action','copy_m')}}'> Copia </option>
-				<option value='{{$item -> getDataOption('action','delete_m')}}' data-button-window='sure' data-window-value='{{$item -> getDataOption('action','delete_s')}}'> Elimina </option>
+				<option value='{{$item -> getDataOption('action','delete_m')}}' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'> Elimina </option>
 			</select>
 
-			<button class='button n' id='button_operationMultiple' data-multiple-button>Invia</button>
+			<button type='button' class='button n' id='button_operationMultiple' data-multiple-button confirm-target='value_operationMultiple' confirm-event='click,submit'>Invia</button>
 
 			<!--
 			<button type='submit' name='force_update' class='button lf'>
@@ -65,7 +65,7 @@
 		<div class='data-table' id='data'>
 			<div class='head'>
 				<div class='check-row'>
-					<input type='checkbox' class='check b d' id='check-all0' data-item-table-checkAll='0'>
+					<input type='checkbox' class='check b d' id='check-all0' item-checkall='0'>
 					<label class='noselect m-5' for='check-all0'><span></span></label>
 				</div>
 				
@@ -116,7 +116,7 @@
 				{{endfor}}
 
 				<div class='last action'>
-					<button type='submit' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','search')}}' class='button'>
+					<button type='submit' item-primary-value value='{{$item -> getDataOption('action','search')}}' class='button'>
 						<div class='button a i primary'>
 							<span class='fa fa-search'></span>
 						</div>
@@ -134,7 +134,7 @@
 			{{for $item -> results -> records as $record}}
 				<div class='row' data-hide-click='1'>
 					<div class='check-row'>
-						<input type='checkbox' name="{{$item -> getDataName('p_primary_m')}}[]" value='{{$record[$item -> getFieldPrimary() -> column]}}' id='selectItem_0_{{$i}}' class='check b d' data-item-table-check='0'><label class='noselect m-5' for='selectItem_0_{{$i++}}'><span></span></label>
+						<input type='checkbox' name="{{$item -> getDataName('p_primary_m')}}[]" value='{{$record[$item -> getFieldPrimary() -> column]}}' id='selectItem_0_{{$i}}' class='check b d' item-check='0'><label class='noselect m-5' for='selectItem_0_{{$i++}}'><span></span></label>
 					</div>
 
 					{{for $item -> getFieldsList() as $field}}
@@ -165,7 +165,7 @@
 							<span class='fa fa-pencil'></span>
 						</a>
 						
-						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' item-primary-value='{{$record[$item -> getFieldPrimary() -> column]}}' confirm-event='click,submit'>
+						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' item-primary-value='{{$record[$item -> getFieldPrimary() -> column]}}' confirm-target='this' confirm-event='click,submit' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'>
 							<span class='button a i danger'>
 								<span class='fa fa-trash'></span>
 							</span>

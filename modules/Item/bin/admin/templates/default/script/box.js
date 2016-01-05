@@ -1,4 +1,3 @@
-
 itemBox = {};
 
 itemBox.load = function(){
@@ -6,14 +5,27 @@ itemBox.load = function(){
 	for(i = 0;i < el.length;i++){
 		a = el[i].getAttribute('confirm-event');
 		a = a.split(",");
-		itemBox.addEvent(el[i],a[0],a[1]);
+
+		target = el[i].getAttribute('confirm-target');
+		target = target == 'this' ? el[i] : document.getElementById(target);
+
+		itemBox.addEvent(el[i],a[0],a[1],target);
 	}
 
 };
 
-itemBox.addEvent = function(el,ev1,ev2){
+itemBox.addEvent = function(el,ev1,ev2,target){
 	el.addEventListener(ev1,function(e){
-		box.confirm("Conferma azione","Sei sicuro di voler eliminare?",function(){
+
+		if(target.tagName == 'SELECT'){
+			target = target.options[target.selectedIndex];
+		
+		}
+
+		title = target.getAttribute('box-title');
+		desc = target.getAttribute('box-desc');
+
+		box.confirm(title,desc,function(){
 			itemBox.callEvent(el,ev2);
 		});
 		e.preventDefault();

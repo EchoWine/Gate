@@ -6,6 +6,8 @@ item.operationMultiple = function(){
 
 	if(defined(multipleButton)){
 		
+
+
 		multipleButton.addEventListener('click', function(e){
 
 
@@ -44,6 +46,7 @@ item.operationMultiple = function(){
 
 		},false);	
 	}
+
 
 };
 

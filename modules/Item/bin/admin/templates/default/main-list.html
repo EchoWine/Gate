@@ -39,7 +39,7 @@
 	{{include .main-list.pag}}
 
 	<form method='POST' enctype='multipart/form-data'>
-		<input type='hidden' data-item-table-primary name="{{$item -> getDataName('p_primary')}}" value='0'>
+
 		<div class='table-data-filter'>
 		
 			<select class='select n' name='{{$item -> getDataName('action')}}' id='value_operationMultiple'>
@@ -51,7 +51,7 @@
 				-->
 
 				<option value='{{$item -> getDataOption('action','copy_m')}}'> Copia </option>
-				<option value='{{$item -> getDataOption('action','delete_m')}}' data-button-window='SURE' data-window-value='del_m' data-multiple-button> Elimina </option>
+				<option value='{{$item -> getDataOption('action','delete_m')}}' data-button-window='sure' data-window-value='{{$item -> getDataOption('action','delete_s')}}'> Elimina </option>
 			</select>
 
 			<button class='button n' id='button_operationMultiple' data-multiple-button>Invia</button>
@@ -151,7 +151,7 @@
 							<span class='fa fa-plus-square'></span>
 						</a>
 						
-						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','copy_s')}}' data-item-table-action='{{$record[$item -> getFieldPrimary() -> column]}}'>
+						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','copy_s')}}' item-primary-value ='{{$record[$item -> getFieldPrimary() -> column]}}'>
 							<span class='button a i success'>
 								<span class='fa fa-copy'></span>
 							</span>
@@ -165,10 +165,7 @@
 							<span class='fa fa-pencil'></span>
 						</a>
 						
-						<input type='hidden' name='item[]' value='1'>
-						
-						<button type='button' class='button' name='{{$item -> getDataName('action')}}' data-item-table-action='{{$record[$item -> getFieldPrimary() -> column]}}' data-button-window='sure' data-window-value='{{$item -> getDataOption('action','delete_s')}}'
-						>
+						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' item-primary-value='{{$record[$item -> getFieldPrimary() -> column]}}' confirm-event='click,submit'>
 							<span class='button a i danger'>
 								<span class='fa fa-trash'></span>
 							</span>
@@ -178,28 +175,34 @@
 			{{endfor}}
 		</div>
 		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
-		<input type='hidden' id='primary_p' name='PRIMARY_POST' value='0'>
+
+		<input type='hidden' item-primary name="{{$item -> getDataName('p_primary')}}" value='0'>
+		<input type='hidden' item-action name="{{$item -> getDataName('action')}}" value=''>
 	</form>
 
 	{{include .main-list.pag}}
 	
 </div>
-<div id='obfuscator'>
-	<div class='c-window' id='sure'>
-		<div class='window'>
-			<div><h1>Conferma azione</h1><button class='button a i danger  wClose'><span class='fa fa-close'></span></button></div>
-			<div class='window-content'>
-				
-				<form data-window-form id='mex_sure'>
-		
-				Sei sicuro di voler eseguire questa azione?
-				<input type='hidden' name='{{$item -> getDataName('action')}}' class='wData'>
-				<div class='window-sure-button'>
-					<button type='submit' class='button a danger wSubmit wClose'>Sì</button>
-					<button type='button' class='button a info  wClose'>No</button>
+
+
+<div id='box-container'>
+	<div class='box-window' id='box-confirm'>
+		<div class='box-content'>
+			<div>
+				<h1 box-data-title></h1>
+				<button class='button a i danger' box-close>
+					<span class='fa fa-close'></span>
+				</button>
+			</div>
+			<div>
+	
+				<span box-data-message></span>
+
+				<div class='box-confirm-button'>
+					<button type='submit' class='button a danger' box-send>Sì</button>
+					<button type='button' class='button a info' box-close>No</button>
 				</div>
 
-				</form>
 			</div>
 		</div>
 	</div>

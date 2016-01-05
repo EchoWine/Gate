@@ -8,14 +8,15 @@ item.dataTable = function(){
 };
 
 item.actionByPrimary = function(){
-	t = document.getElementsByAttribute('data-item-table-action');
+	t = document.getElementsByAttribute('item-primary-value');
 
 	if(!defined(t))return;
 	for(i=0;i<t.length;i++){
 		t[i].addEventListener('click',function(){
 			f = this.getParentWithTag('FORM');
 
-			f.getElementsByAttribute('data-item-table-primary')[0].value = this.dataset.itemTableAction;
+			f.getElementsByAttribute('item-primary')[0].value = this.getAttribute('item-primary-value');
+			f.getElementsByAttribute('item-action')[0].value = this.value;
 		},false);
 	}
 };

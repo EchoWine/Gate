@@ -49,7 +49,8 @@ Modules:
 		- [x] response system
 		- [x] checkForm return false => inputValue = $_POST
 		- [x] Disabilitare operazioni multiple se checkbox non attivi
-		- [ ] Are you sure? Messaggio di conferma per operazioni pericolose "eliminazione"
+		- [x] Are you sure? Messaggio di conferma per operazioni pericolose "eliminazione"
+		- [ ] Mostra risultati 5,25,100
 		- [ ] Rollback
 		- [ ] Field
 			- [ ] Sort

@@ -37,7 +37,7 @@ class Password extends _String{
 	 * @param (mixed) value prepared
 	 */
 	public function dbValue($v){
-		return AuthModel::getHashPass($v);
+		return Auth::getHashPass($v);
 	}
 }
 ?>

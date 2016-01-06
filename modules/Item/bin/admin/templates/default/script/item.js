@@ -170,7 +170,7 @@ item.multipleSearch = function(){
 
 				addEventToElement(r,"keypress",function(e){
 						
-					// If pressed 'enter key' the add the query to the list
+					// If pressed 'enter key' add the query to the list
 					if(this.value != '' && e.keyCode == 13){
 						item.msAdd(this.parentNode);
 						item.msSetActive(this.parentNode.parentNode);

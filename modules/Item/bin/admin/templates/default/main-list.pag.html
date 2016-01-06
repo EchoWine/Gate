@@ -1,24 +1,34 @@
 <div class='page-res'>
 	Pagina:
+
+
 	<form method='GET'>
-		<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
-		<button type='submit' name='{{$item -> getDataName('page')}}' value='{{$item -> getDataOption('page','prev')}}' class='button'>
+		{{if $item -> getDataOption('page','actual') > 1}}
+			<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
+			<button type='submit' name='{{$item -> getDataName('page')}}' value='{{$item -> getDataOption('page','prev')}}' class='button n'>
+				<span class='fa fa-angle-left'></span>
+			</button>
+		{{else}}
 			<span class='tag n'>
 				<span class='fa fa-angle-left'></span>
 			</span>
-		</button>
+		{{endif}}
 	</form>
 	<form method='GET'>
 		<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
 		<input type='text' name='{{$item -> getDataName('page')}}' value='{{$item -> getDataOption('page','actual')}}' class='input n' >
 	</form>
 	<form method='GET'>
-		<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
-		<button type='submit' name='{{$item -> getDataName('page')}}' value='{{$item -> getDataOption('page','next')}}' class='button'>
+		{{if $item -> getDataOption('page','actual') < $item -> results -> pages}}
+			<input type='hidden' name='{{PAGE}}' value='{{$pageValue}}'>
+			<button type='submit' name='{{$item -> getDataName('page')}}' value='{{$item -> getDataOption('page','next')}}' class='button n'>
+				<span class='fa fa-angle-right'></span>
+			</button>
+		{{else}}
 			<span class='tag n'>
 				<span class='fa fa-angle-right'></span>
 			</span>
-		</button>
+		{{endif}}
 	</form> di {{$item -> results -> pages}} 
 	<span class='page-separator'></span> 
 	<form method='POST'> Mostra:

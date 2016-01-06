@@ -277,7 +277,7 @@ class Item extends Module{
 		$a = [];
 		foreach($f as $k){
 			foreach((array)$k -> getFormValue() as $k1)
-				if(!empty($k1))$a[$k -> name][] = $k1;
+				if($k1 !== '')$a[$k -> name][] = $k1;
 		}
 
 		$this -> searched = $a;

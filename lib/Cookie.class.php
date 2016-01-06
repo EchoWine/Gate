@@ -161,8 +161,7 @@ class Cookie{
 	 * @param bool $httpOnly      [cookie only][optional] Cookie valid only inside HTTP calls (no JavaScript)
 	 * @return bool		       True if there is an error, false otherwise
 	 */
-	public static function setCookie($name, $value, $expiry = 86400, $path = '/', $forceSSL = '', $httpOnly = ''){
-		
+	public static function setCookie($name, $value, $expiry = -1, $path = '/', $forceSSL = '', $httpOnly = ''){
 
 		if(!headers_sent()){ # Impedisce l'invio dei cookie se sono già stati inviati degli header
 
@@ -183,8 +182,7 @@ class Cookie{
 
 			# Always
 			if($expiry === -1)
-				$expiry = 1893456000; # 2030-01-01 00:00:00
-			
+				$expiry = time() + 60*60*24*365*10;
 
 			return setcookie($name, $value, $expiry, $path, $domain, $forceSSL, $httpOnly);
 		}
@@ -220,3 +218,5 @@ class Cookie{
 	}
 	
 }
+
+?>

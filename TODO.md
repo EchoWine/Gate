@@ -23,8 +23,8 @@ Modules:
 	- [ ] Backup
 	- [x] SystemInfo
 	- [ ] SessionTable
-	- [ ] Import/Export
 	- [ ] Custom Page
+	- [ ] Holding
 	- [ ] Item
 		- [x] Action Page
 		- [x] Add
@@ -50,7 +50,7 @@ Modules:
 		- [x] checkForm return false => inputValue = $_POST
 		- [x] Disabilitare operazioni multiple se checkbox non attivi
 		- [x] Are you sure? Messaggio di conferma per operazioni pericolose "eliminazione"
-		- [ ] Mostra risultati 5,25,100
+		- [x] Mostra risultati 5,25,100
 		- [ ] Rollback
 		- [ ] Field
 			- [ ] Sort

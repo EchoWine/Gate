@@ -91,6 +91,15 @@ class Controller{
 	}
 
 	/**
+	 * Get all option of data
+	 * @param $v (string) name data
+	 * @return (string) option
+	 */
+	public function getDataAllOption($v){
+		return isset($this -> data[$v]) ? $this -> data[$v] -> option : 'null';
+	}
+
+	/**
 	 * Return the path to template
 	 * @param $v (string) name of view
 	 * @return (string) path

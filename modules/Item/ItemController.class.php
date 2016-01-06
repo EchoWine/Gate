@@ -36,6 +36,7 @@ class ItemController extends Controller{
 		$this -> checkAttemptDelete();
 		$this -> checkAttemptEdit();
 		$this -> checkAttemptCopy();
+		$this -> checkAttemptResultPage();
 	}
 
 	/**
@@ -150,6 +151,20 @@ class ItemController extends Controller{
 		return $r;
 	}
 
+
+	/**
+	 * Check attempt change result per page
+	 */
+	public function checkAttemptResultPage(){
+
+		if($this -> getData('p_result_page') -> value != null){
+			$v = $this -> getData('p_result_page') -> value;
+			Cookie::setCookie(Item::$cfg['c_result_page'],$v);
+			http::refresh();
+		}
+	}
+
+
 	/**
 	 * Retrieve all data sent by user
 	 * @return (array) data
@@ -158,10 +173,10 @@ class ItemController extends Controller{
 		return [
 
 			# Page action
-			'page_action' => new stdDataGet(Item::$cfg['get_action']),
+			'page_action' => new stdDataGet(Item::$cfg['g_action']),
 
 			# Action
-			'action' => new stdDataPost(Item::$cfg['post_action'],null,null,[
+			'action' => new stdDataPost(Item::$cfg['p_action'],null,null,[
 				'add' => 'add',
 				'edit' => 'edit',
 				'delete_s' => 'del_s',
@@ -170,6 +185,9 @@ class ItemController extends Controller{
 				'copy_m' => 'copy_m',
 				'search' => 'search',
 			]),
+
+			# Action
+			'p_result_page' => new stdDataPost(Item::$cfg['p_result_page'],null,null,Item::$cfg['result_page']),
 
 			# Page
 			'page' => new stdDataGet(Item::$cfg['get_page'],1,null,[
@@ -380,7 +398,7 @@ class ItemController extends Controller{
 	 * @return (int) result per page
 	 */
 	public function getResultPerPage(){
-		return Item::$cfg['result_page'];
+		return Cookie::getCookie(Item::$cfg['c_result_page'],$this -> getDataOption('p_result_page',0));
 	}
 
 	/**

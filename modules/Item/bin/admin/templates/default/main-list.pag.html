@@ -32,10 +32,10 @@
 	</form> di {{$item -> results -> pages}} 
 	<span class='page-separator'></span> 
 	<form method='POST'> Mostra:
-		<select name='N_RESULTS' id='n_results' class='select n' >
-			<option >5</option>
-			<option selected>25</option>
-			<option >100</option>
+		<select name='{{$item -> getDataName('p_result_page')}}' id='n_results' class='select n' onchange='this.parentNode.submit()'>
+			{{for $item -> getDataAllOption('p_result_page') as $x}}
+				<option {{if $item -> getResultPerPage() == $x}}selected{{endif}} value='{{$x}}'>{{$x}}</option>
+			{{endfor}}
 		</select> risultati
 	</form>
 	<span class='page-separator'></span>

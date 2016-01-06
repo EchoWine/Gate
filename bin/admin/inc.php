@@ -16,7 +16,6 @@
 	include PATH_LIB."/main.fun.php";
 	include PATH_LIB."/stdObject.class.php";
 	include PATH_LIB."/stdResponse.class.php";
-	include PATH_LIB."/Cookie.class.php";
 	include PATH_LIB."/http.class.php";
 	
 	include PATH_LIB."/stdData/main.php";
@@ -29,8 +28,8 @@
 	DB::connect(include PATH_CONFIG.'/database.php');
 
 
-	# Ini Cookie
-	Cookie::ini();
+	# Ini http
+	http::ini();
 
 	# Ini Pages
 	define('PAGE','p');

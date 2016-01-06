@@ -159,7 +159,7 @@ class ItemController extends Controller{
 
 		if($this -> getData('p_result_page') -> value != null){
 			$v = $this -> getData('p_result_page') -> value;
-			Cookie::setCookie(Item::$cfg['c_result_page'],$v);
+			http::setCookie(Item::$cfg['c_result_page'],$v);
 			http::refresh();
 		}
 	}
@@ -390,7 +390,7 @@ class ItemController extends Controller{
 	 * @return (int) result per page
 	 */
 	public function getResultPerPage(){
-		return Cookie::getCookie(Item::$cfg['c_result_page'],$this -> getDataOption('p_result_page',0));
+		return http::getCookie(Item::$cfg['c_result_page'],$this -> getDataOption('p_result_page',0));
 	}
 
 	/**

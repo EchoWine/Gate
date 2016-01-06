@@ -71,10 +71,10 @@ class Auth extends Module{
 	 */
 	public function getSID(){
 
-		$sid = Cookie::getCookie($this -> cfg['cookie']);
+		$sid = http::getCookie($this -> cfg['cookie']);
 
 		if(empty($sid))
-			$sid = Cookie::getSession($this -> cfg['cookie']);
+			$sid = http::getSession($this -> cfg['cookie']);
 
 		return $sid;
 	}
@@ -105,7 +105,7 @@ class Auth extends Module{
 				];
 
 			}else
-				Cookie::removeCookie($this -> cfg['cookie']);
+				http::removeCookie($this -> cfg['cookie']);
 			
 		}
 
@@ -132,8 +132,8 @@ class Auth extends Module{
 		$this -> deleteSessionBySID($sid = $this -> getSID());
 
 		# Delete from cookies
-		Cookie::removeCookie($this -> cfg['cookie']);
-		Cookie::removeSession($this -> cfg['cookie']);
+		http::removeCookie($this -> cfg['cookie']);
+		http::removeSession($this -> cfg['cookie']);
 
 		# Refresh
 		http::refresh();
@@ -218,9 +218,9 @@ class Auth extends Module{
 			]);
 
 			if($type['data'] == 0)
-				Cookie::setCookie($this -> cfg['cookie'],$sid,$expire);
+				http::setCookie($this -> cfg['cookie'],$sid,$expire);
 			else
-				Cookie::setSession($this -> cfg['cookie'],$sid);
+				http::setSession($this -> cfg['cookie'],$sid);
 
 			http::refresh();
 

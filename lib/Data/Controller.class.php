@@ -87,7 +87,9 @@ class Controller{
 	 * @return (string) option
 	 */
 	public function getDataOption($v,$o){
-		return isset($this -> data[$v]) ? $this -> data[$v] -> option[$o] : 'null';
+		return isset($this -> data[$v]) && isset($this -> data[$v] -> option[$o])
+			? $this -> data[$v] -> option[$o] 
+			: 'null';
 	}
 
 	/**

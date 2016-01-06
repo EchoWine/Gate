@@ -176,21 +176,13 @@ class ItemController extends Controller{
 			'page_action' => new stdDataGet(Item::$cfg['g_action']),
 
 			# Action
-			'action' => new stdDataPost(Item::$cfg['p_action'],null,null,[
-				'add' => 'add',
-				'edit' => 'edit',
-				'delete_s' => 'del_s',
-				'delete_m' => 'del_m',
-				'copy_s' => 'copy_s',
-				'copy_m' => 'copy_m',
-				'search' => 'search',
-			]),
+			'action' => new stdDataPost(Item::$cfg['p_action'],null,null,Item::$cfg['action']),
 
 			# Action
 			'p_result_page' => new stdDataPost(Item::$cfg['p_result_page'],null,null,Item::$cfg['result_page']),
 
 			# Page
-			'page' => new stdDataGet(Item::$cfg['get_page'],1,null,[
+			'page' => new stdDataGet(Item::$cfg['g_page'],1,null,[
 				'prev' => 0,
 				'actual' => 0,
 				'next' => 0,
@@ -223,7 +215,7 @@ class ItemController extends Controller{
 	 * @return (string) action add
 	 */
 	public function getActionAdd(){
-		return Item::$cfg['action']['add'];
+		return $this -> getDataOption('action','add');
 	}
 
 	/**
@@ -231,7 +223,7 @@ class ItemController extends Controller{
 	 * @return (string) action search
 	 */
 	public function getActionSearch(){
-		return Item::$cfg['action']['search'];
+		return $this -> getDataOption('action','search');
 	}
 
 	/**
@@ -239,7 +231,7 @@ class ItemController extends Controller{
 	 * @return (string) action delete_s
 	 */
 	public function getActionDeleteS(){
-		return Item::$cfg['action']['delete_s'];
+		return $this -> getDataOption('action','delete_s');
 	}
 
 	/**
@@ -247,7 +239,7 @@ class ItemController extends Controller{
 	 * @return (string) action delete_m
 	 */
 	public function getActionDeleteM(){
-		return Item::$cfg['action']['delete_m'];
+		return $this -> getDataOption('action','delete_m');
 	}
 
 	/**
@@ -255,7 +247,7 @@ class ItemController extends Controller{
 	 * @return (string) action edit
 	 */
 	public function getActionEdit(){
-		return Item::$cfg['action']['edit'];
+		return $this -> getDataOption('action','edit');
 	}
 
 	/**
@@ -263,7 +255,7 @@ class ItemController extends Controller{
 	 * @return (string) action copy_s
 	 */
 	public function getActionCopyS(){
-		return Item::$cfg['action']['copy_s'];
+		return $this -> getDataOption('action','copy_s');
 	}
 
 	/**
@@ -271,7 +263,7 @@ class ItemController extends Controller{
 	 * @return (string) action copy_m
 	 */
 	public function getActionCopyM(){
-		return Item::$cfg['action']['copy_m'];
+		return $this -> getDataOption('action','copy_m');
 	}
 
 	/**
@@ -439,7 +431,7 @@ class ItemController extends Controller{
 	 * @return (string) action page add
 	 */
 	public function getPageActionAdd(){
-		return Item::$cfg['action']['add'];
+		return $this -> getDataOption('action','add');
 	}
 
 	/**
@@ -447,7 +439,7 @@ class ItemController extends Controller{
 	 * @return (string) action page edit
 	 */
 	public function getPageActionEdit(){
-		return Item::$cfg['action']['edit'];
+		return $this -> getDataOption('action','edit');
 	}
 
 	/**
@@ -455,7 +447,7 @@ class ItemController extends Controller{
 	 * @return (string) action page view
 	 */
 	public function getPageActionView(){
-		return Item::$cfg['action']['view'];
+		return $this -> getDataOption('action','view');
 	}
 
 
@@ -466,7 +458,7 @@ class ItemController extends Controller{
 	 */
 	public function getUrlPageAdd($p = null){
 		$r = $this -> getUrlMainPage().
-		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionAdd();
+		'&amp;'.$this -> getDataName('page_action').'='.$this -> getPageActionAdd();
 
 		if($p !== null)
 			$r .= '&amp;'.Item::$cfg['g_primary'].'='.$p;
@@ -481,7 +473,7 @@ class ItemController extends Controller{
 	 */
 	public function getUrlPageEdit($p = ''){
 		return $this -> getUrlMainPage().
-		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionEdit().
+		'&amp;'.$this -> getDataName('page_action').'='.$this -> getPageActionEdit().
 		'&amp;'.Item::$cfg['g_primary'].'='.$p;
 	}
 
@@ -492,7 +484,7 @@ class ItemController extends Controller{
 	 */
 	public function getUrlPageView($p = ''){
 		return $this -> getUrlMainPage().
-		'&amp;'.Item::$cfg['get_action'].'='.$this -> getPageActionView().
+		'&amp;'.$this -> getDataName('page_action').'='.$this -> getPageActionView().
 		'&amp;'.Item::$cfg['g_primary'].'='.$p;
 	}
 	

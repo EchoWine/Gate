@@ -27,7 +27,7 @@ return [
 	'g_order' => 'sort',
 
 	# Get page
-	'get_page' => 's',
+	'g_page' => 's',
 
 	# Result page 
 	'result_page' => [5,25,100],

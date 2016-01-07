@@ -17,6 +17,13 @@ class Controller{
 	 */
 	public function __construct($model){
 		$this -> model = $model;
+		$this -> ini();
+	}
+
+	/**
+	 * Initialize
+	 */
+	public function ini(){
 	}
 
 	/**
@@ -29,6 +36,7 @@ class Controller{
 		$n = basename(dirname_r(debug_backtrace()[0]['file'],3));
 		$this -> setPathTemplate($v,ModuleManager::getPathModule($n)."/bin/{$v}/templates/".TemplateEngine::getName()."/");
 	}
+	
 	/**
 	 * Update the data
 	 */

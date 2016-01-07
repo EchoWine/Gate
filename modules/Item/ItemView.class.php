@@ -73,7 +73,7 @@ class ItemView extends View{
 					# Get results
 					$result = $this -> controller -> getResultByPrimary();
 					
-					if(empty($item -> results -> record)){
+					if(empty($this -> controller -> results -> record)){
 
 						# Set current page to Empty
 						$this -> setPageEmpty();

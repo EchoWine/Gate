@@ -308,7 +308,7 @@ class Item extends Module{
 		}
 
 		if(($r = $this -> checkForm($f)) !== null)return $r;
-
+		
 		$a = [];
 		foreach($f as $k){
 			$k -> edit($a);

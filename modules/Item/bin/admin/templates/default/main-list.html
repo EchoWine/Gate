@@ -52,6 +52,7 @@
 
 				<option value='{{$item -> getDataOption('action','copy_m')}}'> Copia </option>
 				<option value='{{$item -> getDataOption('action','delete_m')}}' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'> Elimina </option>
+				<option value='edit' item-actionMultiple='edit' item-baseurl='{{$item -> getUrlPageEdit()}}' item-nameget='{{$item -> getDataName('g_primary_m')}}'> Modifica </option>
 			</select>
 
 			<button type='submit' class='button n' id='button_operationMultiple' data-multiple-button confirm-target='value_operationMultiple' confirm-event='click,submit'>Invia</button>

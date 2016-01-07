@@ -59,12 +59,14 @@ item.operationMultiple = function(){
 
 
 	button = document.getElementById('button_operationMultiple');
-	value = document.getElementById('value_operationMultiple');
+	select = document.getElementById('value_operationMultiple');
+
+	// Get name of 
 
 	addEventToElement(button,'click', function(e){
 
 		// Block if the value is empty
-		if(value.value == ''){
+		if(select.value == ''){
 			e.preventDefault();
 			return;
 		}
@@ -94,8 +96,72 @@ item.operationMultiple = function(){
 
 		}
 
-	});	
 
+
+		opt = select.options[select.selectedIndex];
+
+		switch(opt.getAttribute('item-actionMultiple')){
+			case 'edit':
+				
+				// Select all check selected
+				r = [];
+				foreach(s,function(i){
+					if(i.checked)r.push(i.value);
+				});
+
+				// Take first element as primary
+				url = encodeURIComponent(r[0]);
+				r.shift();
+
+				// Get name for url
+				name = opt.getAttribute('item-nameget')+"[]";
+
+				// Convert all in url format
+				last = [];
+				foreach(r,function(i){
+					last.push(name+"="+encodeURIComponent(i));
+				});
+
+				// Build url
+				url = opt.getAttribute('item-baseurl')+url+"&"+last.join("&");
+				url = url.replace('&amp;','&');
+
+				e.preventDefault();
+				window.location.replace(url);
+
+			break;
+		}
+	});	
+	
+	addEventToElement(document.getElementById('item-edit-take'),'change', function(e){
+
+		name = this.getAttribute('item-getname');
+		baseurl = this.getAttribute('item-baseurl');
+
+		r = this.options;
+		a = [];
+
+		foreach(r,function(i){
+			a.push(i.value);
+		});
+		if(a.length > 0){
+
+			// Rimuovo l'id da prendere
+			a.splice(r.selectedIndex, 1);
+
+			// Converto tutti gli id in formato url
+			url = [];
+			for(i = 0;i < a.length;i++){
+				url.push(name+"[]="+encodeURIComponent(a[i]));
+			}
+
+			// Effettuo reindirizzamento
+			url = baseurl+encodeURIComponent(this.value)+"&"+url.join("&");
+			url = url.replace('&amp;','&');
+			window.location.replace(url);
+		}
+
+	});
 
 };
 

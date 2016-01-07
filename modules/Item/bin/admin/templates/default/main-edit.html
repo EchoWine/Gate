@@ -37,7 +37,19 @@
 		<div class='manage-data'>
 			<fieldset class='manage-data'>
 				<legend> Generale </legend>
-
+				{{if !empty($item -> getDataValue('g_primary_m'))}}
+					<div class='field'>
+						<label>Take from: </label>
+						<div class='data'>
+							<select id='item-edit-take' class='select n' item-baseurl='{{$item -> getUrlPageEdit()}}' item-getname='{{$item -> getDataName('g_primary_m')}}'>
+								<option value='{{$item -> getDataValue('g_primary')}}'>{{$item -> getDataValue('g_primary')}}</option>
+								{{for $item -> getDataValue('g_primary_m') as $k}}
+									<option value='{{$k}}'>{{$k}}</option>
+								{{endfor}}
+							</select>
+						</div>
+					</div>
+				{{endif}}
 				{{for $item -> getFieldsEdit() as $field}}
 					<div class='field'>
 						<label>{{$field -> label}}: </label>

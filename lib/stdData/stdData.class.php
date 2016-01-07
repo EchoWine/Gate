@@ -28,10 +28,10 @@ class stdData extends stdObject{
 	}
 
 	public function setValue($f,$v){
-		
 
 		if(is_closure($v)){
 			$v = $v($f);
+			echo $v;
 		}
 
 		$this -> value = $v;

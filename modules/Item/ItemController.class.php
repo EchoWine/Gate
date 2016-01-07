@@ -89,9 +89,15 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptEdit(){
 
+		# Check if all primary_m exists
+		foreach((array)$this -> getDataValue('g_primary_m') as &$k){
+			if(!$this -> checkExists($k))unset($k);
+		}
+
 		if($this -> getDataValue('action') == $this -> getActionEdit()){
 
 			$p = $this -> getDataValue('p_primary');
+
 			if($this -> checkExists($p)){
 				$this -> response[] = $this -> model -> edit($this -> model -> fields,$p,$this -> getDataValue('g_primary_m'));
 			}
@@ -577,8 +583,10 @@ class ItemController extends Controller{
 	 */
 	public function getFieldsEdit(){
 		$r = [];
+
+		$e = empty($this -> getDataValue('g_primary_m'));
 		foreach($this -> model -> fields as $k){
-			if($k -> getEdit())
+			if($k -> getEdit() && (!$e && !$k -> unique) || $e)
 				$r[] = $k;
 		}
 

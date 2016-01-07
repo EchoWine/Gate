@@ -76,7 +76,7 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptAdd(){
 
-		if($this -> getData('action') -> value == $this -> getActionAdd()){
+		if($this -> getDataValue('action') == $this -> getActionAdd()){
 
 			if(($r = $this -> model -> search($this -> model -> fields)) !== null)
 				$this -> response[] = $r;
@@ -89,11 +89,11 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptEdit(){
 
-		if($this -> getData('action') -> value == $this -> getActionEdit()){
+		if($this -> getDataValue('action') == $this -> getActionEdit()){
 
-			$p = $this -> getData('p_primary') -> value;
+			$p = $this -> getDataValue('p_primary');
 			if($this -> checkExists($p)){
-				$this -> response[] = $this -> model -> edit($this -> model -> fields,$p);
+				$this -> response[] = $this -> model -> edit($this -> model -> fields,$p,$this -> getDataValue('g_primary_m'));
 			}
 
 		}
@@ -134,10 +134,10 @@ class ItemController extends Controller{
 		$p = null;
 
 		if($a == $m)
-			$p = $this -> getData('p_primary_m') -> value;
+			$p = $this -> getDataValue('p_primary_m');
 
 		if($a == $s)
-			$p = [$this -> getData('p_primary') -> value];
+			$p = [$this -> getDataValue('p_primary')];
 		
 
 		$r = [];
@@ -194,6 +194,11 @@ class ItemController extends Controller{
 			# Post primary multiple
 			'p_primary_m' => new stdDataPost(Item::$cfg['p_primary_m']),
 
+			# Get primary multiple
+			'g_primary_m' => new stdDataGet(Item::$cfg['g_primary_m'],function($v){
+				return isset($_GET[$v]) && is_array($_GET[$v]) ? $_GET[$v] : [];
+			}),
+
 			# Get primary
 			'g_primary' => new stdDataGet(Item::$cfg['g_primary']),
 
@@ -207,7 +212,22 @@ class ItemController extends Controller{
 	 * Initialize
 	 */
 	public function ini(){
+		$this -> iniNameURL();
+	}
 
+	/**
+	 * Initialize name url
+	 */
+	public function iniNameURL(){
+		$this -> setNameURL($this -> model -> name);
+	}
+
+	/**
+	 * Get label
+	 * @return (string) label
+	 */
+	public function getLabel(){
+		return $this -> model -> name;
 	}
 
 	/**
@@ -610,6 +630,15 @@ class ItemController extends Controller{
 	public function getFieldPrimary(){
 		return $this -> model -> primary;
 	}
+
+	/**
+	 * Update the path
+	 * @param $v (string) name of view
+	 */
+	public function updatePathTemplate($v){
+		$this -> setPathTemplate($v,ModuleManager::getPathModule('Item')."/bin/{$v}/templates/".TemplateEngine::getName()."/");
+	}
+	
 }
 
 ?>

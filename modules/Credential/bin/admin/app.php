@@ -14,25 +14,20 @@
 
 	$Model -> setPrimary('id');
 
-	$Controller = new CredentialController($Model);
+	$item = new CredentialController($Model);
 
-	$View = new CredentialView($Model,$Controller);
+	$View = new CredentialView($Model,$item);
 
-	# Url item
-	$Controller -> setNameURL('credential');
-	
-	# Label item
-	$label = 'Credential';
-
-	include Item::getPathApp();
+	$item -> updatePathTemplate('admin');
+	$View -> setPage($pageValue);
 
 	# Add left menu
 	$View -> setNav();
 
 	$Credential = (object)[
 		'nav' => (object)[
-			'label' => $label,
-			'url' => 'index.php'.$Controller -> getUrlMainPage(),
+			'label' => $item -> getLabel(),
+			'url' => 'index.php'.$item -> getUrlMainPage(),
 		]
 	];
 

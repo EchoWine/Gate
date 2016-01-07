@@ -23,6 +23,9 @@ return [
 	# Post primary multiple
 	'p_primary_m' => 'primary_m',
 
+	# Get primary multiple
+	'g_primary_m' => 'pr_m',
+
 	# Get order by
 	'g_order' => 'sort',
 

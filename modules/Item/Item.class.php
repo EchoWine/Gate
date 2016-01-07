@@ -11,6 +11,11 @@ class Item extends Module{
 	 * Path app
 	 */
 	public static $pathApp;
+	
+	/**
+	 * Name
+	 */
+	public $name;
 
 	/**
 	 * Primary key
@@ -291,9 +296,16 @@ class Item extends Module{
 	 * Edit a record
 	 * @param $f (array) list of all fields
 	 * @param $p (mixed) value of primary key
+	 * @param $m (array) multiple value of primary key to apply the changes
 	 * @return (object stdResponse) result of request
 	 */
-	public function edit($f,$p){
+	public function edit($f,$p,$m){
+
+		# Remove checking of unique field if action is edit multiple
+		if(!empty($m)){
+			foreach($f as $n => $k)
+				if($k -> unique)unset($f[$n]);
+		}
 
 		if(($r = $this -> checkForm($f)) !== null)return $r;
 
@@ -302,7 +314,9 @@ class Item extends Module{
 			$k -> edit($a);
 		}
 
-		$q = DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> update($a);
+		$p = empty($m) ? [$p] : array_merge([$p],$m);
+
+		$q = DB::table($this -> name) -> whereIn($this -> primary -> getColumnName(),$p) -> update($a);
 
 		if($q){
 			return new stdResponse(1,'Success','Edited');

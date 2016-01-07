@@ -586,7 +586,7 @@ class ItemController extends Controller{
 
 		$e = empty($this -> getDataValue('g_primary_m'));
 		foreach($this -> model -> fields as $k){
-			if($k -> getEdit() && (!$e && !$k -> unique) || $e)
+			if($k -> getEdit() && ((!$e && !$k -> unique) || $e))
 				$r[] = $k;
 		}
 

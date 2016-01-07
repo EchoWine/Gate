@@ -34,7 +34,7 @@ Modules:
 		- [x] Delete single
 		- [x] Delete multiple
 		- [x] Edit single
-		- [ ] Edit multiple
+		- [x] Edit multiple
 		- [x] List
 		- [x] Page 
 		- [x] Search single

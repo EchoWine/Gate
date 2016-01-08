@@ -102,7 +102,7 @@
 				{{for $item -> getFieldsSearch() as $field}}
 
 					<div data-search-data='search_button_send'>
-						<div class='container-input-search'>{{include $field -> getPathInputData() {
+						<div item-table-column='{{$field -> label}}' class='container-input-search'>{{include $field -> getPathInputData() {
 							$name = $field -> getFormNameSearch(),
 							$value = ''
 						}}}</div> 

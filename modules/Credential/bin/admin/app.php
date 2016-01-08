@@ -12,7 +12,9 @@
 		new Mail('mail')
 	]);
 
-	$Model -> setPrimary('id');
+	$Model -> setFieldPrimary('id');
+
+	$Model -> setFieldLabel('user');
 
 	$item = new CredentialController($Model);
 

@@ -611,7 +611,6 @@ class ItemController extends Controller{
 		return $r;
 	}
 
-
 	/**
 	 * Get all fields 
 	 * @return (array) array of fields
@@ -655,6 +654,14 @@ class ItemController extends Controller{
 	 */
 	public function getFieldPrimary(){
 		return $this -> model -> primary;
+	}
+
+	/**
+	 * Return the label field
+	 * @return (object) label field
+	 */
+	public function getFieldLabel(){
+		return $this -> model -> fieldLabel;
 	}
 
 	/**

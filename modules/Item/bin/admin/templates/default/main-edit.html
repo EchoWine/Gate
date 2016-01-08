@@ -42,9 +42,13 @@
 						<label>Take from: </label>
 						<div class='data'>
 							<select id='item-edit-take' class='select n' item-baseurl='{{$item -> getUrlPageEdit()}}' item-getname='{{$item -> getDataName('g_primary_m')}}'>
-								<option value='{{$item -> getDataValue('g_primary')}}'>{{$item -> getDataValue('g_primary')}}</option>
+								<option value='{{$item -> getDataValue('g_primary')}}'>
+									{{$item -> results -> record[$item -> getFieldLabel() -> getColumnName()]}}
+								</option>
 								{{for $item -> results -> primary as $k}}
-									<option value='{{$k[$item -> getFieldPrimary() -> getColumnName()]}}'>{{$k[$item -> getFieldPrimary() -> getColumnName()]}}</option>
+									<option value='{{$k[$item -> getFieldPrimary() -> getColumnName()]}}'>
+										{{$k[$item -> getFieldLabel() -> getColumnName()]}}
+									</option>
 								{{endfor}}
 							</select>
 						</div>

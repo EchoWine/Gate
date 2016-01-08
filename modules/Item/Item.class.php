@@ -6,11 +6,6 @@ class Item extends Module{
 	 * Config
 	 */
 	public static $cfg;
-
-	/**
-	 * Path app
-	 */
-	public static $pathApp;
 	
 	/**
 	 * Name
@@ -18,9 +13,14 @@ class Item extends Module{
 	public $name;
 
 	/**
-	 * Primary key
+	 * Primary field
 	 */
 	public $primary;
+
+	/**
+	 * Label field
+	 */
+	public $fieldLabel;
 
 	/**
 	 * List of all fields
@@ -114,8 +114,16 @@ class Item extends Module{
 	 * Set primary key
 	 * @param $p (string) name of field
 	 */
-	public function setPrimary($p){
+	public function setFieldPrimary($p){
 		$this -> primary = $this -> fields[$p];
+	}
+	
+	/**
+	 * Set field label
+	 * @param $p (string) name of field
+	 */
+	public function setFieldLabel($p){
+		$this -> fieldLabel = $this -> fields[$p];
 	}
 
 	/**

@@ -1,29 +1,3 @@
-@media only screen and (max-width:1000px){
-	.page-res{
-    	margin-bottom: 50px !important;
-	}
-}
-
-@media only screen and (max-width:600px){
-	.page-res{
-		text-align:center;
-	}
-	.page-separator{
-		display:block;
-		margin:10px 0;
-	}
-	.page-separator::before{
-		content: '' !important;
-	}
-	.content-header {
-    	display: block !important;
-    }
-
-    .title{
-    	margin-bottom:5px;
-    }
-}
-
 .data-table{	
 	width:100%;
 	word-break: break-word;
@@ -106,12 +80,7 @@
 }
 
 .data-table .row:hover{
-	background:#F5F5F5;
-}
-
-.data-table .row > div{
-	display: flex;
-	align-items: flex-start;
+	background:#F5F5F5 !important;
 }
 
 .data-table .a{
@@ -147,7 +116,7 @@
 }
 
 .data-table .row .string > *{
-    word-break:break-word;
+	word-break:break-word;
 }
 
 .data-table img{
@@ -165,17 +134,17 @@
 
 
 .data-table{
-	display:table !important;
+	display:table;
 }
 
 .data-table .head,.data-table .row{
 	height:42px;
-	display:table-row !important;
+	display:table-row;
 }
 .data-table .head > *, .data-table .row > *{
 	width:auto;
 	vertical-align:middle;
-  	display:table-cell !important;
+  	display:table-cell;
 }
  
 .data-table .row > *{
@@ -331,4 +300,76 @@
 
 .container-key-search .container-input-search > .input{
 	height:24px;
+}
+
+@media only screen and (max-width:1600px){
+	.page-res{
+		margin-bottom: 50px !important;
+	}
+	.page-res{
+		text-align:center;
+	}
+	.page-separator{
+		display:block;
+		margin:10px 0;
+	}
+	.page-separator::before{
+		content: '' !important;
+	}
+	.content-header {
+		display: block !important;
+	}
+
+	.title{
+		margin-bottom:5px;
+	}
+	.table-data-filter{
+		float:none;
+		text-align:center;
+	}
+
+	.row > .info::before{
+		content: attr(item-table-column)":";
+		font-weight:bold;
+		margin-right:5px;
+	}
+
+	.data-table,.row,.head{
+		display:block !important;
+	}
+	.row > *{
+		display:flex !important	;
+	}
+	.data-table .row .action .button{
+		margin-top:0;
+	}
+	.data-table .row > * {
+		padding:10px 15px !important;
+	}
+
+	.data-table .action {
+		justify-content:flex-start;
+   	}
+	.row{
+		height:auto !important;
+
+	}
+
+	.row > *{
+		width:100% !important;
+		max-width:100% !important;
+		border-left-width:1px !important;
+	}
+
+	.row.search > .check-row{
+		display:none !important;
+	}
+
+	.head{
+		display:none !important;
+	}
+
+	.data-table .row:nth-child(even){
+		background:#fff;
+	}
 }

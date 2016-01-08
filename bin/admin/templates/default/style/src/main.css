@@ -45,3 +45,55 @@ body{
 	border-radius:0 !important;
 	background-image:none !important;
 }
+
+@media only screen and (max-width:1000px){
+	#container{
+		display:block;
+	}
+	#container-nav{
+		padding:20px;
+	}
+	#nav{
+		background-color: #28303B;
+	}
+
+	#content{
+		padding: 20px !important;
+	}
+
+	#container h1{	
+		text-align:center;
+	}
+
+	#container-nav #container-search > .button{
+		display:none;
+	}
+
+	#status_nav{
+		display:flex !important;
+	}
+
+	#container-nav #status{
+		display:none;
+	}
+	
+	#container-nav #search{
+		padding-top:10px;
+	}
+
+	#container-nav.compact{
+		display:none;
+	}
+}
+@media only screen and (max-width:600px){
+	#content-center{
+		padding:5px;
+	}
+}
+
+@media only screen and (max-width:350px){
+	#content{
+		border:none;
+		border-bottom:1px solid black;
+	}
+}

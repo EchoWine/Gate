@@ -29,6 +29,7 @@
 	background:rgba(0,0,0,0.4);
 	opacity:0;
 	transition:z-index 0.5s, opacity 0.5s;
+	z-index:-1;
 }
 
 #box-container[active]{

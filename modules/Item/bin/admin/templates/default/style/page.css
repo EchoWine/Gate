@@ -78,6 +78,7 @@
 .table-data-filter{
 	float: right;
   	margin-top: -39px;
+  	margin-bottom: 10px;
 }
 
 .table-data-filter .button.lf{

@@ -133,13 +133,13 @@
 
 			<?php $i = 0;?>
 			{{for $item -> results -> records as $record}}
-				<div class='row' data-hide-click='1'>
+				<div class='row'>
 					<div class='check-row'>
 						<input type='checkbox' name="{{$item -> getDataName('p_primary_m')}}[]" value='{{$record[$item -> getFieldPrimary() -> column]}}' id='selectItem_0_{{$i}}' class='check b d' item-check='0'><label class='noselect m-5' for='selectItem_0_{{$i++}}'><span></span></label>
 					</div>
 
 					{{for $item -> getFieldsList() as $field}}
-						<div class='info string'><div>{{$record[$field -> column]}}</div></div>
+						<div class='info string' item-table-column='{{$field -> label}}'><div>{{$record[$field -> getColumnName()]}}</div></div>
 					{{endfor}}
 
 					<div class='last action'>

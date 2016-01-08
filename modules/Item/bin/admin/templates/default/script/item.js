@@ -58,8 +58,8 @@ item.selectAll = function(){
 item.operationMultiple = function(){
 
 
-	button = document.getElementById('button_operationMultiple');
-	select = document.getElementById('value_operationMultiple');
+	button = document.getElementById('data-multiple-button');
+	select = document.getElementById('data-multiple-value');
 
 	// Get name of 
 
@@ -100,7 +100,7 @@ item.operationMultiple = function(){
 
 		opt = select.options[select.selectedIndex];
 
-		switch(opt.getAttribute('item-actionMultiple')){
+		switch(opt.getAttribute('item-action-multiple')){
 			case 'edit':
 				
 				// Select all check selected
@@ -114,7 +114,7 @@ item.operationMultiple = function(){
 				r.shift();
 
 				// Get name for url
-				name = opt.getAttribute('item-nameget')+"[]";
+				name = opt.getAttribute('item-name-get')+"[]";
 
 				// Convert all in url format
 				last = [];
@@ -123,7 +123,7 @@ item.operationMultiple = function(){
 				});
 
 				// Build url
-				url = opt.getAttribute('item-baseurl')+url+"&"+last.join("&");
+				url = opt.getAttribute('item-base-url')+url+"&"+last.join("&");
 				url = url.replace('&amp;','&');
 
 				e.preventDefault();
@@ -136,7 +136,7 @@ item.operationMultiple = function(){
 	addEventToElement(document.getElementById('item-edit-take'),'change', function(e){
 
 		name = this.getAttribute('item-getname');
-		baseurl = this.getAttribute('item-baseurl');
+		baseurl = this.getAttribute('item-base-url');
 
 		r = this.options;
 		a = [];

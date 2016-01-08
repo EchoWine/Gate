@@ -75,31 +75,10 @@
 }
 
 
-.table-data-filter{
-	float: right;
-  	margin-top: -39px;
-  	margin-bottom: 10px;
-}
-
-.table-data-filter .button.lf{
-	margin-right:5px;
-	float:left;
-}
-
 .page-res{
 
 	/*position: relative;
 	height: 0;*/
-}
-
-/* Impaginazione */
-.page-res form{
-	display:inline-block;
-}
-
-.page-res .input.n{
-	width:45px;
-	text-align:center;
 }
 
 .detf{
@@ -218,19 +197,6 @@
 }
 
 
-.AP_ContentSquare{
-	width: 850px; 
-	height: 500px;
-	border: 1px solid #CFCFCF;
-	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-	background: #FFF;
-	background: linear-gradient(to bottom,#FFF, #EFEFEF);
-	padding: 10px;
-	margin: 10px 5px 0px 0;
-	border-radius: 5px;
-	position: relative;
-}
-
 /* Link */
 #select_all,#deselect_all{
 	cursor:pointer;
@@ -317,91 +283,17 @@
 .mu-i label{
 }
 
-/* TICKET */
-.cont-ticket > *[data-ticket-author='0']{
-	border-left: 2px solid #1BBC9B;
-	margin-left:65px;
-}
-.cont-ticket > *:not([data-ticket-author='0']){
-	border-right: 2px solid #F3565D;
-	margin-right:65px;
-}
-
-.cont-ticket > *::before{
-	content:'';
-	display: block;
-    position: absolute;
-    top: 5px;
-    width: 0;
-    height: 0;
-}
-
-.cont-ticket > *[data-ticket-author='0']::before{
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: 8px solid #1BBC9B;
-    left: -8px;
-}
-.cont-ticket > *:not([data-ticket-author='0'])::before{
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-left: 8px solid #F3565D;
-    right: -8px;
-}
-
-.cont-ticket > *{
-	background: #fafafa;
-	display:flex;
-	flex-wrap:wrap;
-	margin:10px 0;
-	line-height: 31px;
-	position:relative;
-}
-
-.cont-ticket > *[data-ticket-author='0'] .cont-ticket-avatar{
-	left:-60px;
-}
-
-.cont-ticket > *:not([data-ticket-author='0']) .cont-ticket-avatar{
-	right:-60px;
-}
-
-
-.cont-ticket-avatar{
-	top:0px;
-	position:absolute;
-}
-
-.cont-ticket-avatar img{
-	width:45px;
-	height:45px;
-	border-radius:100%;
-}
-
-.cont-ticket-date{
-	width:50%;
-	text-align:right;
-	padding:5px 10px;
-}
-
-.cont-ticket-mail{
-	width:50%;
-	padding:5px 10px;
-
-}
-
-.cont-ticket-content{
-	width:100%;
-	padding: 0 10px 10px 10px;
-	line-height: 20px;
-}
-
-.cont-ticket-content blockquote{
-	margin-left:1px;
-	border-left: 1px #ccc solid;
-	padding-left: 1px
-}
-
 .cont-button-right{
 	float:right;
+}
+
+
+@media only screen and (max-width:600px){
+	.content-header {
+		display: block !important;
+	}
+
+	.title{
+		margin-bottom:5px;
+	}
 }

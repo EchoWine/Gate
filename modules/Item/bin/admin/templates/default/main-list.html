@@ -1,10 +1,11 @@
 <div id='content'>
-	{{include .main.cat}}
 
+	{{include .main.cat}}
 	{{include .response}}
-	<form method='POST'></form>
+
 	<form method='POST'>
-		<input type='hidden' name='transaction' value='205ec7bdccb067bebf0cc3f0335d57915e0e18a9'>
+		<input type='hidden' name='transaction'>
+
 		<div class='content-header'>
 
 			{{include .main.title {$actionPage = 'list'}}}
@@ -40,9 +41,9 @@
 
 	<form method='POST' enctype='multipart/form-data'>
 
-		<div class='table-data-filter'>
+		<div class='data-multiple'>
 		
-			<select class='select n' name='{{$item -> getDataName('action')}}' id='value_operationMultiple' item-primary-value='0'>
+			<select class='select n' name='{{$item -> getDataName('action')}}' id='data-multiple-value' item-primary-value='0'>
 				<option value=''>Seleziona...</option>
 				<!--
 				<option value='export_xml_m'> Esporta XML </option>
@@ -52,10 +53,10 @@
 
 				<option value='{{$item -> getDataOption('action','copy_m')}}'> Copia </option>
 				<option value='{{$item -> getDataOption('action','delete_m')}}' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'> Elimina </option>
-				<option value='edit' item-actionMultiple='edit' item-baseurl='{{$item -> getUrlPageEdit()}}' item-nameget='{{$item -> getDataName('g_primary_m')}}'> Modifica </option>
+				<option value='edit' item-action-multiple='edit' item-base-url='{{$item -> getUrlPageEdit()}}' item-name-get='{{$item -> getDataName('g_primary_m')}}'> Modifica </option>
 			</select>
 
-			<button type='submit' class='button n' id='button_operationMultiple' data-multiple-button confirm-target='value_operationMultiple' confirm-event='click,submit'>Invia</button>
+			<button type='submit' class='button n' id='data-multiple-button' data-multiple-button confirm-target='data-multiple-value' confirm-event='click,submit'>Invia</button>
 
 			<!--
 			<button type='submit' name='force_update' class='button lf'>
@@ -64,7 +65,7 @@
 			-->
 		</div>
 		<div class='data-table' id='data'>
-			<div class='head'>
+			<div class='row head'>
 				<div class='check-row'>
 					<input type='checkbox' class='check b d' id='check-all0' item-checkall='0'>
 					<label class='noselect m-5' for='check-all0'><span></span></label>
@@ -77,11 +78,13 @@
 						
 						<button class='button r'>
 
-							<span class='fa fa-sort-{{switch $item -> getOrderField($field -> name)}}
+							<span class='fa fa-sort{{switch $item -> getOrderField($field -> name)}}
 
-								{{case 'desc'}}desc{{/case}}
+								{{case 'desc'}}-desc{{/case}}
 
-								{{case 'asc'}}asc{{/case}}
+								{{case 'asc'}}-asc{{/case}}
+
+								{{case default}} inactive{{/case}}
 
 							{{/switch}}'></span>
 						</button>

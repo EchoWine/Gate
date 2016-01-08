@@ -6,10 +6,6 @@
 	<form method='POST' enctype='multipart/form-data'>
 		<div class='content-header'>
 			{{include .main.title {$actionPage = 'edit'}}}
-			<!--<a class='button a primary' href='data.php?p=series_sett'>
-				<span class='fa fa-cogs'></span>
-				Preferenze 
-			</a>-->
 
 			<input type='hidden' name="{{$item -> getDataName('p_primary')}}" value='{{$item -> results -> record[$item -> getFieldPrimary() -> getColumnName()]}}'>
 
@@ -22,21 +18,17 @@
 					<span class='fa fa-plus-circle'></span> Salva le modifiche
 				</div>
 			</button>
-			<!--
-			<button type='submit' name='TO_LIST' class='button'>
-				<div class='button a success'>
-					<span class='fa fa-plus-circle'></span>
-					Aggiungi e torna indietro 
-				</div>
-			</button>
-			-->
 		</div>
 
 
 		{{include .response}}
-		<div class='manage-data'>
-			<fieldset class='manage-data'>
+
+		<div class='data-form'>
+			<!--
+			<fieldset>
 				<legend> Generale </legend>
+
+			-->
 				{{if !empty($item -> results -> primary)}}
 					<div class='field'>
 						<label>Take from: </label>
@@ -65,7 +57,11 @@
 						</div>
 					</div>
 				{{endfor}}
+
+			<!--
 			</fieldset>
+
+			-->
 		</div>
 	</form>
 </div>

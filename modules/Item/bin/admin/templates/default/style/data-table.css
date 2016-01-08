@@ -296,7 +296,7 @@
 
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-@media only screen and (max-width:600px){
+@media only screen and (max-width:1000px){
 	
 
 	.data-table .row *[item-table-column]::before{

@@ -19,6 +19,11 @@ body{
 	font-family: 'Open Sans',sans-serif;
 }
 
+legend{
+	border-bottom: 1px solid #EEE;
+	padding-bottom:5px;
+}
+
 .block{
 	background:#364150;
 	display:flex;
@@ -99,3 +104,4 @@ body{
 		border-bottom:1px solid black;
 	}
 }
+

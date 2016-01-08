@@ -76,3 +76,12 @@
 .cont-data-image + .file{
 	display:block;
 }
+
+@media only screen and (max-width:600px){
+	.data-form .field{
+		display: block !important;
+	}
+	.data-form .field label{
+		justify-content: flex-start;
+	}
+}

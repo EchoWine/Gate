@@ -75,11 +75,17 @@
 }
 
 @media only screen and (max-width:600px){
-	.content-header {
-		display: block !important;
+
+	.content-header{
+		display:block !important;
 	}
 
-	.title{
+	.content-header > *{
 		margin-bottom:5px;
 	}
+
+	.content-header .button{
+		margin-left:0;
+	}
+
 }

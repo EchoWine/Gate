@@ -6,11 +6,11 @@
 	<form method='POST' enctype='multipart/form-data'>
 		<div class='content-header'>
 			{{include .main.title {$actionPage = 'add'}}}
-
-			<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
-				<span class='fa fa-arrow-circle-left'></span> Torna alla lista
-			</a>
-
+			<div>
+				<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
+					<span class='fa fa-arrow-circle-left'></span> Torna alla lista
+				</a>
+			</div>
 			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','add')}}'>
 				<div class='button a success'>
 					<span class='fa fa-plus-circle'></span> Aggiungi

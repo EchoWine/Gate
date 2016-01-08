@@ -21,7 +21,8 @@ class ItemController extends Controller{
 	/**
 	 * Results
 	 */
-	public $results = [];
+	public $results;
+
 
 	/**
 	 * Check all the interaction with user
@@ -90,9 +91,15 @@ class ItemController extends Controller{
 	public function checkAttemptEdit(){
 
 		# Check if all primary_m exists
-		foreach((array)$this -> getDataValue('g_primary_m') as &$k){
-			if(!$this -> checkExists($k))unset($k);
-		}
+		$v = $this -> getDataValue('g_primary_m');
+
+		if(!empty($v))
+			$v = $this -> checkArrayExists($v);
+
+		if(!empty($v))
+			$this -> results -> primary = $this -> model -> getResultsWhere([[$this -> model -> primary -> getColumnName(),$v]]);
+
+
 
 		if($this -> getDataValue('action') == $this -> getActionEdit()){
 
@@ -218,6 +225,7 @@ class ItemController extends Controller{
 	 * Initialize
 	 */
 	public function ini(){
+		$this -> results = new stdClass();
 		$this -> iniNameURL();
 	}
 
@@ -299,7 +307,7 @@ class ItemController extends Controller{
 	public function getResults(){
 
 		# Initialization
-		$r = new stdClass();
+		$r = $this -> results;
 
 		# Set count
 		$r -> count = $this -> model -> countAll();
@@ -317,7 +325,6 @@ class ItemController extends Controller{
 			$this -> model -> searched
 		);
 
-		$this -> results = $r;
 
 		return $r;
 	}
@@ -329,7 +336,8 @@ class ItemController extends Controller{
 	public function getResultByPrimary(){
 
 		# Initialization
-		$r = new stdClass();
+		$r = $this -> results;
+
 		$r -> record = [];
 
 		$v = $this -> getData('g_primary') -> value;
@@ -351,18 +359,28 @@ class ItemController extends Controller{
 	 * @param $p (mixed) primary key value
 	 */
 	public function checkExists($p){
-		if(!$this -> model -> exists($p)){
+
+		return !empty($this -> checkArrayExists([$p]));
+	}
+
+	/**
+	 * Check if an array of record exists
+	 * @param $p (array) primary key value
+	 */
+	public function checkArrayExists(array $p){
+
+		list($e,$ne) = $this -> model -> exists($p);
+		foreach((array)$ne as $k){
 
 			if(empty($this -> response['error_exists']))
 				$this -> response['error_exists'] = new stdResponse(0,'Error');
 			
 			$r = $this -> response['error_exists'];
-			$r -> addMessage("[{$p}] Not exists");
+			$r -> addMessage("[{$k}] Not exists");
 
-			return false;
 		}
 
-		return true;
+		return $e;
 		
 	}
 
@@ -584,7 +602,7 @@ class ItemController extends Controller{
 	public function getFieldsEdit(){
 		$r = [];
 
-		$e = empty($this -> getDataValue('g_primary_m'));
+		$e = empty($this -> results -> primary);
 		foreach($this -> model -> fields as $k){
 			if($k -> getEdit() && ((!$e && !$k -> unique) || $e))
 				$r[] = $k;

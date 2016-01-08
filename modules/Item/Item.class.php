@@ -156,7 +156,34 @@ class Item extends Module{
 			});
 		}
 
-		return $q -> lists();
+		return $q -> setIndexResult($this -> primary -> getColumnName()) -> lists();
+	}
+
+	/**
+	 * Select all record whre
+	 * @param (int) $where where
+	 * @param (int) $s start from
+	 * @param (int) $n take n element
+	 * @param (object) $oField field sort
+	 * @param (string) $oDir sorting direction
+	 * @return (array) query result
+	 */
+	public function getResultsWhere($where,$s = 0,$n = 5,$oField = null,$oDir = 'asc',$search = []){
+
+		$q = DB::table($this -> name);
+
+		if($oField !== null){
+			$q = $oDir == 'asc' 
+				? $q -> orderByAsc($oField -> getColumnName()) 
+				: $q -> orderByDesc($oField -> getColumnName());
+		}
+
+		foreach((array)$where as $k)
+			$q = $q -> whereIn($k[0],$k[1]); 
+
+		$q = $q -> skip($s) -> take($n);
+
+		return $q -> setIndexResult($this -> primary -> getColumnName()) -> lists();
 	}
 
 	/**
@@ -261,12 +288,12 @@ class Item extends Module{
 
 	/**
 	 * Check if a record exists
-	 * @param $p (mixed) value of primary key
+	 * @param $p (array) value of primary key
 	 * @return (bool) result of query
 	 */
 	public function exists($p){
-		
-		return DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> count() > 0;
+		$q = DB::table($this -> name) -> exists($this -> primary -> getColumnName(),$p);
+		return [array_keys($q,1),array_keys($q,0)];
 
 	}
 

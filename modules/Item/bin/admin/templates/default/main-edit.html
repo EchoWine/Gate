@@ -37,14 +37,14 @@
 		<div class='manage-data'>
 			<fieldset class='manage-data'>
 				<legend> Generale </legend>
-				{{if !empty($item -> getDataValue('g_primary_m'))}}
+				{{if !empty($item -> results -> primary)}}
 					<div class='field'>
 						<label>Take from: </label>
 						<div class='data'>
 							<select id='item-edit-take' class='select n' item-baseurl='{{$item -> getUrlPageEdit()}}' item-getname='{{$item -> getDataName('g_primary_m')}}'>
 								<option value='{{$item -> getDataValue('g_primary')}}'>{{$item -> getDataValue('g_primary')}}</option>
-								{{for $item -> getDataValue('g_primary_m') as $k}}
-									<option value='{{$k}}'>{{$k}}</option>
+								{{for $item -> results -> primary as $k}}
+									<option value='{{$k[$item -> getFieldPrimary() -> getColumnName()]}}'>{{$k[$item -> getFieldPrimary() -> getColumnName()]}}</option>
 								{{endfor}}
 							</select>
 						</div>

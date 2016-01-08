@@ -51,6 +51,7 @@ Modules:
 		- [x] Disabilitare operazioni multiple se checkbox non attivi
 		- [x] Are you sure? Messaggio di conferma per operazioni pericolose "eliminazione"
 		- [x] Mostra risultati 5,25,100
+		- [ ] checkUnique for add,edit
 		- [ ] Rollback
 		- [ ] Field
 			- [ ] Sort

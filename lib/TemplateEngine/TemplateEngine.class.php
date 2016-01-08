@@ -177,9 +177,7 @@ class TemplateEngine{
 				# Check source of file
 				$t = file_exists($k) && file_exists($fileCompiled) && filemtime($k) > filemtime($fileCompiled);
 
-				# Per il momento è necessario che sia sempre attivo
-				//if($t){
-				if(true){
+				if($t){
 					
 
 					if(file_exists($k)){
@@ -228,13 +226,6 @@ class TemplateEngine{
 
 		$b = empty($subClass) ? basename($f,".html") : $subClass.".".basename($f,".html");
 
-		if(!empty(self::$aggregate[$b])){
-			foreach(self::$aggregate[$b] as $k){
-				$c .= "{{include $k}}";
-			}
-		}
-
-
 		if(!empty($subClass)){
 
 			# Include sub Class
@@ -256,7 +247,7 @@ class TemplateEngine{
 
 			$h = $k[0] == "$" ? '' : '"';
 			
-			$c = str_replace($r[0][$n],'{{include TemplateEngine::getInclude('.$h.$k.$h.')}}',$c);
+			$c = str_replace($r[0][$n],'<?php foreach(TemplateEngine::getInclude('.$h.$k.$h.') as $k) include $k; ?>',$c);
 
 		}
 
@@ -273,7 +264,16 @@ class TemplateEngine{
 	}
 
 	public static function getInclude($p){
-		return isset(self::$include[$p]) ? self::$include[$p] : $p.".php";
+
+		$c[] = isset(self::$include[$p]) ? self::$include[$p] : $p.".php";
+
+		if(!empty(self::$aggregate[$p])){
+			foreach((array)self::$aggregate[$p] as $k)
+				$c[] = $k.".php";
+		}
+			
+	
+		return $c;
 
 	}
 

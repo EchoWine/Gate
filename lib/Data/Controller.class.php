@@ -23,8 +23,7 @@ class Controller{
 	/**
 	 * Initialize
 	 */
-	public function ini(){
-	}
+	public function ini(){}
 
 	/**
 	 * Update the path

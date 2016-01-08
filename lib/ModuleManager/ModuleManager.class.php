@@ -49,9 +49,6 @@ class ModuleManager{
 		if(empty(self::$list[$basePath])){
 			self::$list[$basePath] = $path;
 			include $path."/main.php";
-
-			# Call load method
-			forward_static_call(basename($path)."::load",$path);
 		}
 	}
 

@@ -10,7 +10,17 @@ class Item extends Module{
 	/**
 	 * Name
 	 */
-	public $name;
+	public $name = null;
+	
+	/**
+	 * Label
+	 */
+	public $label = null;
+	
+	/**
+	 * Table name
+	 */
+	public $tableName = null;
 
 	/**
 	 * Primary field
@@ -46,14 +56,68 @@ class Item extends Module{
 	 * List of all field searched
 	 */
 	public $searched = [];
-
+	
 	/**
-	 * Return file inc
+	 * Construct
 	 */
-	public static function getPathApp(){
-		return self::$pathApp;
+	public function __construct(){
+		$this -> ini();
 	}
 	
+	/**
+	 * Initialize
+	 */
+	public function ini(){
+		$this -> iniName();
+		$this -> iniLabel();
+		$this -> iniTable();
+	}
+
+	/**
+	 * Initialize name
+	 */
+	public function iniName(){
+		if($this -> name === null)
+			$this -> name = $this -> retrieveName();
+	}
+
+	/**
+	 * Initialize name
+	 */
+	public function iniLabel(){
+		if($this -> name === null)
+			$this -> name = $this -> retrieveLabel();
+	}
+
+
+	/**
+	 * Initialize table
+	 */
+	public function iniTable(){
+		if($this -> tableName === null)
+			$this -> tableName = $this -> retrieveTableName();
+	}
+
+	/**
+	 * Retrieve name
+	 */
+	public function retrieveName(){
+		return 'item';
+	}
+
+	/**
+	 * Retrieve table name
+	 */
+	public function retrieveLabel(){
+		return $this -> name;
+	}
+	/**
+	 * Retrieve table name
+	 */
+	public function retrieveTableName(){
+		return $this -> name;
+	}
+
 	/**
 	 * Add fields
 	 * @param $a (array) list of fields to add
@@ -132,8 +196,23 @@ class Item extends Module{
 	 * @return (array) query result
 	 */
 	public function getResultByPrimary($p){
-		return DB::table($this -> name) -> where($this -> primary -> getColumnName(),$p) -> get();
+		return $this -> getQueryAlter() -> where($this -> primary -> getColumnName(),$p) -> get();
 	}
+
+	/**
+	 * Get QueryBuilder select
+	 */
+	public function getQuerySelect(){
+		return DB::table($this -> tableName);
+	}
+
+	/**
+	 * Get QueryBuilder alter data
+	 */
+	public function getQueryAlter(){
+		return DB::table($this -> tableName);
+	}
+
 
 	/**
 	 * Select all record
@@ -146,7 +225,7 @@ class Item extends Module{
 	 */
 	public function getResults($s = 0,$n = 5,$oField = null,$oDir = 'asc',$search = []){
 
-		$q = DB::table($this -> name) -> skip($s) -> take($n);
+		$q = $this -> getQuerySelect() -> skip($s) -> take($n);
 
 		if($oField !== null){
 			$q = $oDir == 'asc' 
@@ -178,7 +257,7 @@ class Item extends Module{
 	 */
 	public function getResultsWhere($where,$s = 0,$n = 5,$oField = null,$oDir = 'asc',$search = []){
 
-		$q = DB::table($this -> name);
+		$q = $this -> getQuerySelect();
 
 		if($oField !== null){
 			$q = $oDir == 'asc' 
@@ -199,7 +278,7 @@ class Item extends Module{
 	 * @return (int) number of records
 	 */
 	public function countAll(){
-		return DB::table($this -> name) -> count();
+		return $this -> getQuerySelect() -> count();
 	}
 
 	/**
@@ -268,7 +347,7 @@ class Item extends Module{
 			$k -> add($a);
 		}
 
-		if(DB::table($this -> name) -> insert($a)){
+		if($this -> getQueryAlter() -> insert($a)){
 			return new stdResponse(1,'Success','Added');
 		}
 
@@ -284,7 +363,7 @@ class Item extends Module{
 	 */
 	public function delete($f,$p){
 
-		$q = DB::table($this -> name) -> whereIn($this -> primary -> getColumnName(),$p) -> delete();
+		$q = $this -> getQueryAlter() -> whereIn($this -> primary -> getColumnName(),$p) -> delete();
 
 		if($q){
 			return new stdResponse(1,'Success','Deleted: '.implode(",",$p));
@@ -300,7 +379,7 @@ class Item extends Module{
 	 * @return (bool) result of query
 	 */
 	public function exists($p){
-		$q = DB::table($this -> name) -> exists($this -> primary -> getColumnName(),$p);
+		$q = $this -> getQuerySelect() -> exists($this -> primary -> getColumnName(),$p);
 		return [array_keys($q,1),array_keys($q,0)];
 
 	}
@@ -351,7 +430,7 @@ class Item extends Module{
 
 		$p = empty($m) ? [$p] : array_merge([$p],$m);
 
-		$q = DB::table($this -> name) -> whereIn($this -> primary -> getColumnName(),$p) -> update($a);
+		$q = $this -> getQueryAlter() -> whereIn($this -> primary -> getColumnName(),$p) -> update($a);
 
 		if($q){
 			return new stdResponse(1,'Success','Edited');
@@ -373,7 +452,7 @@ class Item extends Module{
 
 		$c = [];
 
-		$q = DB::table($this -> name) -> whereIn($this -> primary -> getColumnName(),$p) -> lists();
+		$q = $this -> getQueryAlter() -> whereIn($this -> primary -> getColumnName(),$p) -> lists();
 
 		foreach($q as $r){
 
@@ -390,7 +469,7 @@ class Item extends Module{
 
 		}
 
-		$q = DB::table($this -> name) -> insertMultiple($c,$h);
+		$q = $this -> getQueryAlter() -> insertMultiple($c,$h);
 
 		if($q){
 			return new stdResponse(1,'Success','Copied');

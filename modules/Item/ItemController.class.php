@@ -38,6 +38,8 @@ class ItemController extends Controller{
 		$this -> checkAttemptEdit();
 		$this -> checkAttemptCopy();
 		$this -> checkAttemptResultPage();
+
+
 	}
 
 	/**
@@ -225,6 +227,7 @@ class ItemController extends Controller{
 	 * Initialize
 	 */
 	public function ini(){
+		$this -> model -> check();
 		$this -> results = new stdClass();
 		$this -> iniNameURL();
 	}
@@ -241,7 +244,7 @@ class ItemController extends Controller{
 	 * @return (string) label
 	 */
 	public function getLabel(){
-		return $this -> model -> name;
+		return $this -> model -> label;
 	}
 
 	/**

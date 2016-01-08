@@ -1,15 +1,23 @@
 <?php
 
 class ItemView extends View{
-	
+
 	/** 
 	 * Initialization
 	 */
 	public function ini(){
-		$this -> setStyle();
-		$this -> setScript();
+
+
 	}
-	
+
+	/** 
+	 * Initialization
+	 * @param $pos (int) position in navigation
+	 */
+	public function setNav($pos){
+		Module::TemplateAggregate('nav','nav',$pos,$this -> model -> name);
+	}
+
 	public function setStyle(){
 		Module::TemplateAggregate('style','style',1);
 	}
@@ -41,6 +49,9 @@ class ItemView extends View{
 	public function setPage($page){
 
 		if($page == $this -> controller -> nameURL){
+
+			$this -> setStyle();
+			$this -> setScript();
 
 			$this -> setCat();
 			$this -> setTitle();
@@ -108,7 +119,11 @@ class ItemView extends View{
 					$this -> setPageList();
 				break;
 			}
+
+			return true;
 		}
+
+		return false;
 	}
 
 }

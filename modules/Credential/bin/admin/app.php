@@ -1,9 +1,9 @@
 <?php
 	
-	
+	use Item\Credential as Item;
 
 	# Initialization	
-	$Model = new Credential();
+	$Model = new Item\Model();
 
 	$Model -> setFields([
 		new ID('id'),
@@ -16,20 +16,23 @@
 
 	$Model -> setFieldLabel('user');
 
-	$item = new CredentialController($Model);
+	$Controller = new Item\Controller($Model);
 
-	$View = new CredentialView($Model,$item);
+	$View = new Item\View($Model,$Controller);
 
-	$item -> updatePathTemplate('admin');
-	$View -> setPage($pageValue);
 
-	# Add left menu
-	$View -> setNav();
+	if($View -> setPage($pageValue)){
+		$item = $Controller;
+
+		$item -> updatePathTemplate('admin');
+	}
+
+	$View -> setNav(30);
 
 	$Credential = (object)[
 		'nav' => (object)[
-			'label' => $item -> getLabel(),
-			'url' => 'index.php'.$item -> getUrlMainPage(),
+			'label' => $Controller -> getLabel(),
+			'url' => 'index.php'.$Controller -> getUrlMainPage(),
 		]
 	];
 

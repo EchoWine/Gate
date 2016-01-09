@@ -6,16 +6,14 @@
 
 		{{include .main.title {$actionPage = 'view'}}}
 
-		<div>
-			<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
-				<span class='fa fa-arrow-circle-left'></span> Torna alla lista
-			</a>
-		</div>
+		
+		{{include .button-backToList}}
+
 		<form method='POST' action='{{$item -> getUrlPageList()}}'>
 			<input type='hidden' name="{{$item -> getDataName('p_primary')}}" value='{{$item -> results -> record[$item -> getFieldPrimary() -> getColumnName()]}}'>
 			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}'>
 				<div class='button a danger'>
-					<span class='fa fa-trash'></span> Elimina
+					<span class='fa fa-trash'></span> Delete
 				</div>
 			</button>
 		</form>

@@ -12,6 +12,10 @@ Library:
 	- [ ] Lang
 	- [ ] Model, Controller, View
 
+Template:
+	- [ ] Bug responsive firefox list
+	- [ ] Nav quando il monitor è piccolo deve ridimensionari in altezza
+	
 Modules: 
 	- [ ] Auth
 		- [x] Authentication
@@ -62,6 +66,7 @@ Modules:
 		- [x] Disabilitare operazioni multiple se checkbox non attivi
 		- [x] Are you sure? Messaggio di conferma per operazioni pericolose "eliminazione"
 		- [x] Mostra risultati 5,25,100
+		- [ ] Bloccare Item se Auth esiste e utente non loggato
 		- [ ] checkUnique for add,edit
 		- [ ] Rollback
 		- [ ] Field

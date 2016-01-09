@@ -9,14 +9,11 @@
 
 			<input type='hidden' name="{{$item -> getDataName('p_primary')}}" value='{{$item -> results -> record[$item -> getFieldPrimary() -> getColumnName()]}}'>
 
-			<div>
-				<a href='{{$item -> getUrlPageList()}}' class='button a primary'>
-					<span class='fa fa-arrow-circle-left'></span> Torna alla lista
-				</a>
-			</div>
+			{{include .button-backToList}}
+
 			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','edit')}}'>
 				<div class='button a warning'>
-					<span class='fa fa-plus-circle'></span> Salva le modifiche
+					<span class='fa fa-plus-circle'></span> Apply changes
 				</div>
 			</button>
 		</div>

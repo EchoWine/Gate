@@ -49,6 +49,10 @@ class Model extends \Item{
 	public function iniField(){
 
 		$this -> setFields([
+			new \Username([
+				'name' => 'user',
+				'column' => \Item::getObj('credential') -> getField('user') -> getColumnName(),
+			]),
 			new \SID([
 				'name' => 'sid',
 				'column' => $this -> auth -> cfg['session']['col']['sid'],
@@ -56,10 +60,6 @@ class Model extends \Item{
 			new \UID([
 				'name' => 'uid',
 				'column' => $this -> auth -> cfg['session']['col']['uid'],
-			]),
-			new \Username([
-				'name' => 'user',
-				'column' => \Item::getObj('credential') -> getField('user') -> getColumnName(),
 			]),
 		]);
 		

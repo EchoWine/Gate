@@ -12,7 +12,7 @@
 
 			{{if $item -> getAdd()}}
 				<a href='{{$item -> getUrlPageAdd()}}' class='button a success'>
-					<span class='fa fa-plus-circle'></span> Aggiungi
+					<span class='fa fa-plus-circle'></span> Add
 				</a>
 			{{endif}}
 			
@@ -46,7 +46,7 @@
 			<div class='data-multiple'>
 			
 				<select class='select n' name='{{$item -> getDataName('action')}}' id='data-multiple-value' item-primary-value='0'>
-					<option value=''>Seleziona...</option>
+					<option value=''>Select...</option>
 					<!--
 					<option value='export_xml_m'> Esporta XML </option>
 					<option value='export_csv_m'> Esporta CSV </option>
@@ -69,7 +69,7 @@
 					{{endif}}
 				</select>
 
-				<button type='submit' class='button n' id='data-multiple-button' data-multiple-button confirm-target='data-multiple-value' confirm-event='click,submit'>Invia</button>
+				<button type='submit' class='button n' id='data-multiple-button' data-multiple-button confirm-target='data-multiple-value' confirm-event='click,submit'>Send</button>
 
 				<!--
 				<button type='submit' name='force_update' class='button lf'>
@@ -194,7 +194,7 @@
 						{{endif}}
 
 						{{if $item -> getDelete()}}
-							<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' item-primary-value='{{$record[$item -> getFieldPrimary() -> column]}}' confirm-target='this' confirm-event='click,submit' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'>
+							<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' item-primary-value='{{$record[$item -> getFieldPrimary() -> column]}}' confirm-target='this' confirm-event='click,submit' box-title='Confirm' box-desc='Are you sure?'>
 								<span class='button a i danger'>
 									<span class='fa fa-trash'></span>
 								</span>
@@ -229,7 +229,7 @@
 				<span box-data-message></span>
 
 				<div class='box-confirm-button'>
-					<button type='submit' class='button a danger' box-send>Sì</button>
+					<button type='submit' class='button a danger' box-send>Yes</button>
 					<button type='button' class='button a info' box-close>No</button>
 				</div>
 

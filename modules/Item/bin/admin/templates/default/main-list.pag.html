@@ -29,15 +29,15 @@
 				<span class='fa fa-angle-right'></span>
 			</span>
 		{{endif}}
-	</form> di {{$item -> results -> pages}} 
+	</form> of {{$item -> results -> pages}} 
 	<span class='data-page-separator'></span> 
-	<form method='POST'> Mostra:
+	<form method='POST'> Show:
 		<select name='{{$item -> getDataName('p_result_page')}}' id='n_results' class='select n' onchange='this.parentNode.submit()'>
 			{{for $item -> getDataAllOption('p_result_page') as $x}}
 				<option {{if $item -> getResultPerPage() == $x}}selected{{endif}} value='{{$x}}'>{{$x}}</option>
 			{{endfor}}
-		</select> risultati
+		</select> results
 	</form>
 	<span class='data-page-separator'></span>
-	<span>Ci sono un totale di {{$item -> results -> count}} risultati</span>
+	<span>There are {{$item -> results -> count}} results</span>
 </div>

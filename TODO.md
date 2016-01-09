@@ -13,9 +13,9 @@ Library:
 	- [ ] Model, Controller, View
 
 Template:
-	- [ ] Bug responsive firefox list
-	- [ ] Nav quando il monitor è piccolo deve ridimensionari in altezza
-	
+	- [x] Problem responsive list
+	- [x] Nav quando il monitor è piccolo deve ridimensionari in altezza
+
 Modules: 
 	- [ ] Auth
 		- [x] Authentication
@@ -23,14 +23,14 @@ Modules:
 		- [ ] Recovery
 
 	- [ ] Administration
-		- [x] Credential
+		- [x] Item/Credential
 			- [x] Connect with Auth module
 		- [ ] Profile
-		- [ ] Permission single & group
-		- [ ] Log
-		- [ ] Backup
+		- [ ] Item/Permission (single & group)
+		- [ ] Item/Log
+		- [ ] Item/Backup
 		- [x] SystemInfo
-		- [ ] Session
+		- [ ] Item/Session
 			- [ ] Disable alter
 			- [x] Join with credential in select
 			- [x] Disable alter operation (edit, add, copy ecc...)

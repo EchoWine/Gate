@@ -16,7 +16,7 @@
 		$item -> updatePathTemplate('admin');
 	}
 
-	$View -> setNav(30);
+	$View -> setNav(50);
 
 	$Session = (object)[
 		'nav' => (object)[

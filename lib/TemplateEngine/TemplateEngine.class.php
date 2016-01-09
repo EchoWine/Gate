@@ -268,10 +268,12 @@ class TemplateEngine{
 		$c[] = isset(self::$include[$p]) ? self::$include[$p] : $p.".php";
 
 		if(!empty(self::$aggregate[$p])){
-			foreach((array)self::$aggregate[$p] as $k)
+			$t = self::$aggregate[$p];
+			ksort($t);
+			foreach((array)$t as $n => $k)
 				$c[] = $k.".php";
 		}
-			
+
 	
 		return $c;
 

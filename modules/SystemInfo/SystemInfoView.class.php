@@ -4,6 +4,7 @@ class SystemInfoView extends View{
 	
 
 	public function __construct(){}
+	
 	public function setNav(){
 		Module::TemplateAggregate('nav','nav',99);
 	}

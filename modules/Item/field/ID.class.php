@@ -1,6 +1,12 @@
 <?php
 
 class ID extends Field{
+
+	
+	/**
+	 * Label
+	 */
+	public $label = 'ID';
 	
 	/**
 	 * Is operation add enabled
@@ -36,13 +42,6 @@ class ID extends Field{
 			$this -> model -> orderByField = $this;
 			$this -> model -> orderDirection = 'asc';
 		}
-	}
-
-	/**
-	 * Initialize label
-	 */
-	public function iniLabel(){
-		$this -> label = 'ID';
 	}
 	
 	/**

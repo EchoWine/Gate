@@ -1,6 +1,6 @@
 <?php
 
-namespace Item\Credential;
+namespace Item\Session;
 
 class View extends \ItemView{
 

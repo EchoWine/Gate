@@ -95,7 +95,6 @@ class Item extends Module{
 			$this -> name = $this -> retrieveLabel();
 	}
 
-
 	/**
 	 * Initialize table
 	 */
@@ -117,6 +116,7 @@ class Item extends Module{
 	public function retrieveLabel(){
 		return $this -> name;
 	}
+
 	/**
 	 * Retrieve table name
 	 */
@@ -185,6 +185,9 @@ class Item extends Module{
 	 * @param $p (string) name of field
 	 */
 	public function setFieldPrimary($p){
+		if(!isset($this -> fields[$p]))
+			die($p." doesn't exists in ".$this -> name);
+
 		$this -> primary = $this -> fields[$p];
 	}
 	
@@ -193,6 +196,9 @@ class Item extends Module{
 	 * @param $p (string) name of field
 	 */
 	public function setFieldLabel($p){
+		if(!isset($this -> fields[$p]))
+			die($p." doesn't exists in ".$this -> name);
+
 		$this -> fieldLabel = $this -> fields[$p];
 	}
 

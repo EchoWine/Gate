@@ -2,6 +2,11 @@
 class Mail extends _String{
 	
 	/**
+	 * Label
+	 */
+	public $label = 'E-Mail';
+
+	/**
 	 * Is unique value
 	 */
 	public $unique = true;
@@ -11,13 +16,6 @@ class Mail extends _String{
 	 */
 	public $minLength = 1;
 
-	/**
-	 * Initialize label
-	 */
-	public function iniLabel(){
-		$this -> label = 'E-mail';
-	}
-	
 	/**
 	 * Initialize pattern
 	 */

@@ -8,6 +8,16 @@ class Field{
 	public $name;
 
 	/**
+	 * Column
+	 */
+	public $column = null;
+
+	/**
+	 * Label
+	 */
+	public $label = null;
+
+	/**
 	 * Model
 	 */
 	public $model;
@@ -84,10 +94,15 @@ class Field{
 
 	/**
 	 * Construct
-	 * @param $n name
+	 * @param $n (mixed) name or attribute
 	 */
 	public function __construct($n){
-		$this -> name = $n;
+		if(is_array($n)){
+			foreach($n as $n => $k)
+				$this -> {$n} = $k;
+		}else{
+			$this -> name = $n;
+		}
 	}
 
 	/**
@@ -111,14 +126,16 @@ class Field{
 	 * Initialize column
 	 */
 	public function iniColumn(){
-		$this -> column = $this -> name;
+		if($this -> column == null)
+			$this -> column = $this -> name;
 	}
 
 	/**
 	 * Initialize label
 	 */
 	public function iniLabel(){
-		$this -> label = '[undefined name]';
+		if($this -> label == null)
+			$this -> label = $this -> name;
 	}
 
 	/**

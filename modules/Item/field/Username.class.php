@@ -3,6 +3,11 @@
 class Username extends _String{
 		
 	/**
+	 * Username
+	 */
+	public $label = 'Username';
+
+	/**
 	 * Is unique value
 	 */
 	public $unique = true;
@@ -11,12 +16,5 @@ class Username extends _String{
 	 * Min length value
 	 */
 	public $minLength = 1;
-	
-	/**
-	 * Initialize label
-	 */
-	public function iniLabel(){
-		$this -> label = 'Username';
-	}
 }
 ?>

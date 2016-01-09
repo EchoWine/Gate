@@ -731,7 +731,7 @@ class ItemController extends Controller{
 	 * @return bool result
 	 */
 	public function getAdd(){
-		return $this -> model -> add;
+		return $this -> model -> alter && $this -> model -> add;
 	}
 
 	/**
@@ -740,7 +740,7 @@ class ItemController extends Controller{
 	 * @return bool result
 	 */
 	public function getEdit(){
-		return $this -> model -> edit;
+		return $this -> model -> alter && $this -> model -> edit;
 	}
 
 	/**
@@ -749,7 +749,7 @@ class ItemController extends Controller{
 	 * @return bool result
 	 */
 	public function getCopy(){
-		return $this -> model -> copy;
+		return $this -> model -> alter && $this -> model -> copy;
 	}
 
 	/**
@@ -767,7 +767,7 @@ class ItemController extends Controller{
 	 * @return bool result
 	 */
 	public function getDelete(){
-		return $this -> model -> delete;
+		return $this -> model -> alter && $this -> model -> delete;
 	}
 
 }

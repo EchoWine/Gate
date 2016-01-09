@@ -1,6 +1,5 @@
 <?php
-return array
-(
+return [
 	'driver' => 'mysql',
 	'hostname' => '127.0.0.1',
 	'database' => 'cms',
@@ -9,5 +8,5 @@ return array
 	'charset'  => 'utf8',
 	'rollback' => 5,
 	'alter_schema' => true,
-);
+];
 ?>

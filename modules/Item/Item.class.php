@@ -28,6 +28,11 @@ class Item extends Module{
 	public $tableName = null;
 
 	/**
+	 * Alter data
+	 */
+	public $alter = true;
+
+	/**
 	 * Add operation
 	 */
 	public $add = true;

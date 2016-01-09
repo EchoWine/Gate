@@ -30,8 +30,8 @@ Modules:
 		- [ ] Item/Log
 		- [ ] Item/Backup
 		- [x] SystemInfo
-		- [ ] Item/Session
-			- [ ] Disable alter
+		- [x] Item/Session
+			- [x] Disable alter
 			- [x] Join with credential in select
 			- [x] Disable alter operation (edit, add, copy ecc...)
 			- [x] Retrieve from Auth module name column

@@ -4,6 +4,8 @@
 
 	# Initialization	
 	$Model = new Item\Model();
+	$Model -> setAuth($auth);
+	$Model -> ini();
 
 	$Controller = new Item\Controller($Model);
 

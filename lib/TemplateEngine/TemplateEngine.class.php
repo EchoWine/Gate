@@ -76,6 +76,7 @@ class TemplateEngine{
 
 	/**
 	 * Initialization
+	 *
 	 * @param $b (string) directory name where templates is installed
 	 */
 	public static function ini($b){
@@ -97,6 +98,7 @@ class TemplateEngine{
 
 	/**
 	 * Get name of current template
+	 *
 	 * @param (string) current template
 	 */
 	public static function getName(){
@@ -105,6 +107,7 @@ class TemplateEngine{
 
 	/**
 	 * Overwrite a basic template page
+	 *
 	 * @param $nt (string) name of page that will be overwritten
 	 * @param $nf (string) name page that will overwrite
 	 */
@@ -115,6 +118,7 @@ class TemplateEngine{
 
 	/**
 	 * Aggregate a page to another
+	 *
 	 * @param $nt (string) name of page that will be aggregated
 	 * @param $nf (string) name page that will aggregated
 	 * @param $pos (int) position of aggregation
@@ -129,6 +133,7 @@ class TemplateEngine{
 
 	/**
 	 * Load a template
+	 *
 	 * @param $n (string) name of template
 	 */
 	public static function load($n){
@@ -145,6 +150,7 @@ class TemplateEngine{
 
 	/**
 	 * Compile all the page
+	 *
 	 * @param $pathSource (string) path where is located file .html to compile
 	 * @param $subClass (string) name of "class of files"
 	 */
@@ -202,6 +208,7 @@ class TemplateEngine{
 
 	/**
 	 * Precompile the page
+	 *
 	 * @param $f (string) file name
 	 * @param $c (string) content of the page
 	 * @param $subClass (string) name of "class of files"
@@ -259,10 +266,22 @@ class TemplateEngine{
 		return $c;
 	}
 
+	/**
+	 * Set include
+	 *
+	 * @param $p (string) name
+	 * @param $f (string) path complete
+	 */
 	public static function setInclude($p,$f){
 		self::$include[$p] = self::getNameInclude($f).".php";
 	}
 
+	/**
+	 * Get include
+	 *
+	 * @param $p (string) file name
+	 * @return (array) array of files to be included
+	 */
 	public static function getInclude($p){
 
 		$c[] = isset(self::$include[$p]) ? self::$include[$p] : $p.".php";
@@ -290,6 +309,7 @@ class TemplateEngine{
 
 	/**
 	 * Translate the page
+	 *
 	 * @param $f (string) file name
 	 * @param $c (string) content of the page
 	 * @param (string) content translated
@@ -395,6 +415,7 @@ class TemplateEngine{
 
 	/**
 	 * Print error
+	 *
 	 * @param $e (array) list of all error
 	 */
 	public static function printErrors($e){
@@ -414,6 +435,7 @@ class TemplateEngine{
 
 	/**
 	 * Main function that print the page
+	 *
 	 * @param $page (string) name page
 	 * @return (string) page
 	 */
@@ -438,6 +460,7 @@ class TemplateEngine{
 
 	/**
 	 * Load all scripts
+	 *
 	 * @param $folder (string) name of folder
 	 * @param $ext (string) type of file
 	 */
@@ -471,6 +494,7 @@ class TemplateEngine{
 
 	/**
 	 * Load a resource file
+	 *
 	 * @param $name (string) name of template
 	 * @param $page (string) path file
 	 */
@@ -490,6 +514,7 @@ class TemplateEngine{
 
 	/**
 	 * Minify CSS code
+	 *
 	 * @param $s (string) css code
 	 * @return (string) css minified
 	 */
@@ -544,6 +569,7 @@ class TemplateEngine{
 
 	/**
 	 * Minify JS code
+	 *
 	 * @param $s (string) js code
 	 * @return (string) js minified
 	 */
@@ -553,6 +579,7 @@ class TemplateEngine{
 
 	/**
 	 * Manage cached file
+	 *
 	 * @param $src (string) base path
 	 * @param $ext (string) type of file (e.g. css/js)
 	 * @param $files (array) array of flie to include

@@ -27,7 +27,6 @@
 	
 	DB::connect(include PATH_CONFIG.'/database.php');
 
-
 	# Ini http
 	http::ini();
 

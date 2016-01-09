@@ -98,7 +98,6 @@ class Item extends Module{
 			$this -> name = $n;
 		}
 
-		$this -> ini();
 	}
 
 	/**

@@ -20,7 +20,7 @@ Modules:
 
 	- [ ] Administration
 		- [x] Credential
-			- [ ] Connect with Auth module
+			- [x] Connect with Auth module
 		- [ ] Profile
 		- [ ] Permission single & group
 		- [ ] Log
@@ -30,7 +30,7 @@ Modules:
 			- [ ] Disable alter
 			- [x] Join with credential in select
 			- [x] Disable alter operation (edit, add, copy ecc...)
-			- [ ] Retrieve from Auth module name column
+			- [x] Retrieve from Auth module name column
 
 	- [ ] Item/Holding
 

@@ -35,21 +35,31 @@ class Model extends \Item{
 	public $auth = null;
 
 	/**
-	 * Construct auth
+	 * Set auth
+	 * @param $auth (Auth object)
 	 */
-	public function __construct($auth){
+	public function setAuth($auth){
 		$this -> auth = $auth;
-		$this -> ini();
 	}
 
 	/**
 	 * Initialize field
 	 */
 	public function iniField(){
+
 		$this -> setFields([
-			new \UID('uid'),
-			new \Username('user'),
-			new \SID('sid'),
+			new \SID([
+				'name' => 'sid',
+				'column' => $this -> auth -> cfg['session']['col']['sid'],
+			]),
+			new \UID([
+				'name' => 'uid',
+				'column' => $this -> auth -> cfg['session']['col']['uid'],
+			]),
+			new \Username([
+				'name' => 'user',
+				'column' => \Item::getObj('credential') -> getField('user') -> getColumnName(),
+			]),
 		]);
 		
 		$this -> setFieldPrimary('sid');

@@ -5,17 +5,6 @@
 	# Initialization	
 	$Model = new Item\Model();
 
-	$Model -> setFields([
-		new ID('id'),
-		new Username('user'),
-		new Password('pass'),
-		new Mail('mail')
-	]);
-
-	$Model -> setFieldPrimary('id');
-
-	$Model -> setFieldLabel('user');
-
 	$Controller = new Item\Controller($Model);
 
 	$View = new Item\View($Model,$Controller);

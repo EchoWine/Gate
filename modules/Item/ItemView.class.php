@@ -11,11 +11,25 @@ class ItemView extends View{
 	}
 
 	/** 
-	 * Initialization
+	 * Set navigation menu
 	 * @param $pos (int) position in navigation
 	 */
 	public function setNav($pos){
 		Module::TemplateAggregate('nav','nav',$pos,$this -> model -> name);
+	}
+
+	/** 
+	 * Set title
+	 */
+	public function setTitle(){
+		Module::TemplateOverwrite('item.main.title','main.title',$this -> model -> name);
+	}
+
+	/** 
+	 * Set cat
+	 */
+	public function setCat(){
+		Module::TemplateOverwrite('item.main.cat','main.cat',$this -> model -> name);
 	}
 
 	public function setStyle(){

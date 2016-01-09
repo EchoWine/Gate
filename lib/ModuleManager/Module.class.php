@@ -18,10 +18,12 @@ class Module{
 		get_name_class();
 	}
 
-	public static function TemplateOverwrite($n,$c){
+	public static function TemplateOverwrite($n,$c,$sub = null){
 
-		$sub = basename(dirname(debug_backtrace()[0]['file']));
-		$sub = TemplateEngine::parseSubClass($sub);
+		if($sub === null){
+			$sub = basename(dirname(debug_backtrace()[0]['file']));
+			$sub = TemplateEngine::parseSubClass($sub);
+		}
 
 		TemplateEngine::overwrite($n,$sub.".".$c);
 	}
@@ -35,6 +37,8 @@ class Module{
 
 		TemplateEngine::aggregate($n,$sub.".".$c,$pos);
 	}
+
+
 
 }
 

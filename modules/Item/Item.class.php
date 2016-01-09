@@ -68,10 +68,16 @@ class Item extends Module{
 	 * Initialize
 	 */
 	public function ini(){
+		$this -> iniField();
 		$this -> iniName();
 		$this -> iniLabel();
 		$this -> iniTable();
 	}
+
+	/**
+	 * Initialize field
+	 */
+	public function iniField(){}
 
 	/**
 	 * Initialize name

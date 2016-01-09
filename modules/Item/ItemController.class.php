@@ -166,7 +166,6 @@ class ItemController extends Controller{
 		return $r;
 	}
 
-
 	/**
 	 * Check attempt change result per page
 	 */
@@ -178,7 +177,6 @@ class ItemController extends Controller{
 			http::refresh();
 		}
 	}
-
 
 	/**
 	 * Retrieve all data sent by user

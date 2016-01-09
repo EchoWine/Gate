@@ -13,6 +13,21 @@ class Model extends \Item{
 	 * Label
 	 */
 	public $label = 'Session';
+
+	/**
+	 * Add operation
+	 */
+	public $add = false;
+
+	/**
+	 * Edit operation
+	 */
+	public $edit = false;
+
+	/**
+	 * Copy operation
+	 */
+	public $copy = false;
 		
 	/**
 	 * Controller Auth class
@@ -32,11 +47,9 @@ class Model extends \Item{
 	 */
 	public function iniField(){
 		$this -> setFields([
-			new \ID([
-				'name' => 'uid',
-				'label' => 'UID'
-			]),
-			new \SID('sid')
+			new \UID('uid'),
+			new \Username('user'),
+			new \SID('sid'),
 		]);
 		
 		$this -> setFieldPrimary('sid');
@@ -51,6 +64,19 @@ class Model extends \Item{
 		return $this -> auth -> cfg['session']['table'];
 	}
 
+	/**
+	 * Get QueryBuilder select
+	 */
+	public function getQuerySelect(){
+
+		$c = \Item::getObj('credential');
+
+		return \DB::table($this -> tableName) -> leftJoin(
+			$c -> tableName,
+			$this -> getField('uid') -> getColumnName(),
+			$c -> getField('id') -> getColumnName()
+		);
+	}
 }
 
 ?>

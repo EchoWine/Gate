@@ -13,18 +13,29 @@ Library:
 	- [ ] Model, Controller, View
 
 Modules: 
-	- [x] Authentication
-	- [ ] Registration
-	- [ ] Recovery
-	- [x] Credential
-	- [ ] Profile
-	- [ ] Permission single & group
-	- [ ] Log
-	- [ ] Backup
-	- [x] SystemInfo
-	- [ ] SessionTable
+	- [ ] Auth
+		- [x] Authentication
+		- [ ] Registration
+		- [ ] Recovery
+
+	- [ ] Administration
+		- [x] Credential
+			- [ ] Connect with Auth module
+		- [ ] Profile
+		- [ ] Permission single & group
+		- [ ] Log
+		- [ ] Backup
+		- [x] SystemInfo
+		- [ ] Session
+			- [ ] Disable alter
+			- [x] Join with credential in select
+			- [x] Disable alter operation (edit, add, copy ecc...)
+			- [ ] Retrieve from Auth module name column
+
+	- [ ] Item/Holding
+
 	- [ ] Custom Page
-	- [ ] Holding
+
 	- [ ] Item
 		- [x] Action Page
 		- [x] Add

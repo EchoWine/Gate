@@ -46,6 +46,9 @@ class ItemController extends Controller{
 	 * Check attempt search
 	 */
 	public function checkAttemptSearch(){
+
+		if(!$this -> getSearch())return;
+
 		if($this -> getData('action') -> value == $this -> getActionSearch()){
 
 			if(($r = $this -> model -> search($this -> model -> fields)) !== null)
@@ -57,7 +60,7 @@ class ItemController extends Controller{
 	/**
 	 * Check attempt sort
 	 */
-	public function checkAttemptOrder(){
+	public function checkAttemptOrder(){	
 
 		$v = $this -> getData('g_order') -> value;
 
@@ -79,6 +82,8 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptAdd(){
 
+		if(!$this -> getAdd())return;
+
 		if($this -> getDataValue('action') == $this -> getActionAdd()){
 
 			if(($r = $this -> model -> search($this -> model -> fields)) !== null)
@@ -91,6 +96,8 @@ class ItemController extends Controller{
 	 * Check attempt edit data
 	 */
 	public function checkAttemptEdit(){
+
+		if(!$this -> getEdit())return;
 
 		# Check if all primary_m exists
 		$v = $this -> getDataValue('g_primary_m');
@@ -119,6 +126,8 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptDelete(){
 
+		if(!$this -> getDelete())return;
+
 		$r = $this -> checkAttemptSM($this -> getActionDeleteS(),$this -> getActionDeleteM());
 		
 		if(!empty($r))
@@ -130,6 +139,9 @@ class ItemController extends Controller{
 	 */
 	public function checkAttemptCopy(){
 		
+
+		if(!$this -> getCopy())return;
+
 		$r = $this -> checkAttemptSM($this -> getActionCopyS(),$this -> getActionCopyM());
 
 		if(!empty($r))
@@ -672,7 +684,47 @@ class ItemController extends Controller{
 	public function updatePathTemplate($v){
 		$this -> setPathTemplate($v,ModuleManager::getPathModule('Item')."/bin/{$v}/templates/".TemplateEngine::getName()."/");
 	}
-	
+
+	/**
+	 * Is operation add enabled
+	 * @return (bool) result
+	 */
+	public function getAdd(){
+		return $this -> model -> add;
+	}
+
+	/**
+	 * Is operation edit enabled
+	 * @return (bool) result
+	 */
+	public function getEdit(){
+		return $this -> model -> edit;
+	}
+
+	/**
+	 * Is operation copy enabled
+	 * @return (bool) result
+	 */
+	public function getCopy(){
+		return $this -> model -> copy;
+	}
+
+	/**
+	 * Type of search operation
+	 * @return (bool) result
+	 */
+	public function getSearch(){
+		return $this -> model -> search;
+	}
+
+	/**
+	 * Is operation delete enabled
+	 * @return (bool) result
+	 */
+	public function getDelete(){
+		return $this -> model -> delete;
+	}
+
 }
 
 ?>

@@ -10,10 +10,11 @@
 
 			{{include .main.title {$actionPage = 'list'}}}
 
-
-			<a href='{{$item -> getUrlPageAdd()}}' class='button a success'>
-				<span class='fa fa-plus-circle'></span> Aggiungi
-			</a>
+			{{if $item -> getAdd()}}
+				<a href='{{$item -> getUrlPageAdd()}}' class='button a success'>
+					<span class='fa fa-plus-circle'></span> Aggiungi
+				</a>
+			{{endif}}
 			
 			<!--
 			<a class='button a primary' href='data.php?p=data_sett'>
@@ -41,29 +42,43 @@
 
 	<form method='POST' enctype='multipart/form-data'>
 
-		<div class='data-multiple'>
-		
-			<select class='select n' name='{{$item -> getDataName('action')}}' id='data-multiple-value' item-primary-value='0'>
-				<option value=''>Seleziona...</option>
+		{{if $item -> getAdd() || $item -> getDelete() || $item -> getCopy()}}
+			<div class='data-multiple'>
+			
+				<select class='select n' name='{{$item -> getDataName('action')}}' id='data-multiple-value' item-primary-value='0'>
+					<option value=''>Seleziona...</option>
+					<!--
+					<option value='export_xml_m'> Esporta XML </option>
+					<option value='export_csv_m'> Esporta CSV </option>
+					<option value='edit_multiple'> Modifica </option> 
+					-->
+
+					{{if $item -> getCopy()}}
+						<option value='{{$item -> getDataOption('action','copy_m')}}'> Copia </option>
+					{{endif}}
+
+					{{if $item -> getDelete()}}
+						<option value='{{$item -> getDataOption('action','delete_m')}}' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'>	Elimina
+						</option>
+					{{endif}}
+
+					{{if $item -> getEdit()}}
+						<option value='edit' item-action-multiple='edit' item-base-url='{{$item -> getUrlPageEdit()}}' item-name-get='{{$item -> getDataName('g_primary_m')}}'>
+							Modifica
+						</option>
+					{{endif}}
+				</select>
+
+				<button type='submit' class='button n' id='data-multiple-button' data-multiple-button confirm-target='data-multiple-value' confirm-event='click,submit'>Invia</button>
+
 				<!--
-				<option value='export_xml_m'> Esporta XML </option>
-				<option value='export_csv_m'> Esporta CSV </option>
-				<option value='edit_multiple'> Modifica </option> 
+				<button type='submit' name='force_update' class='button lf'>
+					<div class='button a info'> <span class='fa fa-terminal'></span>Forza aggiornamento </div>
+				</button> 
 				-->
+			</div>
+		{{endif}}
 
-				<option value='{{$item -> getDataOption('action','copy_m')}}'> Copia </option>
-				<option value='{{$item -> getDataOption('action','delete_m')}}' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'> Elimina </option>
-				<option value='edit' item-action-multiple='edit' item-base-url='{{$item -> getUrlPageEdit()}}' item-name-get='{{$item -> getDataName('g_primary_m')}}'> Modifica </option>
-			</select>
-
-			<button type='submit' class='button n' id='data-multiple-button' data-multiple-button confirm-target='data-multiple-value' confirm-event='click,submit'>Invia</button>
-
-			<!--
-			<button type='submit' name='force_update' class='button lf'>
-				<div class='button a info'> <span class='fa fa-terminal'></span>Forza aggiornamento </div>
-			</button> 
-			-->
-		</div>
 		<div class='data-table' id='data'>
 			<div class='row head'>
 				<div class='check-row'>
@@ -151,29 +166,40 @@
 							<span class='fa fa-download'></span>
 						</span>
 						-->
-						<a data-button href='{{$item -> getUrlPageAdd($record[$item -> getFieldPrimary() -> column])}}' class='button a i success'>
-							<span class='fa fa-plus-square'></span>
-						</a>
+
+						{{if $item -> getAdd()}}
+							<a data-button href='{{$item -> getUrlPageAdd($record[$item -> getFieldPrimary() -> column])}}' class='button a i success'>
+								<span class='fa fa-plus-square'></span>
+							</a>
+						{{endif}}
 						
+						{{if $item -> getCopy()}}
 						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','copy_s')}}' item-primary-value ='{{$record[$item -> getFieldPrimary() -> column]}}'>
 							<span class='button a i success'>
 								<span class='fa fa-copy'></span>
 							</span>
 						</button>
+						{{endif}}
 
-						<a data-button href='{{$item -> getUrlPageView($record[$item -> getFieldPrimary() -> column])}}' class='button a i info'>
-							<span class='fa fa-file-text'></span> 
-						</a>
+						{{if true}}
+							<a data-button href='{{$item -> getUrlPageView($record[$item -> getFieldPrimary() -> column])}}' class='button a i info'>
+								<span class='fa fa-file-text'></span> 
+							</a>
+						{{endif}}
 
+						{{if $item -> getEdit()}}
 						<a data-button href='{{$item -> getUrlPageEdit($record[$item -> getFieldPrimary() -> column])}}' class='button a i warning'>
 							<span class='fa fa-pencil'></span>
 						</a>
-						
-						<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' item-primary-value='{{$record[$item -> getFieldPrimary() -> column]}}' confirm-target='this' confirm-event='click,submit' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'>
-							<span class='button a i danger'>
-								<span class='fa fa-trash'></span>
-							</span>
-						</button>
+						{{endif}}
+
+						{{if $item -> getDelete()}}
+							<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}' item-primary-value='{{$record[$item -> getFieldPrimary() -> column]}}' confirm-target='this' confirm-event='click,submit' box-title='Conferma azione' box-desc='Sei sicuro di voler eliminare?'>
+								<span class='button a i danger'>
+									<span class='fa fa-trash'></span>
+								</span>
+							</button>
+						{{endif}}
 					</div>
 				</div>
 			{{endfor}}

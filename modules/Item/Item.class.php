@@ -6,6 +6,11 @@ class Item extends Module{
 	 * Config
 	 */
 	public static $cfg;
+
+	/**
+	 * Object list
+	 */
+	public static $obj;
 	
 	/**
 	 * Name
@@ -21,6 +26,31 @@ class Item extends Module{
 	 * Table name
 	 */
 	public $tableName = null;
+
+	/**
+	 * Add operation
+	 */
+	public $add = true;
+
+	/**
+	 * Edit operation
+	 */
+	public $edit = true;
+
+	/**
+	 * Copy operation
+	 */
+	public $copy = true;
+
+	/**
+	 * Delete operation
+	 */
+	public $delete = true;
+
+	/**
+	 * Copy operation
+	 */
+	public $search = true;
 
 	/**
 	 * Primary field
@@ -60,8 +90,29 @@ class Item extends Module{
 	/**
 	 * Construct
 	 */
-	public function __construct(){
+	public function __construct($n = ''){
+		if(is_array($n)){
+			foreach($n as $n => $k)
+				$this -> {$n} = $k;
+		}else if(!empty($n)){
+			$this -> name = $n;
+		}
+
 		$this -> ini();
+	}
+
+	/**
+	 * Add obj
+	 */
+	public static function addObj($n,$t){
+		self::$obj[$n] = $t;
+	}
+
+	/**
+	 * Get obj
+	 */
+	public static function getObj($n){
+		return self::$obj[$n];
 	}
 	
 	/**
@@ -72,6 +123,7 @@ class Item extends Module{
 		$this -> iniName();
 		$this -> iniLabel();
 		$this -> iniTable();
+		self::addObj($this -> name,$this);
 	}
 
 	/**
@@ -91,8 +143,8 @@ class Item extends Module{
 	 * Initialize name
 	 */
 	public function iniLabel(){
-		if($this -> name === null)
-			$this -> name = $this -> retrieveLabel();
+		if($this -> label === null)
+			$this -> label = $this -> retrieveLabel();
 	}
 
 	/**
@@ -174,7 +226,7 @@ class Item extends Module{
 	 */
 	public function alterDatabase(){
 
-		foreach($this -> fields as $k){
+		foreach((array)$this -> fields as $k){
 			$k -> alterDatabase();
 		}
 
@@ -208,7 +260,7 @@ class Item extends Module{
 	 * @return (array) query result
 	 */
 	public function getResultByPrimary($p){
-		return $this -> getQueryAlter() -> where($this -> primary -> getColumnName(),$p) -> get();
+		return $this -> getQuerySelect() -> where($this -> primary -> getColumnName(),$p) -> get();
 	}
 
 	/**

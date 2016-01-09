@@ -46,6 +46,7 @@ class ModuleManager{
 	 */
 	public static function load($path){
 		$basePath = basename($path);
+
 		if(empty(self::$list[$basePath])){
 			self::$list[$basePath] = $path;
 			include $path."/main.php";

@@ -24,8 +24,9 @@ class AuthController extends Controller{
 
 	/**
 	 * Construct
-	 * @param $model (object) model
-	 * @param $cfg (array) set of config
+	 *
+	 * @param object $model model
+	 * @param array $cfg set of config
 	 */
 	public function __construct($model,$cfg){
 		$this -> model = $model;
@@ -36,7 +37,8 @@ class AuthController extends Controller{
 
 	/**
 	 * Check all the interaction with user
-	 * @return (array) response of interaction
+	 *
+	 * @return array response of interaction
 	 */
 	public function check(){
 		$this -> model -> alterTable();
@@ -74,7 +76,8 @@ class AuthController extends Controller{
 
 	/**
 	 * Retrieve all data sent by user
-	 * @return (array) data
+	 *
+	 * @return array data
 	 */
 	public function retrieveData(){
 		$c = $this -> cfg['data'];
@@ -100,7 +103,8 @@ class AuthController extends Controller{
 
 	/**
 	 * Get current info about user
-	 * @return (object) info
+	 *
+	 * @return object info
 	 */
 	public function getUserInfo(){
 		return $this -> info;
@@ -108,7 +112,8 @@ class AuthController extends Controller{
 
 	/**
 	 * Get current display name (user or email)
-	 * @return (string) display name
+	 *
+	 * @return string display name
 	 */
 	public function getUserDisplay(){
 		return !empty($this -> info) ? $this -> model -> getUserDisplay($this -> info) : '';

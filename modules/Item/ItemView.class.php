@@ -12,7 +12,7 @@ class ItemView extends View{
 
 	/** 
 	 * Set navigation menu
-	 * @param $pos (int) position in navigation
+	 * @param int $pos position in navigation
 	 */
 	public function setNav($pos){
 		Module::TemplateAggregate('nav','nav',$pos,$this -> model -> name);

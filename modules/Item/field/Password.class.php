@@ -30,8 +30,9 @@ class Password extends _String{
 
 	/**
 	 * Prepare value field to query
-	 * @param $v (mixed) value of field
-	 * @param (mixed) value prepared
+	 *
+	 * @param mixed $v value of field
+	 * @param mixed value prepared
 	 */
 	public function dbValue($v){
 		return Auth::getHashPass($v);

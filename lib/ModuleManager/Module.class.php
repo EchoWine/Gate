@@ -8,7 +8,8 @@ class Module{
 
 	/**
 	 * Construct
-	 * @param $n (string) name of model
+	 *
+	 * @param string $n name of model
 	 */
 	public function __construct($n){
 		$this -> name = $n;

@@ -20,7 +20,8 @@ class http{
 
 	/**
 	 * Redirect to url
-	 * @param $url (string) url
+	 *
+	 * @param string $url url
 	 */
 	public static function redirect($url){
 		header("Location:".$url);
@@ -29,7 +30,8 @@ class http{
 
 	/**
 	 * Refresh
-	 * @param $url (string) url
+	 *
+	 * @param string $url url
 	 */
 	public static function refresh(){
 		header("Location:".$_SERVER['REQUEST_URI']);
@@ -72,7 +74,7 @@ class http{
 	/**
 	 * Unset session
 	 * 
-	 * @param string $name	  Session name
+	 * @param string $name Session name
 	 */
 	public static function sessionUnset($name){
 		unset($_SESSION[$name]);
@@ -81,8 +83,8 @@ class http{
 	/**
 	 * Check if the cookie exists
 	 * 
-	 * @param $name	 Cookie name
-	 * @return bool	 True if exists, else otherwise
+	 * @param $name Cookie name
+	 * @return bool true if exists, else otherwise
 	 */
 	public static function exist($name){
 		return isset($_COOKIE[$name]);

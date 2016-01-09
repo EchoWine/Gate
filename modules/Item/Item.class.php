@@ -177,7 +177,8 @@ class Item extends Module{
 
 	/**
 	 * Add fields
-	 * @param $a (array) list of fields to add
+	 *
+	 * @param array $a list of fields to add
 	 */
 	public function setFields(array $a){
 		foreach($a as $k)
@@ -187,7 +188,8 @@ class Item extends Module{
 
 	/**
 	 * Add a field
-	 * @param $k (object) field
+	 *
+	 * @param object $k field
 	 */
 	public function setField($k){
 		$this -> fields[$k -> name] = $k;
@@ -197,8 +199,9 @@ class Item extends Module{
 
 	/**
 	 * Get a field
-	 * @param $v (string) name field
-	 * @return (object) field
+	 *
+	 * @param string $v name field
+	 * @return object field
 	 */
 	public function getField($v){
 		return isset($this -> fields[$v]) ? $this -> fields[$v] : null;
@@ -206,8 +209,9 @@ class Item extends Module{
 
 	/**
 	 * Return if field exists
-	 * @param $v (string) name field
-	 * @return (object) field
+	 *
+	 * @param string $v name field
+	 * @return object field
 	 */
 	public function isField($v){
 		return isset($this -> fields[$v]);
@@ -233,7 +237,8 @@ class Item extends Module{
 
 	/**
 	 * Set primary key
-	 * @param $p (string) name of field
+	 *
+	 * @param string $p name of field
 	 */
 	public function setFieldPrimary($p){
 		if(!isset($this -> fields[$p]))
@@ -244,7 +249,8 @@ class Item extends Module{
 	
 	/**
 	 * Set field label
-	 * @param $p (string) name of field
+	 *
+	 * @param string $p name of field
 	 */
 	public function setFieldLabel($p){
 		if(!isset($this -> fields[$p]))
@@ -255,8 +261,9 @@ class Item extends Module{
 
 	/**
 	 * Select a record using the primary key
-	 * @param $p (mixed) value of primary key
-	 * @return (array) query result
+	 *
+	 * @param mixed $p value of primary key
+	 * @return array query result
 	 */
 	public function getResultByPrimary($p){
 		return $this -> getQuerySelect() -> where($this -> primary -> getColumnName(),$p) -> get();
@@ -279,12 +286,13 @@ class Item extends Module{
 
 	/**
 	 * Select all record
-	 * @param (int) $s start from
-	 * @param (int) $n take n element
-	 * @param (object) $oField field sort
-	 * @param (string) $oDir sorting direction
-	 * @param (array) $search searched
-	 * @return (array) query result
+	 *
+	 * @param int $s start from
+	 * @param int $n take n element
+	 * @param object $oField field sort
+	 * @param string $oDir sorting direction
+	 * @param array $search searched
+	 * @return array query result
 	 */
 	public function getResults($s = 0,$n = 5,$oField = null,$oDir = 'asc',$search = []){
 
@@ -311,12 +319,13 @@ class Item extends Module{
 
 	/**
 	 * Select all record whre
-	 * @param (int) $where where
-	 * @param (int) $s start from
-	 * @param (int) $n take n element
-	 * @param (object) $oField field sort
-	 * @param (string) $oDir sorting direction
-	 * @return (array) query result
+	 *
+	 * @param int $where where
+	 * @param int $s start from
+	 * @param int $n take n element
+	 * @param object $oField field sort
+	 * @param string $oDir sorting direction
+	 * @return array query result
 	 */
 	public function getResultsWhere($where,$s = 0,$n = 5,$oField = null,$oDir = 'asc',$search = []){
 
@@ -338,7 +347,8 @@ class Item extends Module{
 
 	/**
 	 * Count all record
-	 * @return (int) number of records
+	 *
+	 * @return int number of records
 	 */
 	public function countAll(){
 		return $this -> getQuerySelect() -> count();
@@ -346,7 +356,8 @@ class Item extends Module{
 
 	/**
 	 * Get all fields name that will be print in list
-	 * @return (array) fields name
+	 *
+	 * @return array fields name
 	 */
 	public function getFieldsNameInList(){
 		$r = [];
@@ -358,7 +369,8 @@ class Item extends Module{
 
 	/**
 	 * Get all fields name that will be print in get
-	 * @return (array) fields name
+	 *
+	 * @return array fields name
 	 */
 	public function getFieldsNameInGet(){
 		$r = [];
@@ -370,10 +382,11 @@ class Item extends Module{
 
 	/**
 	 * Check form
-	 * @param $f (array) list of all fields
-	 * @param $req (bool) required
-	 * @param $mul (bool) multiple
-	 * @return (object stdResponse) result of request
+	 *
+	 * @param array $f list of all fields
+	 * @param bool $req required
+	 * @param bool $mul multiple
+	 * @return object stdResponse result of request
 	 */
 	public function checkForm($f,$req = true,$mul = false){
 
@@ -398,8 +411,9 @@ class Item extends Module{
 
 	/**
 	 * Add new record
-	 * @param $f (array) list of all fields
-	 * @return (object stdResponse) result of request
+	 *
+	 * @param array $f list of all fields
+	 * @return object stdResponse result of request
 	 */
 	public function add($f){
 
@@ -420,9 +434,10 @@ class Item extends Module{
 
 	/**
 	 * Delete a record
-	 * @param $f (array) list of all fields
-	 * @param $p (array) value of primary key
-	 * @return (object stdResponse) result of request
+	 *
+	 * @param array $f list of all fields
+	 * @param array $p value of primary key
+	 * @return object stdResponse result of request
 	 */
 	public function delete($f,$p){
 
@@ -438,8 +453,9 @@ class Item extends Module{
 
 	/**
 	 * Check if a record exists
-	 * @param $p (array) value of primary key
-	 * @return (bool) result of query
+	 *
+	 * @param array $p value of primary key
+	 * @return bool result of query
 	 */
 	public function exists($p){
 		$q = $this -> getQuerySelect() -> exists($this -> primary -> getColumnName(),$p);
@@ -449,8 +465,9 @@ class Item extends Module{
 
 	/**
 	 * Search
-	 * @param $f (array) list of all fields
-	 * @return (object stdResponse) result of request
+	 *
+	 * @param array $f list of all fields
+	 * @return object stdResponse result of request
 	 */
 	public function search($f){
 
@@ -471,10 +488,11 @@ class Item extends Module{
 
 	/**
 	 * Edit a record
-	 * @param $f (array) list of all fields
-	 * @param $p (mixed) value of primary key
-	 * @param $m (array) multiple value of primary key to apply the changes
-	 * @return (object stdResponse) result of request
+	 *
+	 * @param array $f list of all fields
+	 * @param mixed $p value of primary key
+	 * @param array $m multiple value of primary key to apply the changes
+	 * @return object stdResponse result of request
 	 */
 	public function edit($f,$p,$m){
 
@@ -506,9 +524,10 @@ class Item extends Module{
 
 	/**
 	 * Copy a record
-	 * @param $f (array) list of all fields
-	 * @param $p (array) value of primary key
-	 * @return (object stdResponse) result of request
+	 *
+	 * @param array $f list of all fields
+	 * @param array $p value of primary key
+	 * @return object stdResponse result of request
 	 */
 	public function copy($f,$p){
 		

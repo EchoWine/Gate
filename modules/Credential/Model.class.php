@@ -21,7 +21,8 @@ class Model extends \Item{
 
 	/**
 	 * Set auth
-	 * @param $auth (Auth object)
+	 *
+	 * @param Auth object $auth
 	 */
 	public function setAuth($auth){
 		$this -> auth = $auth;

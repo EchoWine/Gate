@@ -94,7 +94,8 @@ class Field{
 
 	/**
 	 * Construct
-	 * @param $n (mixed) name or attribute
+	 *
+	 * @param mixed $n name or attribute
 	 */
 	public function __construct($n){
 		if(is_array($n)){
@@ -179,7 +180,8 @@ class Field{
 
 	/**
 	 * Set model
-	 * @param $m (object ItemModel) model
+	 *
+	 * @param object ItemModel $m model
 	 */
 	public function setModel($m){
 		$this -> model = $m;
@@ -217,7 +219,8 @@ class Field{
 
 	/**
 	 * Get form name
-	 * @return (string) form name
+	 *
+	 * @return string form name
 	 */
 	public function getFormName(){
 		return $this -> form -> name;
@@ -225,7 +228,8 @@ class Field{
 
 	/**
 	 * Get form name search
-	 * @return (string) form name
+	 *
+	 * @return string form name
 	 */
 	public function getFormNameSearch(){
 		return $this -> getFormName()."[]";
@@ -233,7 +237,8 @@ class Field{
 
 	/**
 	 * Get form value
-	 * @return (mixed) form value
+	 *
+	 * @return mixed form value
 	 */
 	public function getFormValue(){
 		return $this -> form -> value;
@@ -241,8 +246,9 @@ class Field{
 
 	/**
 	 * Get form value to print
-	 * @param $r (array) result
-	 * @return (mixed) form value
+	 *
+	 * @param array $r result
+	 * @return mixed form value
 	 */
 	public function printInputValue($r){
 		
@@ -260,8 +266,9 @@ class Field{
 
 	/**
 	 * Get form value to print in search
-	 * @param $v (mixed) value
-	 * @return (mixed) form value
+	 *
+	 * @param mixed $v value
+	 * @return mixed form value
 	 */
 	public function printInputValueSearch($v){
 		return $this -> printInputValue ? $v : '';
@@ -269,8 +276,9 @@ class Field{
 
 	/**
 	 * Get value to print
-	 * @param $r (array) result
-	 * @return (mixed) value
+	 *
+	 * @param array $r result
+	 * @return mixed value
 	 */
 	public function printValue($r){
 		return $r[$this -> getColumnName()];
@@ -278,7 +286,8 @@ class Field{
 
 	/**
 	 * Get path of input
-	 * @return (string) path
+	 *
+	 * @return string path
 	 */
 	public function getPathInputData(){
 		return self::$template.'.Field';
@@ -286,8 +295,9 @@ class Field{
 
 	/**
 	 * Check if value is valid
-	 * @param $v (mixed) value to validate
-	 * @return (bool) is value valid
+	 *
+	 * @param mixed $v value to validate
+	 * @return bool is value valid
 	 */
 	public function checkForm($v){
 		return preg_match($this -> pattern,$v);
@@ -295,7 +305,8 @@ class Field{
 
 	/**
 	 * Return the error message 
-	 * @return (string) error message
+	 *
+	 * @return string error message
 	 */
 	public function errorForm(){
 		return "Field <b>{$this -> label}</b> not valid";
@@ -303,7 +314,8 @@ class Field{
 
 	/**
 	 * Get column name
-	 * @return (string) column name
+	 *
+	 * @return string column name
 	 */
 	public function getColumnName(){
 		return $this -> column;
@@ -311,7 +323,8 @@ class Field{
 
 	/**
 	 * Add the field to the query 'add'
-	 * @param $a (array) array used in the query
+	 *
+	 * @param array $a array used in the query
 	 */
 	public function add(&$a){
 		if($this -> getAdd()){
@@ -321,7 +334,8 @@ class Field{
 
 	/**
 	 * Add the field to the query 'edit'
-	 * @param $a (array) array used in the query
+	 *
+	 * @param array $a array used in the query
 	 */
 	public function edit(&$a){
 		if($this -> getEdit()){
@@ -331,8 +345,9 @@ class Field{
 
 	/**
 	 * Add the field to the query 'copy'
-	 * @param $a (array) array used in the query
-	 * @param $r (array) result from select
+	 *
+	 * @param array $a array used in the query
+	 * @param array $r result from select
 	 */
 	public function copy(&$a,$r){
 		if($this -> getCopy()){
@@ -347,9 +362,10 @@ class Field{
 
 	/**
 	 * Add the field to the query 'search'
-	 * @param $q (object) query builder
-	 * @param $v (mixed) value searched
-	 * @return (object) query builder
+	 *
+	 * @param object $q query builder
+	 * @param mixed $v value searched
+	 * @return object query builder
 	 */
 	public function search($q,$v){
 		return $q -> orWhereLike($this -> getColumnName(),'%'.$v.'%');
@@ -357,8 +373,9 @@ class Field{
 
 	/**
 	 * Find a unique value for field
-	 * @param $b (string) base value
-	 * @return (string) string unique
+	 *
+	 * @param string $b base value
+	 * @return string string unique
 	 */
 	public function checkUnique($b){
 		$i = 0;
@@ -376,9 +393,10 @@ class Field{
 
 	/**
 	 * Get string to use in search for unique value
-	 * @param $b (string) base value
-	 * @param $i (int) counter
-	 * @return (string) result
+	 *
+	 * @param string $b base value
+	 * @param int $i counter
+	 * @return string result
 	 */
 	public function getPatternCopy($b,$i){
 		return $b."".$i;
@@ -386,8 +404,9 @@ class Field{
 
 	/**
 	 * Prepare value field to query
-	 * @param $v (mixed) value of field
-	 * @param (mixed) value prepared
+	 *
+	 * @param mixed $v value of field
+	 * @param mixed value prepared
 	 */
 	public function dbValue($v){
 		return $v;
@@ -395,7 +414,8 @@ class Field{
 
 	/**
 	 * Is operation add enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getAdd(){
 		return $this -> getPrintForm() && $this -> add;
@@ -403,7 +423,8 @@ class Field{
 
 	/**
 	 * Is operation edit enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getEdit(){
 		return $this -> getPrintForm() && $this -> edit;
@@ -411,7 +432,8 @@ class Field{
 
 	/**
 	 * Is operation copy enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getCopy(){
 		return $this -> copy;
@@ -419,7 +441,8 @@ class Field{
 
 	/**
 	 * Type of search operation
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getSearch(){
 		return $this -> search;
@@ -428,7 +451,8 @@ class Field{
 
 	/**
 	 * Is operation view enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getView(){
 		return $this -> getPrintView();

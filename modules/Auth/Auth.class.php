@@ -67,7 +67,8 @@ class Auth extends Module{
 
 	/**
 	 * Get current SID saved in cookie or session
-	 * @return (string) sid
+	 *
+	 * @return string sid
 	 */
 	public function getSID(){
 
@@ -81,7 +82,8 @@ class Auth extends Module{
 
 	/**
 	 * Check if current user is logged
-	 * @return (bool) is user logged
+	 *
+	 * @return bool is user logged
 	 */
 	public function checkSession(){
 
@@ -114,7 +116,8 @@ class Auth extends Module{
 
 	/**
 	 * Delete session of user using sid
-	 * @param (int) user id
+	 *
+	 * @param int user id
 	 */
 	public function deleteSessionBySID($sid){
 		
@@ -141,11 +144,12 @@ class Auth extends Module{
 
 	/**
 	 * Check if data is correct login
-	 * @param $user (string) username or email
-	 * @param $pass (string) $pass password
-	 * @param $checkName (bool) check the name
-	 * @param $checkMail (bool) check the mail
-	 * @return (array) result
+	 *
+	 * @param string $user username or email
+	 * @param string $pass $pass password
+	 * @param bool $checkName check the name
+	 * @param bool $checkMail check the mail
+	 * @return array result
 	 */
 	public function getUserDataFromLogin($user,$pass,$type,$checkName = 1,$checkMail = 1){
 
@@ -180,9 +184,10 @@ class Auth extends Module{
 
 	/**
 	 * Check login
-	 * @param $user (string) username or email
-	 * @param $pass (string) password
-	 * @return (object) response
+	 *
+	 * @param string $user username or email
+	 * @param string $pass password
+	 * @return object response
 	 */
 	public function login($user,$pass,$type){
 
@@ -251,7 +256,8 @@ class Auth extends Module{
 
 	/**
 	 * Get new SID that isn't already used
-	 * @return (string) sid
+	 *
+	 * @return string sid
 	 */
 	public function getNewSID(){
 
@@ -268,8 +274,9 @@ class Auth extends Module{
 
 	/**
 	 * Get hash password
-	 * @param $v (string) password
-	 * @return (string) hash password
+	 *
+	 * @param string $v password
+	 * @return string hash password
 	 */
 	public static function getHashPass($v){
 		return hash('sha512',sha1($v).$v); 
@@ -277,8 +284,9 @@ class Auth extends Module{
 
 	/**
 	 * Get current display name (user or email)
-	 * @param (object) current info of user
-	 * @return (string) display name
+	 *
+	 * @param object current info of user
+	 * @return string display name
 	 */
 	public function getUserDisplay($i){
 		return $this -> cfg['display'] == 0 ? $i -> user : $i -> mail;

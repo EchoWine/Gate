@@ -19,9 +19,10 @@ class stdResponse{
 
 	/**
 	 * Construct
-	 * @param $type (int) type of messages [0-3]
-	 * @param $title (string) title of message
-	 * @param $message (mixed) array or a single text that contains the message
+	 *
+	 * @param int $type type of messages [0-3]
+	 * @param string $title title of message
+	 * @param mixed $message array or a single text that contains the message
 	 */
 	public function __construct($type,$title,$message = null){
 		$this -> title = $title;
@@ -34,7 +35,8 @@ class stdResponse{
 
 	/**
 	 * Add a message
-	 * @param $message (string) message
+	 *
+	 * @param string $message message
 	 */
 	public function addMessage($message){
 		$this -> message[] = $message;
@@ -44,7 +46,8 @@ class stdResponse{
 
 	/**
 	 * Get count of messages
-	 * @return (int) count
+	 *
+	 * @return int count
 	 */
 	public function getCount(){
 		return is_array($this -> message) ? count($this -> message) : 1;

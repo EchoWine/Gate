@@ -58,9 +58,10 @@ class ID extends Field{
 
 	/**
 	 * Add the field to the query 'search'
-	 * @param $q (object) query builder
-	 * @param $v (mixed) value searched
-	 * @return (object) query builder
+	 *
+	 * @param object $q query builder
+	 * @param mixed $v value searched
+	 * @return object query builder
 	 */
 	public function search($q,$v){
 		return $q -> orWhere($this -> getColumnName(),$v);

@@ -14,7 +14,7 @@ class ModuleManager{
 
   	/**
   	 * Set path where are located modules
-  	 * @param $path (string) path
+  	 * @param string $path path
   	 */
   	public static function setPath($path){
   		self::$path = $path;
@@ -30,7 +30,7 @@ class ModuleManager{
 
   	/**
   	 * Load all modules
-  	 * @param $path (string) path where are located modules
+  	 * @param string $path path where are located modules
   	 */
 	public static function loadAll($path){
 		self::$path = $path;
@@ -42,7 +42,8 @@ class ModuleManager{
 
 	/**
 	 * Load a module
-	 * @param $path (string) path of module
+	 *
+	 * @param string $path path of module
 	 */
 	public static function load($path){
 		$basePath = basename($path);
@@ -55,7 +56,8 @@ class ModuleManager{
 
 	/**
 	 * Call all template methods in module
-	 * @param $v (string) name of view
+	 *
+	 * @param string $v name of view
 	 */
 	public static function loadTemplate($v){
 		$r = array();
@@ -70,7 +72,7 @@ class ModuleManager{
 
 	/**
   	 * Get path of a module
-  	 * @param $n (string) name of module
+  	 * @param string $n name of module
   	 * @return $path (string) path
   	 */
   	public static function getPathModule($m){

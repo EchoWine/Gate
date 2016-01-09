@@ -152,9 +152,10 @@ class ItemController extends Controller{
 
 	/**
 	 * Check attempt single/multiple operation
-	 * @param $s (string) value action single
-	 * @param $m (string) value action multiple
-	 * @return (array) primary key
+	 *
+	 * @param string $s value action single
+	 * @param string $m value action multiple
+	 * @return array primary key
 	 */
 	public function checkAttemptSM($s,$m){
 		$a = $this -> getData('action') -> value;
@@ -192,7 +193,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Retrieve all data sent by user
-	 * @return (array) data
+	 *
+	 * @return array data
 	 */
 	public function retrieveData(){
 		return [
@@ -251,7 +253,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get label
-	 * @return (string) label
+	 *
+	 * @return string label
 	 */
 	public function getLabel(){
 		return $this -> model -> label;
@@ -259,7 +262,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action add
-	 * @return (string) action add
+	 *
+	 * @return string action add
 	 */
 	public function getActionAdd(){
 		return $this -> getDataOption('action','add');
@@ -267,7 +271,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action search
-	 * @return (string) action search
+	 *
+	 * @return string action search
 	 */
 	public function getActionSearch(){
 		return $this -> getDataOption('action','search');
@@ -275,7 +280,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action delete_s
-	 * @return (string) action delete_s
+	 *
+	 * @return string action delete_s
 	 */
 	public function getActionDeleteS(){
 		return $this -> getDataOption('action','delete_s');
@@ -283,7 +289,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action delete_m
-	 * @return (string) action delete_m
+	 *
+	 * @return string action delete_m
 	 */
 	public function getActionDeleteM(){
 		return $this -> getDataOption('action','delete_m');
@@ -291,7 +298,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action edit
-	 * @return (string) action edit
+	 *
+	 * @return string action edit
 	 */
 	public function getActionEdit(){
 		return $this -> getDataOption('action','edit');
@@ -299,7 +307,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action copy_s
-	 * @return (string) action copy_s
+	 *
+	 * @return string action copy_s
 	 */
 	public function getActionCopyS(){
 		return $this -> getDataOption('action','copy_s');
@@ -307,7 +316,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action copy_m
-	 * @return (string) action copy_m
+	 *
+	 * @return string action copy_m
 	 */
 	public function getActionCopyM(){
 		return $this -> getDataOption('action','copy_m');
@@ -315,7 +325,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get all result
-	 * @return (object) results
+	 *
+	 * @return object results
 	 */
 	public function getResults(){
 
@@ -344,7 +355,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get result by primary
-	 * @return (object) results
+	 *
+	 * @return object results
 	 */
 	public function getResultByPrimary(){
 
@@ -369,7 +381,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Check if record exists
-	 * @param $p (mixed) primary key value
+	 *
+	 * @param mixed $p primary key value
 	 */
 	public function checkExists($p){
 
@@ -378,7 +391,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Check if an array of record exists
-	 * @param $p (array) primary key value
+	 *
+	 * @param array $p primary key value
 	 */
 	public function checkArrayExists(array $p){
 
@@ -399,7 +413,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Check if the data 'page' is correct
-	 * @param $r (int) max page
+	 *
+	 * @param int $r max page
 	 */
 	public function checkPage($r){
 		if($this -> getData('page') -> value > $r)
@@ -414,7 +429,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Set all information about pages
-	 * @param $t (int) number of pages
+	 *
+	 * @param int $t number of pages
 	 */
 	public function iniPages($t){
 
@@ -435,7 +451,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the result that will be used as "start"
-	 * @return (int) number of result
+	 *
+	 * @return int number of result
 	 */
 	public function getResultStartFrom(){
 		$r = $this -> getResultPerPage();
@@ -444,7 +461,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the result per page
-	 * @return (int) result per page
+	 *
+	 * @return int result per page
 	 */
 	public function getResultPerPage(){
 		return http::getCookie(Item::$cfg['c_result_page'],$this -> getDataOption('p_result_page',0));
@@ -452,8 +470,9 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the number of all pages
-	 * @param (int) count of all records
-	 * @return (int) number of all pages
+	 *
+	 * @param int count of all records
+	 * @return int number of all pages
 	 */
 	public function getTotalPages($c){
 		return ceil($c / $this -> getResultPerPage());
@@ -461,7 +480,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Set the name url
-	 * @param $p (string) name url
+	 *
+	 * @param string $p name url
 	 */
 	public function setNameURL($p){
 		$this -> nameURL = $p;
@@ -469,7 +489,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the url to the main action page
-	 * @return (string) url
+	 *
+	 * @return string url
 	 */
 	public function getUrlMainPage(){
 		return '?'.PAGE.'='.$this -> nameURL;
@@ -477,7 +498,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of the current action page
-	 * @return (string) action page
+	 *
+	 * @return string action page
 	 */
 	public function getPageActionValue(){
 		return $this -> getData('page_action') -> value;
@@ -485,7 +507,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action page add
-	 * @return (string) action page add
+	 *
+	 * @return string action page add
 	 */
 	public function getPageActionAdd(){
 		return $this -> getDataOption('action','add');
@@ -493,7 +516,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action page edit
-	 * @return (string) action page edit
+	 *
+	 * @return string action page edit
 	 */
 	public function getPageActionEdit(){
 		return $this -> getDataOption('action','edit');
@@ -501,7 +525,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the value of action page view
-	 * @return (string) action page view
+	 *
+	 * @return string action page view
 	 */
 	public function getPageActionView(){
 		return $this -> getDataOption('action','view');
@@ -510,8 +535,9 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the url to the add action page
-	 * @param $p (mixed) optional primary key value
-	 * @return (string) url
+	 *
+	 * @param mixed $p optional primary key value
+	 * @return string url
 	 */
 	public function getUrlPageAdd($p = null){
 		$r = $this -> getUrlMainPage().
@@ -525,8 +551,9 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the url to the edit action page
-	 * @param $p (mixed) primary key value
-	 * @return (string) url
+	 *
+	 * @param mixed $p primary key value
+	 * @return string url
 	 */
 	public function getUrlPageEdit($p = ''){
 		return $this -> getUrlMainPage().
@@ -536,8 +563,9 @@ class ItemController extends Controller{
 
 	/**
 	 * Get the url to the view action page
-	 * @param $p (mixed) primary key value
-	 * @return (string) url
+	 *
+	 * @param mixed $p primary key value
+	 * @return string url
 	 */
 	public function getUrlPageView($p = ''){
 		return $this -> getUrlMainPage().
@@ -548,8 +576,9 @@ class ItemController extends Controller{
 	
 	/**
 	 * Get the url to the list action page
-	 * @param $oField (string) order by field 
-	 * @return (string) url
+	 *
+	 * @param string $oField order by field 
+	 * @return string url
 	 */
 	public function getUrlPageList($oField = null){
 		$r = $this -> getUrlMainPage();
@@ -562,8 +591,9 @@ class ItemController extends Controller{
 
 	/**
 	 * Get param order
-	 * @param $f (string) name field
-	 * @return (string) param
+	 *
+	 * @param string $f name field
+	 * @return string param
 	 */
 	public function getParamOrder($f){
 		return $this -> model -> orderByField == $f && $this -> model -> orderDirection !== 'desc' 
@@ -573,8 +603,9 @@ class ItemController extends Controller{
 
 	/**
 	 * Get status order of field
-	 * @param $f (string) name field
-	 * @return (string) param
+	 *
+	 * @param string $f name field
+	 * @return string param
 	 */
 	public function getOrderField($f){
 		return $this -> model -> orderByField -> name == $f ? $this -> model -> orderDirection : '';
@@ -582,7 +613,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get all fields
-	 * @return (array) array of fields
+	 *
+	 * @return array array of fields
 	 */
 	public function getFieldsList(){
 		$r = [];
@@ -596,7 +628,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get all fields 
-	 * @return (array) array of fields
+	 *
+	 * @return array array of fields
 	 */
 	public function getFieldsAdd(){
 		$r = [];
@@ -610,7 +643,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get all fields 
-	 * @return (array) array of fields
+	 *
+	 * @return array array of fields
 	 */
 	public function getFieldsEdit(){
 		$r = [];
@@ -626,7 +660,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get all fields 
-	 * @return (array) array of fields
+	 *
+	 * @return array array of fields
 	 */
 	public function getFieldsView(){
 		$r = [];
@@ -640,7 +675,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Get all fields 
-	 * @return (array) array of fields
+	 *
+	 * @return array array of fields
 	 */
 	public function getFieldsSearch(){
 		$r = [];
@@ -654,8 +690,9 @@ class ItemController extends Controller{
 
 	/**
 	 * Get all fields 
-	 * @param $n (string) name of field
-	 * @return (array) array of searched word
+	 *
+	 * @param string $n name of field
+	 * @return array array of searched word
 	 */
 	public function getSearched($n){
 		return isset($this -> model -> searched[$n]) ? $this -> model -> searched[$n] : [];
@@ -663,7 +700,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Return the primary field
-	 * @return (object) primary field
+	 *
+	 * @return object primary field
 	 */
 	public function getFieldPrimary(){
 		return $this -> model -> primary;
@@ -671,7 +709,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Return the label field
-	 * @return (object) label field
+	 *
+	 * @return object label field
 	 */
 	public function getFieldLabel(){
 		return $this -> model -> fieldLabel;
@@ -679,7 +718,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Update the path
-	 * @param $v (string) name of view
+	 *
+	 * @param string $v name of view
 	 */
 	public function updatePathTemplate($v){
 		$this -> setPathTemplate($v,ModuleManager::getPathModule('Item')."/bin/{$v}/templates/".TemplateEngine::getName()."/");
@@ -687,7 +727,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Is operation add enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getAdd(){
 		return $this -> model -> add;
@@ -695,7 +736,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Is operation edit enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getEdit(){
 		return $this -> model -> edit;
@@ -703,7 +745,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Is operation copy enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getCopy(){
 		return $this -> model -> copy;
@@ -711,7 +754,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Type of search operation
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getSearch(){
 		return $this -> model -> search;
@@ -719,7 +763,8 @@ class ItemController extends Controller{
 
 	/**
 	 * Is operation delete enabled
-	 * @return (bool) result
+	 *
+	 * @return bool result
 	 */
 	public function getDelete(){
 		return $this -> model -> delete;

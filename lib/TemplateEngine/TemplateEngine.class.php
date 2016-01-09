@@ -175,7 +175,7 @@ class TemplateEngine{
 				self::$compiled[] = $b;
 
 				# Check source of file
-				$t = file_exists($k) && file_exists($fileCompiled) && filemtime($k) > filemtime($fileCompiled);
+				$t = !file_exists($fileCompiled) || (file_exists($k) && file_exists($fileCompiled) && filemtime($k) > filemtime($fileCompiled));
 
 				if($t){
 					

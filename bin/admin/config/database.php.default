@@ -6,7 +6,7 @@ return [
 	'username' => 'root',
 	'password' => '',
 	'charset'  => 'utf8',
-	'rollback' => 5,
+	'restore' => 5,
 	'alter_schema' => true,
 ];
 ?>

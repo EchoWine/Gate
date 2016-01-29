@@ -1,0 +1,44 @@
+<div id='content'>
+	
+	{{include .main.cat}}
+	
+	<div class='content-header'>
+
+		{{include .main.title {$actionPage = 'view'}}}
+
+		
+		{{include .button-backToList}}
+
+		<form method='POST' action='{{$item -> getUrlPageList()}}'>
+			<input type='hidden' name="{{$item -> getDataName('p_primary')}}" value='{{$item -> results -> record[$item -> getFieldPrimary() -> getColumnName()]}}'>
+			<button type='submit' class='button' name='{{$item -> getDataName('action')}}' value='{{$item -> getDataOption('action','delete_s')}}'>
+				<div class='button a danger'>
+					<i class='fa fa-trash'></i> <span class='button-label'>Delete</span>
+				</div>
+			</button>
+		</form>
+	</div>
+
+	{{include .response}}
+	<div class='data-form'>
+		<!--
+		<fieldset>
+			<legend> Generale </legend>
+
+		-->
+
+			{{for $item -> getFieldsView() as $field}}
+				<div class='field'>
+					<label>{{$field -> label}}: </label>
+					<div class='data value'>
+						{{$field -> printValue($item -> results -> record)}}
+					</div>
+				</div>
+			{{endfor}}
+
+		<!--
+		</fieldset>
+
+		-->
+	</div>
+</div>

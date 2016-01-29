@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+{{include admin/head}}
+{{include .admin/style}}
+
+<body>
+	<div id='container-auth'>
+
+		<h1>Sign in</h1>
+		<br>
+		<form method='POST'>
+			<div>
+				<div>
+					<div>
+						<input type='text' name='{{$auth -> getData('user') -> name}}' value='{{$auth -> getData('user') -> value}}' class='input d' placeholder='{{$auth -> getData('user') -> label}}' required autofocus autocomplete='off'>
+					</div>
+					<div>
+						<input type='password' name='{{$auth -> getData('pass') -> name}}' class='input d' placeholder='{{$auth -> getData('pass') -> label}}' required autocomplete='off'>
+					</div>
+				
+				</div>
+				<div id='bar-sub'>
+					<input type='submit' name='{{$auth -> getData('login') -> name}}' value='{{$auth -> getData('login') -> label}}' class='button b'>
+						
+					<input type='checkbox' id='rememberMe' name='{{$auth -> getData('remember') -> name}}' class='check b'>
+					<label for='rememberMe' class='checkbox'></label>
+					<label for='rememberMe'>{{$auth -> getData('remember') -> label}}</label>
+
+				</div>
+			</div>
+		</form>
+
+	</div>
+
+</body>
+</html>

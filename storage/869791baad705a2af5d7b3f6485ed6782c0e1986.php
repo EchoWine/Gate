@@ -1,0 +1,1 @@
+<link rel='stylesheet' href='<?php echo path_auth; ?>/public/assets/css/main.css'>

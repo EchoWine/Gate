@@ -10,29 +10,19 @@ define('TMPL_CACHE',-1);
 class TemplateEngine{
 
 	/**
-	 * List of all files loaded
-	 */
-	public static $files;
-
-	/**
 	 * Path base to templates
 	 */
 	public static $basePath;
 
 	/**
-	 * List of all templates found
+	 * Path of views
 	 */
-	public static $list;
+	public static $pathSource;
 
 	/**
-	 * Name of the current template loaded
+	 * Path of storage
 	 */
-	public static $name;
-
-	/**
-	 * Path of the current template loaded
-	 */
-	public static $path;
+	public static $pathStorage;
 
 	/**
 	 * Log
@@ -40,24 +30,14 @@ class TemplateEngine{
 	public static $log;
 
 	/**
-	 * Name dir of compiled files 
-	 */
-	public static $dirCompiled = 'app';
-
-	/**
 	 * List of all error
 	 */
-	public static $error = array();
+	public static $error = [];
 
 	/**
 	 * List of all variables alredy checked
 	 */
-	public static $checked = array();
-
-	/**
-	 * List of all overwrited files
-	 */
-	public static $overwrite;
+	public static $checked = [];
 
 	/**
 	 * List of all included files
@@ -65,138 +45,192 @@ class TemplateEngine{
 	public static $include;
 
 	/**
-	 * List of all aggregated files
+	 * List of all joined files
 	 */
-	public static $aggregate;
+	public static $join;
 
 	/**
 	 * List of all file compiled
 	 */
-	public static $compiled = array();
+	public static $compiled = [];
 
 	/**
 	 * Initialization
 	 *
-	 * @param string $b directory name where templates is installed
+	 * @param string $storage path where views elaborated will be located
 	 */
-	public static function ini($b){
+	public static function ini($storage){
 
-		$t = dirname(debug_backtrace()[0]['file']);
-
-		self::$basePath = $t."/".$b;
-
-		foreach(glob(self::$basePath.'/*') as $k){
-			self::$list[basename($k)] = $k;
-		}
-
-		self::$files = new stdClass();
-		self::$files -> html = array();
-		self::$files -> style = array();
-		self::$files -> script = array();
-
+		self::$pathStorage = $storage;
 	}
 
 	/**
-	 * Get name of current template
+	 * Set include
 	 *
-	 * @param string current template
+	 * @param string $p name
+	 * @param string $f path complete
 	 */
-	public static function getName(){
-		return self::$name;
+	public static function setInclude($p,$f,$sub = ''){
+		self::$include[self::parsePath($p)] = self::getPathSourceFile(self::parsePath($f),$sub).".php";
+	}
+
+
+	/**
+	 * Parse the path
+	 *
+	 * @param string $path
+	 * @param string path 
+	 */
+	public static function parsePath($path){
+
+		if($path[0] !== "/")
+			$path = "/".$path;
+
+		return $path;
 	}
 
 	/**
-	 * Overwrite a basic template page
+	 * Join a page to another
 	 *
-	 * @param string $nt name of page that will be overwritten
-	 * @param string $nf name page that will overwrite
-	 */
-	public static function overwrite($nt,$nf){
-
-		self::setInclude($nt,$nf);
-	}
-
-	/**
-	 * Aggregate a page to another
-	 *
-	 * @param string $nt name of page that will be aggregated
-	 * @param string $nf name page that will aggregated
+	 * @param string $nt name of page that will be joined
+	 * @param string $nf name page that will joined
 	 * @param int $pos position of aggregation
 	 */
-	public static function aggregate($nt,$nf,$pos = null){
-		if($pos == null || isset(self::$aggregate[$nt][$pos]))
-			self::$aggregate[$nt][] = $nf;
+	public static function addJoin($nt,$nf,$sub = '',$pos = null){
+
+		$nf = self::getPathSourceFile(self::parsePath($nf),$sub);
+		$nt = self::parsePath($nt);
+
+		if($pos == null || isset(self::$join[$nt][$pos]))
+			self::$join[$nt][] = $nf;
 		else
-			self::$aggregate[$nt][$pos] = $nf;
+			self::$join[$nt][$pos] = $nf;
+	}
+
+	/**
+	 * Get include
+	 *
+	 * @param string $p file name
+	 * @return array array of files to be included
+	 */
+	public static function getInclude($p){
+
+
+		$p = self::parsePath($p);
+
+		$c[] = isset(self::$include[$p]) ? self::$include[$p] : self::getPathSourceFileByFull($p).".php";
+
+
+		if(!empty(self::$join[$p])){
+			$t = self::$join[$p];
+			ksort($t);
+			foreach((array)$t as $n => $k)
+				$c[] = $k.".php";
+		}
+
+	
+		return $c;
 
 	}
 
 	/**
-	 * Load a template
+	 * Get all file located in a dir
 	 *
-	 * @param string $n name of template
+	 * @param string $path path where are located all views
 	 */
-	public static function load($n){
-		if(isset(self::$list[$n])){
-			self::$name = $n;
-			self::$path = self::$list[self::$name]."/";
+	public static function getAllViews($path){
+		$r = [];
+		foreach(glob($path."/*") as $k){
+			if(is_dir($k))
+				$r = array_merge($r,self::getAllViews($k));
+			else
+				$r[] = $k;
 		}
+		return $r;
+	}
 
-		$GLOBALS['style'] = TemplateEngine::loadStyles();
-		$GLOBALS['script'] = TemplateEngine::loadScripts();
-		$GLOBALS['path'] = "templates/{$n}/";
+	/**
+	 * Get the path of a view file using the $source as root
+	 *
+	 * @param string $source path source
+	 * @param string $file path file
+	 * @return string 
+	 */
+	public static function getPathViewBySource($source,$file){
+		return str_replace($source,'',pathinfo($file)['dirname']);
+	}
 
+	/**
+	 * Get path source file
+	 *
+	 * @param string $path path file
+	 * @param string $sub path file
+	 * @return string full path
+	 */
+	public static function getPathSourceFile($path,$sub = ''){
+		return self::getPathSourceFileByFull(self::getNameSub($path,$sub));
+	}
+
+	/**
+	 * Get path source file by full path
+	 *
+	 * @param string $path path file
+	 * @return string full path
+	 */
+	public static function getPathSourceFileByFull($path){
+		return sha1($path);
+	}
+
+	/**
+	 * Get name file with sub
+	 *
+	 * @param string $path path file
+	 * @param string $sub path file
+	 * @return string full path
+	 */
+	public static function getNameSub($path,$sub = ''){
+		return $sub !== '' ? "/".$sub."".$path : $path;
 	}
 
 	/**
 	 * Compile all the page
 	 *
 	 * @param string $pathSource path where is located file .html to compile
-	 * @param string $subClass name of "class of files"
+	 * @param string $subPath relative path where store all files
 	 */
-	public static function compile($pathSource = '',$subClass = ''){
+	public static function compile($pathSource,$subPath = ''){
 
-		if(empty($pathSource))
-			$pathSource = self::$path;
+		$pathStorage = self::$pathStorage;
 
-		$pathCompiled = self::$path.self::$dirCompiled;
+		if(!file_exists(dirname($pathStorage)))
+			mkdir(dirname($pathStorage), 0777, true);
 
-		if(!file_exists($pathCompiled))
-			mkdir($pathCompiled);
+		foreach(self::getAllViews($pathSource) as $k){
 
 
-		foreach(glob($pathSource.'*.html') as $k){
+			/* Get dir path of file with root as $pathSource */
 
-			if(!is_dir($k)){
 
-				$b = basename($k,".html");
-				if(!empty($subClass))$b = $subClass.".".$b;
+			$p = self::getPathViewBySource($pathSource,$k);
 
-				$fileCompiled = $pathCompiled."/".$b.".php";
 
-				if(in_array($b,self::$compiled)){
-					# some error, already compiled, conflicts etc..
-				}
+			$b = self::getPathSourceFile($p."/".basename($k,".html"),$subPath);
 
-				self::$compiled[] = $b;
+			$pathStorageFile = $pathStorage."/".$b.".php";
 
-				# Check source of file
-				$t = !file_exists($fileCompiled) || (file_exists($k) && file_exists($fileCompiled) && filemtime($k) > filemtime($fileCompiled));
+			//self::$include[] = $b;
 
-				if($t){
-					
+			# Check source of file
+			$t = !file_exists($pathStorageFile) || (file_exists($k) && file_exists($pathStorageFile) && filemtime($k) > filemtime($pathStorageFile));
 
-					if(file_exists($k)){
-						$content = file_get_contents($k);
-						$content = self::preCompile($k,$content,$subClass);
-						$c = self::translate($k,$content);
-					}else{
-						# some error
-					}
-					
+			if(true){
+				
+				$content = file_get_contents($k);
+				$content = self::preCompile($k,$content,$subPath,$p);
+				$content = self::translate($k,$content);
+				
 
-					file_put_contents($fileCompiled,$c);
-				}
+				file_put_contents($pathStorageFile,$content);
 			}
 		}
 
@@ -211,14 +245,54 @@ class TemplateEngine{
 	 *
 	 * @param string $f file name
 	 * @param string $c content of the page
-	 * @param string $subClass name of "class of files"
+	 * @param string $subPath name of "class of files"
 	 */
-	private static function preCompile($f,$c,$subClass = ''){
+	private static function preCompile($f,$c,$subPath = '',$relativePath = ''){
 
 
+		# Contains fun/var
+
+			#$c = preg_replace('/{{_include ([^\}]*)}}/iU','{{include ".$1."}}',$c);
+			#print_r($c);
+
+
+
+		# In folder
+
+		if(!empty($relativePath)){
+
+			preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
+
+			foreach($r[1] as $n => $k){
+
+				if($relativePath[0] == '/')
+					$relativePath = substr($relativePath,1);
+				
+				$fc = '';
+
+				if($k[0] == '.'){
+					$k = substr($k,1);
+					$fc = '.';
+				}
+
+				if($k[0] != '/'){
+
+					$c = str_replace($r[0][$n],"{{include $fc"."$relativePath/".$k."}}",$c);
+
+				}else{
+
+					$k = substr($k,1);
+
+					$c = str_replace($r[0][$n],"{{include $fc"."".$k."}}",$c);
+
+				}
+
+			}
+
+		}
 
 		# Variable scope include
-		preg_match_all('/{{include ([^\}]*)}}}/iU',$c,$r);
+		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
 		foreach($r[1] as $n => $k){
 
 			$k = preg_replace("/[\t\n\r]/iU","",$k);
@@ -226,20 +300,17 @@ class TemplateEngine{
 			if(!empty($r1[2][0])){
 				$t = $r1[2][0];
 				$t = "<?php ".str_replace(",",";",$r1[2][0])."; ?>";
-				$c = str_replace($r[0][$n],$t."{{include ".$r1[1][0]."}}",$c);
+				$c = str_replace($r[0][$n],$t."{{include ".$r1[1][0]."}",$c);
 			}
 		}
 
 
-		$b = empty($subClass) ? basename($f,".html") : $subClass.".".basename($f,".html");
-
-		if(!empty($subClass)){
+		if(!empty($subPath)){
 
 			# Include sub Class
 			preg_match_all('/{{include \.([^\}]*)}}/iU',$c,$r);
 			foreach($r[0] as $n => $k){
-
-				$c = str_replace($k,"{{include ".$subClass.".".$r[1][$n]."}}",$c);
+				$c = str_replace($k,"{{include ".self::getNameSub("/".$r[1][$n],$subPath)."}}",$c);
 				
 			}
 		}
@@ -249,14 +320,17 @@ class TemplateEngine{
 		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
 		foreach($r[1] as $n => $k){
 
+			/*
 			if(empty(self::$include[$k]))
 				TemplateEngine::setInclude($k,$k);
-
-			$h = $k[0] == "$" ? '' : '"';
+			*/
 			
-			$c = str_replace($r[0][$n],'<?php foreach(TemplateEngine::getInclude('.$h.$k.$h.') as $k) include $k; ?>',$c);
+
+			
+			$c = str_replace($r[0][$n],'<?php foreach(TemplateEngine::getInclude("'.$k.'") as $k) include $k; ?>',$c);
 
 		}
+
 
 		# Switch
 		# Remove space between switch and first case
@@ -264,46 +338,6 @@ class TemplateEngine{
 		$c = preg_replace('/{{\/(case)}}([^\{]*){{(case)/iU','{{/case}}'."\n".'{{case',$c);
 		$c = preg_replace('/{{\/(case)}}([^\{]*){{\/switch}}/iU','{{/case}}'."\n".'{{/switch}}',$c);
 		return $c;
-	}
-
-	/**
-	 * Set include
-	 *
-	 * @param string $p name
-	 * @param string $f path complete
-	 */
-	public static function setInclude($p,$f){
-		self::$include[$p] = self::getNameInclude($f).".php";
-	}
-
-	/**
-	 * Get include
-	 *
-	 * @param string $p file name
-	 * @return array array of files to be included
-	 */
-	public static function getInclude($p){
-
-		$c[] = isset(self::$include[$p]) ? self::$include[$p] : $p.".php";
-
-		if(!empty(self::$aggregate[$p])){
-			$t = self::$aggregate[$p];
-			ksort($t);
-			foreach((array)$t as $n => $k)
-				$c[] = $k.".php";
-		}
-
-	
-		return $c;
-
-	}
-
-	public static function parseSubClass($n){
-		return strtolower($n);
-	}
-
-	public static function getNameInclude($n){
-		return strtolower($n);
 	}
 
 
@@ -440,212 +474,7 @@ class TemplateEngine{
 	 * @return string page
 	 */
 	public static function html($page){
-
-		return self::$path.''.self::$dirCompiled.'/'.$page.'.php';
-	}
-
-	/**
-	 * Load all styles
-	 */
-	public static function loadStyles(){
-		return self::loadResources('style','css');
-	}
-
-	/**
-	 * Load all scripts
-	 */
-	public static function loadScripts(){
-		return self::loadResources('script','js');
-	}
-
-	/**
-	 * Load all scripts
-	 *
-	 * @param string $folder name of folder
-	 * @param string $ext type of file
-	 */
-	public static function loadResources($folder,$ext){
-
-		$r = array();
-		$path = self::$basePath.'/'.self::$name.'/'.$folder.'/src';
-		$name = self::$name;
-
-		foreach(glob($path.'/*') as $k){
-			if(!is_dir($k))
-				self::$files -> style[] = basename($k);
-		}
-
-
-		if(TMPL_CACHE >= 0){
-			$r[] = self::loadResource(
-				$name,
-				$folder.'/cache/'.
-				basename(self::cacheSystem($path,$ext,self::$files -> style))
-			);
-
-		}else{
-			foreach(self::$files -> style as $k)
-				$r[] = self::loadResource($name,$folder.'/src/'.basename($k));
-		}
-
-
-		return implode($r,"");
-	}
-
-	/**
-	 * Load a resource file
-	 *
-	 * @param string $name name of template
-	 * @param string $page path file
-	 */
-	public static function loadResource($name,$page){
-		$ext = pathinfo($page, PATHINFO_EXTENSION);
-		switch($ext){
-			case 'css':
-				return "<link rel='stylesheet' href='templates/{$name}/{$page}'>";
-			break;
-
-			case 'js':
-				return "<script src='templates/{$name}/{$page}'></script>";
-			break;
-		}
-		
-	}
-
-	/**
-	 * Minify CSS code
-	 *
-	 * @param string $s css code
-	 * @return string css minified
-	 */
-	public static function minifyCSS($s){
-		
-
-		$r1 = "
-			(?sx)
-			  (
-				\"(?:\\[^\"\\]++|\\.)*+\"
-			  | '(?:\\[^'\\]++|\\.)*+'
-			  )
-			|
-			  /\* (?> .*? \*/ )
-		";
-
-		$r2 = "
-			(?six)
-			  (
-				\"(?:\\[^\"\\]++|\\.)*+\"
-			  | '(?:\\[^'\\]++|\\.)*+'
-			  )
-			|
-			  \s*+ ; \s*+ ( } ) \s*+
-			|
-			  \s*+ ( [*$~^|]?+= | [{};,>~+-] | !important\b ) \s*+
-			|
-			  ( [[(:] ) \s++
-			|
-			  \s++ ( [])] )
-			|
-			  \s++ ( : ) \s*+
-			  (?!
-				(?>
-				  [^{}\"']++
-				| \"(?:\\[^\"\\]++|\\.)*+\"
-				| '(?:\\[^'\\]++|\\.)*+' 
-				)*+
-				{
-			  )
-			|
-			  ^ \s++ | \s++ \z
-			|
-			  (\s)\s+
-		";
-
-		$s = preg_replace("%$r1%", '$1', $s);
-	   	$s = preg_replace("%$r2%", '$1$2$3$4$5$6$7', $s);
-	   	return $s;
-	}
-
-
-	/**
-	 * Minify JS code
-	 *
-	 * @param string $s js code
-	 * @return string js minified
-	 */
-	public static function minifyJS($s){
-	   	return $s;
-	}
-
-	/**
-	 * Manage cached file
-	 *
-	 * @param string $src base path
-	 * @param string $ext type of file (e.g. css/js)
-	 * @param array $files array of flie to include
-	 * @return string final path of file cache
-	 */
-	public static function cacheSystem($src,$ext,$files){
-
-		$base = dirname($src)."/cache";
-		$cacheTXT = $base."/.cache.txt";
-		$nameCache = "/.cache-s";
-
-
-		// Creo la lista dei file cache nel caso in cui non esita
-		if(!file_exists($cacheTXT)){
-			if(!file_exists(dirname($cacheTXT)))
-				mkdir(dirname($cacheTXT), 0777, true);
-			
-			$fp = fopen($cacheTXT,"w");
-			fclose($fp);
-			file_put_contents($cacheTXT,json_encode(array()));
-		}
-			
-		$cache = json_decode(file_get_contents($cacheTXT),true);
-			
-		// Controllo se il file cache esiste già
-		if(in_array(json_encode($files),$cache)){
-			$p = array_search(json_encode($files),$cache);
-			$path = $base."{$nameCache}{$p}.{$ext}";
-			if(file_exists($path) && time() - filemtime($path) < TMPL_CACHE)
-				return $path;
-		}
-			
-		// Leggo tutti i file  e li metto in una stringa
-		$s = '';
-		foreach($files as $k){
-			if(file_exists($src."/".$k))
-				$s .= file_get_contents($src."/".$k);
-		}
-
-		// Calcolo il nome nel caso in cui non esista
-		if(!isset($p)){
-			do{
-				$p = substr(md5(microtime()),0,8);
-			}while(isset($cache[$p]));
-			$path = $base."/{$nameCache}{$p}.{$ext}";
-		}
-
-		// Creo il file nel caso in cui non esista
-		if(!file_exists($path)){
-			$fp = fopen($path,"w");
-			fclose($fp);
-		}
-
-		// Aggiorno il contenuto del file
-		switch($ext){
-			case "css": file_put_contents($path,self::minifyCSS($s)); break;
-			case "js": file_put_contents($path,self::minifyJS($s)); break;
-		}
-		
-
-		// Aggiorno la lista di tutti i file cache
-		$cache[$p] = json_encode($files);
-		file_put_contents($cacheTXT,json_encode($cache));
-
-		// Ritorno il collegamento html con il file cache
-		return $path;
+		return self::$pathStorage."/".self::getInclude($page)[0];
 	}
 
 }

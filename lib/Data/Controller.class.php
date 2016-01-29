@@ -25,18 +25,6 @@ class Controller{
 	 * Initialize
 	 */
 	public function ini(){}
-
-	/**
-	 * Update the path
-	 *
-	 * @param string $v name of view
-	 */
-	public function updatePathTemplate($v){
-
-		# Get name of module with path
-		$n = basename(dirname_r(debug_backtrace()[0]['file'],3));
-		$this -> setPathTemplate($v,ModuleManager::getPathModule($n)."/bin/{$v}/templates/".TemplateEngine::getName()."/");
-	}
 	
 	/**
 	 * Update the data

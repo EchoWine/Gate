@@ -84,7 +84,7 @@ class AuthController extends Controller{
 		return [
 
 			# User: Username or Email (depends on config)
-			'user' => new stdDataPost($c['post_user'],null,'User'),
+			'user' => new stdDataPost($c['post_user'],null,'Username or E-mail'),
 
 			# Password
 			'pass' => new stdDataPost($c['post_pass'],null,'Password'),

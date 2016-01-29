@@ -23,20 +23,18 @@ class Module{
 
 		if($sub === null){
 			$sub = basename(dirname(debug_backtrace()[0]['file']));
-			$sub = TemplateEngine::parseSubClass($sub);
 		}
 
-		TemplateEngine::overwrite($n,$sub.".".$c);
+		TemplateEngine::setInclude($n,$c,$sub);
 	}
 
 	public static function TemplateAggregate($n,$c,$pos,$sub = null){
 
 		if($sub === null){
 			$sub = basename(dirname(debug_backtrace()[0]['file']));
-			$sub = TemplateEngine::parseSubClass($sub);
 		}
 
-		TemplateEngine::aggregate($n,$sub.".".$c,$pos);
+		TemplateEngine::addJoin($n,$c,$sub,$pos);
 	}
 
 

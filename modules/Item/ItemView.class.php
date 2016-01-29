@@ -2,6 +2,16 @@
 
 class ItemView extends View{
 
+	public static $currentObj;
+
+	public static function setCurrentObj($o){
+		self::$currentObj = $o;
+	}
+
+	public static function getCurrentObj(){
+		return self::$currentObj;
+	}
+
 	/** 
 	 * Initialization
 	 */
@@ -15,129 +25,124 @@ class ItemView extends View{
 	 * @param int $pos position in navigation
 	 */
 	public function setNav($pos){
-		Module::TemplateAggregate('nav','nav',$pos,$this -> model -> name);
+		Module::TemplateAggregate('admin/nav','admin/nav',$pos,$this -> model -> name);
 	}
 
 	/** 
 	 * Set title
 	 */
 	public function setTitle(){
-		Module::TemplateOverwrite('item.main.title','main.title',$this -> model -> name);
+		Module::TemplateOverwrite('admin/item.main.title','admin/main.title',$this -> model -> name);
 	}
 
 	/** 
 	 * Set cat
 	 */
 	public function setCat(){
-		Module::TemplateOverwrite('item.main.cat','main.cat',$this -> model -> name);
+		Module::TemplateOverwrite('admin/item.main.cat','admin/main.cat',$this -> model -> name);
 	}
 
 	public function setStyle(){
-		Module::TemplateAggregate('style','style',1);
+		Module::TemplateAggregate('admin/style','admin/style',1);
 	}
 
 	public function setScript(){
-		Module::TemplateAggregate('script','script',1);
+		Module::TemplateAggregate('admin/script','admin/script',1);
 	}
 
 	public function setPageList(){
-		Module::TemplateOverwrite('content','main-list');
+		Module::TemplateOverwrite('admin/content','admin/main-list');
 	}
 
 	public function setPageAdd(){
-		Module::TemplateOverwrite('content','main-add');
+		Module::TemplateOverwrite('admin/content','admin/main-add');
 	}
 
 	public function setPageEdit(){
-		Module::TemplateOverwrite('content','main-edit');
+		Module::TemplateOverwrite('admin/content','admin/main-edit');
 	}
 
 	public function setPageView(){
-		Module::TemplateOverwrite('content','main-view');
+		Module::TemplateOverwrite('admin/content','admin/main-view');
 	}
 
 	public function setPageEmpty(){
-		Module::TemplateOverwrite('content','main-empty');
+		Module::TemplateOverwrite('admin/content','admin/main-empty');
 	}
 
-	public function setPage($page){
+	public function setPage($action = null,$primary = null){
 
-		if($page == $this -> controller -> nameURL){
+		$this -> setStyle();
+		$this -> setScript();
 
-			$this -> setStyle();
-			$this -> setScript();
+		$this -> setCat();
+		$this -> setTitle();
 
-			$this -> setCat();
-			$this -> setTitle();
+		# Check all information (data)
+		$this -> controller -> check();
 
-			# Check all information (data)
-			$this -> controller -> check();
+		switch($action){
 
-			switch($this -> controller -> getPageActionValue()){
+			case $this -> controller -> getPageActionAdd():
 
-				case $this -> controller -> getPageActionAdd():
-
-					# Get results
-					$result = $this -> controller -> getResultByPrimary();
+				# Get results
+				$result = $this -> controller -> getResultByPrimary($primary);
 
 
-					if($this -> controller -> getData('g_primary') -> value !== null && empty($item -> results -> record)){
+				if($primary !== null && empty($item -> results -> record)){
 
-						# Set current page to Empty
-						$this -> setPageEmpty();
+					# Set current page to Empty
+					$this -> setPageEmpty();
 
-					}else{
-						# Set current page to Add
-						$this -> setPageAdd();
-					}
+				}else{
+					# Set current page to Add
+					$this -> setPageAdd();
+				}
 
-				break;
+			break;
 
-				case $this -> controller -> getPageActionEdit():
+			case $this -> controller -> getPageActionEdit():
 
-					# Get results
-					$result = $this -> controller -> getResultByPrimary();
-					
-					if(empty($this -> controller -> results -> record)){
+				# Get results
+				$result = $this -> controller -> getResultByPrimary($primary);
+				
+				if(empty($this -> controller -> results -> record)){
 
-						# Set current page to Empty
-						$this -> setPageEmpty();
-					}else{
+					# Set current page to Empty
+					$this -> setPageEmpty();
+				}else{
 
-						# Set current page to Edit
-						$this -> setPageEdit();
-					}
-				break;
+					# Set current page to Edit
+					$this -> setPageEdit();
+				}
+			break;
 
-				case $this -> controller -> getPageActionView():
+			case $this -> controller -> getPageActionView():
 
-					# Get results
-					$result = $this -> controller -> getResultByPrimary();
-					
-					if(empty($this -> controller -> results -> record)){
+				# Get results
+				$result = $this -> controller -> getResultByPrimary($primary);
+				
+				if(empty($this -> controller -> results -> record)){
 
-						# Set current page to Empty
-						$this -> setPageEmpty();
-					}else{
+					# Set current page to Empty
+					$this -> setPageEmpty();
+				}else{
 
-						# Set current page to Edit
-						$this -> setPageView();
-					}
-				break;
+					# Set current page to Edit
+					$this -> setPageView();
+				}
+			break;
 
-				default:
-					# Get results for list
-					$results = $this -> controller -> getResults();
+			default:
+				# Get results for list
+				$results = $this -> controller -> getResults();
 
-					# Set current page to List
-					$this -> setPageList();
-				break;
-			}
-
-			return true;
+				# Set current page to List
+				$this -> setPageList();
+			break;
 		}
 
-		return false;
+		return true;
 	}
 
 }

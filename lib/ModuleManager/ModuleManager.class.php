@@ -57,14 +57,14 @@ class ModuleManager{
 	/**
 	 * Call all template methods in module
 	 *
-	 * @param string $v name of view
+	 * @return object info about module
 	 */
-	public static function loadTemplate($v){
+	public static function loadTemplate(){
 		$r = array();
 		foreach(self::$list as $n => $k){
 			$r[] = (object)[
 				'name' => $n,
-				'app' => $k."/bin/{$v}/app.php",
+				'app' => $k."/app.php",
 			];
 		}
 		return $r;

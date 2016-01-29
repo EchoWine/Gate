@@ -7,7 +7,7 @@ class Model extends \Item{
 	/**
 	 * Name
 	 */
-	public $name = 'credential';
+	public $name = 'Credential';
 		
 	/**
 	 * Label

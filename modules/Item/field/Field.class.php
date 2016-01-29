@@ -30,7 +30,7 @@ class Field{
 	/**
 	 * Name of template page
 	 */
-	public static $template = 'item.field';
+	public static $template = 'field';
 
 	/**
 	 * Is operation add enabled
@@ -290,7 +290,7 @@ class Field{
 	 * @return string path
 	 */
 	public function getPathInputData(){
-		return self::$template.'.Field';
+		return self::$template.'/Field';
 	}
 
 	/**

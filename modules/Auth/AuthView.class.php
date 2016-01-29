@@ -8,7 +8,7 @@ class AuthView extends View{
 	public function setLogin(){
 
 		if(!$this -> controller -> logged)
-			Module::TemplateOverwrite('main','login');
+			Module::TemplateOverwrite('admin','login');
 		
 	}
 
@@ -16,7 +16,7 @@ class AuthView extends View{
 	 * Set the header
 	 */
 	public function setHeader(){
-		Module::TemplateAggregate('header-nav','header-nav',30);
+		Module::TemplateAggregate('admin/header-nav','admin/header-nav',30);
 	}
 }
 

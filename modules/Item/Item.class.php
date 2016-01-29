@@ -118,6 +118,13 @@ class Item extends Module{
 	public static function getObj($n){
 		return self::$obj[$n];
 	}
+
+	/**
+	 * Get all obj
+	 */
+	public static function getAllObjName(){
+		return array_keys(self::$obj);
+	}
 	
 	/**
 	 * Initialize

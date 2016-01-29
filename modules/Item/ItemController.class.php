@@ -356,22 +356,21 @@ class ItemController extends Controller{
 	/**
 	 * Get result by primary
 	 *
+	 * @param mixed $primary
 	 * @return object results
 	 */
-	public function getResultByPrimary(){
+	public function getResultByPrimary($primary = 0){
 
 		# Initialization
 		$r = $this -> results;
 
 		$r -> record = [];
 
-		$v = $this -> getData('g_primary') -> value;
-
 		# Check if exists
-		if($v !== null && $this -> checkExists($v)){
+		if($this -> checkExists($primary)){
 
 			# Get records
-			$r -> record = $this -> model -> getResultByPrimary($v);
+			$r -> record = $this -> model -> getResultByPrimary($primary);
 		}
 
 		$this -> results = $r;
@@ -493,7 +492,7 @@ class ItemController extends Controller{
 	 * @return string url
 	 */
 	public function getUrlMainPage(){
-		return '?'.PAGE.'='.$this -> nameURL;
+		return Route::is('item',$this -> nameURL);
 	}
 
 	/**
@@ -540,13 +539,7 @@ class ItemController extends Controller{
 	 * @return string url
 	 */
 	public function getUrlPageAdd($p = null){
-		$r = $this -> getUrlMainPage().
-		'&amp;'.$this -> getDataName('page_action').'='.$this -> getPageActionAdd();
-
-		if($p !== null)
-			$r .= '&amp;'.Item::$cfg['g_primary'].'='.$p;
-
-		return $r;
+		return Route::is('item',$this -> nameURL,$this -> getPageActionAdd(),$p);
 	}
 
 	/**
@@ -556,9 +549,7 @@ class ItemController extends Controller{
 	 * @return string url
 	 */
 	public function getUrlPageEdit($p = ''){
-		return $this -> getUrlMainPage().
-		'&amp;'.$this -> getDataName('page_action').'='.$this -> getPageActionEdit().
-		'&amp;'.Item::$cfg['g_primary'].'='.$p;
+		return Route::is('item',$this -> nameURL,$this -> getPageActionEdit(),$p);
 	}
 
 	/**
@@ -568,9 +559,7 @@ class ItemController extends Controller{
 	 * @return string url
 	 */
 	public function getUrlPageView($p = ''){
-		return $this -> getUrlMainPage().
-		'&amp;'.$this -> getDataName('page_action').'='.$this -> getPageActionView().
-		'&amp;'.Item::$cfg['g_primary'].'='.$p;
+		return Route::is('item',$this -> nameURL,$this -> getPageActionView(),$p);
 	}
 	
 	
@@ -714,15 +703,6 @@ class ItemController extends Controller{
 	 */
 	public function getFieldLabel(){
 		return $this -> model -> fieldLabel;
-	}
-
-	/**
-	 * Update the path
-	 *
-	 * @param string $v name of view
-	 */
-	public function updatePathTemplate($v){
-		$this -> setPathTemplate($v,ModuleManager::getPathModule('Item')."/bin/{$v}/templates/".TemplateEngine::getName()."/");
 	}
 
 	/**

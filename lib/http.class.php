@@ -243,5 +243,23 @@ class http{
 	public static function removeSession($name){
 		unset($_SESSION[$name]);
 	}
+
+	/**
+	 * Get relative url
+	 * 
+	 * @return string relative url
+	 */
+	public static function getRelativeUrl(){
+		return preg_replace("/(\?|&).*/",'',str_replace(dirname($_SERVER['PHP_SELF']),'',$_SERVER['REQUEST_URI']));
+	}
+
+	/**
+	 * Get relative url
+	 * 
+	 * @return string relative url
+	 */
+	public static function getDirUrl(){
+		return dirname($_SERVER['PHP_SELF'])."/";
+	}
 }
 ?>

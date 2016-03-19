@@ -26,9 +26,11 @@ class Auth extends Module{
 		$col = $c['col'];
 		$table = $c['table'];
 
-		DB::table($table) -> column($col['uid']) -> type('bigint') -> alter();
-		DB::table($table) -> column($col['sid']) -> type('string') -> primary() -> index() -> alter();
-		DB::table($table) -> column($col['expire']) -> type('timestamp') -> alter();
+		DB::schema($table,function($table) use ($col){
+			$table -> bigint($col['uid']);
+			$table -> string($col['sid'],128) -> primary();
+			$table -> timestamp($col['expire']);
+		});
 	}
 
 	/**
@@ -40,10 +42,13 @@ class Auth extends Module{
 		$table = $c['table'];
 		$def = $c['default'];
 
-		DB::table($table) -> column($col['id']) -> type('id') -> alter();
-		DB::table($table) -> column($col['user']) -> type('string') -> alter();
-		DB::table($table) -> column($col['pass']) -> type('VARCHAR(128)') -> alter();
-		DB::table($table) -> column($col['mail']) -> type('string') -> alter();
+		DB::schema($table,function($table) use($col){
+			$table -> id($col['id']);
+			$table -> string($col['pass'],128);
+			$table -> string($col['user']);
+			$table -> string($col['mail']);
+
+		});
 
 		if(DB::table($table) -> count() == 0){
 			DB::table($table) -> insert([

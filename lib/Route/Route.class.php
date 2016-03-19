@@ -41,9 +41,12 @@ class Route{
 
 		$regex_url = self::parseUrlToRegex($url,$where);
 
-		# Remove last /	
+
+		# Remove last /
+		/*	
 		if($current_url[strlen($current_url)-1] == "/")
 			$current_url = substr($current_url,0,strlen($current_url)-2);
+			*/
 
 
 		if(preg_match($regex_url,$current_url,$res)){

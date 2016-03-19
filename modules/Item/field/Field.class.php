@@ -191,7 +191,7 @@ class Field{
 	 * Alter the database to add column
 	 */
 	public function alterDatabase(){
-		DB::table($this -> model -> name) -> column($this -> column) -> type('VARCHAR('.$this -> maxLength.')') -> alter();
+		DB::schema($this -> model -> name) -> string($this -> column,$this -> maxLength) -> alter();
 	}
 
 	/**

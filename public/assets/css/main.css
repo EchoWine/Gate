@@ -76,6 +76,11 @@ ul{
 	width:100%;
 	padding:10px 25px;
 	background:white;
+	min-height:500px;
+}
+
+#c-content{
+	width:100%;
 }
 
 .alert{

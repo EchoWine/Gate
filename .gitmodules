@@ -3,4 +3,4 @@
 	url = https://github.com/EchoWine/database.git
 [submodule "lib/route"]
 	path = lib/route
-	url = https://github.com/EchoWine/route
+	url = https://github.com/EchoWine/route.git

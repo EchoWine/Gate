@@ -22,7 +22,7 @@
 	include PATH_LIB."/TemplateEngine/main.php";
 	include PATH_LIB."/ModuleManager/main.php";
 	include PATH_LIB."/Data/main.php";
-	include PATH_LIB."/Route/main.php";
+	include PATH_LIB."/route/main.php";
 	
 	DB::connect(include PATH_CONFIG.'/database.php');
 

@@ -563,7 +563,7 @@ class Item extends Module{
 
 		}
 
-		$q = $this -> getQueryAlter() -> insertMultiple($c,$h);
+		$q = $this -> getQueryAlter() -> insert($c,$h);
 
 		if($q){
 			return new stdResponse(1,'Success','Copied');

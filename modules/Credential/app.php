@@ -21,7 +21,7 @@
 
 	Route::get('/{page}/{action?}/{primary?}',['as' => 'item','callback' => function($page,$action = null,$primary = null) use($Controller,$View){
 		$View -> setPage($action,$primary);
-		return Route::view('index',['item' => $Controller]);
+		return view('admin',['item' => $Controller]);
 	},'where' => ['page' => Item\Model::getAllObjName()]]);
 
 

@@ -16,4 +16,7 @@
     	return $f;
 	}
 
+	function view($file,$data = []){
+		return Route::view(TemplateEngine::html($file),$data);
+	}
 ?>

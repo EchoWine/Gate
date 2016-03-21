@@ -6,6 +6,6 @@
 
 	$item = ItemView::getCurrentObj();
 
-	define('path_item',http::getDirUrl().'../modules/Item/public');
+	define('path_item',Request::getDirUrl().'../modules/Item/public');
 	
 ?>

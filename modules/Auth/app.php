@@ -11,7 +11,7 @@
 	$view -> setLogin();
 	$view -> setHeader();
 
-	define('path_auth',http::getDirUrl().'../modules/Auth');
+	define('path_auth',Request::getDirUrl().'../modules/Auth');
 
 
 ?>

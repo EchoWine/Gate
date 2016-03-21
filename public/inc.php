@@ -26,9 +26,6 @@
 	
 	DB::connect(include PATH_CONFIG.'/database.php');
 
-	# Ini http
-	http::ini();
-
 	# modules
 
 	# Load primary module
@@ -52,7 +49,7 @@
 	# Load template
 	TemplateEngine::ini(PATH_STORAGE);
 
-	define('path',http::getDirUrl());
+	define('path',Request::getDirUrl());
 
 
 	# Include template page of modules

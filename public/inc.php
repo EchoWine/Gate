@@ -18,11 +18,11 @@
 	
 	include PATH_LIB."/stdData/main.php";
 
-	include PATH_LIB."/database/main.php";
 	include PATH_LIB."/TemplateEngine/main.php";
 	include PATH_LIB."/ModuleManager/main.php";
 	include PATH_LIB."/Data/main.php";
-	include PATH_LIB."/route/main.php";
+
+	include PATH_LIB."/core/main.php";
 	
 	DB::connect(include PATH_CONFIG.'/database.php');
 

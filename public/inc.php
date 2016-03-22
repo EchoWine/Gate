@@ -26,25 +26,16 @@
 	
 	DB::connect(include PATH_CONFIG.'/database.php');
 
-	# modules
-
-	# Load primary module
-	/*
-	ModuleManager::setPath(PATH_MODULE);
-	ModuleManager::load(PATH_MODULE."/Item");
-	ModuleManager::load(PATH_MODULE."/Auth");
-	ModuleManager::load(PATH_MODULE."/Credential");
-	ModuleManager::load(PATH_MODULE."/Session");
-	*/
-
 	# Load all modules
-	// ModuleManager::loadAll(PATH_MODULE);
+	# ModuleManager::loadAll(PATH_MODULE);
 
-
+	
+	# Modules
 	ModuleManager::load(PATH_MODULE."/SystemInfo");
 	ModuleManager::load(PATH_MODULE."/Auth");
 	ModuleManager::load(PATH_MODULE."/Item");
 	ModuleManager::load(PATH_MODULE."/Credential");
+	
 
 	# Load template
 	TemplateEngine::ini(PATH_STORAGE);

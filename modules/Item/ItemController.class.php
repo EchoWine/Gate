@@ -464,7 +464,9 @@ class ItemController extends Controller{
 	 * @return int result per page
 	 */
 	public function getResultPerPage(){
-		return Request::getCookie(Item::$cfg['c_result_page'],$this -> getDataOption('p_result_page',0));
+		return !empty($c = Request::getCookie(Item::$cfg['c_result_page'],$this -> getDataOption('p_result_page',0)))
+			? $c
+			: Item::$cfg['result_page'][0];
 	}
 
 	/**

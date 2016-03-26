@@ -6,7 +6,7 @@ class SystemInfo{
 	
 
 	public static function getDatabaseInfo(){
-		return DB::getServerInfo();
+		return \DB::getServerInfo();
 	}
 
 	public static function getOSInfo(){

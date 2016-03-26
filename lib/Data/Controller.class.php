@@ -1,4 +1,5 @@
 <?php
+
 class Controller{
   	
 	/**
@@ -13,11 +14,8 @@ class Controller{
 
 	/**
 	 * Construct
-	 *
-	 * @param object $model model
 	 */
-	public function __construct($model){
-		$this -> model = $model;
+	public function __construct(){
 		$this -> ini();
 	}
 

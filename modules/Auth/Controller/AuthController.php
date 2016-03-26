@@ -1,6 +1,11 @@
 <?php
 
-class AuthController extends Controller{
+define('path_auth',Request::getDirUrl().'../modules/Auth');
+
+namespace Auth\Controller;
+use Auth\Entity;
+
+class AuthController extends \Controller{
 
 	/**
 	 * Is user logged
@@ -21,19 +26,6 @@ class AuthController extends Controller{
 	 * Response
 	 */
 	public $response = [];
-
-	/**
-	 * Construct
-	 *
-	 * @param object $model model
-	 * @param array $cfg set of config
-	 */
-	public function __construct($model,$cfg){
-		$this -> model = $model;
-
-		$this -> cfg = $cfg;
-		$this -> model -> cfg = $cfg;
-	}
 
 	/**
 	 * Check all the interaction with user
@@ -117,6 +109,28 @@ class AuthController extends Controller{
 	 */
 	public function getUserDisplay(){
 		return !empty($this -> info) ? $this -> model -> getUserDisplay($this -> info) : '';
+	}
+
+	public function load($configs){
+		$this -> setLogin();
+		$this -> setHeader();
+	}
+
+	/**
+	 * Set the login page
+	 */
+	public function setLogin(){
+
+		if(!$this -> logged)
+			Module::TemplateOverwrite('admin','login');
+		
+	}
+
+	/**
+	 * Set the header
+	 */
+	public function setHeader(){
+		Module::TemplateAggregate('admin/header-nav','admin/header-nav',30);
 	}
 }
 

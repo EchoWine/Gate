@@ -27,15 +27,16 @@
 	DB::connect(include PATH_CONFIG.'/database.php');
 
 	# Load all modules
-	# ModuleManager::loadAll(PATH_MODULE);
+	#ModuleManager::loadAll(PATH_MODULE);
 
 	
 	# Modules
+
+	#ModuleManager::load(PATH_MODULE."/Auth");
 	ModuleManager::load(PATH_MODULE."/SystemInfo");
-	ModuleManager::load(PATH_MODULE."/Auth");
-	ModuleManager::load(PATH_MODULE."/Item");
-	ModuleManager::load(PATH_MODULE."/Credential");
-	
+	#ModuleManager::load(PATH_MODULE."/Item");
+	#ModuleManager::load(PATH_MODULE."/Credential");
+	#ModuleManager::loaded();
 
 	# Load template
 	TemplateEngine::ini(PATH_STORAGE);
@@ -44,13 +45,7 @@
 
 
 	# Include template page of modules
-	foreach(ModuleManager::loadTemplate() as $k){
-		include $k -> app;
-		TemplateEngine::compile(
-			dirname($k -> app)."/views",
-			$k -> name
-		);
-	}
+	ModuleManager::loadTemplate();
 	
 
 	# Compile

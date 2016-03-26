@@ -21,18 +21,19 @@ class Module{
 
 	public static function TemplateOverwrite($n,$c,$sub = null){
 
-		if($sub === null){
-			$sub = basename(dirname(debug_backtrace()[0]['file']));
-		}
+
+		if($sub === null)
+			$sub = explode("\\",debug_backtrace()[1]['class'])[0];
+		
 
 		TemplateEngine::setInclude($n,$c,$sub);
 	}
 
 	public static function TemplateAggregate($n,$c,$pos,$sub = null){
 
-		if($sub === null){
-			$sub = basename(dirname(debug_backtrace()[0]['file']));
-		}
+		if($sub === null)
+			$sub = explode("\\",debug_backtrace()[1]['class'])[0];
+		
 
 		TemplateEngine::addJoin($n,$c,$sub,$pos);
 	}

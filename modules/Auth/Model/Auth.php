@@ -1,6 +1,8 @@
 <?php
 
-class Auth extends Module{
+namespace Auth\Model;
+
+class Auth{
 
 	/**
 	 * Construct

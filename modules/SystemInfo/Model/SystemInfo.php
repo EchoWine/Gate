@@ -1,6 +1,8 @@
 <?php
 
-class SystemInfo extends Module{
+namespace SystemInfo\Model;
+
+class SystemInfo{
 	
 
 	public static function getDatabaseInfo(){

@@ -5,7 +5,12 @@ class ModuleManager{
 	/**
 	 * List of all modules
 	 */
-  	public static $list = array();
+  	public static $list = [];
+
+	/**
+	 * List of all files loaded
+	 */
+  	public static $files = [];
 
   	/**
   	 * Path where are located modules
@@ -48,26 +53,37 @@ class ModuleManager{
 	public static function load($path){
 		$basePath = basename($path);
 
-		if(empty(self::$list[$basePath])){
-			self::$list[$basePath] = $path;
-			include $path."/main.php";
+		$folders  = ['Controller','Model'];
+
+		if(!empty(self::$list[$basePath]))
+			return;
+
+		self::$list[$basePath] = $path;
+
+		foreach($folders as $folder){
+			foreach(glob($path."/".$folder.'/*') as $file){
+				self::$files[] = $file;
+				require $file;
+
+				$name_class = str_replace(PATH_MODULE,"",$file);
+				$name_class = str_replace("/","\\",$name_class);
+				$name_class = str_replace(".php","",$name_class);
+
+				if($folder == 'Controller')
+					new $name_class();
+			}
 		}
+
 	}
 
 	/**
 	 * Call all template methods in module
 	 *
-	 * @return object info about module
 	 */
 	public static function loadTemplate(){
-		$r = array();
-		foreach(self::$list as $n => $k){
-			$r[] = (object)[
-				'name' => $n,
-				'app' => $k."/app.php",
-			];
-		}
-		return $r;
+		foreach(self::$list as $name => $dir)
+			TemplateEngine::compile($dir."/Resources/views",$name);
+		
 	}
 
 	/**
@@ -79,5 +95,15 @@ class ModuleManager{
   		return isset(self::$list[$m]) ? self::$list[$m] : null;
   	}
 
+  	public static function loadClass($class){
+  		$file = PATH_MODULE.'/'.__NAMESPACE__.$class.".php";
+
+  		if(in_array($file,self::$files))
+			require $file;
+	}
+	
+
 }
+
+spl_autoload_register(__NAMESPACE__ . "\\ModuleManager::loadClass");
 ?>

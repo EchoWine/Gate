@@ -574,6 +574,13 @@ class Item extends Module{
 
 	}
 
+	/**
+	 * Called when all module is lodaded
+	 */
+	public static function loadedAll(){
+		echo 'ee';
+	}
+
 }
 
 ?>

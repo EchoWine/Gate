@@ -1,1 +1,0 @@
-<div class='title'> <h1><span>Administration</span> </h1> </div>

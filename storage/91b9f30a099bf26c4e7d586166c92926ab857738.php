@@ -1,1 +1,0 @@
-<input name='<?php echo $name; ?>' value='<?php echo $value; ?>' class='input n'>

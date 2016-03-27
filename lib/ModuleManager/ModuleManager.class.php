@@ -18,6 +18,11 @@ class ModuleManager{
   	public static $path;
 
   	/**
+  	 * List of controllers
+  	 */
+  	public static $controllers;
+
+  	/**
   	 * Set path where are located modules
   	 * @param string $path path
   	 */
@@ -70,7 +75,7 @@ class ModuleManager{
 				$name_class = str_replace(".php","",$name_class);
 
 				if($folder == 'Controller')
-					new $name_class();
+					self::$controllers[] = $name_class;
 			}
 		}
 
@@ -100,6 +105,12 @@ class ModuleManager{
 
   		if(in_array($file,self::$files))
 			require $file;
+	}
+
+	public static function loaded(){
+		foreach(self::$controllers as $controller)
+			new $controller();
+
 	}
 	
 

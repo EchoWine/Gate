@@ -2,13 +2,18 @@
 
 namespace Auth\Model;
 
+use CoreWine\DB as DB;
+use CoreWine\Request as Request;
+
 class Auth{
 
+	public $cfg;
+	
 	/**
 	 * Construct
 	 */
-	public function __construct(){
-		$this -> name = 'Auth';
+	public function __construct($cfg){
+		$this -> cfg = $cfg;
 	}
 	
 	/**
@@ -114,7 +119,7 @@ class Auth{
 				];
 
 			}else
-				Request::removeCookie($this -> cfg['cookie']);
+				Request::unsetCookie($this -> cfg['cookie']);
 			
 		}
 
@@ -142,8 +147,8 @@ class Auth{
 		$this -> deleteSessionBySID($sid = $this -> getSID());
 
 		# Delete from cookies
-		Request::removeCookie($this -> cfg['cookie']);
-		Request::removeSession($this -> cfg['cookie']);
+		Request::unsetCookie($this -> cfg['cookie']);
+		Request::unsetSession($this -> cfg['cookie']);
 
 		# Refresh
 		Request::refresh();

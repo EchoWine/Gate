@@ -3,14 +3,23 @@
 namespace SystemInfo\Controller;
 
 use SystemInfo\Model\SystemInfo;
+use CoreWine\DB as DB;
+use CoreWine\Route as Route;
+
 
 class SystemInfoController{
 	
+	/**
+	 * Constructor
+	 */
 	public function __construct(){
 		$this -> setNav();
 		$this -> setPage();
 	}
 
+	/**
+	 * Set navigation
+	 */
 	public static function setNav(){
 
 		$SystemInfo = [
@@ -19,14 +28,16 @@ class SystemInfoController{
 			]
 		];
 
-		\Route::add('index',['SystemInfo' => $SystemInfo]);
+		Route::add('index',['SystemInfo' => $SystemInfo]);
 
 		\Module::TemplateAggregate('admin/nav','admin/nav',99);
 	}
 
-
+	/**
+	 * Set routing
+	 */
 	public static function setPage(){
-		\Route::get('/system-info',['as' => 'system-info','callback' => function(){
+		Route::get('/system-info',['as' => 'system-info','callback' => function(){
 
 			\Module::TemplateOverwrite('admin/content','admin/page');
 

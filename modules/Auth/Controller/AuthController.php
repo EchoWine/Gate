@@ -1,9 +1,12 @@
 <?php
 
-define('path_auth',Request::getDirUrl().'../modules/Auth');
-
 namespace Auth\Controller;
-use Auth\Entity;
+
+use Auth\Model\Auth;
+use CoreWine\Request as Request;
+use CoreWine\Route as Route;
+
+define('path_auth',Request::getDirUrl().'../modules/Auth');
 
 class AuthController extends \Controller{
 
@@ -28,11 +31,20 @@ class AuthController extends \Controller{
 	public $response = [];
 
 	/**
+	 * Constructor
+	 */
+	public function __construct(){
+		$this -> cfg = include dirname(__FILE__)."/../Resources/config/config.php";
+		$this -> check();
+	 	$this -> setLogin();
+	 	$this -> setHeader();
+	}
+
+	/**
 	 * Check all the interaction with user
-	 *
-	 * @return array response of interaction
 	 */
 	public function check(){
+		$this -> model = new Auth($this -> cfg);
 		$this -> model -> alterTable();
 		$this -> updateData();
 
@@ -76,19 +88,19 @@ class AuthController extends \Controller{
 		return [
 
 			# User: Username or Email (depends on config)
-			'user' => new stdDataPost($c['post_user'],null,'Username or E-mail'),
+			'user' => new \stdDataPost($c['post_user'],null,'Username or E-mail'),
 
 			# Password
-			'pass' => new stdDataPost($c['post_pass'],null,'Password'),
+			'pass' => new \stdDataPost($c['post_pass'],null,'Password'),
 
 			# Login
-			'login' => new stdDataPost($c['post_login'],null,'Login'),
+			'login' => new \stdDataPost($c['post_login'],null,'Login'),
 
 			# Logout
-			'logout' => new stdDataPost($c['post_logout'],null,'Logout'),
+			'logout' => new \stdDataPost($c['post_logout'],null,'Logout'),
 
 			# Remember me
-			'remember' => new stdDataPost($c['post_remember'],null,'Remember me')
+			'remember' => new \stdDataPost($c['post_remember'],null,'Remember me')
 				
 		];
 	}
@@ -111,18 +123,13 @@ class AuthController extends \Controller{
 		return !empty($this -> info) ? $this -> model -> getUserDisplay($this -> info) : '';
 	}
 
-	public function load($configs){
-		$this -> setLogin();
-		$this -> setHeader();
-	}
-
 	/**
 	 * Set the login page
 	 */
 	public function setLogin(){
 
 		if(!$this -> logged)
-			Module::TemplateOverwrite('admin','login');
+			\Module::TemplateOverwrite('admin','login');
 		
 	}
 
@@ -130,7 +137,8 @@ class AuthController extends \Controller{
 	 * Set the header
 	 */
 	public function setHeader(){
-		Module::TemplateAggregate('admin/header-nav','admin/header-nav',30);
+		Route::global(['auth' => $this]);
+		\Module::TemplateAggregate('admin/header-nav','admin/header-nav',30);
 	}
 }
 

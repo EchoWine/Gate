@@ -82,7 +82,7 @@ class Model extends \Item{
 
 		$c = \Item::getObj('credential');
 
-		return \DB::table($this -> tableName) -> leftJoin(
+		return DB::table($this -> tableName) -> leftJoin(
 			$c -> tableName,
 			$this -> getField('uid') -> getColumnName(),
 			$c -> getField('id') -> getColumnName()

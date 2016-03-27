@@ -1,5 +1,9 @@
 <?php
-		
+	
+	use CoreWine\DB as DB;
+	use CoreWine\Request as Request;
+	use CoreWine\Route as Route;
+
 	# Path
 	define('PATH',dirname(__FILE__));
 	define('PATH_MODULE','../modules');
@@ -32,11 +36,14 @@
 	
 	# Modules
 
-	#ModuleManager::load(PATH_MODULE."/Auth");
+	ModuleManager::load(PATH_MODULE."/Auth");
 	ModuleManager::load(PATH_MODULE."/SystemInfo");
 	#ModuleManager::load(PATH_MODULE."/Item");
 	#ModuleManager::load(PATH_MODULE."/Credential");
-	#ModuleManager::loaded();
+	
+	ModuleManager::loaded();
+
+
 
 	# Load template
 	TemplateEngine::ini(PATH_STORAGE);

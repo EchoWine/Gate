@@ -1,7 +1,10 @@
 <?php
 
 	include 'inc.php';
-	include 'routes.php';
 
+	use CoreWine\Route as Route;
+
+	include 'routes.php';
+	
 	include Route::load();
 ?>

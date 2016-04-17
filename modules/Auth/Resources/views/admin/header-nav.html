@@ -4,5 +4,9 @@
 	</span>
 </li>
 <li class='logout'>
-	{{include .logout}}
+	<form method='POST'>
+		<button type='submit' name='{{$auth -> getData('logout') -> name}}' class='button r'>
+			<span class='fa fa-sign-out'></span>
+		</button>
+	</form>
 </li>

@@ -85,7 +85,7 @@ class ModuleManager{
 	 * Call all template methods in module
 	 *
 	 */
-	public static function loadTemplate(){
+	public static function loadViews(){
 		foreach(self::$list as $name => $dir)
 			TemplateEngine::compile($dir."/Resources/views",$name);
 		
@@ -108,8 +108,21 @@ class ModuleManager{
 	}
 
 	public static function loaded(){
-		foreach(self::$controllers as $controller)
-			new $controller();
+
+		$controllers = [];
+		foreach(self::$controllers as $controller){
+			$c = new $controller();	
+			
+			if(method_exists($controller,'__routes'))
+				$c -> __routes();
+
+			$controllers[] = $c;
+		}
+
+		foreach($controllers as $controller){
+			if(method_exists($controller,'__check'))
+				$controller -> __check();
+		}
 
 	}
 	

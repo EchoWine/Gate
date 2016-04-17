@@ -5,22 +5,31 @@ namespace SystemInfo\Controller;
 use SystemInfo\Model\SystemInfo;
 use CoreWine\DB as DB;
 use CoreWine\Route as Route;
+use FrameworkWine\Controller as Controller;
 
 
-class SystemInfoController{
+class SystemInfoController extends Controller{
 	
+
 	/**
 	 * Constructor
 	 */
 	public function __construct(){
-		$this -> setNav();
-		$this -> setPage();
+		self::__routes();
+	}
+
+	/**
+	 * Routes
+	 */
+	public function __routes(){
+		Route::add('index',$this -> navAction());
+		Route::get('/system-info',['as' => 'system-info','callback' => 'index']);
 	}
 
 	/**
 	 * Set navigation
 	 */
-	public static function setNav(){
+	public function navAction(){
 
 		$SystemInfo = [
 			'nav' => [
@@ -28,36 +37,29 @@ class SystemInfoController{
 			]
 		];
 
-		Route::add('index',['SystemInfo' => $SystemInfo]);
-
-		\Module::TemplateAggregate('admin/nav','admin/nav',99);
+		return ['SystemInfo' => $SystemInfo];
 	}
 
 	/**
-	 * Set routing
+	 * Set index
 	 */
-	public static function setPage(){
-		Route::get('/system-info',['as' => 'system-info','callback' => function(){
+	public static function index(){
 
-			\Module::TemplateOverwrite('admin/content','admin/page');
+		$SystemInfo = [
+			'Server_Label' => 'Server',
+			'Server_Info' => SystemInfo::getServerInfo(),
+			'PHP_Label' => 'PHP',
+			'PHP_Info' => SystemInfo::getPHPInfo(),
+			'OS_Label' => 'OS',
+			'OS_Info' => SystemInfo::getOSInfo(),
+			'DB_Label' => 'DB',
+			'DB_Info' => SystemInfo::getDatabaseInfo(),
+			'nav' => [
+				'label' => 'System Info',
+			]
+		];
 
-			$SystemInfo = [
-				'Server_Label' => 'Server',
-				'Server_Info' => SystemInfo::getServerInfo(),
-				'PHP_Label' => 'PHP',
-				'PHP_Info' => SystemInfo::getPHPInfo(),
-				'OS_Label' => 'OS',
-				'OS_Info' => SystemInfo::getOSInfo(),
-				'DB_Label' => 'DB',
-				'DB_Info' => SystemInfo::getDatabaseInfo(),
-				'nav' => [
-					'label' => 'System Info',
-				]
-			];
-
-			return view('admin',['SystemInfo' => $SystemInfo]);
-		 }]);
-
+		return static::view('admin/index',['SystemInfo' => $SystemInfo]);
 
 	}
 

@@ -5,10 +5,9 @@ namespace Auth\Controller;
 use Auth\Model\Auth;
 use CoreWine\Request as Request;
 use CoreWine\Route as Route;
+use FrameworkWine\Controller as Controller;
 
-define('path_auth',Request::getDirUrl().'../modules/Auth');
-
-class AuthController extends \Controller{
+class AuthController extends Controller{
 
 	/**
 	 * Is user logged
@@ -26,18 +25,46 @@ class AuthController extends \Controller{
 	public $cfg;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct(){
+		$this -> cfg = include dirname(__FILE__)."/../Resources/config/config.php";
+	}
+
+	/**
 	 * Response
 	 */
 	public $response = [];
 
 	/**
-	 * Constructor
+	 * Routes
 	 */
-	public function __construct(){
-		$this -> cfg = include dirname(__FILE__)."/../Resources/config/config.php";
+	public function __routes(){
+		Route::global(['auth' => $this,'path_auth' => Request::getDirUrl().'../modules/Auth']);
+		Route::get('/login',['as' => 'login','callback' => 'loginAction']);
+		$this -> redirectRouteLogin();
+	}
+
+	/**
+	 * Check
+	 */
+	public function __check(){
+		$this -> redirectRouteLogin();
 		$this -> check();
-	 	$this -> setLogin();
-	 	$this -> setHeader();
+	}
+
+	/**
+	 * Redirect to route login
+	 */
+	public function redirectRouteLogin(){
+
+		if(!Route::is('login') && !$this -> logged)
+			Request::redirect(Route::url('login'));
+		
+	}
+
+	public static function loginAction(){
+		return static::view('/login');
 	}
 
 	/**
@@ -60,7 +87,7 @@ class AuthController extends \Controller{
 	 * Check attempt logout
 	 */
 	public function checkAttemptLogout(){
-		if($this -> logged && $this -> getData('logout') -> value !== null)
+		if($this -> logged && Request::post('logout') !== null)
 			$this -> model -> logout();
 	}
 
@@ -69,7 +96,7 @@ class AuthController extends \Controller{
 	 */
 	public function checkAttemptLogin(){
 		
-		if(!$this -> logged && $this -> data['login'] -> value !== null)
+		if(!$this -> logged && Request::post('login') !== null)
 			$this -> response[] =  $this -> model -> login(
 				$this -> getData('user') -> value,
 				$this -> getData('pass') -> value,
@@ -123,23 +150,6 @@ class AuthController extends \Controller{
 		return !empty($this -> info) ? $this -> model -> getUserDisplay($this -> info) : '';
 	}
 
-	/**
-	 * Set the login page
-	 */
-	public function setLogin(){
-
-		if(!$this -> logged)
-			\Module::TemplateOverwrite('admin','login');
-		
-	}
-
-	/**
-	 * Set the header
-	 */
-	public function setHeader(){
-		Route::global(['auth' => $this]);
-		\Module::TemplateAggregate('admin/header-nav','admin/header-nav',30);
-	}
 }
 
 ?>

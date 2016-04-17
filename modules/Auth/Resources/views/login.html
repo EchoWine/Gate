@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html>
-{{include admin/head}}
-{{include .admin/style}}
+{{extends layout-admin}}
 
-<body>
+{{block stylesheet}}
+	{{parent}}
+	<link rel='stylesheet' href='{{$path_auth}}/Resources/public/assets/css/main.css'>
+{{/block}}
+
+{{block body}}
 	<div id='container-auth'>
 
 		<h1>Sign in</h1>
+
 		<br>
+
 		<form method='POST'>
 			<div>
 				<div>
@@ -31,6 +35,5 @@
 		</form>
 
 	</div>
-
-</body>
-</html>
+{{/block}}
+a

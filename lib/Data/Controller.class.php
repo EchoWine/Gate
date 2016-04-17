@@ -1,11 +1,10 @@
 <?php
 
+namespace FrameworkWine;
+use CoreWine\Request as Request;
+use CoreWine\Route as Route;
+
 class Controller{
-  	
-	/**
-	 * Model
-	 */
-	public $model;
 	
 	/**
 	 * Data
@@ -15,15 +14,23 @@ class Controller{
 	/**
 	 * Construct
 	 */
-	public function __construct(){
-		$this -> ini();
-	}
+	public function __construct(){}
 
 	/**
-	 * Initialize
+	 * Route
 	 */
-	public function ini(){}
+	public function __routess(){}
 	
+
+	/**
+	 * View
+	 */
+	public static function view($file,$data = []){
+		Route::view($data);
+		$sub = explode("\\",debug_backtrace()[1]['class'])[0];
+		return \TemplateEngine::html($file,$sub);
+	}
+
 	/**
 	 * Update the data
 	 */

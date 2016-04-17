@@ -51,11 +51,12 @@
 	define('path',Request::getDirUrl());
 
 
-	# Include template page of modules
-	ModuleManager::loadTemplate();
-	
-
 	# Compile
 	TemplateEngine::compile(PATH_VIEWS);
+
+	# Include template page of modules
+	ModuleManager::loadViews();
+	
+
 
 ?>

@@ -20,6 +20,11 @@ class TemplateEngine{
 	public static $pathSource;
 
 	/**
+	 * Main path of views
+	 */
+	public static $pathSourceMain;
+
+	/**
 	 * Path of storage
 	 */
 	public static $pathStorage;
@@ -28,6 +33,11 @@ class TemplateEngine{
 	 * Log
 	 */
 	public static $log;
+
+	/**
+	 * Files
+	 */
+	public static $files;
 
 	/**
 	 * List of all error
@@ -40,19 +50,14 @@ class TemplateEngine{
 	public static $checked = [];
 
 	/**
-	 * List of all included files
-	 */
-	public static $include;
-
-	/**
-	 * List of all joined files
-	 */
-	public static $join;
-
-	/**
 	 * List of all file compiled
 	 */
 	public static $compiled = [];
+
+	/**
+	 * List of all blocks
+	 */
+	public static $blocks = [];
 
 	/**
 	 * Initialization
@@ -63,17 +68,6 @@ class TemplateEngine{
 
 		self::$pathStorage = $storage;
 	}
-
-	/**
-	 * Set include
-	 *
-	 * @param string $p name
-	 * @param string $f path complete
-	 */
-	public static function setInclude($p,$f,$sub = ''){
-		self::$include[self::parsePath($p)] = self::getPathSourceFile(self::parsePath($f),$sub).".php";
-	}
-
 
 	/**
 	 * Parse the path
@@ -90,44 +84,16 @@ class TemplateEngine{
 	}
 
 	/**
-	 * Join a page to another
-	 *
-	 * @param string $nt name of page that will be joined
-	 * @param string $nf name page that will joined
-	 * @param int $pos position of aggregation
-	 */
-	public static function addJoin($nt,$nf,$sub = '',$pos = null){
-
-		$nf = self::getPathSourceFile(self::parsePath($nf),$sub);
-		$nt = self::parsePath($nt);
-
-		if($pos == null || isset(self::$join[$nt][$pos]))
-			self::$join[$nt][] = $nf;
-		else
-			self::$join[$nt][$pos] = $nf;
-	}
-
-	/**
 	 * Get include
 	 *
 	 * @param string $p file name
 	 * @return array array of files to be included
 	 */
-	public static function getInclude($p){
-
+	public static function getInclude($p,$sub = null){
 
 		$p = self::parsePath($p);
 
-		$c[] = isset(self::$include[$p]) ? self::$include[$p] : self::getPathSourceFileByFull($p).".php";
-
-
-		if(!empty(self::$join[$p])){
-			$t = self::$join[$p];
-			ksort($t);
-			foreach((array)$t as $n => $k)
-				$c[] = $k.".php";
-		}
-
+		$c = self::getPathSourceFile($p,$sub).".php";
 	
 		return $c;
 
@@ -200,6 +166,11 @@ class TemplateEngine{
 	 */
 	public static function compile($pathSource,$subPath = ''){
 
+		self::$pathSource[$subPath] = $pathSource;
+
+		if(empty($subPath))
+			self::$pathSourceMain = $pathSource; 
+		
 		$pathStorage = self::$pathStorage;
 
 		if(!file_exists(dirname($pathStorage)))
@@ -210,28 +181,28 @@ class TemplateEngine{
 
 			/* Get dir path of file with root as $pathSource */
 
-
-			$p = self::getPathViewBySource($pathSource,$k);
-
-
-			$b = self::getPathSourceFile($p."/".basename($k,".html"),$subPath);
+			$path_filename = self::getPathViewBySource($pathSource,$k);
+			$filename = $path_filename."/".basename($k,".html");
+			$b = self::getPathSourceFile($filename,$subPath);
 
 			$pathStorageFile = $pathStorage."/".$b.".php";
-
-			//self::$include[] = $b;
 
 			# Check source of file
 			$t = !file_exists($pathStorageFile) || (file_exists($k) && file_exists($pathStorageFile) && filemtime($k) > filemtime($pathStorageFile));
 
 			if(true){
 				
-				$content = file_get_contents($k);
-				$content = self::preCompile($k,$content,$subPath,$p);
-				$content = self::translate($k,$content);
+				$content = TemplateEngine::getContentsByFileName($k);
+				$content = self::translate($k,$content,$subPath,$path_filename);
 				
 
 				file_put_contents($pathStorageFile,$content);
 			}
+
+			$file = $subPath.$filename;
+			if($file[0] == "/")$file = substr($file, 1);
+
+			self::$files[$pathSource][] = $file;
 		}
 
 		if(!empty(self::$error)){
@@ -241,212 +212,50 @@ class TemplateEngine{
 	}
 
 	/**
-	 * Precompile the page
-	 *
-	 * @param string $f file name
-	 * @param string $c content of the page
-	 * @param string $subPath name of "class of files"
-	 */
-	private static function preCompile($f,$c,$subPath = '',$relativePath = ''){
-
-
-		# Contains fun/var
-
-			#$c = preg_replace('/{{_include ([^\}]*)}}/iU','{{include ".$1."}}',$c);
-			#print_r($c);
-
-
-
-		# In folder
-
-		if(!empty($relativePath)){
-
-			preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
-
-			foreach($r[1] as $n => $k){
-
-				if($relativePath[0] == '/')
-					$relativePath = substr($relativePath,1);
-				
-				$fc = '';
-
-				if($k[0] == '.'){
-					$k = substr($k,1);
-					$fc = '.';
-				}
-
-				if($k[0] != '/'){
-
-					$c = str_replace($r[0][$n],"{{include $fc"."$relativePath/".$k."}}",$c);
-
-				}else{
-
-					$k = substr($k,1);
-
-					$c = str_replace($r[0][$n],"{{include $fc"."".$k."}}",$c);
-
-				}
-
-			}
-
-		}
-
-		# Variable scope include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
-		foreach($r[1] as $n => $k){
-
-			$k = preg_replace("/[\t\n\r]/iU","",$k);
-			preg_match_all('/^(.*) \{(.*)$/iU',$k,$r1);
-			if(!empty($r1[2][0])){
-				$t = $r1[2][0];
-				$t = "<?php ".str_replace(",",";",$r1[2][0])."; ?>";
-				$c = str_replace($r[0][$n],$t."{{include ".$r1[1][0]."}",$c);
-			}
-		}
-
-
-		if(!empty($subPath)){
-
-			# Include sub Class
-			preg_match_all('/{{include \.([^\}]*)}}/iU',$c,$r);
-			foreach($r[0] as $n => $k){
-				$c = str_replace($k,"{{include ".self::getNameSub("/".$r[1][$n],$subPath)."}}",$c);
-				
-			}
-		}
-		
-
-		# Include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
-		foreach($r[1] as $n => $k){
-
-			/*
-			if(empty(self::$include[$k]))
-				TemplateEngine::setInclude($k,$k);
-			*/
-			
-
-			
-			$c = str_replace($r[0][$n],'<?php foreach(TemplateEngine::getInclude("'.$k.'") as $k) include $k; ?>',$c);
-
-		}
-
-
-		# Switch
-		# Remove space between switch and first case
-		$c = preg_replace('/{{switch ([^\}]*)}}([^\{]*){{case/iU',"{{switch $1}}\n{{case",$c);
-		$c = preg_replace('/{{\/(case)}}([^\{]*){{(case)/iU','{{/case}}'."\n".'{{case',$c);
-		$c = preg_replace('/{{\/(case)}}([^\{]*){{\/switch}}/iU','{{/case}}'."\n".'{{/switch}}',$c);
-		return $c;
-	}
-
-
-	/**
 	 * Translate the page
 	 *
-	 * @param string $f file name
-	 * @param string $c content of the page
-	 * @param string content translated
+	 * @param string $filename file name
+	 * @param string $ccontent content of the page
+	 * @param string $subPath name of "class of files"
 	 */
-	private static function translate($f,$c){
+	private static function translate($filename,$content,$subPath = '',$relativePath = ''){
 
-
-		# include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$c,$r);
-		
-		foreach($r[0] as $n => $k){
-
-			$c = str_replace($k,'<?php include '.$r[1][$n].'; ?>',$c);
-		}
-
-		# array
-		preg_match_all('/{{([^\}]*)}}/iU',$c,$r);
-		foreach($r[0] as $n => $k){
-			$i = preg_replace('/\.([\w]*)/','[\'$1\']',$k);
-			$c = str_replace($k,$i,$c);
-		}
-
-		# for 
-		preg_match_all('/{{for ([^\}]*) as ([^\}]*)}}/iU',$c,$r);
-		
-		foreach($r[0] as $n => $k){
-			self::$checked[] = $r[2][$n];
-
-			$c = str_replace("{$k}",'<?php foreach((array)'.$r[1][$n].' as '.$r[2][$n].'){ ?>',$c);
-		}
-
-		# switch
-		preg_match_all('/{{switch ([^\}]*)}}/iU',$c,$r);
-	
-		foreach($r[0] as $n => $k){
-			$c = str_replace($k,'<?php switch('.$r[1][$n].'){ ?>',$c);
-		}
-
-		$c = preg_replace('/{{case default}}/iU','<?php default: ?>',$c);
-		preg_match_all('/{{case ([^\} ]*)}}/iU',$c,$r);
-	
-		foreach($r[0] as $n => $k)
-			$c = str_replace($k,'<?php case '.$r[1][$n].': ?>',$c);
-		
-		# if
-		preg_match_all('/{{if ([^\}]*)}}/iU',$c,$r);
-	
-		foreach($r[0] as $n => $k){
-			$c = str_replace($k,'<?php if('.$r[1][$n].'){ ?>',$c);
-		}
-		
-		# else if
-		preg_match_all('/{{elseif ([^\} ]*)}}/iU',$c,$r);
-	
-		foreach($r[0] as $n => $k)
-			$c = str_replace($k,'<?php }else if('.$r[1][$n].'){ ?>',$c);
-
-
-		$a = array(
-			'/{{endfor}}/iU',
-			'/{{endif}}/iU',
-			'/{{else}}/iU',
-			'/{{\/switch}}/iU',
-			'/{{\/}}/iU',
-			'/{{\/case}}/iU',
-
-		);
-		$r = array(
-			'<?php } ?>',
-			'<?php } ?>',
-			'<?php }else{ ?>',
-			'<?php } ?>',
-			'<?php } ?>',
-			'<?php break; ?>',
-		);
-
-		$c = preg_replace($a,$r,$c);
-		# variables
-		preg_match_all('/{{([^\}]*)}}/iU',$c,$r);
-		foreach($r[1] as $n => $k){
-
-			# Count row
-			preg_match_all('/\n/',explode($k,$c)[0],$r);
-			$r = count($r[0])+1;
-
-			$v = preg_replace('/\.([\w]*)/','',$k);
-
-			# Check if defined
-			/*if(!in_array($v,self::$checked) && !isset($GLOBALS[$v])){
-				$e = new stdClass();
-				$e -> message = "Undefined variable {$v}";
-				$e -> row = $r;
-				$e -> file = basename($f);
-				self::$error[] = $e;
-			}*/
-
-			$c = str_replace('{{'.$k.'}}','<?php echo '.$k.'; ?>',$c);
-		}
-
-		return $c;
+		$translator = new Translator($filename,$subPath,$relativePath);
+		return $translator -> translate($content);
 
 	}
 
+	/**
+	 * Get source of file base on absolute filename
+	 * 
+	 * @param string $filename
+	 * @return string
+	 */
+	public static function getContentsByFilename($filename){
+		return file_get_contents($filename);
+	}
+
+	/**
+	 * Get source of file based on relative filename
+	 * 
+	 * @param string $filename
+	 * @return string
+	 */
+	public static function getSourceFile($filename){
+
+
+		foreach(TemplateEngine::$files as $path => $files){
+			foreach($files as $file){
+				if($file == $filename){
+					return TemplateEngine::getContentsByFilename($path."/".$file.".html");
+				}
+			}
+		}
+
+		die('No file found');
+
+	}
+	
 	/**
 	 * Print error
 	 *
@@ -457,12 +266,9 @@ class TemplateEngine{
 		echo 	"<div style='border: 1px solid black;margin: 0 auto;padding: 20px;'>
 					<h1>Template engine - Errors</h1>";
 
-
-		foreach($e as $k){
-			echo 
-				$k -> file."(".$k -> row."): ".$k -> message."<br>";
-		}
-
+		foreach($e as $k)
+			echo $k -> file."(".$k -> row."): ".$k -> message."<br>";
+		
 		echo 	"</div>";
 		
 	}
@@ -471,10 +277,11 @@ class TemplateEngine{
 	 * Main function that print the page
 	 *
 	 * @param string $page name page
+	 * @param string $sub sub
 	 * @return string page
 	 */
-	public static function html($page){
-		return self::$pathStorage."/".self::getInclude($page)[0];
+	public static function html($page,$sub = ''){
+		return self::$pathStorage."/".self::getInclude($page,$sub);
 	}
 
 }

@@ -1,51 +1,68 @@
-#container-auth{
-	background-color: #ECEEF1;
+body{
+	background:white;
+}
+.auth-title{
+	color:black;
+
+	text-align: center;
+  	font-size: 28px;
+  	font-weight:bold;
+}
+
+#auth-container{
 	padding:40px 30px;
-	max-width:450px;
+	max-width:350px;
 	margin:50px auto;
 }
 
-#container-auth form > div{
+#auth-container form > div{
 	margin:0 auto;
 }
 
-#container-auth > div > div > a{
-	float:right
+#auth-container > div > div > a{
+	float:right;
 }
 
-#container-auth .response{
-	max-width:550px;
+#auth-container .response{
+	max-width:450px;
 	margin-top:10px;
 }
 
-
-#container-auth h1{
-	color: rgb(77, 179, 165);
-	text-align: center;
-  	font-size: 28px;
- 	font-weight: 400 !important;
-}
-
-#container-auth .input.d{
+.auth-input{
 	display:block;
 	width:100%;
 	margin:10px 0;
+	padding:15px 15px;
+	outline:none;
 }
 
-#container-auth #bar-sub{
+.auth-button{
+
+	display:block;
+	width:100%;
+	padding:15px 5px;
+	background: #3686bb;
+	border:none;
+	color:white;
+	cursor:pointer;
+
+}
+
+.auth-rememberme-container{
 	display:flex;
 	align-items: center;
+	justify-content:center;
 	color: #8290A3;
 	font-size:14px;
+	margin:10px 0;
 }
 
-#container-auth .check.b + label{
-	margin:0 5px 0 20px;
-	
+#auth-container .check.b + label{
+	margin-right:5px;
 }
 
 
-#container-auth a{
+#auth-container a{
 	flex-grow: 1;
   	text-align: right;
 }

@@ -6,26 +6,27 @@
 {{/block}}
 
 {{block body}}
-	<div id='container-auth'>
+	<div id='auth-container'>
 
-		<h1>Sign in</h1>
+		<h1 class='auth-title'>Gate CMS</h1>
 
 		<br>
 
 		<form method='POST'>
 			<div>
 				<div>
-					<div>
-						<input type='text' name='{{$auth -> getData('user') -> name}}' value='{{$auth -> getData('user') -> value}}' class='input d' placeholder='{{$auth -> getData('user') -> label}}' required autofocus autocomplete='off'>
-					</div>
-					<div>
-						<input type='password' name='{{$auth -> getData('pass') -> name}}' class='input d' placeholder='{{$auth -> getData('pass') -> label}}' required autocomplete='off'>
-					</div>
-				
+					<input type='text' name='{{$auth -> getData('user') -> name}}' value='{{$auth -> getData('user') -> value}}' class='auth-input' placeholder='{{$auth -> getData('user') -> label}}' required autofocus autocomplete='off'>
 				</div>
-				<div id='bar-sub'>
-					<input type='submit' name='{{$auth -> getData('login') -> name}}' value='{{$auth -> getData('login') -> label}}' class='button b'>
-						
+				<div>
+					<input type='password' name='{{$auth -> getData('pass') -> name}}' class='auth-input' placeholder='{{$auth -> getData('pass') -> label}}' required autocomplete='off'>
+				</div>
+				<div>
+
+					<input type='submit' name='{{$auth -> getData('login') -> name}}' value='{{$auth -> getData('login') -> label}}' class='auth-button'>
+					
+				</div>
+				<div class='auth-rememberme-container'>
+
 					<input type='checkbox' id='rememberMe' name='{{$auth -> getData('remember') -> name}}' class='check b'>
 					<label for='rememberMe' class='checkbox'></label>
 					<label for='rememberMe'>{{$auth -> getData('remember') -> label}}</label>

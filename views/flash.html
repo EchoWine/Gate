@@ -1,0 +1,55 @@
+{{for Flash::get('error') as $message}}
+	<div class='alert alert-danger'>
+		{{if is_array($message)}}
+			<ul>
+			{{for $message as $mex}}
+				<li>{{$mex}}</li>
+			{{/for}}
+			</ul>
+		{{else}}
+			{{$message}}
+		{{/if}}
+	</div>
+{{/for}}
+
+{{for Flash::get('warning') as $message}}
+	<div class='alert alert-warning'>
+		{{if is_array($message)}}
+			<ul>
+			{{for $message as $mex}}
+				<li>{{$mex}}</li>
+			{{/for}}
+			</ul>
+		{{else}}
+			{{$message}}
+		{{/if}}
+	</div>
+{{/for}}
+
+{{for Flash::get('success') as $message}}
+	<div class='alert alert-success'>
+		{{if is_array($message)}}
+			<ul>
+			{{for $message as $mex}}
+				<li>{{$mex}}</li>
+			{{/for}}
+			</ul>
+		{{else}}
+			{{$message}}
+		{{/if}}
+	</div>
+{{/for}}
+
+{{for Flash::get('info') as $message}}
+	<div class='alert alert-info'>
+		{{if is_array($message)}}
+			<ul>
+			{{for $message as $mex}}
+				<li>{{$mex}}</li>
+			{{/for}}
+			</ul>
+		{{else}}
+			{{$message}}
+		{{/if}}
+	</div>
+{{/for}}

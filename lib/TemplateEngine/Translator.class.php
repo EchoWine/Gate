@@ -44,7 +44,7 @@ class Translator{
 
 		$content = $this -> t_block($content);
 		$content = $this -> t_include($content);
-		$content = $this -> t_array($content);
+		// $content = $this -> t_array($content);
 		$content = $this -> t_if($content);
 		$content = $this -> t_for($content);
 		$content = $this -> t_print($content);

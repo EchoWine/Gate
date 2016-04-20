@@ -3,6 +3,6 @@
 	use CoreWine\Route as Route;
 	
 	Route::get("/",['as' => 'index','callback' => function(){
-		return view('admin');
+		return view('layout-admin');
 	}]);
 ?>

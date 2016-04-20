@@ -2,7 +2,7 @@
 
 {{block stylesheet}}
 	{{parent}}
-	<link rel='stylesheet' href='{{$path_auth}}/Resources/public/assets/css/main.css'>
+	<link rel='stylesheet' href='{{assets('assets/css/main.css','Auth')}}'>
 {{/block}}
 
 {{block body}}
@@ -14,22 +14,23 @@
 
 		<form method='POST'>
 			<div>
+				{{include flash}}
 				<div>
-					<input type='text' name='{{$auth -> getData('user') -> name}}' value='{{$auth -> getData('user') -> value}}' class='auth-input' placeholder='{{$auth -> getData('user') -> label}}' required autofocus autocomplete='off'>
+					<input type='text' name='user' value="{{post('user')}}" class='auth-input' placeholder='Username or Email' required autofocus autocomplete='off'>
 				</div>
 				<div>
-					<input type='password' name='{{$auth -> getData('pass') -> name}}' class='auth-input' placeholder='{{$auth -> getData('pass') -> label}}' required autocomplete='off'>
+					<input type='password' name='pass' value='{{post('pass')}}' class='auth-input' placeholder='Password' required autocomplete='off'>
 				</div>
 				<div>
 
-					<input type='submit' name='{{$auth -> getData('login') -> name}}' value='{{$auth -> getData('login') -> label}}' class='auth-button'>
+					<input type='submit' name='login' value='Login' class='auth-button'>
 					
 				</div>
 				<div class='auth-rememberme-container'>
 
-					<input type='checkbox' id='rememberMe' name='{{$auth -> getData('remember') -> name}}' class='check b'>
+					<input type='checkbox' id='rememberMe' name='remember' class='check b'>
 					<label for='rememberMe' class='checkbox'></label>
-					<label for='rememberMe'>{{$auth -> getData('remember') -> label}}</label>
+					<label for='rememberMe'>Remember me</label>
 
 				</div>
 			</div>
@@ -37,4 +38,3 @@
 
 	</div>
 {{/block}}
-a

@@ -1,6 +1,7 @@
 <?php
 	
 	use CoreWine\Route as Route;
+	use CoreWine\Request as Request;
 	
 	function isJson($s){
 		json_decode($s);
@@ -22,4 +23,16 @@
 		Route::view($data);
 		return TemplateEngine::html($file);
 	}
+
+	function assets($url,$module = ''){
+
+		$base = !empty($module) ? Request::getDirUrl().'../modules/'.$module.'/Resources/public/' : Request::getDirUrl();
+		return $base.$url;
+	}
+
+	function post($name){
+		$post = Request::post($name);
+		return $post != null ? $post : '';
+	}
+
 ?>

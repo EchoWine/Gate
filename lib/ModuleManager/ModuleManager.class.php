@@ -1,4 +1,7 @@
 <?php
+
+use CoreWine\Cfg;
+
 class ModuleManager{
   	
 
@@ -58,7 +61,7 @@ class ModuleManager{
 	public static function load($path){
 		$basePath = basename($path);
 
-		$folders  = ['Controller','Model'];
+		$folders = ['Controller','Model','Repository','Service','Entity'];
 
 		if(!empty(self::$list[$basePath]))
 			return;
@@ -76,6 +79,15 @@ class ModuleManager{
 
 				if($folder == 'Controller')
 					self::$controllers[] = $name_class;
+			}
+
+			# Set config
+			foreach(glob($path.'/Resources/config/*') as $file){
+				$cfgs = include $file;
+				$base = basename($file,".php");
+				foreach($cfgs as $cfg_name => $cfg_value){
+					Cfg::set($base.".".$cfg_name,$cfg_value);
+				}
 			}
 		}
 

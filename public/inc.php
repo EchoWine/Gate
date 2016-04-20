@@ -44,6 +44,11 @@
 	ModuleManager::loaded();
 
 
+	# Alias
+	class_alias('CoreWine\Request', 'Request');
+	class_alias('CoreWine\Route', 'Route');
+	class_alias('CoreWine\Flash', 'Flash');
+	class_alias('Auth\Service\Auth', 'Auth');
 
 	# Load template
 	TemplateEngine::ini(PATH_STORAGE);
@@ -56,7 +61,5 @@
 
 	# Include template page of modules
 	ModuleManager::loadViews();
-	
-
 
 ?>

@@ -2,55 +2,41 @@
 
 namespace Auth\Controller;
 
-use Auth\Model\Auth;
-use CoreWine\Request as Request;
-use CoreWine\Route as Route;
+use Auth\Service\Auth;
+use Auth\Repository\AuthRepository;
+use CoreWine\Request;
+use CoreWine\Route;
+use CoreWine\Flash;
+use CoreWine\Cfg;
 use FrameworkWine\Controller as Controller;
 
 class AuthController extends Controller{
 
 	/**
-	 * Is user logged
-	 */
-	public $logged;
-
-	/**
-	 * Information about current user
-	 */
-	public $info;
-
-	/**
-	 * Config
-	 */
-	public $cfg;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct(){
-		$this -> cfg = include dirname(__FILE__)."/../Resources/config/config.php";
-	}
-
-	/**
-	 * Response
-	 */
-	public $response = [];
-
-	/**
 	 * Routes
 	 */
 	public function __routes(){
-		Route::global(['auth' => $this,'path_auth' => Request::getDirUrl().'../modules/Auth']);
+		Route::global(['auth' => $this]);
 		Route::get('/login',['as' => 'login','callback' => 'loginAction']);
-		$this -> redirectRouteLogin();
 	}
 
 	/**
 	 * Check
 	 */
 	public function __check(){
+
+		Auth::ini();
+
+		$this -> checkAttemptLogout();
+		$this -> checkAttemptLogin();
 		$this -> redirectRouteLogin();
-		$this -> check();
+	}
+
+	/**
+	 * Route to login
+	 */
+	public static function loginAction(){
+		return static::view('Auth/login');
 	}
 
 	/**
@@ -58,97 +44,73 @@ class AuthController extends Controller{
 	 */
 	public function redirectRouteLogin(){
 
-		if(!Route::is('login') && !$this -> logged)
+		if(!Route::is('login') && !Auth::logged())
 			Request::redirect(Route::url('login'));
+
+		if(Route::is('login') && Auth::logged())
+			Request::redirect(Route::url('index'));
 		
-	}
-
-	public static function loginAction(){
-		return static::view('/login');
-	}
-
-	/**
-	 * Check all the interaction with user
-	 */
-	public function check(){
-		$this -> model = new Auth($this -> cfg);
-		$this -> model -> alterTable();
-		$this -> updateData();
-
-		$this -> model -> cleanSession();
-		$this -> info = $this -> model -> checkSession();
-		$this -> logged = !empty($this -> info);
-
-		$this -> checkAttemptLogout();
-		$this -> checkAttemptLogin();
-	}
-
-	/**
-	 * Check attempt logout
-	 */
-	public function checkAttemptLogout(){
-		if($this -> logged && Request::post('logout') !== null)
-			$this -> model -> logout();
 	}
 
 	/**
 	 * Check attempt login
 	 */
 	public function checkAttemptLogin(){
-		
-		if(!$this -> logged && Request::post('login') !== null)
-			$this -> response[] =  $this -> model -> login(
-				$this -> getData('user') -> value,
-				$this -> getData('pass') -> value,
-				$this -> getData('remember') -> value !== null
-			);
 
+		if(!Auth::logged() && Request::post('login') !== null){
+			$this -> checkLogin();
+			Request::refresh();
+
+		}
 	}
 
-	/**
-	 * Retrieve all data sent by user
-	 *
-	 * @return array data
-	 */
-	public function retrieveData(){
-		$c = $this -> cfg['data'];
-		return [
+	public function checkLogin(){
 
-			# User: Username or Email (depends on config)
-			'user' => new \stdDataPost($c['post_user'],null,'Username or E-mail'),
+		$user = Request::post('user');
+		$pass = Request::post('pass');
+		$type = Request::post('remember') !== null;
+		$password = Auth::getHashPass($pass);
+		$users = AuthRepository::getUsersByRaw($user,$password);
 
-			# Password
-			'pass' => new \stdDataPost($c['post_pass'],null,'Password'),
+		$type = $type == 1 ? Cfg::get('Auth.remember') : Cfg::get('Auth.normal');
 
-			# Login
-			'login' => new \stdDataPost($c['post_login'],null,'Login'),
+		if(($users_num = count($users)) > 1){
+			Flash::add('error','Unable to determine a single user with this data');	
 
-			# Logout
-			'logout' => new \stdDataPost($c['post_logout'],null,'Logout'),
+		}else if($users_num == 1){
 
-			# Remember me
-			'remember' => new \stdDataPost($c['post_remember'],null,'Remember me')
+			Auth::login($users[0],$type);
+		}else{
+
+			if(Cfg::get('Auth.ambiguous')){
+				Flash::add('error','The data entered is incorrect');
+			}else{
+
+				if($q['user'] !== $user)
+					Flash::add('error','Wrong username/email');
 				
-		];
+
+				if($q['pass'] !== $pass)
+					Flash::add('error','Wrong password');
+				
+
+			}
+
+
+		}
+			
 	}
 
 	/**
-	 * Get current info about user
-	 *
-	 * @return object info
+	 * Check attempt logout
 	 */
-	public function getUserInfo(){
-		return $this -> info;
+	public function checkAttemptLogout(){
+		if(Auth::logged() && Request::post('logout') !== null){
+			Auth::logout();
+			Request::refresh();
+		}
 	}
 
-	/**
-	 * Get current display name (user or email)
-	 *
-	 * @return string display name
-	 */
-	public function getUserDisplay(){
-		return !empty($this -> info) ? $this -> model -> getUserDisplay($this -> info) : '';
-	}
 
 }
 

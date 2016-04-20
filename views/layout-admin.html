@@ -10,18 +10,25 @@
 	<link rel='shortcut icon' type='image/x-icon' href='{{path}}assets/img/favicon.png'>
 
 	{{block stylesheet}}
-		<link rel='stylesheet' href='{{path}}assets/css/main.css'>
-		<link rel='stylesheet' href='{{path}}assets/css/nav.css'>
-		<link rel='stylesheet' href='{{path}}assets/css/input.css'>
-		<link rel='stylesheet' href='{{path}}assets/css/header.css'>
-		<link rel='stylesheet' href='{{path}}assets/css/font-awesome.css'>
+		<link rel='stylesheet' href='{{assets('assets/css/main.css')}}'>
+		<link rel='stylesheet' href='{{assets('assets/css/nav.css')}}'>
+		<link rel='stylesheet' href='{{assets('assets/css/input.css')}}'>
+		<link rel='stylesheet' href='{{assets('assets/css/header.css')}}'>
+		<link rel='stylesheet' href='{{assets('assets/css/font-awesome.css')}}'>
+		<link rel='stylesheet' href='{{assets('assets/css/header.css','Auth')}}'>
+		<link rel='stylesheet' href='{{assets('assets/css/main.css','Auth')}}'>
 	{{/block}}
 </head>
 <body>
 
 	{{block body}}
 
-		{{block header}}{{/block}}
+		{{block header}}
+			<div id='header'>
+				<div id='header-main'></div>
+				{{include Auth/admin/header-nav}}
+			</div>
+		{{/block}}
 
 		{{block container}}
 			<div id='container'>
@@ -33,7 +40,6 @@
 								<button class='button s cl_st'><span class='fa fa-list'></span></button>
 							</div>
 							<ul>
-								{{include nav}}
 							</ul>
 						</div>
 					</div>
@@ -42,7 +48,12 @@
 				{{block content}}
 					<div id='content'>
 						<h1>Sample title</h1>
-						<div> Sample Content </div>
+						<div>
+
+							{{include flash}}
+
+						
+						</div>
 					</div>
 				{{/block}}
 			</div>

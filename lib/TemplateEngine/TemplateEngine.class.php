@@ -89,13 +89,21 @@ class TemplateEngine{
 	 * @param string $p file name
 	 * @return array array of files to be included
 	 */
-	public static function getInclude($p,$sub = null){
-
-		$p = self::parsePath($p);
-
-		$c = self::getPathSourceFile($p,$sub).".php";
+	public static function getInclude($filename,$sub = null){
+		
+		$storage = null;
+		foreach(TemplateEngine::$files as $path => $files){
+			foreach($files as $file){
+				if($file -> file == $filename){
+					$storage = $file -> storage;
+				}
+			}
+		}
+		if($storage == null){
+			die('No storage found');
+		}
 	
-		return $c;
+		return $storage.".php";
 
 	}
 
@@ -183,6 +191,7 @@ class TemplateEngine{
 
 			$path_filename = self::getPathViewBySource($pathSource,$k);
 			$filename = $path_filename."/".basename($k,".html");
+
 			$b = self::getPathSourceFile($filename,$subPath);
 
 			$pathStorageFile = $pathStorage."/".$b.".php";
@@ -202,7 +211,11 @@ class TemplateEngine{
 			$file = $subPath.$filename;
 			if($file[0] == "/")$file = substr($file, 1);
 
-			self::$files[$pathSource][] = $file;
+			self::$files[$pathSource][] = (object)[
+				'file' => $file,
+				'sub' => $subPath,
+				'storage' => $b
+			];
 		}
 
 		if(!empty(self::$error)){
@@ -243,11 +256,29 @@ class TemplateEngine{
 	 */
 	public static function getSourceFile($filename){
 
+		$filename = self::getFullPathFile($filename);
+
+		if($filename !== null)
+			return TemplateEngine::getContentsByFilename($filename.".html");
+
+		die('No file found');
+
+	}
+
+
+	/**
+	 * Get source of file based on relative filename
+	 * 
+	 * @param string $filename
+	 * @return string
+	 */
+	public static function getFullPathFile($filename){
+
 
 		foreach(TemplateEngine::$files as $path => $files){
 			foreach($files as $file){
-				if($file == $filename){
-					return TemplateEngine::getContentsByFilename($path."/".$file.".html");
+				if($file -> file == $filename){
+					return $path."/".$file -> file;
 				}
 			}
 		}
@@ -255,7 +286,6 @@ class TemplateEngine{
 		die('No file found');
 
 	}
-	
 	/**
 	 * Print error
 	 *

@@ -47,7 +47,6 @@ class Auth{
 
 	/**
 	 * Check if current user is logged
-	 *
 	 */
 	public static function checkSession(){
 

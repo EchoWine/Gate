@@ -16,7 +16,6 @@ class AuthController extends Controller{
 	 * Routes
 	 */
 	public function __routes(){
-		Route::global(['auth' => $this]);
 		Route::get('/login',['as' => 'login','callback' => 'loginAction']);
 	}
 
@@ -64,6 +63,9 @@ class AuthController extends Controller{
 		}
 	}
 
+	/**
+	 * Check login
+	 */
 	public function checkLogin(){
 
 		$user = Request::post('user');

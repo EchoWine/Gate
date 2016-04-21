@@ -7,14 +7,27 @@ use CoreWine\Cfg;
 
 class AuthRepository{
 
+	/**
+	 * Name table session
+	 */
 	const TABLE_SESSION = 'session';
+
+	/**
+	 * Name table user
+	 */
 	const TABLE_USER = 'user';
 
+	/**
+	 * Alter schema
+	 */
 	public static function alterSchema(){
 		AuthRepository::alterSchemaSession();
 		AuthRepository::alterSchemaUser();
 	}
 
+	/**
+	 * Schema table Session
+	 */
 	public static function alterSchemaSession(){
 
 		DB::schema(AuthRepository::TABLE_SESSION,function($table){
@@ -24,14 +37,10 @@ class AuthRepository{
 		});
 	}
 
-	public static function user(){
-		return DB::table(AuthRepository::TABLE_USER);
-	}
 
-	public static function session(){
-		return DB::table(AuthRepository::TABLE_SESSION);
-	}
-
+	/**
+	 * Schema table user
+	 */
 	public static function alterSchemaUser(){
 
 		DB::schema(AuthRepository::TABLE_USER,function($table){
@@ -41,16 +50,55 @@ class AuthRepository{
 			$table -> string('email');
 		});
 
-		
 	}
 
+	/**
+	 * Get query builder of table user 
+	 *
+	 * @return CoreWine\DB\QueryBuilder
+	 */
+	public static function user(){
+		return DB::table(AuthRepository::TABLE_USER);
+	}
+
+	/**
+	 * Get query builder of table session
+	 *
+	 * @return CoreWine\DB\QueryBuilder
+	 */
+	public static function session(){
+		return DB::table(AuthRepository::TABLE_SESSION);
+	}
+
+	/**
+	 * Get query builder of table session joined with user
+	 *
+	 * @return CoreWine\DB\QueryBuilder
+	 */
+	public static function userSession(){
+		return DB::table(AuthRepository::TABLE_SESSION)
+		-> rightJoin(AuthRepository::TABLE_USER,'user_id','id');
+	}
+
+
+	/**
+	 * Delete session expired
+	 */
 	public static function removeSessionExpired(){
-		return DB::table(AuthRepository::TABLE_SESSION) -> where('expire','<',time()) -> delete();
+		return AuthRepository::session() 
+		-> where('expire','<',time())
+		-> delete();
 	}
 
+	/**
+	 * Get user by SID
+	 *
+	 * @param string $sid
+	 * @param 
+	 */
 	public static function getUserBySID($sid){
-		return DB::table(AuthRepository::TABLE_SESSION) -> where('sid',$sid) 
-		-> rightJoin(AuthRepository::TABLE_USER,'user_id','id')
+		return AuthRepository::userSession()
+		-> where('sid',$sid) 
 		-> get();
 
 	}
@@ -63,7 +111,7 @@ class AuthRepository{
 	 */
 	public static function deleteSessionBySID($sid){
 		
-		return DB::table(AuthRepository::TABLE_SESSION)
+		return AuthRepository::session()
 		-> where('sid',$sid) 
 		-> delete();
 	}
@@ -85,6 +133,11 @@ class AuthRepository{
 		return $sid;
 	}
 
+	/**
+	 * Get a user using a username/email 
+	 * 
+	 *
+	 */
 	public static function getUsersByRaw($usernameOrEmail,$password){
 		
 		# Building query

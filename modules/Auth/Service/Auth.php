@@ -22,6 +22,9 @@ class Auth{
 	 */
 	public static $session = null;
 
+	/**
+	 * Initilization
+	 */
 	public static function ini(){
 		AuthRepository::alterSchema();
 		Auth::createFirstUser();
@@ -29,17 +32,19 @@ class Auth{
 		Auth::checkSession();
 	}
 
-
+	/**
+	 * Create first user if is empty
+	 */
 	public static function createFirstUser(){		
 		if(AuthRepository::user() -> count() == 0){
 			AuthRepository::user() -> insert([
 				'username' => Cfg::get('Auth.default.username'),
 				'email' => Cfg::get('Auth.default.email'),
 				'password' => Auth::getHashPass(Cfg::get('Auth.default.password'))
-	 
 			]);
 		}
 	}
+
 	/**
 	 * Check if current user is logged
 	 *
@@ -65,6 +70,9 @@ class Auth{
 				Auth::$session -> user_id = $user['user_id'];
 				Auth::$session -> expire = $user['expire'];
 
+
+				Session::getById();
+
 			}else
 				Request::unsetCookie(Cfg::get('Auth.cookie'));
 			
@@ -73,19 +81,32 @@ class Auth{
 		return [];
 	}
 
+	/**
+	 * Get entity User
+	 *
+	 * @return Auth\Entity\User
+	 */
 	public static function user(){
 		return Auth::$user;
 	}
 
-
+	/**
+	 * Get entity Session
+	 *
+	 * @return Auth\Entity\Session
+	 */
 	public static function session(){
 		return Auth::$session;
 	}
 
+	/**
+	 * User is logged
+	 *
+	 * @return bool
+	 */
 	public static function logged(){
 		return Auth::user() !== null;
 	}
-
 
 	/**
 	 * Logout current user
@@ -123,7 +144,6 @@ class Auth{
 			Request::setSession(Cfg::get('Auth.cookie'),$sid);
 
 	}
-
 	
 	/**
 	 * Get hash password

@@ -86,13 +86,8 @@ class Translator{
 	public function t_blockBySource($source,$content){
 		preg_match_all("/{{block ([^\}]*)}}((((?R)|.|\n)*)){{\/block}}/iU",$content,$r);
 
-		preg_match_all("/{{block ([^\}]*)}}((((?R)|.|\n)*)){{\/block}}/iU",$source,$result_source);
+		$source_c = $this -> t_blockBySourceRecursive($source);
 
-
-		$source_c = [];
-		foreach($result_source[1] as $n => $k){
-			$source_c[$result_source[1][$n]] = [0 => $result_source[0][$n],1 => $result_source[1][$n],2 => $result_source[2][$n]];
-		}
 
 		foreach($r[1] as $n => $k){
 			if(isset($source_c[$k])){
@@ -104,6 +99,20 @@ class Translator{
 		return $source;
 	}
 
+	public function t_blockBySourceRecursive($source){
+
+		preg_match_all("/{{block ([^\}]*)}}((((?R)|.|\n)*)){{\/block}}/iU",$source,$result);
+
+		$return = [];
+		foreach($result[2] as $n => $res){
+			$t = $this -> t_blockBySourceRecursive($res);
+			$return[$result[1][$n]] = [$result[0][$n],$result[1][$n],$result[2][$n]];
+			$return = array_merge($return,$t);
+		}
+
+		return $return;
+	}
+
 	/**
 	 * Translate Include
 	 *
@@ -112,76 +121,11 @@ class Translator{
 	 */
 	public function t_include($content){
 
-		if(!empty($this -> relativePath)){
-
-			preg_match_all('/{{include ([^\}]*)}}/iU',$content,$r);
-
-			foreach($r[1] as $n => $k){
-
-				if($this -> relativePath[0] == '/')
-					$this -> relativePath = substr($this -> relativePath,1);
-				
-				$fc = '';
-
-				if($k[0] == '.'){
-					$k = substr($k,1);
-					$fc = '.';
-				}
-
-				if($k[0] != '/'){
-
-					$content = str_replace($r[0][$n],"{{include $fc"."$this -> relativePath/".$k."}}",$content);
-
-				}else{
-
-					$k = substr($k,1);
-
-					$content = str_replace($r[0][$n],"{{include $fc"."".$k."}}",$content);
-
-				}
-
-			}
-
-		}
-
-		# Variable scope include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$content,$r);
-		foreach($r[1] as $n => $k){
-
-			$k = preg_replace("/[\t\n\r]/iU","",$k);
-			preg_match_all('/^(.*) \{(.*)$/iU',$k,$r1);
-			if(!empty($r1[2][0])){
-				$t = $r1[2][0];
-				$t = "<?php ".str_replace(",",";",$r1[2][0])."; ?>";
-				$content = str_replace($r[0][$n],$t."{{include ".$r1[1][0]."}",$content);
-			}
-		}
-
-		if(!empty($this -> subPath)){
-
-			# Include sub Class
-			preg_match_all('/{{include \.([^\}]*)}}/iU',$content,$r);
-			foreach($r[0] as $n => $k){
-				$content = str_replace($k,"{{include ".self::getNameSub("/".$r[1][$n],$this -> subPath)."}}",$content);
-				
-			}
-		}
-		
-
 		# Include
 		preg_match_all('/{{include ([^\}]*)}}/iU',$content,$r);
 		foreach($r[1] as $n => $k){
 			$content = str_replace($r[0][$n],'<?php include TemplateEngine::getInclude("'.$k.'"); ?>',$content);
 		}
-
-		# include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$content,$r);
-		
-		foreach($r[0] as $n => $k){
-
-			$content = str_replace($k,'<?php include '.$r[1][$n].'; ?>',$content);
-		}
-
 
 		return $content;
 	}

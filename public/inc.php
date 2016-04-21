@@ -49,6 +49,7 @@
 	class_alias('CoreWine\Route', 'Route');
 	class_alias('CoreWine\Flash', 'Flash');
 	class_alias('Auth\Service\Auth', 'Auth');
+	class_alias('SystemInfo\Service\SystemInfo', 'SystemInfo');
 
 	# Load template
 	TemplateEngine::ini(PATH_STORAGE);

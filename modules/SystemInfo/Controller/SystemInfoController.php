@@ -22,22 +22,7 @@ class SystemInfoController extends Controller{
 	 * Routes
 	 */
 	public function __routes(){
-		Route::add('index',$this -> navAction());
 		Route::get('/system-info',['as' => 'system-info','callback' => 'index']);
-	}
-
-	/**
-	 * Set navigation
-	 */
-	public function navAction(){
-
-		$SystemInfo = [
-			'nav' => [
-				'label' => 'System Info',
-			]
-		];
-
-		return ['SystemInfo' => $SystemInfo];
 	}
 
 	/**
@@ -45,21 +30,7 @@ class SystemInfoController extends Controller{
 	 */
 	public static function index(){
 
-		$SystemInfo = [
-			'Server_Label' => 'Server',
-			'Server_Info' => SystemInfo::getServerInfo(),
-			'PHP_Label' => 'PHP',
-			'PHP_Info' => SystemInfo::getPHPInfo(),
-			'OS_Label' => 'OS',
-			'OS_Info' => SystemInfo::getOSInfo(),
-			'DB_Label' => 'DB',
-			'DB_Info' => SystemInfo::getDatabaseInfo(),
-			'nav' => [
-				'label' => 'System Info',
-			]
-		];
-
-		return static::view('admin/index',['SystemInfo' => $SystemInfo]);
+		return static::view('SystemInfo/admin/index');
 
 	}
 

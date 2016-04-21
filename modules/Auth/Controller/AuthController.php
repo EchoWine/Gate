@@ -2,13 +2,15 @@
 
 namespace Auth\Controller;
 
-use Auth\Service\Auth;
-use Auth\Repository\AuthRepository;
 use CoreWine\Request;
 use CoreWine\Route;
 use CoreWine\Flash;
 use CoreWine\Cfg;
+
 use FrameworkWine\Controller as Controller;
+
+use Auth\Service\Auth;
+use Auth\Repository\AuthRepository;
 
 class AuthController extends Controller{
 

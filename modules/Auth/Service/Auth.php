@@ -69,9 +69,7 @@ class Auth{
 				Auth::$session -> sid = $user['sid'];
 				Auth::$session -> user_id = $user['user_id'];
 				Auth::$session -> expire = $user['expire'];
-
-
-				Session::getById();
+				
 
 			}else
 				Request::unsetCookie(Cfg::get('Auth.cookie'));

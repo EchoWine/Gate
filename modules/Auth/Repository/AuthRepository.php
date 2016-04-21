@@ -94,7 +94,7 @@ class AuthRepository{
 	 * Get user by SID
 	 *
 	 * @param string $sid
-	 * @param 
+	 * @return result
 	 */
 	public static function getUserBySID($sid){
 		return AuthRepository::userSession()
@@ -136,7 +136,9 @@ class AuthRepository{
 	/**
 	 * Get a user using a username/email 
 	 * 
-	 *
+	 * @param string $usernameOrEmail
+	 * @param string $password
+	 * @return result
 	 */
 	public static function getUsersByRaw($usernameOrEmail,$password){
 		

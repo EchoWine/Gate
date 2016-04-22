@@ -26,7 +26,7 @@
 
 	function assets($url,$module = ''){
 
-		$base = !empty($module) ? Request::getDirUrl().'../modules/'.$module.'/Resources/public/' : Request::getDirUrl();
+		$base = !empty($module) ? Request::getDirUrl().'../src/'.$module.'/Resources/public/' : Request::getDirUrl();
 		return $base.$url;
 	}
 

@@ -1,0 +1,104 @@
+@media only screen and (max-width:420px){
+	.box-window{
+		left:0 !important;
+		top:50px !important;
+		margin:0 !important;
+		padding:10px;
+	}
+}
+
+@media only screen and (max-width:900px){
+	.box-window{
+		top:50% !important;
+		margin-top:-100px !important;
+	}
+}
+@media only screen and (max-height:200px){
+	.box-window{
+		top:10px !important;
+		margin-top:0 !important;
+	}
+}
+
+#box-container{
+	width:100%;
+	height:0%;
+	position:fixed;
+	top:0;
+	left:0;
+	background:rgba(0,0,0,0.4);
+	opacity:0;
+	transition:z-index 0.5s, opacity 0.5s;
+}
+
+#box-container[active]{
+	opacity:1;
+	z-index:99;
+	height:100%;
+}
+
+
+.box-window{
+	position:fixed;
+	top:200px;
+	left:50%;
+	margin-left:-200px;
+	max-width:400px;
+	width:100%;
+	z-index:-1;
+	opacity:0;
+	transition:opacity 0.5s linear;
+}
+
+.box-window[active]{
+	opacity:1;
+	z-index:3;
+}
+
+
+.box-content{
+	width:100%;
+	height:100%;
+	background:white;
+}
+
+.box-content h1{
+	display:inline-block;
+	font-size:20px;
+	color: #666;
+	font-weight: bold;
+	margin:0;
+}
+.box-content > div:first-child{
+	cursor: default;
+	padding:10px 15px;
+}
+
+.box-content > div:first-child .button{
+	float:right;
+	cursor:pointer;
+}
+
+.box-content > div:last-child{
+	padding:5px 15px 15px 15px;
+}
+
+.box-content .input.n,.box-content .select.n{
+    flex-grow:1;
+}
+
+.box-content .button.a{
+    margin-left:10px;
+}
+
+#box-confirm > div{
+	padding-top: 5px;
+    width:100%;
+}
+
+.box-content .box-confirm-button{
+    width: 100%;
+    padding-top: 10px;
+    justify-content: flex-end;
+    display:flex;
+}

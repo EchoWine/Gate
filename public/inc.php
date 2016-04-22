@@ -6,7 +6,7 @@
 
 	# Path
 	define('PATH',dirname(__FILE__));
-	define('PATH_MODULE','../modules');
+	define('PATH_SRC','../src');
 	define('PATH_LIB','../lib');
 	define('PATH_CONFIG','../config');
 	define('PATH_VIEWS','../views');
@@ -23,33 +23,35 @@
 	include PATH_LIB."/stdData/main.php";
 
 	include PATH_LIB."/TemplateEngine/main.php";
-	include PATH_LIB."/ModuleManager/main.php";
+	include PATH_LIB."/SourceManager/main.php";
 	include PATH_LIB."/Data/main.php";
 
 	include PATH_LIB."/core/main.php";
 	
 	DB::connect(include PATH_CONFIG.'/database.php');
 
-	# Load all modules
-	#ModuleManager::loadAll(PATH_MODULE);
+	# Load all sources
+	#SourceManager::loadAll(PATH_SRC);
 
 	
-	# Modules
+	# Sources
 
-	ModuleManager::load(PATH_MODULE."/Auth");
-	ModuleManager::load(PATH_MODULE."/SystemInfo");
-	#ModuleManager::load(PATH_MODULE."/Item");
-	#ModuleManager::load(PATH_MODULE."/Credential");
+	#SourceManager::load(PATH_SRC."/Auth");
+	#SourceManager::load(PATH_SRC."/SystemInfo");
+	SourceManager::load(PATH_SRC."/Example");
+	SourceManager::load(PATH_SRC."/Item");
+	SourceManager::load(PATH_SRC."/Admin");
+	SourceManager::load(PATH_SRC."/User");
 	
-	ModuleManager::loaded();
+	SourceManager::loaded();
 
 
 	# Alias
 	class_alias('CoreWine\Request', 'Request');
 	class_alias('CoreWine\Route', 'Route');
 	class_alias('CoreWine\Flash', 'Flash');
-	class_alias('Auth\Service\Auth', 'Auth');
-	class_alias('SystemInfo\Service\SystemInfo', 'SystemInfo');
+	//class_alias('Auth\Service\Auth', 'Auth');
+	//class_alias('SystemInfo\Service\SystemInfo', 'SystemInfo');
 
 	# Load template
 	TemplateEngine::ini(PATH_STORAGE);
@@ -60,7 +62,7 @@
 	# Compile
 	TemplateEngine::compile(PATH_VIEWS);
 
-	# Include template page of modules
-	ModuleManager::loadViews();
+	# Include template page of sources
+	SourceManager::loadViews();
 
 ?>

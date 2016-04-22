@@ -8,7 +8,7 @@ Version 1.0
 Library:
 	- [x] DataBase
 	- [x] TemplateEngine
-	- [x] ModuleManager
+	- [x] SourceManager
 	- [ ] Lang
 	- [ ] Model, Controller, View
 

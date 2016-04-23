@@ -13,7 +13,6 @@
 
 	spl_autoload_register(__NAMESPACE__ . "\\loadClass");
 
-
 	use CoreWine\DataBase\DB as DB;
 	use CoreWine\Request as Request;
 	use CoreWine\Route as Route;

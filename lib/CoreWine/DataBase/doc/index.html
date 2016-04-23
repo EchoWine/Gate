@@ -1,0 +1,404 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200' rel='stylesheet' type='text/css'>
+	<link rel='stylesheet' href='main.css'>
+	<script src='main.js'></script>
+</head>
+<body>
+
+	<a id='back_top' href='#top'>Back top</a>
+	<div id='top'></div>
+	<div id='container'>
+
+		<h1>Documentation</h1>
+		<div id='menu'>
+			<ul>
+				<li><a href='#connection'>Connection</a></li>
+				<li><a href='#query'>Query</a></li>
+				<li><a href='#misc'>Miscellanous</a></li>
+				<li><a href='#transaction'>Transaction</a></li>
+				<li><a href='#restore'>Restore</a></li>
+				<li>
+					<a href='#querybuilder'>Query Builder</a>
+					<ul>
+						<li><a href='#querybuilder_select'>Select</a></li>
+						<li><a href='#querybuilder_where'>Where</a></li>
+						<li><a href='#querybuilder_where'>Aggregates</a></li>
+						<li><a href='#querybuilder_mix'>Order, Group by, Limit</a></li>
+						<li><a href='#querybuilder_join'>Join</a></li>
+						<li><a href='#querybuilder_update'>Update</a></li>
+						<li><a href='#querybuilder_insert'>Insert</a></li>
+						<li><a href='#querybuilder_delete'>Delete</a></li>
+						<li><a href='#querybuilder_alter'>Alter</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div id='content'>
+
+			<h2 id='database'>Introduction</h2>
+			<p>Introduction...</p>
+
+			<h2 id='connection'>Connection</h2>
+			<p>In order to perform a connection you need to use the connect method with the following parameters. </p>
+
+			<code class='code'>
+				DB::connect([
+					'driver' => 'mysql',
+					'hostname' => '127.0.0.1',
+					'database' => 'wine',
+					'username' => 'root',
+					'password' => '',
+					'charset'  => 'utf8',
+					'restore' => 5,
+					'alter_schema' => true,
+				]);	
+
+			</code>
+			
+			<h2 id='transaction'>Query</h2>
+			<p>Raw query</p>
+			<code class='code'>
+				DB::query("SELECT * FROM user");
+			</code>
+
+			<p>Query with binding param</p>
+			<code class='code'>
+				DB::execute("SELECT * FROM user WHERE name = :name",[':name' => 'mario']);
+			</code>
+
+			<p>Fetch</p>
+			<code class='code'>
+				$q = DB::execute("SELECT * FROM user WHERE name = :name",[':name' => 'mario']);
+				$results = DB::fetch($q);
+			</code>
+
+			<p>Count</p>
+			<code class='code'>
+				$q = DB::execute("SELECT * FROM user WHERE name = :name",[':name' => 'mario']);
+				$results = DB::count($q);
+			</code>
+
+			<p>Get last insert id</p>
+			<code class='code'>
+				DB::getInsertID();
+			</code>
+
+			<h2 id='transaction'>Transaction</h2>
+			<p>If you need you can perform a transaction. </p>
+			
+			<code class='code'>
+				DB::beginTransaction();
+				DB::commit();
+				DB::rollback();
+			</code>
+
+			<p>You can also use a closure. It will rollback if a will fail</p>
+			<code class='code'>
+				DB::transaction(function(){
+					DB::table('user') -> insert(['bonus' => 5]);
+					DB::table('user') -> where('bonus',3) -> delete();
+				});
+			</code>
+
+			<h2 id='restore'>Restore System</h2>
+			<p>You can create a restore point, perform queries and then "rollback" to the restored point. </p>
+			<p>This system is different with transaction because there isn't a "transaction": you can rollback whenever you want. </p>
+			<p>The maximum number of restoring point is defined when connection is made. After this the oldest will deleted </p>
+			
+			<code class='code'>
+				// Save a restore point
+				DB::save('user');
+
+				// Random query that manipulate the database
+				// Delete
+				DB::table('user') -> delete();
+
+				// End restoring point
+				if(...)
+					DB::confirm();
+
+				// Delete restore point, undo all
+				if(...)
+					DB::undo();
+
+				// Records empty
+				print_r(DB::table('user') -> lists());
+
+
+
+				// After several queries.. 
+				// Restore last operation
+				DB::restore();
+
+				// Records recovered
+				print_r(DB::table('user') -> lists());
+			</code>
+
+			<h2 id='misc'>Miscellanous</h2>
+			<p>Print queries log</p>
+			<code class='code'>
+				DB::printLog();
+			</code>
+
+			<p>Get information about server</p>
+			<code class='code'>
+				DB::getServerInfo();
+			</code>
+
+			<h2 id='querybuilder'>QueryBuilder</h2>
+			<p>The Query Builder provides a simple interface for the creation and execution query</p>
+			
+			<p>To call the Query Builder you need to call <code class='code inline'>table</code> method.<br>
+
+			<h3 id='querybuilder_select'>Select</h3>
+			
+			<p>Retrieving all the records from a table</p>
+			<code class='code'>
+				$result = DB::table('user') -> lists();
+			</code>
+
+			<p>Retrieving one record from a table</p>
+			<code class='code'>
+				$result = DB::table('user') -> get();
+			</code>
+
+			<p>Retrieving one record from a table specifying a select clause</p>
+			<code class='code'>
+				$result = DB::table('user') -> select(['name','surname']) -> get();
+			</code>
+
+			<p>Retrieving all the records from multiple tables</p>
+			<code class='code'>
+				$result = DB::table(['user','session']) -> lists();
+			</code>
+
+			<p>Nesting select</p>
+			<code class='code'>
+				$result = DB::table(function(){
+
+					return DB::table('user');
+
+				}) -> lists();
+			</code>
+
+			<h3 id='querybuilder_where'>Where</h3>
+
+			<p>Where clause</p>
+			<code class='code'>
+				$result = DB::table('user') -> where('id',1) -> get();
+			</code>
+
+			<p>Where Like clause</p>
+			<code class='code'>
+				$result = DB::table('user') -> whereLike('name','%a%') -> lists();
+			</code>
+
+			<p>Where IN clause</p>
+			<code class='code'>
+				$result = DB::table('user') -> whereIn('id',[1,2,3]) -> lists();
+			</code>
+
+			<p>Where Null clause</p>
+			<code class='code'>
+				$result = DB::table('user') -> whereNull('bonus') -> lists();
+			</code>
+
+			<p>Where Not Null clause</p>
+			<code class='code'>
+				$result = DB::table('user') -> whereNotNull('bonus') -> lists();
+			</code>
+
+			<p>Where Raw</p>
+			<code class='code'>
+				$result = DB::table(['user','session']) -> whereRaw('user.id = session.uid') -> lists();
+			</code>
+
+
+			<p>OR Where clause</p>
+			<code class='code'>
+				$result = DB::table('user') -> orWhere('id',1) -> orWhere('id',2)-> lists();
+			</code>
+
+			<p>
+				The same methods working with other OR clause: 
+				<code class='code inline'>orWhereLike</code> 
+				<code class='code inline'>orWhereIn</code> 
+				<code class='code inline'>orWhereNull</code> 
+				<code class='code inline'>orWhereRaw</code> 
+			</p>
+
+			<p>Advanced where</p>
+			<code class='code'>
+				$result = DB::table('user') 
+				-> where(function($q){
+
+					return $q -> orWhere('bonus',5) -> orWhere('malus',3);
+
+				})
+				-> where(function($q){
+
+					return $q -> orWhere('bonus',2) -> orWhere('malus',7);
+
+				}) 
+				-> lists();
+			</code>
+
+			<p>Specifying operator</p>
+			<code class='code'>
+				$result = DB::table('user') -> where('bonus','<',5) -> lists();
+			</code>
+
+			<h3 id='querybuilder_order'>Order by, Group by, Limit</h3>
+
+			<p>Order by desc</p>
+			<code class='code'>
+				$result = DB::table('user') -> orderByDesc('user') -> lists();
+			</code>
+
+			<p>Order by asc, group by</p>
+			<code class='code'>
+				$result = DB::table('user') 
+				-> orderByAsc('name') 
+				-> groupBy('bonus')
+				-> lists();
+			</code>
+
+			<p>Take, skip</p>
+			<p>Take 5 element and start from 3.
+			<code class='code'>
+				$result = DB::table('name') 
+				-> take(5)
+				-> skip(3)
+				-> lists();
+			</code>
+
+			<h3 id='querybuilder_aggregate'>Aggregate</h3>
+
+			<p>Using aggregates</p>
+			<code class='code'>
+				$result = DB::table('user') -> count();
+				$result = DB::table('user') -> max('bonus');
+				$result = DB::table('user') -> min('bonus');
+				$result = DB::table('user') -> avg('bonus');
+				$result = DB::table('user') -> sum('bonus');
+			</code>
+
+			<h3 id='querybuilder_join'>Join</h3>
+
+			<p>Retrieve all records from two tables joined</p>
+			<code class='code'>
+				$result = DB::table('user') -> join('session','session.uid','user.id') -> lists();
+			</code>
+
+			<p>Specifying operator</p>
+			<code class='code'>
+				$result = DB::table('user') -> join('session','session.uid','=',user.id') -> lists();
+			</code>
+
+				
+			<p>
+				The same methods working with other join: 
+				<code class='code inline'>leftJoin</code> 
+				<code class='code inline'>rightJoin</code>
+			</p>
+
+			<h3 id='querybuilder_update'>Update</h3>
+
+			<p>Update a single column</p>
+			<code class='code'>
+				DB::table('user') -> where('id',1) -> update('bonus',10);
+			</code>
+
+			<p>Update multiple columns</p>
+			<code class='code'>
+				DB::table('user') -> where('id',1) -> update(['bonus' => 10,'malus' => 3]);
+			</code>
+
+			<p>Update multiple condition</p>
+			<code class='code'>
+				DB::table('user') -> update([
+				[
+					['name','bonus'],
+					['name','malus'],
+					'date'
+				],
+				[
+					[
+						'mario' => 10,
+						'marco' => 77,
+						'paolo' => 2,
+						'luca' => 3
+					],
+					[
+						'mario' => 1,
+						'paolo' => 2,
+						'luca' => 3
+					],
+					2015
+				]);
+			</code>
+			Updates the column bonus = 10, malus = 1 and date = 2015, when the name is 'mario'.<br>
+			Updates the column bonus = 77, and date = 2015, when the name is 'marco'
+			etc...
+
+			<p>Increment/Decrement</p>
+			<code class='code'>
+				DB::table('user') -> where('id',1) -> increment('bonus');
+				DB::table('user') -> where('id',1) -> decrement('malus',10);
+			</code>
+			<p>The default value of second parameter is 1	</p>
+
+			<h3 id='querybuilder_insert'>Insert</h3>
+
+			<p>Insert a new record</p>
+			<code class='code'>
+				DB::table('user') -> insert(['name' => 'mario','surname' => 'rossi']);
+			</code>
+			
+			<p>Insert new records</p>
+			<code class='code'>
+				DB::table('user') -> insertMultiple(
+					['name','surname']
+					[
+						['mario','rossi'],
+						['paolo','gialli'],
+						['luca','bianchi'],
+					]
+				);
+			</code>
+
+			<p>Advanced insert</p>
+			<code class='code'>
+				DB::table('user') -> insertMultiple(['name','rossi'],function(){
+					return DB::table('reg') -> select(['name','surname']);
+				);
+			</code>
+
+			<h3 id='querybuilder_delete'>Delete</h3>
+
+			<p>Delete records</p>
+			<code class='code'>
+				DB::table('user') -> where('bonus','<',5) -> delete();
+			</code>
+			
+			<p>Truncate table</p>
+			<code class='code'>
+				DB::table('user') -> truncate();
+			</code>
+
+
+
+			<h3 id='querybuilder_alter'>Alter</h3>
+
+			<p>Create a column if doesn't exists</p>
+			<code class='code'>
+				DB::table('user') -> column('bonus') -> type('string') -> alter();
+			</code>
+
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+
+#container{
+	max-width:800px;
+	min-width:300px;
+	margin:50px auto;
+}
+
+body{
+	color: #525252;
+	font-family: "Source Sans Pro", sans-serif;
+
+}
+
+a{
+	color: #f4645f;
+	text-decoration:none;
+}
+
+a:hover{
+	color: #f1362f;
+}
+
+
+h1{
+	font-size: 48px;
+	font-weight: 200;
+}
+
+h2{
+	margin-top: 55px;
+	font-size: 30px;
+	font-weight: 400;
+	color: #525252;
+}
+
+h3{
+	font-size: 24px;
+	font-weight: 400;
+	margin-top: 45px;
+}
+
+h4{
+	font-size: 16px;
+	font-weight: 700;
+	margin-top: 35px;
+}
+
+ul,li{
+	margin:0;
+	padding:0;
+	display:block;
+}
+
+p{
+	font-size: 15px;
+	line-height: 1.70;
+	margin: 10px 0 20px;
+}
+
+blockquote{
+	background: #f4645f;
+	color: #fff;
+	border-radius: 3px;
+	margin: 10px 0 20px;
+	padding: 10px 15px;
+}
+
+blockquote p:last-child {
+	margin:0;
+}
+
+#menu{
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+#menu > ul > li > a{
+	font-weight: bold;
+}
+
+#menu li ul{
+	margin-left:40px;
+}
+
+#menu li::before{
+	content: "# ";
+	margin-right: .25em;
+	color: #f4645f;
+	opacity: .3;
+}
+
+#top{
+	position:absolute;
+	top:0;
+	width:0;
+}
+
+#back_top{
+	background: #f4645f;
+	color: #fff !important;
+	border-radius: 3px;
+	margin: 20px;
+	padding: 10px 15px;
+	right:0;
+	bottom:0;
+	position:fixed;
+}
+
+#back_top:hover{
+	background:#f1362f;
+}
+
+#content h2{
+	position:relative;
+}
+
+#content h2::before{
+	content: "#";
+	margin-left: -25px;
+	position: absolute;
+	font-size: 28px;
+	top: 2px;
+	color: #f4645f;
+	opacity: .6;
+}
+
+.code{
+
+    display:block;
+    word-break: break-all;
+    word-wrap: break-word;
+	padding: 10px;
+	margin: 10px 0 20px;
+    font-size: 11px;
+    vertical-align: middle;
+    
+    /*
+	background-color: #1d1f21;
+	color: #c5c8c6;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    */
+   
+    background: rgba(238, 238, 238, 0.35);
+	border-radius: 3px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125)
+	
+}
+
+.code.inline{
+	display:inline-block;
+	margin:0;
+	padding:0 4px;
+}
+
+.token.scope{
+	color: #DA564A;
+}
+
+.token.variable{
+	color: #4EA1DF;
+}
+
+.token.string, .token.string .token{
+	color: #2E7D32 !important;
+}
+
+.token.keyword{
+	color: #07a;
+}
+
+.token.number{
+	color: #DA564A;
+}
+
+.token.symbol{
+	color: #DA564A;
+}
+.token.punctuation{
+	color: #999;
+}

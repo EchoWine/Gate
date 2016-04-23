@@ -10,27 +10,27 @@ body{
   	font-weight:bold;
 }
 
-#auth-container{
+.auth-container{
 	padding:40px 30px;
 	max-width:350px;
 	margin:50px auto;
 }
 
-#auth-container form > div{
+.auth-container form > div{
 	margin:0 auto;
 }
 
-#auth-container > div > div > a{
+.auth-container > div > div > a{
 	float:right;
 }
 
-#auth-container .response{
+.auth-container .response{
 	max-width:450px;
 	margin-top:10px;
 }
 
 
-#auth-container a{
+.auth-container a{
 	flex-grow: 1;
   	text-align: right;
 }
@@ -64,42 +64,42 @@ body{
 	margin:10px 0;
 }
 
-#auth-container .check.b + label{
+.auth-container .check.b + label{
 	margin-right:5px;
 }
 
-.logout .button{
+.auth-logout .button{
 	cursor:pointer;
 }
 
-#header-user{
+.auth-header-user{
 	display:flex;
 	height:100%;
 	margin-right:20px;
 }
 
-#header-user > ul{
+.auth-header-user > ul{
 	list-style-type:none;
 	padding:0;
 	margin:0;
 	height:100%;
 	display: flex;
 }
-#header-user > ul > li:not(.inactive){
+.auth-header-user > ul > li:not(.inactive){
 	height:100%;
 	display:flex;
 	align-items:center;
 }
 
 
-#header-user > ul > li > *{
+.auth-header-user > ul > li > *{
 	font-size:14px;
 	color: #B4BCC8;
 	margin:5px;
 	text-decoration:none !important;
 }
 
-#header-user > ul > li > *:not(.inactive){
+.auth-header-user > ul > li > *:not(.inactive){
 	height:28px;
 	width:28px;
 	display:flex;
@@ -111,15 +111,15 @@ body{
 
 }
 
-#header-user > ul > li > * > *{
+.auth-header-user > ul > li > * > *{
 	align-self:center;
 }
 
-#header-user > ul > li > *:not(.inactive):hover{
+.auth-header-user > ul > li > *:not(.inactive):hover{
 	background-color: #3F4F62;
 }
 
 
-#header-user .logout .fa{
+.auth-header-user .auth-logout .fa{
 	margin-left: 2px;
 }

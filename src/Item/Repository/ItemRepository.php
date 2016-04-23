@@ -2,27 +2,23 @@
 
 namespace Item\Repository;
 
-use CoreWine\DB as DB;
+use CoreWine\DataBase\DB;
 
 class ItemRepository{
 
-	public $itemSchema;
+	public $schema;
 
-	public function __construct($itemSchema){
-		$this -> itemSchema = $itemSchema;
+	public function __construct($schema){
+		$this -> schema = $schema;
 	}
 
-	public function getItemSchema(){
-		return $this -> itemSchema;
-	}
 
 	public function alterSchema(){
-		$itemSchema = $this -> getItemSchema();
-		$fields = $itemSchema::$fields;
 
-		DB::schema($itemSchema::$table,function($table) use ($fields){
+		$fields = $this -> schema -> getFields();
+		DB::schema($this -> schema -> getTable(),function($table) use ($fields){
 			foreach($fields as $name => $field){
-				$table -> string($name);
+				$field -> alter($table);
 			}
 		});
 	}

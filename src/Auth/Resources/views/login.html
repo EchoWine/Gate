@@ -1,4 +1,4 @@
-{{extends layout-admin}}
+{{extends Admin/layout-admin}}
 
 {{block stylesheet}}
 	{{parent}}
@@ -6,7 +6,7 @@
 {{/block}}
 
 {{block body}}
-	<div id='auth-container'>
+	<div class='auth-container'>
 
 		<h1 class='auth-title'>Gate CMS</h1>
 
@@ -14,7 +14,7 @@
 
 		<form method='POST'>
 			<div>
-				{{include flash}}
+				{{include Admin/flash}}
 				<div>
 					<input type='text' name='user' value="{{post('user')}}" class='auth-input' placeholder='Username or Email' required autofocus autocomplete='off'>
 				</div>

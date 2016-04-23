@@ -2,7 +2,7 @@
 
 namespace Auth\Repository;
 
-use CoreWine\DB as DB;
+use CoreWine\DataBase\DB;
 use CoreWine\Cfg;
 
 class AuthRepository{
@@ -55,7 +55,7 @@ class AuthRepository{
 	/**
 	 * Get query builder of table user 
 	 *
-	 * @return CoreWine\DB\QueryBuilder
+	 * @return CoreWine\DataBase\QueryBuilder
 	 */
 	public static function user(){
 		return DB::table(AuthRepository::TABLE_USER);
@@ -64,7 +64,7 @@ class AuthRepository{
 	/**
 	 * Get query builder of table session
 	 *
-	 * @return CoreWine\DB\QueryBuilder
+	 * @return CoreWine\DataBase\QueryBuilder
 	 */
 	public static function session(){
 		return DB::table(AuthRepository::TABLE_SESSION);
@@ -73,7 +73,7 @@ class AuthRepository{
 	/**
 	 * Get query builder of table session joined with user
 	 *
-	 * @return CoreWine\DB\QueryBuilder
+	 * @return CoreWine\DataBase\QueryBuilder
 	 */
 	public static function userSession(){
 		return DB::table(AuthRepository::TABLE_SESSION)

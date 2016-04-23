@@ -2,25 +2,36 @@
 
 namespace Item\Controller;
 
-use CoreWine\DB as DB;
+use CoreWine\DataBase\DB;
 use CoreWine\Route as Route;
 use CoreWine\Request as Request;
 
+use CoreWine\SourceManager\Controller as Controller;
+
 use Item\Repository\ItemRepository;
 
-abstract class ItemController{
+abstract class ItemController extends Controller{
 
-	public $item;
+	/**
+	 * Item\Schema\Item
+	 */
+	public $schema;
 
-	public function __routes(){}
+	/**
+	 * Check
+	 */
 	public function __check(){
-		$repository = new ItemRepository($this -> item);
+
+		$this -> schema = new $this -> __schema();
+
+		$repository = new ItemRepository($this -> schema);
 		$repository -> alterSchema();
 	}
 
-	public function all(){
+	public static function all(){
 		
 	}
 }
+
 
 ?>

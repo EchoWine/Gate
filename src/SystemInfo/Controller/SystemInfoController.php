@@ -3,9 +3,10 @@
 namespace SystemInfo\Controller;
 
 use SystemInfo\Model\SystemInfo;
-use CoreWine\DB as DB;
+use CoreWine\DataBase\DB;
 use CoreWine\Route as Route;
-use FrameworkWine\Controller as Controller;
+
+use CoreWine\SourceManager\Controller as Controller;
 
 
 class SystemInfoController extends Controller{

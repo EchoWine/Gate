@@ -2,7 +2,7 @@
 
 namespace Admin\Controller;
 
-use CoreWine\DB as DB;
+use CoreWine\DataBase\DB;
 use CoreWine\Route as Route;
 use CoreWine\Request as Request;
 
@@ -20,12 +20,10 @@ abstract class AdminController extends ItemController{
 
 		$page = $this -> url;
 
-		Route::get("/{$page}/edit/{primary}",['as' => $page.'_all','callback' => 'all']);
+		Route::get("/{$page}",['as' => $page.'_all','callback' => 'all']);
 	}
 
-	public function __check(){}
-
-	public function all(){
+	public static function all(){
 		
 		parent::all();
 	}

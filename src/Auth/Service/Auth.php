@@ -2,7 +2,7 @@
 
 namespace Auth\Service;
 
-use CoreWine\DB as DB;
+use CoreWine\DataBase\DB;
 use CoreWine\Cfg;
 use CoreWine\Request;
 

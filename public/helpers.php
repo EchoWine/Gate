@@ -21,7 +21,7 @@
 
 	function view($file,$data = []){
 		Route::view($data);
-		return TemplateEngine::html($file);
+		return Engine::html($file);
 	}
 
 	function assets($url,$module = ''){

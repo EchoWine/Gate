@@ -7,7 +7,7 @@ use CoreWine\Route;
 use CoreWine\Flash;
 use CoreWine\Cfg;
 
-use FrameworkWine\Controller as Controller;
+use CoreWine\SourceManager\Controller as Controller;
 
 use Auth\Service\Auth;
 use Auth\Repository\AuthRepository;
@@ -37,7 +37,7 @@ class AuthController extends Controller{
 	 * Route to login
 	 */
 	public static function loginAction(){
-		return static::view('Auth/login');
+		return view('Auth/login');
 	}
 
 	/**

@@ -2,7 +2,7 @@
 
 namespace SystemInfo\Service;
 
-use CoreWine\DB as DB;
+use CoreWine\DataBase\DB;
 
 class SystemInfo{
 	

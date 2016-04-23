@@ -1,6 +1,6 @@
 <?php
 
-namespace Item\Entity;
+namespace Item\Schema;
 
 class FieldString extends Field{
 	

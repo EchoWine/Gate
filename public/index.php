@@ -4,5 +4,11 @@
 
 	use CoreWine\Route as Route;
 
-	include Route::load();
+	$inc = Route::load();
+
+	if(empty($inc)){
+		die("Current route doens't have a view");
+	}
+
+	include $inc;
 ?>

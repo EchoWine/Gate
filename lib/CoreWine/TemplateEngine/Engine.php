@@ -104,7 +104,8 @@ class Engine{
 		}
 
 		if($storage == null){
-			die('No storage found');
+			throw new \Exception("No storage founded for file $filename");
+			die();
 		}
 	
 		return $storage.".php";
@@ -334,7 +335,7 @@ class Engine{
 
 	public static function startBlock($name){
 
-		ob_start();
+   		ob_start();
 		Engine::$blocks_actual[$name] = '';
 	}
 
@@ -349,17 +350,15 @@ class Engine{
    		if(!isset(Engine::$blocks[$index])){
    			Engine::$blocks[$index] = $content;
    			Engine::$blocks_actual[$index] = $content;
+   		}else{
+   			$content = Engine::$blocks[$index];
    		}
-   		if(ob_get_level() == 1)
-   			echo $content;
-
-
-		$return = Engine::$blocks_actual[$index];
 
    		unset(Engine::$blocks_actual[$index]);
-   		
-   		$count = Engine::getCountBlocksNested();
 
+   		$count = Engine::getCountBlocksNested();
+	
+   		return $content;
 	}
 
 	public static function printParentBlock(){

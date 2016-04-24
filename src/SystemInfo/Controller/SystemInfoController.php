@@ -31,7 +31,7 @@ class SystemInfoController extends Controller{
 	 */
 	public static function index(){
 
-		return static::view('SystemInfo/admin/index');
+		return view('SystemInfo/admin/index');
 
 	}
 

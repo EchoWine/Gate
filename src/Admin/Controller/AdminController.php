@@ -24,8 +24,16 @@ abstract class AdminController extends ItemController{
 	}
 
 	public static function all(){
-		$item = [];	
-		return view('Admin/admin/all',['item' => $item]);
+		$results = [];
+		$q = DB::table('user') -> get();
+
+		return view('Admin/admin/item/all',[
+			'results' => $results,
+		]);
+	}
+	
+	public function resultsToObj(){
+
 	}
 }
 

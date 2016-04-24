@@ -1,4 +1,4 @@
-{{extends Admin/layout-admin}}
+{{extends Admin/admin/layout}}
 
 {{block stylesheet}}
 	{{parent}}
@@ -14,7 +14,7 @@
 
 		<form method='POST'>
 			<div>
-				{{include Admin/flash}}
+				{{include Admin/admin/flash}}
 				<div>
 					<input type='text' name='user' value="{{post('user')}}" class='auth-input' placeholder='Username or Email' required autofocus autocomplete='off'>
 				</div>

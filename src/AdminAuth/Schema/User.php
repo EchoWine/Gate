@@ -1,6 +1,6 @@
 <?php
 
-namespace User\Schema;
+namespace AdminAuth\Schema;
 
 use Item\Schema as Schema;
 

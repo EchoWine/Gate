@@ -75,7 +75,7 @@ class Translator{
 		}else{
 
 			$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?> ",$content);
-			$content = preg_replace('/{{\/block}}/',"<?php Engine::endBlock();?> ",$content);
+			$content = preg_replace('/{{\/block}}/',"<?php echo Engine::endBlock();?> ",$content);
 		}
 
 

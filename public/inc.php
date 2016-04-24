@@ -19,7 +19,8 @@
 
 	DB::connect(include PATH_CONFIG.'/database.php');
 	# Load all sources
-	# Manager::loadAll(PATH_SRC);
+	
+	//Manager::loadAll(PATH_SRC);
 
 	
 	# Sources
@@ -27,7 +28,7 @@
 	Manager::load(PATH_SRC."/Example");
 	Manager::load(PATH_SRC."/Item");
 	Manager::load(PATH_SRC."/Admin");
-	Manager::load(PATH_SRC."/User");
+	Manager::load(PATH_SRC."/AdminAuth");
 	Manager::load(PATH_SRC."/Auth");
 	Manager::load(PATH_SRC."/SystemInfo");
 	
@@ -40,7 +41,7 @@
 	class_alias('CoreWine\Flash', 'Flash');
 	class_alias('CoreWine\TemplateEngine\Engine', 'Engine');
 	class_alias('Auth\Service\Auth', 'Auth');
-	//class_alias('SystemInfo\Service\SystemInfo', 'SystemInfo');
+	class_alias('SystemInfo\Service\SystemInfo', 'SystemInfo');
 
 	# Load template
 	Engine::ini(PATH_STORAGE);

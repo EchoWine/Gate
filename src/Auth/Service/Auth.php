@@ -174,6 +174,7 @@ class Auth{
 	 * @return string display name
 	 */
 	public static function getUserDisplay(){
+		if(!Auth::logged())return '[User not logged]';
 		return Cfg::get('Auth.display') == 0 ? Auth::user() -> username : Auth::user() -> email;
 	}
 

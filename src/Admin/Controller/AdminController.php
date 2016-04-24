@@ -24,8 +24,8 @@ abstract class AdminController extends ItemController{
 	}
 
 	public static function all(){
-		
-		parent::all();
+		$item = [];	
+		return view('Admin/admin/all',['item' => $item]);
 	}
 }
 

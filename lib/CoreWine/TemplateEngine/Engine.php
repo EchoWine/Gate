@@ -58,6 +58,11 @@ class Engine{
 	public static $blocks = [];
 
 	/**
+	 * List of all blocks current nested
+	 */
+	public static $blocks_actual = [];
+
+	/**
 	 * Initialization
 	 *
 	 * @param string $storage path where views elaborated will be located
@@ -88,7 +93,7 @@ class Engine{
 	 * @return array array of files to be included
 	 */
 	public static function getInclude($filename,$sub = null){
-		
+	
 		$storage = null;
 		foreach(Engine::$files as $path => $files){
 			foreach($files as $file){
@@ -97,6 +102,7 @@ class Engine{
 				}
 			}
 		}
+
 		if($storage == null){
 			die('No storage found');
 		}
@@ -194,26 +200,18 @@ class Engine{
 
 			$pathStorageFile = $pathStorage."/".$b.".php";
 
-			# Check source of file
-			$t = !file_exists($pathStorageFile) || (file_exists($k) && file_exists($pathStorageFile) && filemtime($k) > filemtime($pathStorageFile));
-
-			if(true){
-				
-				$content = Engine::getContentsByFileName($k);
-				$content = self::translate($k,$content,$subPath,$path_filename);
-				
-
-				file_put_contents($pathStorageFile,$content);
-			}
 
 			if($filename[0] == "/")$filename = substr($filename, 1);
 			$file = $subPath."/".$filename;
 
 			self::$files[$pathSource][] = (object)[
+				'abs_file' => $k,
 				'file' => $file,
 				'filename' => $filename,
 				'sub' => $subPath,
-				'storage' => $b
+				'storage' => $b,
+				'pathStorageFile' => $pathStorageFile,
+				'path_filename' => $path_filename
 			];
 		}
 
@@ -223,6 +221,27 @@ class Engine{
 		}
 	}
 
+	/**
+	 * Translate all pages
+	 */
+	public static function translates(){
+
+		foreach(self::$files as $path){
+			foreach($path as $file){
+
+				# Check source of file
+				$t = !file_exists($file -> pathStorageFile) || (file_exists($file -> abs_file) && file_exists($file -> pathStorageFile) && filemtime($file -> abs_file) > filemtime($file -> pathStorageFile));
+
+				if(true){
+					
+					$content = Engine::getContentsByFileName($file -> abs_file);
+					$content = self::translate($file -> abs_file,$content,$file -> sub,$file -> path_filename);
+					
+					file_put_contents($file -> pathStorageFile,$content);
+				}
+			}
+		}
+	}
 	/**
 	 * Translate the page
 	 *
@@ -260,7 +279,7 @@ class Engine{
 		if($filename !== null)
 			return Engine::getContentsByFilename($filename.".html");
 
-		die('No file found');
+		die('No file found:');
 
 	}
 
@@ -281,7 +300,8 @@ class Engine{
 			}
 		}
 
-		die('No file found');
+		print_r(Engine::$files);
+		die('No file found: '.$filename);
 
 	}
 	/**
@@ -312,6 +332,55 @@ class Engine{
 		return self::$pathStorage."/".self::getInclude($page,$sub);
 	}
 
+	public static function startBlock($name){
+
+		ob_start();
+		Engine::$blocks_actual[$name] = '';
+	}
+
+	public static function endBlock(){
+
+  		$content = ob_get_contents();
+
+   		ob_end_clean();
+
+   		$index = Engine::getLastIndexBlockNested();
+
+   		if(!isset(Engine::$blocks[$index])){
+   			Engine::$blocks[$index] = $content;
+   			Engine::$blocks_actual[$index] = $content;
+   		}
+   		if(ob_get_level() == 1)
+   			echo $content;
+
+
+		$return = Engine::$blocks_actual[$index];
+
+   		unset(Engine::$blocks_actual[$index]);
+   		
+   		$count = Engine::getCountBlocksNested();
+
+	}
+
+	public static function printParentBlock(){
+
+	}
+
+
+	public static function getCountBlocksNested(){
+		return count(Engine::$blocks_actual);
+	}
+
+	public static function updateLastBlockNested($html){
+		$index = Engine::getLastIndexBlockNested();
+		if($index == null)return null;
+		Engine::$blocks_actual[$index] .= $html;
+	}
+
+	public static function getLastIndexBlockNested(){
+		end(Engine::$blocks_actual);
+		return key(Engine::$blocks_actual);
+	}
 }
 
 ?>

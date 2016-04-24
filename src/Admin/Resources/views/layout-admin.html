@@ -18,6 +18,7 @@
 		<link rel='stylesheet' href='{{assets('assets/css/header.css','Auth')}}'>
 		<link rel='stylesheet' href='{{assets('assets/css/main.css','Auth')}}'>
 	{{/block}}
+
 </head>
 <body>
 
@@ -57,7 +58,7 @@
 						<h1>Sample title</h1>
 						<div>
 
-							{{include flash}}
+							{{include Admin/flash}}
 
 						
 						</div>
@@ -67,7 +68,7 @@
 		{{/block}}
 		
 	{{/block}}
-
+	
 	{{block scripts}}
 		<script src='{{path}}assets/js/jquery-2.1.4.min.js'></script>
 		<script src='{{path}}assets/js/bootstrap.min.js'></script>

@@ -1,18 +1,6 @@
 <?php
 	
 
-  	function loadClass($class){
-  		$file = PATH_SRC.'/'.__NAMESPACE__.$class.".php";
-  		if(file_exists($file))
-  			require $file;
-
-  		$file = PATH_LIB.'/'.__NAMESPACE__.$class.".php";
-  		if(file_exists($file))
-  			require $file;
-	}
-
-	spl_autoload_register(__NAMESPACE__ . "\\loadClass");
-
 	use CoreWine\DataBase\DB as DB;
 	use CoreWine\Request as Request;
 	use CoreWine\Route as Route;
@@ -27,10 +15,9 @@
 	define('PATH_STORAGE','../storage');
 	define('PATH_CONFIG','../config');
 
-	DB::connect(include PATH_CONFIG.'/database.php');
-
 	include "helpers.php";
 
+	DB::connect(include PATH_CONFIG.'/database.php');
 	# Load all sources
 	# Manager::loadAll(PATH_SRC);
 
@@ -66,5 +53,7 @@
 
 	# Include template page of sources
 	Manager::loadViews();
+
+	Engine::translates();
 
 ?>

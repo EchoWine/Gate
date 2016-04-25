@@ -1,6 +1,4 @@
 <?php
-	
-	include dirname(__FILE__).'/main.php';
 
 	use CoreWine\DataBase\DB;
 

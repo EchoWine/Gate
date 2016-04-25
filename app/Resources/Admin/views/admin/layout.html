@@ -1,0 +1,27 @@
+{{extends ../src/Admin/admin/layout}}
+
+{{block header}}
+	<div id='header'>
+		<div id='header-main'></div>
+		{{include Auth/admin/header-nav}}
+	</div>
+{{/block}}
+
+{{block nav}}
+	<div id='container-nav'>
+		<div id='nav'>
+			<div id='status'>
+				<button class='button s cl_st'><span class='fa fa-list'></span></button>
+			</div>
+			<ul>
+				<li data-menu='dashboard'>
+					<a class='href r' href='{{Route::url('admin/dashboard')}}'>
+						<span class='fa fa-home icon'></span>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				{{include SystemInfo/admin/nav}}
+			</ul>
+		</div>
+	</div>
+{{/block}}

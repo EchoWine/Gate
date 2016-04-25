@@ -29,6 +29,11 @@ class Manager{
   	public static $controllers;
 
   	/**
+  	 * Basic path
+  	 */
+  	public static $src;
+
+  	/**
   	 * Set path where are located src
   	 * @param string $path path
   	 */
@@ -72,7 +77,7 @@ class Manager{
 		foreach(glob($path."/Controller/*") as $file){
 			
 			self::$files[] = $file;
-			require $file;
+			require_once $file;
 
 			$name_class = str_replace(PATH_SRC,"",$file);
 			$name_class = str_replace("/","\\",$name_class);
@@ -83,7 +88,7 @@ class Manager{
 
 		# Set config
 		foreach(glob($path.'/Resources/config/*') as $file){
-			$cfgs = include $file;
+			$cfgs = require_once $file;
 			$base = basename($file,".php");
 			foreach($cfgs as $cfg_name => $cfg_value){
 				Cfg::set($base.".".$cfg_name,$cfg_value);
@@ -91,16 +96,6 @@ class Manager{
 		}
 	
 
-	}
-
-	/**
-	 * Call all template methods in module
-	 *
-	 */
-	public static function loadViews(){
-		foreach(self::$list as $name => $dir)
-			TemplateEngine\Engine::compile($dir."/Resources/views",$name);
-		
 	}
 
 	/**

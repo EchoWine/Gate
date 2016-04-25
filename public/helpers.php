@@ -40,11 +40,11 @@
   	function loadClass($class){
   		$file = PATH_SRC.'/'.__NAMESPACE__.$class.".php";
   		if(file_exists($file))
-  			require $file;
+  			require_once $file;
 
   		$file = PATH_LIB.'/'.__NAMESPACE__.$class.".php";
   		if(file_exists($file))
-  			require $file;
+  			require_once $file;
 	}
 	spl_autoload_register(__NAMESPACE__ . "\\loadClass");
 

@@ -93,22 +93,18 @@ class Engine{
 	 * @return array array of files to be included
 	 */
 	public static function getInclude($filename,$sub = null){
-	
-		$storage = null;
+
 		foreach(Engine::$files as $path => $files){
 			foreach($files as $file){
-				if($file -> file == $filename){
-					$storage = $file -> storage;
+				if($file -> file == $filename || $file -> path."/".$file -> file == $filename){
+					return $file -> storage.".php";
 				}
 			}
 		}
 
-		if($storage == null){
-			throw new \Exception("No storage founded for file $filename");
-			die();
-		}
+		throw new \Exception("The file '$filename' doesn't exists");
+		die();
 	
-		return $storage.".php";
 
 	}
 
@@ -146,29 +142,8 @@ class Engine{
 	 * @param string $sub path file
 	 * @return string full path
 	 */
-	public static function getPathSourceFile($path,$sub = ''){
-		return self::getPathSourceFileByFull(self::getNameSub($path,$sub));
-	}
-
-	/**
-	 * Get path source file by full path
-	 *
-	 * @param string $path path file
-	 * @return string full path
-	 */
-	public static function getPathSourceFileByFull($path){
-		return sha1($path);
-	}
-
-	/**
-	 * Get name file with sub
-	 *
-	 * @param string $path path file
-	 * @param string $sub path file
-	 * @return string full path
-	 */
-	public static function getNameSub($path,$sub = ''){
-		return $sub !== '' ? "/".$sub."".$path : $path;
+	public static function getPathSourceFile($abs){
+		return sha1($abs);
 	}
 
 	/**
@@ -177,8 +152,9 @@ class Engine{
 	 * @param string $pathSource path where is located file .html to compile
 	 * @param string $subPath relative path where store all files
 	 */
-	public static function compile($pathSource,$subPath = ''){
+	public static function compile($path,$pathSource,$subPath = ''){
 
+		$pathSource = $path."/".$pathSource;
 		self::$pathSource[$subPath] = $pathSource;
 
 		if(empty($subPath))
@@ -197,7 +173,7 @@ class Engine{
 			$path_filename = self::getPathViewBySource($pathSource,$k);
 			$filename = $path_filename."/".basename($k,".html");
 
-			$b = self::getPathSourceFile($filename,$subPath);
+			$b = self::getPathSourceFile($k);
 
 			$pathStorageFile = $pathStorage."/".$b.".php";
 
@@ -212,7 +188,8 @@ class Engine{
 				'sub' => $subPath,
 				'storage' => $b,
 				'pathStorageFile' => $pathStorageFile,
-				'path_filename' => $path_filename
+				'path_filename' => $path_filename,
+				'path' => $path
 			];
 		}
 
@@ -280,7 +257,6 @@ class Engine{
 		if($filename !== null)
 			return Engine::getContentsByFilename($filename.".html");
 
-		die('No file found:');
 
 	}
 
@@ -295,14 +271,13 @@ class Engine{
 
 		foreach(Engine::$files as $path => $files){
 			foreach($files as $file){
-				if($file -> file == $filename){
+				if($file -> file == $filename || $path."/".$file -> path == $filename){
 					return $path."/".$file -> filename;
 				}
 			}
 		}
 
-		print_r(Engine::$files);
-		die('No file found: '.$filename);
+		throw new \Exception("'$filename' not found");
 
 	}
 	/**
@@ -350,8 +325,11 @@ class Engine{
    		if(!isset(Engine::$blocks[$index])){
    			Engine::$blocks[$index] = $content;
    			Engine::$blocks_actual[$index] = $content;
+
    		}else{
-   			$content = Engine::$blocks[$index];
+   			$_content = Engine::$blocks[$index];
+			$_content = preg_replace('/{% parent %}/',$content,$_content);
+			$content = $_content;
    		}
 
    		unset(Engine::$blocks_actual[$index]);
@@ -359,10 +337,6 @@ class Engine{
    		$count = Engine::getCountBlocksNested();
 	
    		return $content;
-	}
-
-	public static function printParentBlock(){
-
 	}
 
 

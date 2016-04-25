@@ -11,7 +11,9 @@ class User extends Schema\Item{
 	public function fields(){
 
 		$this -> field(Schema\FieldString::class,'username');
+		
 		$this -> field(Schema\FieldString::class,'password') -> length(128);
+
 		$this -> field(Schema\FieldString::class,'email');
 
 	}

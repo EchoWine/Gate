@@ -9,9 +9,9 @@
 
 	# Path
 	define('PATH',dirname(__FILE__));
+	define('PATH_APP','../app');
 	define('PATH_SRC','../src');
 	define('PATH_LIB','../lib');
-	define('PATH_VIEWS','../views');
 	define('PATH_STORAGE','../storage');
 	define('PATH_CONFIG','../config');
 
@@ -20,17 +20,7 @@
 	DB::connect(include PATH_CONFIG.'/database.php');
 	# Load all sources
 	
-	//Manager::loadAll(PATH_SRC);
-
-	
-	# Sources
-
-	Manager::load(PATH_SRC."/Example");
-	Manager::load(PATH_SRC."/Item");
-	Manager::load(PATH_SRC."/Admin");
-	Manager::load(PATH_SRC."/AdminAuth");
-	Manager::load(PATH_SRC."/Auth");
-	Manager::load(PATH_SRC."/SystemInfo");
+	Manager::loadAll(PATH_SRC);
 	
 	Manager::loaded();
 
@@ -50,10 +40,24 @@
 
 
 	# Compile
-	Engine::compile(PATH_VIEWS);
+	Engine::compile(PATH_APP,'Resources/views');
 
-	# Include template page of sources
-	Manager::loadViews();
+	
+	foreach(Manager::$list as $name => $dir){
+		Engine::compile(
+			PATH_APP,
+			"Resources/".$name."/views",
+			$name
+		);
+	}
+
+	foreach(Manager::$list as $name => $dir){
+		Engine::compile(
+			PATH_SRC,
+			$name."/Resources/views",
+			$name
+		);
+	}
 
 	Engine::translates();
 

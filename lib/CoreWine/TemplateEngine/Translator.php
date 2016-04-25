@@ -65,7 +65,7 @@ class Translator{
 		if(preg_match('/{{extends ([^\}]*)}}/iU',$content,$r)){
 
 			$content = str_replace('{{extends '.$r[1].'}}',"",$content);
-			$content = preg_replace('/{{parent}}/',"<?php Engine::printParentBlock(); ?> ",$content);
+			$content = preg_replace('/{{parent}}/',"{% parent %}",$content);
 
 			$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?> ",$content);
 			$content = preg_replace('/{{\/block}}/',"<?php Engine::endBlock(); ?> ",$content);

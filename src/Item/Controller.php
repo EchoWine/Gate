@@ -1,6 +1,6 @@
 <?php
 
-namespace Item\Controller;
+namespace Item;
 
 use CoreWine\DataBase\DB;
 use CoreWine\Route as Route;
@@ -8,19 +8,30 @@ use CoreWine\Request as Request;
 
 use CoreWine\SourceManager\Controller as Controller;
 
-use Item\Repository\ItemRepository;
+use Item\Repository;
 
-abstract class ItemController extends Controller{
+abstract class Controller extends Controller{
+
 
 	/**
-	 * Item\Schema\Item
+	 * Item\Schema
+	 */
+	public $__schema = 'Item\Schema';
+
+	/**
+	 * Item\Repository
+	 */
+	public $__repository = 'Item\Repository';
+
+	/**
+	 * Item\Schema
 	 */
 	public $schema;
 
 	/**
-	 * Item\Repository\ItemRepository
+	 * Item\Repository
 	 */
-	public $__repository = 'Item\Repository\ItemRepository';
+	public $repository;
 
 	/**
 	 * Check
@@ -43,8 +54,15 @@ abstract class ItemController extends Controller{
 		return $this -> repository;
 	}
 
-	public function all(){
-		
+	public function __all(){
+		$results = $this -> getRepository() -> get();
+
+		$return = [];
+		foreach($results as $n => $result){
+			$results[$n] = (object)$result;
+		}
+
+		return $results;
 	}
 }
 

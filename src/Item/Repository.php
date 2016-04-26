@@ -1,31 +1,31 @@
 <?php
 
-namespace Item\Repository;
+namespace Item;
 
 use CoreWine\DataBase\DB;
 
-class ItemRepository{
+class Repository{
 
 	/**
 	 * Schema
 	 *
-	 * @var Item\Schema\Item
+	 * @var Item\Schema
 	 */
 	public $schema;
 
 	/**
 	 * Construct
 	 *
-	 * @param \Item\Schema\Item $schema
+	 * @param \Item\Schema $schema
 	 */
-	public function __construct(\Item\Schema\Item $schema){
+	public function __construct(\Item\Schema $schema){
 		$this -> schema = $schema;
 	}
 
 	/**
 	 * Get the schema
 	 *
-	 * @return Item\Schema\Item
+	 * @return Item\Schema
 	 */
 	public function getSchema(){
 		return $this -> schema;
@@ -50,7 +50,14 @@ class ItemRepository{
 	 * @return CoreWine\DataBase\QueryBuilder
 	 */
 	public function table(){
-		return DB::table($this -> getSchema() -> getTable());
+		return DB::table($this -> getSchema() -> getTable()) -> setParserResult(function($results){
+			
+			foreach($results as $n => $result){
+				$results[$n] = $this -> schema -> parseResult($result);
+			}
+
+			return $results;
+		});
 	}
 
 	/**
@@ -58,9 +65,11 @@ class ItemRepository{
 	 *
 	 * @return Result
 	 */
-	public function all(){
+	public function get(){
 		return $this -> table() -> get();
 	}
+
+
 }
 
 ?>

@@ -92,6 +92,17 @@ class QueryBuilder{
 	}
 
 	/**
+	 * Parse the result using a callback
+	 *
+	 * @param Closure $closure
+	 */
+	public function setParserResult($closure){
+		$t = clone $this;
+		$t -> builder -> parserResult = $closure;
+		return $t;
+	}
+
+	/**
 	 * Execute the query and return if the record exists or not
 	 *
 	 * @param string $v name of the column
@@ -767,7 +778,7 @@ class QueryBuilder{
 					$k = $k2;
 				
 				else{
-					die("<br>\nCannot relate $s_last with $table: Error with foreign key\n<br>");
+					throw new \Exception("<br>\nCannot relate $s_last with $table: Error with foreign key\n<br>");
 				}
 				
 				$c1 = ($k1 == null ? $table_alias : $s_last_alias).".".$k -> getForeignColumn();
@@ -1216,6 +1227,12 @@ class QueryBuilder{
 
 			$r = $s;
 		}
+
+		if($this -> builder -> parserResult != null){
+			$callback = $this -> builder -> parserResult;
+			$r = $callback($r);
+		}
+		
 
 		return $r;
 	}

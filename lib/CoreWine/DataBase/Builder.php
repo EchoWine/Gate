@@ -119,6 +119,11 @@ class Builder{
 	 */
 	public static $tableAs = array();
 
+	/**
+	 * Callback Parse data
+	 */
+	public $parserResult = null;
+
 	public function __construct(){}
 
 	/**

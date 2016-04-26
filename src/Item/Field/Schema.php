@@ -1,13 +1,23 @@
 <?php
 
-namespace Item\Schema;
+namespace Item\Field;
 
-class Field{
+class Schema{
 	
+	/**
+	 * Entity
+	 */
+	public $__entity = 'Item\Field\Entity';
+
 	/**
 	 * Name
 	 */
 	public $name;
+
+	/**
+	 * Column
+	 */
+	public $column;
 
 	/**
 	 * Lenght
@@ -24,6 +34,8 @@ class Field{
 	 */
 	public function __construct($name){
 		$this -> name = $name;
+		$this -> column = $name;
+		return $this;
 	}
 
 	/**
@@ -34,6 +46,28 @@ class Field{
 		return $this;
 	}
 
+	/**
+	 * Get name
+	 */
+	public function getName(){
+		return $this -> name;
+	}
+
+	/**
+	 * Set column
+	 */
+	public function column($name){
+		$this -> column = $name;
+		return $this;
+	}
+
+	/**
+	 * Get column
+	 */
+	public function getColumn(){
+		return $this -> column;
+	}
+	
 	/**
 	 * Set length
 	 */
@@ -58,6 +92,14 @@ class Field{
 
 		if(!$this -> required)
 			$col -> null();
+	}
+
+	public function hasEntity(){
+		return $this -> __entity !== null;
+	}
+
+	public function newEntity($value){
+		return new $this -> __entity($this,$value);
 	}
 
 

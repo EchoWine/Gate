@@ -6,9 +6,9 @@ use CoreWine\DataBase\DB;
 use CoreWine\Route as Route;
 use CoreWine\Request as Request;
 
-use Item\Controller\ItemController;
+use Item\Controller;
 
-abstract class AdminController extends ItemController{
+abstract class AdminController extends Controller{
 
 	/**
 	 * Name of obj in url
@@ -26,9 +26,12 @@ abstract class AdminController extends ItemController{
 
 	public function all(){
 
-		$this -> schema = $this -> __schema;
-		$results = [];
-		$q = DB::table('user') -> get();
+		$results = $this -> __all();
+
+		print_r($results);
+
+		#OH Yes man
+		echo $results[0] -> email -> value;
 
 		return $this -> view('Admin/admin/item/all',[
 			'results' => $results,

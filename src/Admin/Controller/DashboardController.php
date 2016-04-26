@@ -13,15 +13,15 @@ class DashboardController extends Controller{
 	 * Routes
 	 */
 	public function __routes(){
-		Route::get('/admin',['as' => 'admin/dashboard','callback' => 'indexRoute']);
+		$this -> route('/admin',['as' => 'admin/dashboard','__controller' => 'indexRoute']);
 	}
 
 	
 	/**
 	 * Route to login
 	 */
-	public static function indexRoute(){
-		return view('Admin/admin/dashboard');
+	public function indexRoute(){
+		return $this -> view('Admin/admin/dashboard');
 	}
 }
 

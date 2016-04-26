@@ -20,10 +20,6 @@
     	return $f;
 	}
 
-	function view($file,$data = []){
-		Route::view($data);
-		return Engine::html($file);
-	}
 
 	function assets($url,$module = ''){
 
@@ -37,15 +33,5 @@
 	}
 
 	
-  	function loadClass($class){
-  		$file = PATH_SRC.'/'.__NAMESPACE__.$class.".php";
-  		if(file_exists($file))
-  			require_once $file;
-
-  		$file = PATH_LIB.'/'.__NAMESPACE__.$class.".php";
-  		if(file_exists($file))
-  			require_once $file;
-	}
-	spl_autoload_register(__NAMESPACE__ . "\\loadClass");
 
 ?>

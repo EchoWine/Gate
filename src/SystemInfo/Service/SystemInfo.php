@@ -3,8 +3,9 @@
 namespace SystemInfo\Service;
 
 use CoreWine\DataBase\DB;
+use CoreWine\Service;
 
-class SystemInfo{
+class SystemInfo extends Service{
 	
 
 	public static function getInfoDB(){

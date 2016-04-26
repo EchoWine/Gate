@@ -18,7 +18,7 @@ class AuthController extends Controller{
 	 * Routes
 	 */
 	public function __routes(){
-		Route::get('/login',['as' => 'login','callback' => 'loginAction']);
+		$this -> route('/login',['as' => 'login','__controller' => 'loginAction']);
 	}
 
 	/**
@@ -36,8 +36,8 @@ class AuthController extends Controller{
 	/**
 	 * Route to login
 	 */
-	public static function loginAction(){
-		return view('Auth/login');
+	public function loginAction(){
+		return $this -> view('Auth/login');
 	}
 
 	/**

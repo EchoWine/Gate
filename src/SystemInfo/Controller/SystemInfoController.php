@@ -13,25 +13,18 @@ class SystemInfoController extends Controller{
 	
 
 	/**
-	 * Constructor
-	 */
-	public function __construct(){
-		self::__routes();
-	}
-
-	/**
 	 * Routes
 	 */
 	public function __routes(){
-		Route::get('/system-info',['as' => 'system-info','callback' => 'index']);
+		$this -> route('/system-info',['as' => 'system-info','__controller' => 'index']);
 	}
 
 	/**
 	 * Set index
 	 */
-	public static function index(){
+	public function index(){
 
-		return view('SystemInfo/admin/index');
+		return $this -> view('SystemInfo/admin/index');
 
 	}
 

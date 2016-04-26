@@ -15,7 +15,9 @@
 	define('PATH_STORAGE','../storage');
 	define('PATH_CONFIG','../config');
 
+	include "loader.php";
 	include "helpers.php";
+
 
 	DB::connect(include PATH_CONFIG.'/database.php');
 	# Load all sources
@@ -30,8 +32,6 @@
 	class_alias('CoreWine\Route', 'Route');
 	class_alias('CoreWine\Flash', 'Flash');
 	class_alias('CoreWine\TemplateEngine\Engine', 'Engine');
-	class_alias('Auth\Service\Auth', 'Auth');
-	class_alias('SystemInfo\Service\SystemInfo', 'SystemInfo');
 
 	# Load template
 	Engine::ini(PATH_STORAGE);

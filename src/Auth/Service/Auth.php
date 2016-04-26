@@ -5,12 +5,13 @@ namespace Auth\Service;
 use CoreWine\DataBase\DB;
 use CoreWine\Cfg;
 use CoreWine\Request;
+use CoreWine\Service;
 
 use Auth\Repository\AuthRepository;
 use Auth\Entity\User;
 use Auth\Entity\Session;
 
-class Auth{
+class Auth extends Service{
 
 	/**
 	 * Auth\Entity\User

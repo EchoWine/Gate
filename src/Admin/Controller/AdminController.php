@@ -20,14 +20,17 @@ abstract class AdminController extends ItemController{
 
 		$page = $this -> url;
 
-		Route::get("/{$page}",['as' => $page.'_all','callback' => 'all']);
+		$this -> route("/{$page}",['as' => $page.'_all','__controller' => 'all']);
 	}
 
-	public static function all(){
+
+	public function all(){
+
+		$this -> schema = $this -> __schema;
 		$results = [];
 		$q = DB::table('user') -> get();
 
-		return view('Admin/admin/item/all',[
+		return $this -> view('Admin/admin/item/all',[
 			'results' => $results,
 		]);
 	}

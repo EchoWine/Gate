@@ -99,7 +99,7 @@ class AuthRepository{
 	public static function getUserBySID($sid){
 		return AuthRepository::userSession()
 		-> where('sid',$sid) 
-		-> get();
+		-> first();
 
 	}
 
@@ -152,7 +152,7 @@ class AuthRepository{
 			$q = $q -> orWhere('email',$usernameOrEmail);
 
 		# Execute query
-		$q = $q -> lists();
+		$q = $q -> get();
 
 		return $q;
 

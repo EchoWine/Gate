@@ -18,17 +18,32 @@ abstract class ItemController extends Controller{
 	public $schema;
 
 	/**
+	 * Item\Repository\ItemRepository
+	 */
+	public $__repository = 'Item\Repository\ItemRepository';
+
+	/**
 	 * Check
 	 */
 	public function __check(){
-
 		$this -> schema = new $this -> __schema();
-
-		$repository = new ItemRepository($this -> schema);
-		$repository -> alterSchema();
+		$this -> repository = new $this -> __repository($this -> schema);
+		$this -> __alterSchema();
 	}
 
-	public static function all(){
+	public function __alterSchema(){
+		$this -> getRepository() -> __alterSchema();
+	}
+
+	public function getSchema(){
+		return $this -> schema;
+	}
+
+	public function getRepository(){
+		return $this -> repository;
+	}
+
+	public function all(){
 		
 	}
 }

@@ -101,7 +101,7 @@ class QueryBuilder{
 	public function exists(string $v,$a){
 		$r = is_array($a) ? $this -> whereIn($v,$a) : $this -> where($v,$a);
 		$r = $r -> select($v);
-		$r = is_array($a) ? $r -> setIndexResult($v) -> lists() : $r -> get();
+		$r = is_array($a) ? $r -> setIndexResult($v) -> get() : $r -> first();
 
 		if(is_array($a)){
 
@@ -179,7 +179,7 @@ class QueryBuilder{
 		$sql = DB::SQL()::AGGREGATE($f,$v);
 
 		$c -> builder -> addSelect($sql);
-		$r = $c -> get();
+		$r = $c -> first();
 
 		return isset($r[$sql]) ? $r[$sql] : 0;
 
@@ -1205,7 +1205,7 @@ class QueryBuilder{
 	 *
 	 * @return array result of the query
 	 */
-	public function lists(){
+	public function get(){
 		$r = $this -> assoc($this -> SQL_UNION());
 
 		if(!empty($this -> builder -> indexResult)){
@@ -1225,8 +1225,8 @@ class QueryBuilder{
 	 *
 	 * @return array result of the query
 	 */
-	public function get(){
-		$r = $this -> take(1) -> lists();
+	public function first(){
+		$r = $this -> take(1) -> get();
 
 		return !empty($r) ? $r[0] : array();
 	}

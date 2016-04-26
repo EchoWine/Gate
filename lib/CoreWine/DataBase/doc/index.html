@@ -124,7 +124,7 @@
 					DB::undo();
 
 				// Records empty
-				print_r(DB::table('user') -> lists());
+				print_r(DB::table('user') -> get());
 
 
 
@@ -133,7 +133,7 @@
 				DB::restore();
 
 				// Records recovered
-				print_r(DB::table('user') -> lists());
+				print_r(DB::table('user') -> get());
 			</code>
 
 			<h2 id='misc'>Miscellanous</h2>
@@ -156,22 +156,22 @@
 			
 			<p>Retrieving all the records from a table</p>
 			<code class='code'>
-				$result = DB::table('user') -> lists();
+				$result = DB::table('user') -> get();
 			</code>
 
 			<p>Retrieving one record from a table</p>
 			<code class='code'>
-				$result = DB::table('user') -> get();
+				$result = DB::table('user') -> first();
 			</code>
 
 			<p>Retrieving one record from a table specifying a select clause</p>
 			<code class='code'>
-				$result = DB::table('user') -> select(['name','surname']) -> get();
+				$result = DB::table('user') -> select(['name','surname']) -> first();
 			</code>
 
 			<p>Retrieving all the records from multiple tables</p>
 			<code class='code'>
-				$result = DB::table(['user','session']) -> lists();
+				$result = DB::table(['user','session']) -> get();
 			</code>
 
 			<p>Nesting select</p>
@@ -180,45 +180,45 @@
 
 					return DB::table('user');
 
-				}) -> lists();
+				}) -> get();
 			</code>
 
 			<h3 id='querybuilder_where'>Where</h3>
 
 			<p>Where clause</p>
 			<code class='code'>
-				$result = DB::table('user') -> where('id',1) -> get();
+				$result = DB::table('user') -> where('id',1) -> first();
 			</code>
 
 			<p>Where Like clause</p>
 			<code class='code'>
-				$result = DB::table('user') -> whereLike('name','%a%') -> lists();
+				$result = DB::table('user') -> whereLike('name','%a%') -> get();
 			</code>
 
 			<p>Where IN clause</p>
 			<code class='code'>
-				$result = DB::table('user') -> whereIn('id',[1,2,3]) -> lists();
+				$result = DB::table('user') -> whereIn('id',[1,2,3]) -> get();
 			</code>
 
 			<p>Where Null clause</p>
 			<code class='code'>
-				$result = DB::table('user') -> whereNull('bonus') -> lists();
+				$result = DB::table('user') -> whereNull('bonus') -> get();
 			</code>
 
 			<p>Where Not Null clause</p>
 			<code class='code'>
-				$result = DB::table('user') -> whereNotNull('bonus') -> lists();
+				$result = DB::table('user') -> whereNotNull('bonus') -> get();
 			</code>
 
 			<p>Where Raw</p>
 			<code class='code'>
-				$result = DB::table(['user','session']) -> whereRaw('user.id = session.uid') -> lists();
+				$result = DB::table(['user','session']) -> whereRaw('user.id = session.uid') -> get();
 			</code>
 
 
 			<p>OR Where clause</p>
 			<code class='code'>
-				$result = DB::table('user') -> orWhere('id',1) -> orWhere('id',2)-> lists();
+				$result = DB::table('user') -> orWhere('id',1) -> orWhere('id',2)-> get();
 			</code>
 
 			<p>
@@ -242,19 +242,19 @@
 					return $q -> orWhere('bonus',2) -> orWhere('malus',7);
 
 				}) 
-				-> lists();
+				-> get();
 			</code>
 
 			<p>Specifying operator</p>
 			<code class='code'>
-				$result = DB::table('user') -> where('bonus','<',5) -> lists();
+				$result = DB::table('user') -> where('bonus','<',5) -> get();
 			</code>
 
 			<h3 id='querybuilder_order'>Order by, Group by, Limit</h3>
 
 			<p>Order by desc</p>
 			<code class='code'>
-				$result = DB::table('user') -> orderByDesc('user') -> lists();
+				$result = DB::table('user') -> orderByDesc('user') -> get();
 			</code>
 
 			<p>Order by asc, group by</p>
@@ -262,7 +262,7 @@
 				$result = DB::table('user') 
 				-> orderByAsc('name') 
 				-> groupBy('bonus')
-				-> lists();
+				-> get();
 			</code>
 
 			<p>Take, skip</p>
@@ -271,7 +271,7 @@
 				$result = DB::table('name') 
 				-> take(5)
 				-> skip(3)
-				-> lists();
+				-> get();
 			</code>
 
 			<h3 id='querybuilder_aggregate'>Aggregate</h3>
@@ -289,12 +289,12 @@
 
 			<p>Retrieve all records from two tables joined</p>
 			<code class='code'>
-				$result = DB::table('user') -> join('session','session.uid','user.id') -> lists();
+				$result = DB::table('user') -> join('session','session.uid','user.id') -> get();
 			</code>
 
 			<p>Specifying operator</p>
 			<code class='code'>
-				$result = DB::table('user') -> join('session','session.uid','=',user.id') -> lists();
+				$result = DB::table('user') -> join('session','session.uid','=',user.id') -> get();
 			</code>
 
 				

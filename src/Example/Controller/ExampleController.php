@@ -9,11 +9,11 @@ use CoreWine\SourceManager\Controller as Controller;
 class ExampleController extends Controller{
 
 	public function __routes(){
-		Route::get('/',['as' => 'index','callback' => 'index']);
+		$this -> route('/',['as' => 'index','__controller' => 'index']);
 	}
 
-	public static function index(){
-		return view('Example/index',['yoho' => 'YoHo!!!!!']);
+	public function index(){
+		return $this -> view('Example/index',['yoho' => 'YoHo!!!!!']);
 	}
 	
 }

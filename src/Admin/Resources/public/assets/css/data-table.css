@@ -55,7 +55,7 @@
 	background:#FFFFFF;
 }
 
-.data-table .row:hover{
+.data-table .row.data:hover{
 	background:#F5F5F5 !important;
 }
 

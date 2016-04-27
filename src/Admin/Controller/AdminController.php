@@ -27,12 +27,7 @@ abstract class AdminController extends Controller{
 	public function all(){
 
 		$results = $this -> __all();
-
-		print_r($results);
-
-		#OH Yes man
-		echo $results[0] -> email -> value;
-
+		
 		return $this -> view('Admin/admin/item/all',[
 			'results' => $results,
 		]);

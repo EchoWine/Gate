@@ -15,6 +15,7 @@
 	define('PATH_STORAGE','../storage');
 	define('PATH_CONFIG','../config');
 
+	include "exception.php";
 	include "loader.php";
 	include "helpers.php";
 

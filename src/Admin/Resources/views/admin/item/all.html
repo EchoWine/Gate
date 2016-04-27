@@ -5,37 +5,36 @@
 		
 	<div class='title'> <h1><span>Titolo</span></h1></div>
 
-	<form method='POST'>
-		<input type='hidden' name='transaction'>
+	<div class='content-header'>
 
-		<div class='content-header'>
+		<div class='title'>
+			<span class='fa fa-diamond'></span>
+			<h3>Data</h3>
+			<span class='small'>List</span>
+		</div>
 
-			<div class='title'>
-				<span class='fa fa-diamond'></span>
-				<h3>Data</h3>
-				<span class='small'>List</span>
-			</div>
+
+		<div class='data-multiple'>
+		
+			<select class='select n' name='' id='data-multiple-value' item-primary-value='0'>
+				<option value=''>Select...</option>
+				<!--
+				<option value='export_xml_m'> Esporta XML </option>
+				<option value='export_csv_m'> Esporta CSV </option>
+				<option value='edit_multiple'> Modifica </option> 
+				-->
+			</select>
+
+			<button type='submit' class='button n' id='data-multiple-button' data-multiple-button confirm-target='data-multiple-value' confirm-event='click,submit'>Send</button>
 
 		</div>
-	</form>
+
+	</div>	
 
 
 	<form method='POST' enctype='multipart/form-data'>
+	</form>
 
-			<div class='data-multiple'>
-			
-				<select class='select n' name='' id='data-multiple-value' item-primary-value='0'>
-					<option value=''>Select...</option>
-					<!--
-					<option value='export_xml_m'> Esporta XML </option>
-					<option value='export_csv_m'> Esporta CSV </option>
-					<option value='edit_multiple'> Modifica </option> 
-					-->
-				</select>
-
-				<button type='submit' class='button n' id='data-multiple-button' data-multiple-button confirm-target='data-multiple-value' confirm-event='click,submit'>Send</button>
-
-			</div>
 
 		<div class='data-table' id='data'>
 			<div class='row head'>
@@ -44,8 +43,9 @@
 					<label class='noselect m-5' for='check-all0'><span></span></label>
 				</div>
 				
+				{{for $results[0] -> getFields() as $field}}
 					<a href='#'> 
-						<span class='title'></span>
+						<span class='title'>{{$field -> getSchema() -> getName()}}</span>
 						
 						<button class='button r'>
 
@@ -53,6 +53,7 @@
 						</button>
 						
 					</a>
+				{{/for}}
 
 
 				<div class='last action'> Azione </div>
@@ -60,16 +61,18 @@
 			
 			<div class='row search' id='dataTable_searchBar'>
 				<div class='check-row'></div>
-
-
-					<div data-search-data='search_button_send'>
-						<div item-table-column='' class='container-input-search'></div> 
-						<div class='container-key-search'>
-							<div class='container-input-search'>
-								<div class="container-delete-key"><button type="button" class="button a i danger"><span class="fa fa-trash"></span></button></div>
-							</div>
+				{{for $results[0] -> getFields() as $field}}
+				<div data-search-data='search_button_send'>
+					<div item-table-column='' class='container-input-search'></div> 
+					<div class='container-key-search'>
+						<div class='container-input-search'>
+							<div class="container-delete-key"><button type="button" class="button a i danger"><span class="fa fa-trash"></span></button></div>
 						</div>
 					</div>
+				</div>
+
+				{{/for}}
+
 
 				<div class='last action'>
 					<button type='submit' item-primary-value value='' class='button'>
@@ -86,12 +89,15 @@
 				</div>
 			</div>
 
-				<div class='row'>
+			{{for $results as $result}}
+				<div class='row data'>
 					<div class='check-row'>
 						<input type='checkbox' name="[]" value='' id='selectItem_0' class='check b d' item-check='0'><label class='noselect m-5' for='selectItem_0_'><span></span></label>
 					</div>
 
-						<div class='info string' item-table-column=''><div></div></div>
+					{{for $result -> getFields() as $field}}
+						<div class='info string' item-table-column=''><div>{{$field -> getValue()}}</div></div>
+					{{/for}}
 					
 
 					<div class='last action'>
@@ -101,8 +107,8 @@
 						
 					</div>
 				</div>
+			{{/for}}
 		</div>
-	</form>
 
 	
 </div>

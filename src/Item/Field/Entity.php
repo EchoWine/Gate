@@ -21,5 +21,23 @@ class Entity{
 		$this -> schema = $schema;
 		$this -> value = $value;
 	}
+
+	/**
+	 * Get the schema
+	 *
+	 * @return Item\Field\Schema
+	 */
+	public function getSchema(){
+		return $this -> schema;
+	}
+
+	/**
+	 * Get the value
+	 *
+	 * @return mixed
+	 */
+	public function getValue(){
+		return $this -> value;
+	}
 }
 ?>

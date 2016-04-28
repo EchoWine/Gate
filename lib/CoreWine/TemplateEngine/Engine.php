@@ -167,7 +167,6 @@ class Engine{
 
 		foreach(self::getAllViews($pathSource) as $k){
 
-
 			/* Get dir path of file with root as $pathSource */
 
 			$path_filename = self::getPathViewBySource($pathSource,$k);
@@ -219,6 +218,7 @@ class Engine{
 				}
 			}
 		}
+
 	}
 	/**
 	 * Translate the page

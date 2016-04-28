@@ -15,10 +15,13 @@
 	define('PATH_STORAGE','../storage');
 	define('PATH_CONFIG','../config');
 
-	include "exception.php";
 	include "loader.php";
 	include "helpers.php";
+	
+	new \CoreWine\Exceptions\Handler('ExceptionsController','render');
 
+	# Load template
+	Engine::ini(dirname(__FILE__)."/".PATH_STORAGE);
 
 	DB::connect(include PATH_CONFIG.'/database.php');
 	# Load all sources
@@ -34,8 +37,6 @@
 	class_alias('CoreWine\Flash', 'Flash');
 	class_alias('CoreWine\TemplateEngine\Engine', 'Engine');
 
-	# Load template
-	Engine::ini(PATH_STORAGE);
 
 	define('path',Request::getDirUrl());
 

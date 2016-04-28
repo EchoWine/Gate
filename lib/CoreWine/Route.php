@@ -161,9 +161,11 @@ class Route{
 	 * @param array $data
 	 */
 	public static function view($data = []){
-		$data = array_merge(self::$global_data,$data,($c = self::getDataByCurrentRoute()) !== null ? $c : []);
 
+		if(self::$route !== null)
+			$data = array_merge(self::$global_data,$data,($c = self::getDataByCurrentRoute()) !== null ? $c : []);
 
+	
 		foreach((array)$data as $n => $k)
 			$GLOBALS[$n] = $k;
 

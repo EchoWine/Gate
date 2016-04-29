@@ -21,6 +21,7 @@ abstract class AdminController extends Controller{
 		$page = $this -> url;
 
 		$this -> route("/{$page}",['as' => $page.'_all','__controller' => 'all']);
+		$this -> route("/api/{$page}",['as' => 'api_'.$page.'_all','__controller' => 'api_all']);
 	}
 
 
@@ -33,8 +34,10 @@ abstract class AdminController extends Controller{
 		]);
 	}
 	
-	public function resultsToObj(){
+	public function api_all(){
 
+		$results = $this -> __all();
+		return $this -> json($results);
 	}
 }
 

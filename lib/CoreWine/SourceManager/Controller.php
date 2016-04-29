@@ -19,6 +19,10 @@ class Controller{
 		return Engine::html($file);
 	}
 
+	public function json($var){
+		echo json_encode($var);
+		die();
+	}
 	public function route($route,$params){
 
 		if(!isset($params['callback']) && isset($params['__controller'])){

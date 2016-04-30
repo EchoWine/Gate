@@ -2,7 +2,7 @@
 
 namespace CoreWine\Exceptions;
 
-class ErrorException extends Exception{
+class RouteException extends Exception{
 
 }
 ?>

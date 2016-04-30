@@ -5,6 +5,7 @@ namespace CoreWine\DataBase;
 use PDO;
 use PDOStatement;
 use PDOException;
+use CoreWine\Exceptions as Exceptions;
 
 /**
  * Database, permits to handle connections and calls to DataBase with PDO
@@ -75,7 +76,7 @@ class DB{
 			);
 			
 		}catch(PDOException $e){
-			self::printError("<b>You can't connect to the host</b><br>".$e->getMessage());
+			throw new Exceptions\DataBaseException("You can't connect to the host: ".$e->getMessage());
 		}
 
 		self::select($cfg['database']);
@@ -192,12 +193,11 @@ class DB{
 				self::$log[] = "<i>".$query."</i>";
 
 		}catch(PDOException $e){
-			self::printError("<b>Query</b>: <i>$query</i><br>".$e -> getMessage());
+			throw new Exceptions\QueryException($e -> getMessage(),$query);
 		}
 
 		if(!$r)
-			self::printError("<b>Query</b>: <i>$query</i><br>".self::$con -> errorInfo()[2]."");
-		
+			throw new Exceptions\QueryException(self::$con -> errorInfo()[2],$query);
 		
 
 		return $r;
@@ -231,11 +231,11 @@ class DB{
 				self::$log[] = "<i>".$q."</i>";
 
 		}catch(PDOException $e){
-			self::printError("<b>Query</b>: <i>$q</i><br>".$e -> getMessage());
+			throw new Exceptions\QueryException($e -> getMessage()."<br>".$query);
 		}
 
 		if(!$r)
-			self::printError("<b>Query</b>: <i>$q</i><br>".self::$con -> errorInfo()[2]."");
+			throw new Exceptions\QueryException(self::$con -> errorInfo()[2]."<br>".$query);
 		
 
 		return $r;

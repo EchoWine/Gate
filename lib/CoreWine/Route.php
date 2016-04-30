@@ -216,10 +216,11 @@ class Route{
 	 * @return mixed result of callback
 	 */
 	public static function load(){
+		
+		if(self::$route == null)
+			throw new Exceptions\RouteException("No route found for: ". self::getRelativeUrl());
 
-		return self::$route != null
-			? call_user_func_array(self::$route -> callback,self::$route -> param)
-			: die('No Routes found');
+		return call_user_func_array(self::$route -> callback,self::$route -> param);
 	}
 
 	/**

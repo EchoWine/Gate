@@ -12,6 +12,15 @@ use Item\Repository;
 
 abstract class Controller extends Controller{
 
+	/**
+	 * Retrieve result as array
+	 */
+	const RESULT_ARRAY = 0;
+
+	/**
+	 * Retrieve results as object
+	 */
+	const RESULT_OBJECT = 1;
 
 	/**
 	 * Item\Schema
@@ -54,15 +63,8 @@ abstract class Controller extends Controller{
 		return $this -> repository;
 	}
 
-	public function __all(){
-		$results = $this -> getRepository() -> get();
-
-		$return = [];
-		foreach($results as $n => $result){
-			$results[$n] = (object)$result;
-		}
-
-		return $results;
+	public function __all($type){
+		return $this -> getRepository() -> get($type);
 	}
 }
 

@@ -27,7 +27,7 @@ abstract class AdminController extends Controller{
 
 	public function all(){
 
-		$results = $this -> __all();
+		$results = $this -> __all(Controller::RESULT_OBJ);
 		
 		return $this -> view('Admin/admin/item/all',[
 			'results' => $results,
@@ -36,7 +36,7 @@ abstract class AdminController extends Controller{
 	
 	public function api_all(){
 
-		$results = $this -> __all();
+		$results = $this -> __all(Controller::RESULT_ARRAY);
 		return $this -> json($results);
 	}
 }

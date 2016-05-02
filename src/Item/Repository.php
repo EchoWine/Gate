@@ -49,15 +49,30 @@ class Repository{
 	 *
 	 * @return CoreWine\DataBase\QueryBuilder
 	 */
-	public function table(){
-		return DB::table($this -> getSchema() -> getTable()) -> setParserResult(function($results){
-			
-			foreach($results as $n => $result){
-				$results[$n] = $this -> schema -> parseResult($result);
-			}
+	public function table($type = 1){
 
-			return $results;
-		});
+		switch($type){
+			case 0:
+
+				return DB::table($this -> getSchema() -> getTable()) -> setParserResult(function($results){
+					
+					return $results;
+				});
+			break;
+
+			case 1:
+
+				return DB::table($this -> getSchema() -> getTable()) -> setParserResult(function($results){
+					
+					foreach($results as $n => $result){
+						$results[$n] = $this -> schema -> parseResult($result);
+					}
+
+					return $results;
+				});
+			break;
+
+		}
 	}
 
 	/**
@@ -65,8 +80,8 @@ class Repository{
 	 *
 	 * @return Result
 	 */
-	public function get(){
-		return $this -> table() -> get();
+	public function get($type){
+		return $this -> table($type) -> get();
 	}
 
 

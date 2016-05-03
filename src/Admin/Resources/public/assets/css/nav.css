@@ -1,0 +1,10 @@
+.nav-container{
+	max-width:300px;
+	width:100%;
+}
+
+.nav-header{
+	background:rgb(45,50,62);
+	color:white;
+	padding:20px;
+}

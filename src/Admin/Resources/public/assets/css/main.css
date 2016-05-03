@@ -1,1 +1,11 @@
+body{
+	padding:0;
+	margin:0;
+	font-family:verdana;
+}
 
+.main-container{
+	position:relative;
+	font-size:12px;
+	display:flex;
+}

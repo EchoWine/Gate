@@ -10,75 +10,40 @@
 	<link rel='shortcut icon' type='image/x-icon' href='{{path}}assets/img/favicon.png'>
 
 	{{block stylesheet}}
-		<link rel='stylesheet' href='{{assets('assets/css/main.css')}}'>
-		<link rel='stylesheet' href='{{assets('assets/css/nav.css')}}'>
-		<link rel='stylesheet' href='{{assets('assets/css/input.css')}}'>
-		<link rel='stylesheet' href='{{assets('assets/css/header.css')}}'>
 		<link rel='stylesheet' href='{{assets('assets/css/font-awesome.css')}}'>
+
 		<link rel='stylesheet' href='{{assets('assets/css/header.css','Auth')}}'>
 		<link rel='stylesheet' href='{{assets('assets/css/main.css','Auth')}}'>
+
 		<link rel='stylesheet' href='{{assets('assets/css/main.css','Admin')}}'>
-		<link rel='stylesheet' href='{{assets('assets/css/data-form.css','Admin')}}'>
-		<link rel='stylesheet' href='{{assets('assets/css/data-table.css','Admin')}}'>
 		<link rel='stylesheet' href='{{assets('assets/css/page.css','Admin')}}'>
-		<link rel='stylesheet' href='{{assets('assets/css/box.css','Admin')}}'>
+		<link rel='stylesheet' href='{{assets('assets/css/nav.css','Admin')}}'>
 	{{/block}}
 
 </head>
 <body>
 
 	{{block body}}
+		<div class='main-container'>
 
-		{{block header}}
-			<div id='header'>
-				<div id='header-main'></div>
+			<div class='nav-container'>
+				<div class='nav-header'>
+
+					GATE CMS
+				</div>
+				<div class='nav-content'></div>
 			</div>
-		{{/block}}
 
-		{{block container}}
-			<div id='container'>
-
-				{{block nav}}
-					<div id='container-nav'>
-						<div id='nav'>
-							<div id='status'>
-								<button class='button s cl_st'><span class='fa fa-list'></span></button>
-							</div>
-							<ul>
-								<li data-menu='dashboard'>
-									<a class='href r' href='{{Route::url('admin/dashboard')}}'>
-										<span class='fa fa-home icon'></span>
-										<span>Dashboard</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				{{/block}}
-
-				{{block content}}
-					<div id='content'>
-						<h1>Sample title</h1>
-						<div>
-
-							{{include Admin/admin/flash}}
-
-						
-						</div>
-					</div>
-				{{/block}}
+			<div class='page-container'>
+				<div class='page-header'></div>
+				<div class='page-content'></div>
 			</div>
-		{{/block}}
-		
+		</div>
 	{{/block}}
 	
 	{{block scripts}}
 		<script src='{{path}}assets/js/jquery-2.1.4.min.js'></script>
-		<script src='{{path}}assets/js/bootstrap.min.js'></script>
-		<script src='{{path}}assets/js/main.js'></script>
 		<script src='{{path}}assets/js/cookie.js'></script>
-		<script src='{{path}}assets/js/nav.js'></script>
-		<script src='{{path}}assets/js/element.js'></script>
 	{{/block}}
 </body>
 </html>

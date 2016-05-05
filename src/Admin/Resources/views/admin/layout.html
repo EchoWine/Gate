@@ -12,8 +12,8 @@
 	{{block stylesheet}}
 		<link rel='stylesheet' href='{{assets('assets/css/font-awesome.css')}}'>
 
-		<link rel='stylesheet' href='{{assets('src/Auth/assets/css/header.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Auth/assets/css/main.css')}}'>
+		<link rel='stylesheet' href='{{assets('src/Auth/assets/css/login.css')}}'>
 
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/main.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/page.css')}}'>
@@ -24,18 +24,40 @@
 <body>
 
 	{{block body}}
-		<div class='main-container'>
+		<div class='container main-container'>
 
-			<div class='nav-container'>
-				<div class='nav-header'>
-					GATE CMS
+			<div class='container container-column nav-container'>
+				<div class='header nav-header'>
+					<!--
+					<div class='nav-header-icon-container element-center'><i class='fa fa-television' aria-hidden='true'></i></div>
+					<span class='nav-header-name'>Serie TV</span>
+					-->
+
+					<div class='nav-header-icon-container element-center'><i class='fa fa-glass' aria-hidden='true'></i></div>
+					<span class='nav-header-name'>Gate CMS</span>
+					<i class='fa fa-list nav-header-menu-icon' aria-hidden='true'></i>
 				</div>
 				<div class='nav-content'></div>
 			</div>
+			<span></span>
+			</span>
+		</li>
 
-			<div class='page-container'>
-				<div class='page-header'>
-					HEADER
+			<div class='container container-column page-container'>
+				<div class='header page-header'>
+					<div class='page-header-main'></div>
+					<div class='page-header-separator'></div>
+					<div class='page-header-button element-center'>
+						{{Auth::getUserDisplay()}}
+					</div>
+					<div class='page-header-separator'></div>
+					<div>
+						<form method='POST'>
+							<button type='submit' name='logout'>
+								<div class='page-header-button element-center'><i class='page-header-icon fa fa-sign-out'></i> </div>
+							</button>
+						</form>
+					</div>
 				</div>
 				<div class='page-content'></div>
 			</div>

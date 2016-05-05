@@ -8,24 +8,60 @@
 	src: url('../../font/OpenSans-Light.ttf');
 }
 
-body{
-	margin:0;
-	font-size:12px;
-	font-family: 'Open Sans',sans-serif,verdana;
-}
-
 html,body{
 	min-height:100%;
 	height:100%;
 }
+
+
 body{
-	padding:0;
 	margin:0;
-	font-family:verdana;
+	font-size:12px;
+	font-family: verdana;
+	color:#333;
+}
+
+button,input,textarea{
+	background:none;
+	border:none;
+	margin:0;
+	padding:0;
+	outline:none;
+}
+
+.element-center{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.text-center{
+	text-align:center;
+}
+
+.container{
+	position:relative;
+	height:100%;
+	width:100%;
+	display:flex;
+}
+
+.container-column{
+	flex-direction: column;
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: auto;
+}
+
+.header{
+	height:64px;
+	min-height:64px;
+	max-height:64px;
+	display:flex;
+	align-items:center;
 }
 
 .main-container{
-	position:relative;
 	font-size:12px;
 	display:flex;
 	height:100%;

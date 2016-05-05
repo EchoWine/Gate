@@ -1,28 +1,42 @@
 .page-container{
-	position:relative;
-	width:100%;
-	height:100%;
-	display:flex;
-	flex-direction: column;
-	flex-grow: 1;
-	flex-shrink: 1;
-	flex-basis: auto;
+
 }
 
 .page-header{
 	background:white;
-	color:white;
-	padding:20px;
+}
+
+.page-header-main{
+	flex-grow:1;
+}
+
+.page-header-separator{
 	height:64px;
-	min-height:64px;
-	max-height:64px;
-	
+    width:1px;
+    background:rgba(0,0,0,.12);
+}
+
+.page-header-button{
+	height:64px;
+	padding:0 30px;
+	cursor:pointer;
+}
+
+.page-header-button:hover{
+	background-color: rgba(158,158,158,0.2);
+}
+
+.page-header-button:active{
+
+}
+
+.page-header-icon{
+	font-size:19px;
 }
 
 .page-content{
+	height:100%;
 	box-shadow: inset 0 1px 3px 0 rgba(0,0,0,.2),
 				inset 0 1px 1px 0 rgba(0,0,0,.14),
 				inset 0 2px 1px -1px rgba(0,0,0,.12);
-	z-index:200;
-	height:100%;
 }

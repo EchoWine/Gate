@@ -1,6 +1,5 @@
 <?php
 	
-
 	use CoreWine\DataBase\DB as DB;
 	use CoreWine\Request as Request;
 	use CoreWine\Route as Route;
@@ -8,10 +7,12 @@
 	use CoreWine\TemplateEngine\Engine;
 
 	# Path
+	define('PATH_BASE','/gate-cms');
 	define('PATH',dirname(__FILE__));
 	define('PATH_APP','../app');
 	define('PATH_SRC','../src');
 	define('PATH_LIB','../lib');
+	define('PATH_PUBLIC','');
 	define('PATH_STORAGE','../storage');
 	define('PATH_CONFIG','../config');
 
@@ -24,8 +25,8 @@
 	Engine::ini(dirname(__FILE__)."/".PATH_STORAGE);
 
 	DB::connect(include PATH_CONFIG.'/database.php');
-	# Load all sources
 	
+	# Load all sources
 	Manager::loadAll(PATH_SRC);
 	
 	Manager::loaded();

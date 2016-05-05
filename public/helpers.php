@@ -21,10 +21,8 @@
 	}
 
 
-	function assets($url,$module = ''){
-
-		$base = !empty($module) ? Request::getDirUrl().'../src/'.$module.'/Resources/public/' : Request::getDirUrl();
-		return $base.$url;
+	function assets($url){
+		return Request::getDirUrl().$url;
 	}
 
 	function post($name){

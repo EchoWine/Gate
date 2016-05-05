@@ -86,6 +86,13 @@ class Manager{
 			self::$controllers[] = $name_class;
 		}
 
+		# Create symlink to access 
+		if(!file_exists(PATH."/src/".$basePath)){
+			if(file_exists(PATH."/../src/".$basePath."/Resources/public/")){
+				symlink(PATH."/../src/".$basePath."/Resources/public/",PATH."/src/".$basePath);
+			}
+		}
+
 		# Set config
 		foreach(glob($path.'/Resources/config/*') as $file){
 			$cfgs = require_once $file;

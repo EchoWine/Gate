@@ -75,7 +75,7 @@ class Manager{
 		self::$list[$basePath] = $path;
 
 		foreach(glob($path."/Controller/*") as $file){
-			
+
 			self::$files[] = $file;
 			require_once $file;
 
@@ -119,8 +119,10 @@ class Manager{
 
 		$controllers = [];
 		foreach(self::$controllers as $controller){
+			
 			if(is_subclass_of($controller,Controller::class)){
 				$reflectionClass = new \ReflectionClass($controller);
+
 
 	    		if($reflectionClass -> IsInstantiable()){
 					$c = new $controller();	

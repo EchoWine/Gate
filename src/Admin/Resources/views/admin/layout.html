@@ -15,9 +15,13 @@
 		<link rel='stylesheet' href='{{assets('src/Auth/assets/css/main.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Auth/assets/css/login.css')}}'>
 
+		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/spinner.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/main.css')}}'>
+		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/alert.css')}}'>
+		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/form.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/page.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/nav.css')}}'>
+		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/section.css')}}'>
 	{{/block}}
 
 </head>
@@ -29,11 +33,11 @@
 			<div class='container container-column nav-container'>
 				<div class='header nav-header'>
 					<!--
-					<div class='nav-header-icon-container element-center'><i class='fa fa-television' aria-hidden='true'></i></div>
+					<div class='nav-header-icon-container flex-center'><i class='fa fa-television' aria-hidden='true'></i></div>
 					<span class='nav-header-name'>Serie TV</span>
 					-->
 
-					<div class='nav-header-icon-container element-center'><i class='fa fa-glass' aria-hidden='true'></i></div>
+					<div class='nav-header-icon-container flex-center'><i class='fa fa-glass' aria-hidden='true'></i></div>
 					<span class='nav-header-name'>Gate CMS</span>
 					<i class='fa fa-list nav-header-menu-icon' aria-hidden='true'></i>
 				</div>
@@ -47,26 +51,49 @@
 				<div class='header page-header'>
 					<div class='page-header-main'></div>
 					<div class='page-header-separator'></div>
-					<div class='page-header-button element-center'>
-						{{Auth::getUserDisplay()}}
-					</div>
+					<div class='page-header-button flex-center'>{{Auth::getUserDisplay()}}</div>
 					<div class='page-header-separator'></div>
 					<div>
 						<form method='POST'>
 							<button type='submit' name='logout'>
-								<div class='page-header-button element-center'><i class='page-header-icon fa fa-sign-out'></i> </div>
+								<div class='page-header-button flex-center'><i class='page-header-icon fa fa-sign-out'></i> </div>
 							</button>
 						</form>
 					</div>
 				</div>
-				<div class='page-content'></div>
+				<div class='page-content'>
+
+
+					<div class='page-nav'>
+						{{block page-nav}}
+							<div class='page-nav-path'>
+								<i class='fa fa-home'></i>
+								<div class='page-nav-path-sub'><i class='fa fa-angle-right'></i></div>
+								<div class='page-nav-path-element'>Home</div>
+							</div>
+							<div class='page-title'>
+								<h1>Title</h1>
+							</div>
+						{{/block}}
+					</div>
+					{{block page-content}}
+						<div class='page-row'>
+							<div class='page-section'>
+								Contenuto
+							</div>
+						</div>
+					{{/block}}
+
+				</div>
 			</div>
 		</div>
 	{{/block}}
 	
 	{{block scripts}}
-		<script src='{{path}}assets/js/jquery-2.1.4.min.js'></script>
-		<script src='{{path}}assets/js/cookie.js'></script>
+		<script src='{{assets('assets/js/jquery-2.1.4.min.js')}}'></script>
+		<script src='{{assets('assets/js/cookie.js')}}'></script>
+
+		<script src='{{assets('src/Admin/assets/js/item.js')}}'></script>
 	{{/block}}
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Controller;
+namespace Basic\Controller;
 
 use CoreWine\Route;
 use Admin\Controller\AdminController;

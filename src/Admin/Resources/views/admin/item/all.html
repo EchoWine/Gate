@@ -1,0 +1,89 @@
+{{extends Admin/admin/layout}}
+
+{{block page-content}}
+	
+	<!-- ROW TEMPLATE -->
+	<div class='templates' data-template='item-row'>
+		<div class='section-table-row section-table-header'>
+			<div class='section-table-col'>
+				<span class='section-table-col-text'>{username}</span>
+			</div>
+			<div class='section-table-col'>
+				<span class='section-table-col-text'>{email}</span>
+			</div>
+			<div class='section-table-col section-table-col-action'>
+				<button type='button' class='button-action button-danger'><i class='fa fa-trash'></i><span>Delete</span></button>
+				<button type='button' class='button-action button-warning'><i class='fa fa-pencil'></i><span>Edit</span></button>
+			</div>
+		</div>
+	</div>
+
+
+	<div class='page-row'>
+		<div class='page-section'>
+
+			<div class='section-search flex-center'>
+				<div class='flex-fill'></div>
+				<label>Search: </label>
+				<input type='text' class='input-data'>
+			</div>
+			<div class='section-table'>
+
+				<div class='section-table-row section-table-header'>
+					<div class='section-table-col '>
+						<div class='section-table-col-text'>
+							<span>Username</span>
+							<i class='fa fa-sort'></i>
+						</div>
+					</div>
+					<div class='section-table-col'>
+						<div class='section-table-col-text'>
+							<span>Email</span>
+							<i class='fa fa-sort-desc'></i>
+						</div>
+					</div>
+					<div class='section-table-col section-table-col-action'>
+						<div class='section-table-col-text'>
+							<span>Action</span>
+						</div>
+					</div>
+				</div>
+
+				<div data-use-template='item-row'>
+					<div class='section-table-row'>
+						<div class='section-table-col'>
+							{{include Admin/admin/spinner}}
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class='section-pagination flex-center'>
+				<div>
+					<select>
+						<option>5</option>
+						<option>10</option>
+						<option>15</option>
+					</select>
+				</div>
+				<div class='flex-fill'></div>
+				<div>
+					<button type='button' class='button-action'>Prev</button>
+					<button type='button' class='button-action'>Next</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{{/block}}
+
+{{block scripts}}
+	{{parent}}
+	<script>
+		item.addTableURL({
+			url: 'api/user',
+			template: {
+				row: 'item-row'
+			}
+		});
+	</script>
+{{/block}}

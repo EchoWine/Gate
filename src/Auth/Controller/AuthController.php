@@ -12,13 +12,13 @@ use CoreWine\SourceManager\Controller as Controller;
 use Auth\Service\Auth;
 use Auth\Repository\AuthRepository;
 
-class AuthController extends Controller{
+abstract class AuthController extends Controller{
 
 	/**
 	 * Routes
 	 */
 	public function __routes(){
-		$this -> route('/login',['as' => 'login','__controller' => 'loginAction']);
+		$this -> route('/login',['as' => 'login','__controller' => 'loginView']);
 	}
 
 	/**
@@ -36,7 +36,7 @@ class AuthController extends Controller{
 	/**
 	 * Route to login
 	 */
-	public function loginAction(){
+	public function loginView(){
 		return $this -> view('Auth/login');
 	}
 

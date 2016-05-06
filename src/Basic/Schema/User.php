@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminAuth\Schema;
+namespace Basic\Schema;
 
 use Item\Schema;
 
@@ -8,7 +8,7 @@ use Item\Field\Schema as FieldSchema;
 
 class User extends Schema{
 	
-	public $__entity = 'AdminAuth\Entity\User';
+	public $__entity = 'Basic\Entity\User';
 
 	public $table = 'user';
 

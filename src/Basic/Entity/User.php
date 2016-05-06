@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminAuth\Entity;
+namespace Basic\Entity;
 
 use Item\Entity;
 

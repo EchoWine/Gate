@@ -19,36 +19,79 @@ abstract class AdminController extends Controller{
 	public $url;
 
 
+	/**
+	 * Set all routes
+	 */
 	public function __routes(){
 
 		$page = $this -> url;
 		$this -> route("/".AdminController::PREFIX_URL."{$page}",[
+			'as' => AdminController::PREFIX_ROUTE.$page.'_index',
+			'__controller' => 'index'
+		]);
+
+		$api = $this -> getApiURL();
+
+		$this -> route($api -> get,[
 			'as' => AdminController::PREFIX_ROUTE.$page.'_all',
 			'__controller' => 'all'
 		]);
 
-		$this -> route("/".AdminController::PREFIX_URL."api/{$page}",[
-			'as' => AdminController::PREFIX_ROUTE.'api_'.$page.'_all',
-			'__controller' => 'api_all'
+		$this -> route($api -> add,[
+			'as' => AdminController::PREFIX_ROUTE.$page.'_add',
+			'__controller' => 'add'
 		]);
+
 
 	}
 
+	/**
+	 * Index
+	 */
+	public function index(){
 
-	public function all(){
-
-		$results = $this -> __all(AdminController::RESULT_OBJECT);
-		
 		return $this -> view('Admin/admin/item/all',[
-			'results' => $results,
+			'api' => $this -> getApiURL(false),
 		]);
+	}
+
+	/**
+	 * Get api url
+	 */
+	public function getApiURL($base = true){
+
+		$base = $base ? "/".AdminController::PREFIX_URL : '';
+
+		return (object)[
+			'get' =>  $base."api/".$this -> url,
+			'edit' => $base."api/".$this -> url.'/edit',
+			'add' =>  $base."api/".$this -> url.'/add'
+		];
 	}
 	
-	public function api_all(){
+	/**
+	 * Get all the result
+	 */
+	public function all(){
 
 		$results = $this -> __all(AdminController::RESULT_ARRAY);
 		return $this -> json($results);
 	}
-}
 
+	/**
+	 * Add new record
+	 */
+	public function add(){
+		$result = $this -> __add();
+
+		if($result){
+			$response = (object)['result' => 'success'];
+		}else{
+			$response = (object)['result' => 'error'];
+		}
+
+		return $this -> json($response);
+	}
+
+}
 ?>

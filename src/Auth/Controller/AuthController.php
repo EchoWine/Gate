@@ -44,12 +44,13 @@ abstract class AuthController extends Controller{
 	 * Redirect to route login
 	 */
 	public function redirectRouteLogin(){
-
+		/*
 		if(!Route::is('login') && !Auth::logged())
 			Request::redirect(Route::url('login'));
 
 		if(Route::is('login') && Auth::logged())
 			Request::redirect(Route::url('index'));
+			*/
 		
 	}
 

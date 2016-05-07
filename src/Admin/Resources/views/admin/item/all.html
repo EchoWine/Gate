@@ -18,6 +18,22 @@
 		</div>
 	</div>
 
+	<!-- MODAL ADD -->
+	<div class='modal' id='modal-item-add'>
+		<div class='modal-body'>
+			<button type='button' class='button-action button-danger modal-close'>Close</button>
+
+			<h2>Add</h2>
+			<form method='POST' id='item-data-form-add'>
+				<div>Username:</div>
+				<div><input type='text' class='input-data' name='username'></div>
+				<div>Email:</div>
+				<div><input type='text' class='input-data' name='email'></div>
+				<div><button type='submit' class='button-action button-primary'>Add</button></div>
+			</form>
+
+		</div>
+	</div>
 
 	<div class='page-row'>
 		<div class='page-section'>
@@ -27,6 +43,9 @@
 				<label>Search: </label>
 				<input type='text' class='input-data'>
 			</div>
+			
+			<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-title='Add'>Aggiungi</button>
+
 			<div class='section-table'>
 
 				<div class='section-table-row section-table-header'>
@@ -79,8 +98,20 @@
 {{block scripts}}
 	{{parent}}
 	<script>
-		item.addTableURL({
-			url: 'api/user',
+		item.addTable({
+			list:{
+				url:'{{$api -> get}}'
+			},
+			add:{
+				url:'{{$api -> add}}',
+				form: '#item-data-form-add',
+				action: function(form){
+					var values = {};
+					values.username = form.find('[name=username]').val();
+					values.email = form.find('[name=email]').val();
+					return values;
+				}
+			},
 			template: {
 				row: 'item-row'
 			}

@@ -52,6 +52,9 @@ class Repository{
 	public function table($type = 1){
 
 		switch($type){
+			case null:
+				return DB::table($this -> getSchema() -> getTable());
+			break;
 			case 0:
 
 				return DB::table($this -> getSchema() -> getTable()) -> setParserResult(function($results){
@@ -81,7 +84,17 @@ class Repository{
 	 * @return Result
 	 */
 	public function get($type){
-		return $this -> table($type) -> get();
+		return $this -> table($type) -> orderByDesc('id') -> get();
+	}
+
+	/**
+	 * Insert a new record
+	 *
+	 * @param array $values
+	 * @return int id of new record
+	 */
+	public function insert($values){
+		return $this -> table(null) -> insert($values);
 	}
 
 

@@ -15,6 +15,11 @@ class Request{
 	const COOKIE_HTTP_ONLY = false;
 
 	/**
+	 * PUT
+	 */
+	public static $REQUEST_PUT;
+
+	/**
 	 * Initialization
 	 */
 	public static function ini(){
@@ -29,6 +34,15 @@ class Request{
 		// ini_set('session.cookie_secure', 1);
 
 		self::startSession();
+
+		self::iniPUT();
+	}
+
+	/** 
+	 * Ini put
+	 */
+	public static function iniPUT(){
+		parse_str(file_get_contents('php://input'), self::$REQUEST_PUT);
 	}
 
 
@@ -60,6 +74,16 @@ class Request{
 	 */
 	public static function post($name){
 		return isset($_POST[$name]) ? $_POST[$name] : null;
+	}
+
+	/**
+	 * Get $PUT
+	 *
+	 * @param string $name
+	 * @return $_POST
+	 */
+	public static function put($name){
+		return isset(Request::$REQUEST_PUT[$name]) ? Request::$REQUEST_PUT[$name] : null;
 	}
 
 	/**

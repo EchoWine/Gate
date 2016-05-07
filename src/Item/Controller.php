@@ -51,20 +51,70 @@ abstract class Controller extends Controller{
 		$this -> __alterSchema();
 	}
 
+	/**
+	 * Alter schema
+	 */
 	public function __alterSchema(){
 		$this -> getRepository() -> __alterSchema();
 	}
 
+	/**
+	 * Get schema
+	 *
+	 * @return Schema
+	 */
 	public function getSchema(){
 		return $this -> schema;
 	}
 
+	/**
+	 * Get repository
+	 *
+	 * @return Repository
+	 */
 	public function getRepository(){
 		return $this -> repository;
 	}
 
+	/**
+	 * Get all records
+	 *
+	 * @param int $type type of result (Array|Object)
+	 * @return results
+	 */
 	public function __all($type){
 		return $this -> getRepository() -> get($type);
+	}
+
+	/**
+	 * Add a new record
+	 */
+	public function __add(){
+
+		$row = [];
+
+		$fields = $this -> getSchema() -> getFields();
+		foreach($fields as $name => $field){
+			$row[$field -> getName()] = Request::put($field -> getName());
+		}
+
+
+		// Validate fields
+		if(false){
+			return false;
+		}
+
+
+		// Check unique fields
+		if(false){
+			return false;
+		}
+
+
+
+		// Insert
+		return $this -> getRepository() -> insert($row);
+
 	}
 }
 

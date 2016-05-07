@@ -15,9 +15,24 @@ class Request{
 	const COOKIE_HTTP_ONLY = false;
 
 	/**
+	 * GET
+	 */
+	public static $REQUEST_GET;
+
+	/**
 	 * PUT
 	 */
 	public static $REQUEST_PUT;
+
+	/**
+	 * POST
+	 */
+	public static $REQUEST_POST;
+
+	/**
+	 * FILES
+	 */
+	public static $REQUEST_FILES;
 
 	/**
 	 * Initialization
@@ -35,15 +50,40 @@ class Request{
 
 		self::startSession();
 
-		self::iniPUT();
+		self::ini_REQUEST_GET();
+		self::ini_REQUEST_PUT();
+		self::ini_REQUEST_POST();
+		self::ini_REQUEST_FILES();
 	}
 
 	/** 
 	 * Ini put
 	 */
-	public static function iniPUT(){
-		parse_str(file_get_contents('php://input'), self::$REQUEST_PUT);
+	public static function ini_REQUEST_GET(){
+		Request::$REQUEST_GET = $_GET;
 	}
+
+	/** 
+	 * Ini put
+	 */
+	public static function ini_REQUEST_PUT(){
+		parse_str(file_get_contents('php://input'), Request::$REQUEST_PUT);
+	}
+
+	/** 
+	 * Ini put
+	 */
+	public static function ini_REQUEST_POST(){
+		Request::$REQUEST_POST = $_POST;
+	}
+
+	/** 
+	 * Ini put
+	 */
+	public static function ini_REQUEST_FILES(){
+		Request::$REQUEST_FILES = $_FILES;
+	}
+
 
 
 	/**
@@ -67,43 +107,46 @@ class Request{
 	}
 
 	/**
-	 * Get $_POST
+	 * Get request get
 	 *
 	 * @param string $name
-	 * @return $_POST
-	 */
-	public static function post($name){
-		return isset($_POST[$name]) ? $_POST[$name] : null;
-	}
-
-	/**
-	 * Get $PUT
-	 *
-	 * @param string $name
-	 * @return $_POST
-	 */
-	public static function put($name){
-		return isset(Request::$REQUEST_PUT[$name]) ? Request::$REQUEST_PUT[$name] : null;
-	}
-
-	/**
-	 * Get $_GET
-	 *
-	 * @param string $name
+	 * @param mixed $default
 	 * @return $_GET
 	 */
-	public static function get($name){
-		return isset($_GET[$name]) ? $_GET[$name] : null;
+	public static function get($name,$default = null){
+		return isset(Request::$REQUEST_GET[$name]) ? Request::$REQUEST_GET[$name] : $default;
 	}
 	
+
 	/**
-	 * Get $_FILES
+	 * Get request post
+	 *
+	 * @param string $name
+	 * @param mixed $default
+	 * @return $_POST
+	 */
+	public static function post($name,$default = null){
+		return isset(Request::$REQUEST_POST[$name]) ? Request::$REQUEST_POST[$name] : $default;
+	}
+
+	/**
+	 * Get request put
+	 *
+	 * @param string $name
+	 * @param mixed $default
+	 * @return $_POST
+	 */
+	public static function put($name,$default = null){
+		return isset(Request::$REQUEST_PUT[$name]) ? Request::$REQUEST_PUT[$name] : $default;
+	}
+	/**
+	 * Get request files
 	 *
 	 * @param string $name
 	 * @return $_FILES
 	 */
 	public static function files($name){
-		return isset($_FILES[$name]) ? $_FILES[$name] : null;
+		return isset(Request::$REQUEST_FILES[$name]) ? Request::$REQUEST_FILES[$name] : null;
 	}
 
 	/**

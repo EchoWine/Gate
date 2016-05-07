@@ -20,7 +20,8 @@ class Controller{
 	}
 
 	public function json($var){
-		echo json_encode($var);
+		header('Content-Type: application/json');
+		echo json_encode($var,JSON_PRETTY_PRINT);
 		die();
 	}
 	public function route($route,$params){

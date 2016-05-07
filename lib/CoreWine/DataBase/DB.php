@@ -248,6 +248,7 @@ class DB{
 	 * @return array result
 	 */
 	public static function fetch($q,$nIndex = true){
+		
 		if(is_string($q))$q = DB::query($q);
 
 		return $nIndex ? $q -> fetchAll() : $q -> fetchAll(PDO::FETCH_ASSOC);

@@ -30,7 +30,6 @@ abstract class AuthController extends Controller{
 
 		$this -> checkAttemptLogout();
 		$this -> checkAttemptLogin();
-		$this -> redirectRouteLogin();
 	}
 
 	/**
@@ -38,20 +37,6 @@ abstract class AuthController extends Controller{
 	 */
 	public function loginView(){
 		return $this -> view('Auth/login');
-	}
-
-	/**
-	 * Redirect to route login
-	 */
-	public function redirectRouteLogin(){
-		/*
-		if(!Route::is('login') && !Auth::logged())
-			Request::redirect(Route::url('login'));
-
-		if(Route::is('login') && Auth::logged())
-			Request::redirect(Route::url('index'));
-			*/
-		
 	}
 
 	/**
@@ -85,6 +70,7 @@ abstract class AuthController extends Controller{
 		}else if($users_num == 1){
 
 			Auth::login($users[0],$type);
+			
 		}else{
 
 			if(Cfg::get('Auth.ambiguous')){

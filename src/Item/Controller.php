@@ -6,11 +6,11 @@ use CoreWine\DataBase\DB;
 use CoreWine\Route as Route;
 use CoreWine\Request as Request;
 
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\SourceManager\Controller as SourceController;
 
 use Item\Repository;
 
-abstract class Controller extends Controller{
+abstract class Controller extends SourceController{
 
 	/**
 	 * Retrieve result as array
@@ -21,6 +21,11 @@ abstract class Controller extends Controller{
 	 * Retrieve results as object
 	 */
 	const RESULT_OBJECT = 1;
+
+	/**
+	 * Name of obj in url
+	 */
+	public $url;
 
 	/**
 	 * Item\Schema
@@ -41,6 +46,32 @@ abstract class Controller extends Controller{
 	 * Item\Repository
 	 */
 	public $repository;
+
+	/**
+	 * Routes
+	 */
+	public function __routes(){
+
+		$url = $this -> url;
+
+
+		$this -> route("/api/{$url}",['as' => "api/{$url}",'__controller' => 'all']);
+
+		$this -> route("/api/{$url}/add",['as' => "api/{$url}/add",'__controller' => 'add']);
+	}
+
+	/**
+	 * Get api url
+	 */
+	public function getFullApiURL(){
+
+		$base = Request::getDirUrl()."api/{$this -> url}";
+		return (object)[
+			'get' =>  $base,
+			'edit' => $base.'/edit',
+			'add' =>  $base.'/add'
+		];
+	}
 
 	/**
 	 * Check
@@ -75,6 +106,31 @@ abstract class Controller extends Controller{
 	public function getRepository(){
 		return $this -> repository;
 	}
+
+	/**
+	 * Get all the result
+	 */
+	public function all(){
+
+		$results = $this -> __all(Controller::RESULT_ARRAY);
+		return $this -> json($results);
+	}
+
+	/**
+	 * Add new record
+	 */
+	public function add(){
+		$result = $this -> __add();
+
+		if($result){
+			$response = (object)['result' => 'success'];
+		}else{
+			$response = (object)['result' => 'error'];
+		}
+
+		return $this -> json($response);
+	}
+
 
 	/**
 	 * Get all records

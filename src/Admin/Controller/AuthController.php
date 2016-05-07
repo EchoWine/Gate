@@ -14,6 +14,12 @@ use Auth\Repository\AuthRepository;
 
 class AuthController extends AuthController{
 
+	/**
+	 * Routes
+	 */
+	public function __routes(){
+		$this -> route('/admin/login',['as' => '/admin/login','__controller' => 'loginView']);
+	}
 	
 	/**
 	 * Route to login
@@ -21,7 +27,6 @@ class AuthController extends AuthController{
 	public function loginView(){
 		return $this -> view('Admin/auth/login');
 	}
-
 
 
 }

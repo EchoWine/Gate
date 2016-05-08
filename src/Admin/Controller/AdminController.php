@@ -51,8 +51,43 @@ abstract class AdminController extends Controller{
 
 		return $this -> view('Admin/admin/item/all',[
 			'api' => $this -> getFullApiURL(),
+			'fieldsAll' => $this -> getSchemaFieldsList(),
+			'fieldsAdd' => $this -> getSchemaFieldsAdd(),
 		]);
 	}
+
+	/**
+	 * Get schema of fields that will be used in a list
+	 *
+	 * @return array schema
+	 */
+	public function getSchemaFieldsList(){
+		$return = [];
+
+		foreach($this -> getSchema() -> getFields() as $name => $field){
+			
+			if($field -> isViewAll())
+				$return[$name] = $field;
+		}
+
+		return $return;
+	}
 	
+	/**
+	 * Get schema of fields that will be used in form add
+	 *
+	 * @return array schema
+	 */
+	public function getSchemaFieldsAdd(){
+		$return = [];
+
+		foreach($this -> getSchema() -> getFields() as $name => $field){
+			
+			if($field -> isViewAdd())
+				$return[$name] = $field;
+		}
+
+		return $return;
+	}
 }
 ?>

@@ -5,16 +5,16 @@
 	<!-- ROW TEMPLATE -->
 	<div class='templates' data-template='item-row'>
 		<div class='section-table-row section-table-header'>
-			<div class='section-table-col'>
-				<span class='section-table-col-text'>{username}</span>
-			</div>
-			<div class='section-table-col'>
-				<span class='section-table-col-text'>{email}</span>
-			</div>
+			{{for $fieldsAll as $field}}
+				<div class='section-table-col'>
+					<span class='section-table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
+				</div>
+			{{/for}}
 			<div class='section-table-col section-table-col-action'>
 				<button type='button' class='button-action button-danger'><i class='fa fa-trash'></i><span>Delete</span></button>
 				<button type='button' class='button-action button-warning'><i class='fa fa-pencil'></i><span>Edit</span></button>
 			</div>
+
 		</div>
 	</div>
 
@@ -25,10 +25,12 @@
 
 			<h2>Add</h2>
 			<form method='POST' id='item-data-form-add'>
-				<div>Username:</div>
-				<div><input type='text' class='input-data' name='username'></div>
-				<div>Email:</div>
-				<div><input type='text' class='input-data' name='email'></div>
+
+				{{for $fieldsAdd as $field}}
+					<div>{{$field -> getLabel()}}:</div>
+					<div><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
+				{{/for}}
+
 				<div><button type='submit' class='button-action button-primary'>Add</button></div>
 			</form>
 
@@ -49,18 +51,15 @@
 			<div class='section-table'>
 
 				<div class='section-table-row section-table-header'>
+
+					{{for $fieldsAll as $field}}
 					<div class='section-table-col '>
 						<div class='section-table-col-text'>
-							<span>Username</span>
+							<span>{{$field -> getLabel()}}</span>
 							<i class='fa fa-sort'></i>
 						</div>
 					</div>
-					<div class='section-table-col'>
-						<div class='section-table-col-text'>
-							<span>Email</span>
-							<i class='fa fa-sort-desc'></i>
-						</div>
-					</div>
+					{{/for}}
 					<div class='section-table-col section-table-col-action'>
 						<div class='section-table-col-text'>
 							<span>Action</span>
@@ -107,8 +106,10 @@
 				form: '#item-data-form-add',
 				action: function(form){
 					var values = {};
-					values.username = form.find('[name=username]').val();
-					values.email = form.find('[name=email]').val();
+
+					{{for $fieldsAdd as $field}}
+						values.{{$field -> getName()}} = form.find('[name={{$field -> getName()}}]').val();
+					{{/for}}
 					return values;
 				}
 			},

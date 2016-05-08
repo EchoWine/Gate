@@ -172,6 +172,7 @@ abstract class Controller extends SourceController{
 		return $this -> getRepository() -> insert($row);
 
 	}
+
 }
 
 

@@ -33,6 +33,9 @@
 		return $post != null ? $post : '';
 	}
 
+	function tmpl_js_var($name){
+		return '{'.$name.'}';
+	}
 	
 
 ?>

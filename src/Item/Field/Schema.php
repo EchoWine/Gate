@@ -34,6 +34,7 @@ class Schema{
 	 */
 	public function __construct($name){
 		$this -> name = $name;
+		$this -> label = $name;
 		$this -> column = $name;
 		return $this;
 	}
@@ -51,6 +52,21 @@ class Schema{
 	 */
 	public function getName(){
 		return $this -> name;
+	}
+
+	/**
+	 * Set label
+	 */
+	public function label($name){
+		$this -> label = $name;
+		return $this;
+	}
+
+	/**
+	 * Get label
+	 */
+	public function getLabel(){
+		return $this -> label;
 	}
 
 	/**
@@ -94,10 +110,21 @@ class Schema{
 			$col -> null();
 	}
 
+	/**
+	 * Return if the schema has an entity
+	 *
+	 * @return bool
+	 */
 	public function hasEntity(){
 		return $this -> __entity !== null;
 	}
 
+	/**
+	 * Return a new istance of entity
+	 *
+	 * @param mixed $value
+	 * @return Entity
+	 */
 	public function newEntity($value){
 		return new $this -> __entity($this,$value);
 	}

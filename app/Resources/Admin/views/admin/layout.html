@@ -1,2 +1,20 @@
 {{extends ../src/Admin/admin/layout}}
 
+{{block nav}}
+	
+	<h5 class='nav-title'>Yohoho</h5>
+	<ul>
+		<li class='nav-link-container'>
+			<a class='nav-link' href='{{route('admin/dashboard')}}'>
+				<i class='nav-link-icon fa fa-home'></i>
+				<span>Dashboard</span>
+			</a>
+		</li>
+		<li class='nav-link-container'>
+			<a class='nav-link' href='{{route('admin/user')}}'>
+				<i class='nav-link-icon fa fa-user'></i>
+				<span>Users</span>
+			</a>
+		</li>
+	</ul>
+{{/block}}

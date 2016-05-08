@@ -41,3 +41,78 @@
 				inset 0 1px 1px 0 rgba(0,0,0,.14),
 				inset 0 2px 1px -1px rgba(0,0,0,.12);
 }
+
+.nav-title{
+	font-size:14px;
+	padding:15px 20px;
+	color:rgba(255,255,255,.5);
+	margin:0;
+}
+
+
+.nav-content a{
+	text-decoration:none;
+}
+
+.nav-content li{
+	display:block;
+}
+
+.nav-link{
+	display:flex;
+	padding:15px 20px;
+	align-items:center;
+	color:rgba(255,255,255,.7);
+	cursor:pointer;
+}
+
+.nav-link:hover{
+	background: rgba(0,0,0,.1);
+}
+
+.nav-link span{
+	margin-left:15px;
+	flex-grow:1;
+}
+
+.nav-link-icon{
+	font-size:16px;
+	width:15px;
+}
+
+.nav-link .nav-link-arrow{
+	transition:transform 0.2s ease-in-out;
+}
+
+.nav-link-container.active .nav-link-arrow{
+	transform: rotate(-90deg);
+}
+
+.nav-link-container{
+	transition:background 0s linear;
+	transition-delay:0.2s;
+}
+
+.nav-link-container .nav-links{
+	max-height:0px;
+	overflow:hidden;
+	transition:max-height 0.2s ease-in-out;
+}
+
+.nav-link-container.active{
+	background: rgba(0,0,0,.1);
+	transition-delay:0s;
+}
+
+.nav-link-container.active .nav-links{
+	max-height:100px;
+}
+
+
+.nav-link-sub span{
+	margin-left:30px;
+}
+
+
+
+.nav-link-arrow

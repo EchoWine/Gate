@@ -76,7 +76,8 @@ class Route{
 				'regex_url' => $regex_url,
 				'callback' => $callback,
 				'param' => $res,
-				'alias' => $alias
+				'alias' => $alias,
+				'full_url' => $current_url
 			];
 		}
 
@@ -130,6 +131,15 @@ class Route{
 	 */
 	public static function is($alias){
 		return self::$route !== null && self::$route -> alias == $alias;
+	}
+
+	/**
+	 * Return current route
+	 *
+	 * @param bool current route
+	 */
+	public static function active(){
+		return self::getDirUrl(''). self::$route -> full_url;
 	}
 
 	/**
@@ -235,10 +245,11 @@ class Route{
 	/**
 	 * Get relative url
 	 * 
+	 * @param string add path
 	 * @return string relative url
 	 */
-	public static function getDirUrl(){
-		return dirname($_SERVER['PHP_SELF'])."/";
+	public static function getDirUrl($path = '/'){
+		return dirname($_SERVER['PHP_SELF']).$path;
 	}
 
 }

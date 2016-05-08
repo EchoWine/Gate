@@ -20,6 +20,9 @@
     	return $f;
 	}
 
+	function route($route = null){
+		return $route == null ? Route::active() : Route::url($route);
+	}
 
 	function assets($url){
 		return Request::getDirUrl().$url;

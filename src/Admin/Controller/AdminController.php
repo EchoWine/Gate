@@ -12,7 +12,7 @@ use Item\Controller;
 abstract class AdminController extends Controller{
 
 	const PREFIX_URL = 'admin/';
-	const PREFIX_ROUTE = 'admin_';
+	const PREFIX_ROUTE = 'admin/';
 
 
 	/**
@@ -24,7 +24,7 @@ abstract class AdminController extends Controller{
 
 		$page = $this -> url;
 		$this -> route("/".AdminController::PREFIX_URL."{$page}",[
-			'as' => AdminController::PREFIX_ROUTE."_".$page.'_index',
+			'as' => AdminController::PREFIX_ROUTE.$page,
 			'__controller' => 'index'
 		]);
 

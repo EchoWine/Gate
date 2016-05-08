@@ -42,7 +42,48 @@
 					<span class='nav-header-name'>Gate CMS</span>
 					<i class='fa fa-list nav-header-menu-icon' aria-hidden='true'></i>
 				</div>
-				<div class='nav-content'></div>
+				<div class='nav-content'>
+					{{block nav}}
+						<h5 class='nav-title'>Apps</h5>
+						<ul>
+							<li class='nav-link-container'>
+								<a class='nav-link' href='#'>
+									<i class='nav-link-icon fa fa-home'></i>
+									<span>Main</span>
+								</a>
+							</li>
+							<li class='nav-link-container'>
+								<a class='nav-link' href='#'>
+									<i class='nav-link-icon fa fa-table'></i>
+									<span>Data</span>
+								</a>
+							</li>
+						</ul>
+						<h5 class='nav-title'>Pages</h5>
+						<ul>
+							<li class='nav-link-container'>
+								<span class='nav-link'>
+									<i class='nav-link-icon fa fa-file'></i>
+									<span>Title</span>
+									<i class='nav-link-arrow fa fa-angle-left'></i>
+								</span>
+								<ul class='nav-links'>
+									<li>
+										<a class='nav-link nav-link-sub' href='#'>
+											<span>Sub 1</span>
+										</a>
+									</li>
+									<li>
+										<a class='nav-link nav-link-sub' href='#'>
+											<span>Sub 2</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					{{/block}}
+
+				</div>
 			</div>
 			<span></span>
 			</span>
@@ -96,7 +137,12 @@
 
 		<script src='{{assets('src/Admin/assets/js/modal.js')}}'></script>
 		<script src='{{assets('src/Admin/assets/js/template.js')}}'></script>
+		<script src='{{assets('src/Admin/assets/js/nav.js')}}'></script>
 		<script src='{{assets('src/Admin/assets/js/item.js')}}'></script>
+
+		<script>
+			nav.set('{{route()}}');
+		</script>
 	{{/block}}
 </body>
 </html>

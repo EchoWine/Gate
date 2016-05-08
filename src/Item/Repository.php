@@ -51,13 +51,15 @@ class Repository{
 	 */
 	public function table($type = 1){
 
+		$table = DB::table($this -> getSchema() -> getTable());
+
 		switch($type){
 			case null:
-				return DB::table($this -> getSchema() -> getTable());
+				return $table;
 			break;
 			case 0:
 
-				return DB::table($this -> getSchema() -> getTable()) -> setParserResult(function($results){
+				return $table -> setParserResult(function($results){
 					
 					return $results;
 				});
@@ -65,7 +67,7 @@ class Repository{
 
 			case 1:
 
-				return DB::table($this -> getSchema() -> getTable()) -> setParserResult(function($results){
+				return $table -> setParserResult(function($results){
 					
 					foreach($results as $n => $result){
 						$results[$n] = $this -> schema -> parseResult($result);
@@ -85,6 +87,15 @@ class Repository{
 	 */
 	public function get($type){
 		return $this -> table($type) -> orderByDesc('id') -> get();
+	}
+
+	/**
+	 * Get first record by id
+	 *
+	 * @return Result
+	 */
+	public function firstById($id,$type){
+		return $this -> table($type) -> where('id',$id) -> first();
 	}
 
 	/**

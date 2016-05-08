@@ -23,7 +23,7 @@ class Schema{
 	 * Add a field
 	 */
 	public function field($class,$name){
-		if(is_subclass_of($class,Field\Schema::class)){
+		if(is_subclass_of($class,Field\Schema\Field::class)){
 
 			$field = new $class($name);
 			$this -> fields[$name] = $field;

@@ -4,7 +4,15 @@
 }
 
 .alert ul{
+	margin-top:10px;
 	margin-bottom:0;
+}
+.alert li{
+	margin-left:40px;
+}
+
+.alert-inactive{
+	display:none;
 }
 
 .alert-success,.alert-danger,.alert-info,.alert-warning{

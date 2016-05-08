@@ -51,8 +51,8 @@ class Request{
 		self::startSession();
 
 		self::ini_REQUEST_GET();
-		self::ini_REQUEST_PUT();
 		self::ini_REQUEST_POST();
+		self::ini_REQUEST_PUT();
 		self::ini_REQUEST_FILES();
 	}
 
@@ -66,15 +66,15 @@ class Request{
 	/** 
 	 * Ini put
 	 */
-	public static function ini_REQUEST_PUT(){
-		parse_str(file_get_contents('php://input'), Request::$REQUEST_PUT);
+	public static function ini_REQUEST_POST(){
+		Request::$REQUEST_POST = $_POST;
 	}
 
 	/** 
 	 * Ini put
 	 */
-	public static function ini_REQUEST_POST(){
-		Request::$REQUEST_POST = $_POST;
+	public static function ini_REQUEST_PUT(){
+		parse_str(file_get_contents('php://input'), Request::$REQUEST_PUT);
 	}
 
 	/** 
@@ -84,7 +84,17 @@ class Request{
 		Request::$REQUEST_FILES = $_FILES;
 	}
 
-
+	/**
+	 * Get all params in the request
+	 */
+	public static function getCall(){
+		return [
+			'url' => Request::getRelativeUrl(),
+			'get' => Request::$REQUEST_GET,
+			'post' => Request::$REQUEST_POST,
+			'put' => Request::$REQUEST_PUT
+		];
+	}
 
 	/**
 	 * Redirect to url

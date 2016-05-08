@@ -204,8 +204,9 @@ class SchemaBuilder{
 	 * @return object $this
 	 */
 	public function primary(){
-
-		if(self::$tables[$this -> getTable()] -> hasPrimary())
+		$tab = self::$tables[$this -> getTable()];
+		
+		if($tab -> hasPrimary() && $tab -> getPrimary() -> getName() != $this -> schema -> getName())
 			self::printError('There can be only one primary key');
 		
 
@@ -221,7 +222,9 @@ class SchemaBuilder{
 	 */
 	public function auto_increment(){
 
-		if(self::$tables[$this -> getTable()] -> hasAutoIncrement())
+		$tab = self::$tables[$this -> getTable()];
+		
+		if($tab -> hasPrimary() && $tab -> getPrimary() -> getName() != $this -> schema -> getName())
 			self::printError('There can be only one auto_increment field');
 		
 

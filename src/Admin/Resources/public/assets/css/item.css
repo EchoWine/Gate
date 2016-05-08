@@ -1,0 +1,12 @@
+.item-form-label{
+	padding:10px 0;
+}
+
+.item-form-input > .input-data{
+	width:100%;
+}
+
+.item-form-actions{
+	padding:20px 0;
+	text-align:right;
+}

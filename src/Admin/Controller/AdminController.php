@@ -11,6 +11,12 @@ use Item\Controller;
 
 abstract class AdminController extends Controller{
 
+
+	/**
+	 * Admin\Repository
+	 */
+	public $__repository = 'Admin\Repository';
+
 	const PREFIX_URL = 'admin/';
 	const PREFIX_ROUTE = 'admin/';
 
@@ -66,7 +72,7 @@ abstract class AdminController extends Controller{
 
 		foreach($this -> getSchema() -> getFields() as $name => $field){
 			
-			if($field -> isViewAll())
+			if($field -> isViewGet() && $field -> isViewAll())
 				$return[$name] = $field;
 		}
 
@@ -83,7 +89,7 @@ abstract class AdminController extends Controller{
 
 		foreach($this -> getSchema() -> getFields() as $name => $field){
 			
-			if($field -> isViewAdd())
+			if($field -> isAdd() && $field -> isViewAdd())
 				$return[$name] = $field;
 		}
 

@@ -113,14 +113,57 @@ item.setEventAdd = function(table){
 		e.preventDefault();
 
 
+		item.removeStatus($(this).find('.alert'));
 		var values = table.add.action($(this));
 
 		item.put(table.add.url,values,function(data){
-			item.getList(table);
-			modal.closeActual();
+			console.log(data);
+
+			if(data.status == 'success'){
+				item.getList(table);
+				modal.closeActual();
+			}
+
+			if(data.status == 'error'){
+
+				det = '';
+
+				for(detail in data.details){
+					detail = data.details[detail];
+					det += template.get('alert-details',{
+						message:detail.message
+					});
+				}
+
+				template.set('alert-danger','alert-modal',{
+					message:data.message,
+					details:det
+				},function(element){
+
+				});
+
+			}
 		});
 
 	});
+};
+
+/**
+ * Add Status
+ *
+ * @param {object} alert
+ */
+item.addStatus = function(alert){
+
+};
+
+/**
+ * Remove Status
+ *
+ * @param {object} alert
+ */
+item.removeStatus = function(alert){
+
 };
 
 /**

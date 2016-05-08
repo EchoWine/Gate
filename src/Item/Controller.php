@@ -12,6 +12,16 @@ use Item\Repository;
 
 abstract class Controller extends SourceController{
 
+
+	/**
+	 * Errors
+	 */
+	const SUCCESS_CODE = "success";
+	const SUCCESS_ADD_MESSAGE = "Data was added with success";
+	const ERROR_EXCEPTION_CODE = "exception";
+	const ERROR_FIELDS_INVALID_CODE = "fields_invalid";
+	const ERROR_FIELDS_INVALID_MESSAGE = "The values sent aren't valid";
+
 	/**
 	 * Retrieve result as array
 	 */
@@ -117,22 +127,6 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
-	 * Add new record
-	 */
-	public function add(){
-		$result = $this -> __add();
-
-		if($result){
-			$response = (object)['result' => 'success'];
-		}else{
-			$response = (object)['result' => 'error'];
-		}
-
-		return $this -> json($response);
-	}
-
-
-	/**
 	 * Get all records
 	 *
 	 * @param int $type type of result (Array|Object)
@@ -142,35 +136,89 @@ abstract class Controller extends SourceController{
 		return $this -> getRepository() -> get($type);
 	}
 
+
+	/**
+	 * Get a records
+	 *
+	 * @param int $id
+	 * @param int $type type of result (Array|Object)
+	 * @return results
+	 */
+	public function __first($id,$type){
+		return $this -> getRepository() -> firstById($id,$type);
+	}
+
+	/**
+	 * Add new record
+	 */
+	public function add(){
+		return $this -> json($this -> __add());
+	}
+
+
 	/**
 	 * Add a new record
 	 */
 	public function __add(){
 
 		$row = [];
+		$raw = [];
 
 		$fields = $this -> getSchema() -> getFields();
+
+		$errors = []; 
+
 		foreach($fields as $name => $field){
-			$row[$field -> getName()] = Request::put($field -> getName());
+
+			if($field -> isAdd()){
+				$raw[$field -> getName()] = Request::put($field -> getName());
+			
+				$row[$field -> getName()] = $field -> parseValueAdd($raw[$field -> getName()]);
+
+				// Validate field
+				$response = $field -> isValid($raw[$field -> getName()]);
+
+				if(!$this -> responseIsSuccess($response)){
+					$errors[$field -> getName()] = $response;
+				}
+			}
+		}
+
+		// Response status error if validation is failed
+		if(!empty($errors)){
+			$response = new \Item\Response\Error(self::ERROR_FIELDS_INVALID_CODE,self::ERROR_FIELDS_INVALID_MESSAGE);
+			return $response -> setDetails($errors) -> setData($row) -> setRequest($raw);
 		}
 
 
-		// Validate fields
-		if(false){
-			return false;
+		try{
+			$id = $this -> getRepository() -> insert($row);
+
+			if(!$id)
+				throw new \Exception("id not retrieved");
+			
+
+		}catch(\Exception $e){
+
+			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
+			return $response -> setRequest(Request::getCall());
 		}
 
 
-		// Check unique fields
-		if(false){
-			return false;
-		}
+		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_ADD_MESSAGE);
+		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+		return $response -> setData($result) -> setRequest(Request::getCall());
 
 
 
-		// Insert
-		return $this -> getRepository() -> insert($row);
+	}
 
+	public function responseIsSuccess(\Item\Response\Response $response){
+		return ($response instanceof \Item\Response\Success);
+	}
+
+	public function responseIsError(\Item\Response\Response $response){
+		return ($response instanceof \Item\Response\Erro);
 	}
 
 }

@@ -2,6 +2,22 @@
 
 {{block page-content}}
 	
+	
+	<!-- ALERT DETAILS -->
+	<div class='templates' data-template='alert-details'>
+		<li>{message}</li>
+	</div>
+
+	<!-- ALERT SUCCESS TEMPLATE -->
+	<div class='templates' data-template='alert-success'>
+		<div class='alert alert-success'>{message}<ul>{details}</ul></div>
+	</div>
+
+	<!-- ALERT DANGER TEMPLATE -->
+	<div class='templates' data-template='alert-danger'>
+		<div class='alert alert-danger'>{message}<ul>{details}</ul></div>
+	</div>
+
 	<!-- ROW TEMPLATE -->
 	<div class='templates' data-template='item-row'>
 		<div class='section-table-row section-table-header'>
@@ -21,17 +37,20 @@
 	<!-- MODAL ADD -->
 	<div class='modal' id='modal-item-add'>
 		<div class='modal-body'>
-			<button type='button' class='button-action button-danger modal-close'>Close</button>
+			<div class='modal-close-header'>
+				<div class='flex-fill'></div>
+				<button type='button' class='button-action button-danger modal-close'><i class='fa fa-remove'></i></button>
+			</div>
 
 			<h2>Add</h2>
+			<div data-use-template='alert-modal'></div>
 			<form method='POST' id='item-data-form-add'>
-
 				{{for $fieldsAdd as $field}}
-					<div>{{$field -> getLabel()}}:</div>
-					<div><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
+					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
+					<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
 				{{/for}}
 
-				<div><button type='submit' class='button-action button-primary'>Add</button></div>
+				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
 			</form>
 
 		</div>
@@ -46,7 +65,7 @@
 				<input type='text' class='input-data'>
 			</div>
 			
-			<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-title='Add'>Aggiungi</button>
+			<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-title='Add'>Add</button>
 
 			<div class='section-table'>
 

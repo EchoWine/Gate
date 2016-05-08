@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Field;
+namespace Admin\Field\Schema;
 
-class Schema extends \Item\Field\Schema{
+class Field extends \Item\Field\Schema\Field{
 	
 	/**
 	 * Entity

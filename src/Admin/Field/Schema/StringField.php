@@ -2,9 +2,7 @@
 
 namespace Admin\Field\Schema;
 
-use Admin\Field\Schema;
-
-class StringField extends Schema{
+class StringField extends Field{
 	
 	/**
 	 * View List

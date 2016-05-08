@@ -14,11 +14,13 @@ class User extends Schema{
 
 	public function fields(){
 
-		$this -> field(FieldSchema\StringRequiredField::class,'username');
-		
-		$this -> field(FieldSchema\StringRequiredField::class,'password') -> length(128);
+		$this -> field(FieldSchema\IdField::class,'id') -> label('#');
 
-		$this -> field(FieldSchema\StringRequiredField::class,'email');
+		$this -> field(FieldSchema\UsernameField::class,'username') -> label('Username');
+		
+		$this -> field(FieldSchema\PasswordField::class,'password') -> minLength(8) -> maxLength(128) -> label('Password');
+
+		$this -> field(FieldSchema\EmailField::class,'email') -> label('Email');
 
 	}
 

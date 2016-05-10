@@ -26,8 +26,9 @@ class DashboardController extends Controller{
 
 		# Redirect to /login if user isn't logged
 		if(Route::is('admin/login')){
-			if(Auth::logged())
+			if(Auth::logged()){
 				Request::redirect(Route::url('admin/dashboard'));
+			}
 		}
 
 		

@@ -171,7 +171,7 @@ abstract class Controller extends SourceController{
 		foreach($fields as $name => $field){
 
 			if($field -> isAdd()){
-				$raw[$field -> getName()] = Request::put($field -> getName());
+				$raw[$field -> getName()] = Request::post($field -> getName());
 			
 				$row[$field -> getName()] = $field -> parseValueAdd($raw[$field -> getName()]);
 

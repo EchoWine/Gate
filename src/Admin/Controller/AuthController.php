@@ -18,7 +18,7 @@ class AuthController extends AuthController{
 	 * Routes
 	 */
 	public function __routes(){
-		$this -> route('admin/login',['as' => 'admin/login','__controller' => 'loginView']);
+		$this -> route('/admin/login',['as' => 'admin/login','__controller' => 'loginView']);
 	}
 	
 	/**

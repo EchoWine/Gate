@@ -113,7 +113,6 @@ item.setEventAdd = function(table){
 		e.preventDefault();
 
 
-		item.removeStatus($(this).find('.alert'));
 		var values = table.add.action($(this));
 
 		item.put(table.add.url,values,function(data){
@@ -125,23 +124,7 @@ item.setEventAdd = function(table){
 			}
 
 			if(data.status == 'error'){
-
-				det = '';
-
-				for(detail in data.details){
-					detail = data.details[detail];
-					det += template.get('alert-details',{
-						message:detail.message
-					});
-				}
-
-				template.set('alert-danger','alert-modal',{
-					message:data.message,
-					details:det
-				},function(element){
-
-				});
-
+				item.addAlert('alert-danger','alert-modal',data);
 			}
 		});
 
@@ -153,8 +136,21 @@ item.setEventAdd = function(table){
  *
  * @param {object} alert
  */
-item.addStatus = function(alert){
+item.addAlert = function(type,destination,data){
 
+	det = '';
+
+	for(detail in data.details){
+		detail = data.details[detail];
+		det += template.get('alert-details',{
+			message:detail.message
+		});
+	}
+
+	template.set(type,destination,{
+		message:data.message,
+		details:det
+	});
 };
 
 /**
@@ -162,8 +158,8 @@ item.addStatus = function(alert){
  *
  * @param {object} alert
  */
-item.removeStatus = function(alert){
-
+item.removeAlert = function(alert){
+	
 };
 
 /**
@@ -173,7 +169,8 @@ item.removeStatus = function(alert){
  */
 item.getList = function(table){
 	item.get(table.list.url,[],function(data){
-			
+		
+
 		var container = $('[data-use-template='+table.template.row+']').first();
 
 		// Get template row

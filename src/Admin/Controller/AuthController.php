@@ -3,7 +3,7 @@
 namespace Admin\Controller;
 
 use CoreWine\Request;
-use CoreWine\Route;
+use CoreWine\Router;
 use CoreWine\Flash;
 use CoreWine\Cfg;
 
@@ -15,14 +15,16 @@ use Auth\Repository\AuthRepository;
 class AuthController extends AuthController{
 
 	/**
-	 * Routes
+	 * Routers
 	 */
 	public function __routes(){
-		$this -> route('/admin/login',['as' => 'admin/login','__controller' => 'loginView']);
+		$this -> route('loginView')
+		-> url('/admin/login')
+		-> as('admin/login');
 	}
 	
 	/**
-	 * Route to login
+	 * Router to login
 	 */
 	public function loginView(){
 		return $this -> view('Admin/auth/login');

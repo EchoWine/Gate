@@ -3,7 +3,7 @@
 namespace Admin\Controller;
 
 use CoreWine\DataBase\DB;
-use CoreWine\Route as Route;
+use CoreWine\Router;
 use CoreWine\Request as Request;
 use Auth\Service\Auth;
 
@@ -22,17 +22,17 @@ abstract class AdminController extends Controller{
 
 
 	/**
-	 * Set all routes
+	 * Set all Routers
 	 */
 	public function __routes(){
 
 		parent::__routes();
 
 		$page = $this -> url;
-		$this -> route("/".AdminController::PREFIX_URL."{$page}",[
-			'as' => AdminController::PREFIX_ROUTE.$page,
-			'__controller' => 'index'
-		]);
+
+		$this -> route('index')
+		-> url("/".AdminController::PREFIX_URL.$page)
+		-> as(AdminController::PREFIX_ROUTE.$page);
 
 	}
 
@@ -44,9 +44,9 @@ abstract class AdminController extends Controller{
 		parent::__check();
 
 		# Redirect to /login if user isn't logged
-		if(Route::is(AdminController::PREFIX_ROUTE."_".$this -> url.'_index')){
+		if(Router::is(AdminController::PREFIX_ROUTE.$this -> url)){
 			if(!Auth::logged())
-				Request::redirect(Route::url('/admin/login'));
+				Request::redirect(Router::url('admin/login'));
 		}
 
 	}

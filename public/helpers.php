@@ -1,6 +1,6 @@
 <?php
 	
-	use CoreWine\Route as Route;
+	use CoreWine\Router;
 	use CoreWine\Request as Request;
 	use CoreWine\TemplateEngine\Engine;
 	
@@ -21,7 +21,7 @@
 	}
 
 	function route($route = null){
-		return $route == null ? Route::active() : Route::url($route);
+		return $route == null ? Router::active() : Router::url($route);
 	}
 
 	function assets($url){

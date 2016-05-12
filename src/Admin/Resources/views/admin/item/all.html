@@ -59,6 +59,8 @@
 	<div class='page-row'>
 		<div class='page-section'>
 
+			<div data-use-template='alert-global'></div>
+
 			<div class='section-search flex-center'>
 				<div class='flex-fill'></div>
 				<label>Search: </label>
@@ -118,10 +120,10 @@
 	<script>
 		item.addTable({
 			list:{
-				url:'{{$api -> get}}'
+				url:'{{$api}}'
 			},
 			add:{
-				url:'{{$api -> add}}',
+				url:'{{$api}}',
 				form: '#item-data-form-add',
 				action: function(form){
 					var values = {};
@@ -131,6 +133,10 @@
 					{{/for}}
 					return values;
 				}
+			},
+			delete:{
+				url:'{{$api}}',
+				form: '#item-data-form-add',
 			},
 			template: {
 				row: 'item-row'

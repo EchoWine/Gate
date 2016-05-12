@@ -14,6 +14,26 @@ class Request{
 	 */
 	const COOKIE_HTTP_ONLY = false;
 
+	/** 
+	 * Request method get
+	 */
+	const METHOD_GET = 'GET';
+
+	/** 
+	 * Request method post
+	 */
+	const METHOD_POST = 'POST';
+
+	/** 
+	 * Request method put
+	 */
+	const METHOD_PUT = 'PUT';
+
+	/** 
+	 * Request method delete
+	 */
+	const METHOD_DELETE = 'DELETE';
+
 	/**
 	 * GET
 	 */
@@ -35,6 +55,12 @@ class Request{
 	public static $REQUEST_FILES;
 
 	/**
+	 * Method of request
+	 */
+	public static $method;
+
+
+	/**
 	 * Initialization
 	 */
 	public static function ini(){
@@ -49,6 +75,8 @@ class Request{
 		// ini_set('session.cookie_secure', 1);
 
 		self::startSession();
+
+		self::$method = $_SERVER['REQUEST_METHOD'];
 
 		self::ini_REQUEST_GET();
 		self::ini_REQUEST_POST();
@@ -271,6 +299,15 @@ class Request{
 	 */
 	public static function getDirUrl(){
 		return dirname($_SERVER['PHP_SELF'])."/";
+	}
+
+	/**
+	 * Get method of the request
+	 * 
+	 * @return string method
+	 */
+	public static function getMethod(){
+		return Request::$method;
 	}
 
 }

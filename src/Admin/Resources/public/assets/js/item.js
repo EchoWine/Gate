@@ -52,7 +52,6 @@ item.get = function(url,params,callback){
  * @param {function} callback
  */
 item.post = function(url,params,callback){
-
 	item.ajax('POST',url,params,callback);
 };
 
@@ -115,8 +114,7 @@ item.setEventAdd = function(table){
 
 		var values = table.add.action($(this));
 
-		item.put(table.add.url,values,function(data){
-			console.log(data);
+		item.post(table.add.url,values,function(data){
 
 			if(data.status == 'success'){
 				item.getList(table);
@@ -188,6 +186,27 @@ item.getList = function(table){
 			container.append(html);
 		});
 
+	});
+};
+
+/**
+ * Remove an item
+ */
+item.remove = function(){
+	$('data-item-remove').on('click',function(){
+		id = $(this).data('item-remove');
+
+		item.delete(table.delete.url,values,function(data){
+
+			if(data.status == 'success'){
+				item.getList(table);
+				modal.closeActual();
+			}
+
+			if(data.status == 'error'){
+				item.addAlert('alert-danger','alert-global',data);
+			}
+		});
 	});
 };
 

@@ -3,7 +3,7 @@
 namespace Auth\Controller;
 
 use CoreWine\Request;
-use CoreWine\Route;
+use CoreWine\Router;
 use CoreWine\Flash;
 use CoreWine\Cfg;
 
@@ -15,10 +15,12 @@ use Auth\Repository\AuthRepository;
 abstract class AuthController extends Controller{
 
 	/**
-	 * Routes
+	 * Routers
 	 */
 	public function __routes(){
-		$this -> route('/login',['as' => 'login','__controller' => 'loginView']);
+		$this -> route('loginView')
+		-> url('/login')
+		-> as('login');
 	}
 
 	/**
@@ -33,7 +35,7 @@ abstract class AuthController extends Controller{
 	}
 
 	/**
-	 * Route to login
+	 * Router to login
 	 */
 	public function loginView(){
 		return $this -> view('Auth/login');
@@ -43,7 +45,6 @@ abstract class AuthController extends Controller{
 	 * Check attempt login
 	 */
 	public function checkAttemptLogin(){
-
 		if(!Auth::logged() && Request::post('login') !== null){
 			$this -> checkLogin();
 			Request::refresh();

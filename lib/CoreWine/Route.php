@@ -4,102 +4,125 @@ namespace CoreWine;
 
 class Route{
 
-	/**
-	 * Current route
-	 */
-	public static $route = null;
+	public $url;
 
-	/**
-	 * List of all routes
-	 */
-	public static $routes = [];
+	public $url_regex;
 
-	/**
-	 * Data
-	 */
-	public static $data = [];
+	public $url_full;
 
-	/**
-	 * Global Data
-	 */
-	public static $global_data = [];
+	public $method;
 
-	/**
-	 * Set get route
-	 *
-	 * @param string $url url
-	 * @param callback|array $callback callback or array of info
-	 */
-	public static function get($url,$callback){
+	public $param;
+	
+	public $alias;
 
-		$current_url = self::getRelativeUrl();
+	public $where;
 
-		$alias = $url;
-		$where = [];
+	public $callback;
 
-		if(is_array($callback)){
+	public function __construct($url_regex = null){
+		$this -> url_regex = $url_regex;
+	}
 
-			if(isset($callback['as']))
-				$alias = $callback['as'];
+	public function as($as){
+		return $this -> alias($as);
+	}
 
-			if(isset($callback['where']))
-				$where = $callback['where'];
+	public function url($url){
+		$this -> url = $url;
+		return $this;
+	}
 
-			if(isset($callback['callback']))
-				$callback = $callback['callback'];
+	public function url_regex($url){
+		$this -> url_regex = $url;
+		return $this;
+	}
 
-			if(is_string($callback)){
-				$class = debug_backtrace()[1]['class'];
-				$callback = function() use($class,$callback){ return $class::$callback(); };
+	public function url_full($url){
+		$this -> url_full = $url;
+		return $this;
+	}
+
+	public function method($method){
+		$this -> method = $method;
+		return $this;
+	}
+
+	public function param($param){
+		$this -> param = $param;
+		return $this;
+	}
+
+	public function alias($alias){
+		$this -> alias = $alias;
+		return $this;
+	}
+
+	public function where($where){
+		$this -> where = $where;
+		return $this;
+	}
+
+	public function callback($callback){
+		$this -> callback = $callback;
+		return $this;
+	}
+
+	public function any(){
+		$this -> method = null;
+		return $this;
+	}
+
+	public function get(){
+		$this -> method = Request::METHOD_GET;
+		return $this;
+	}
+
+	public function post(){
+		$this -> method = Request::METHOD_POST;
+		return $this;
+	}
+
+	public function put(){
+		$this -> method = Request::METHOD_PUT;
+		return $this;
+	}
+
+	public function delete(){
+		$this -> method = Request::METHOD_DELETE;
+		return $this;
+	}
+
+	public function checkMethod($method){
+		return $this -> method == null ? true : $this -> method == $method;
+	}
+
+	public function checkUrl($url){
+		$regex_url = self::parseUrlToRegex($this -> url,$this -> where);
+		$this -> url_regex($regex_url);
+
+		if(preg_match($regex_url,$url,$res)){
+
+			// ? Remove first slash ??
+			unset($res[0]);
+
+			foreach($res as &$k){
+				$k = preg_replace("/^\/(.*)$/","$1",$k);
 			}
 
+			$this -> param($res);
 
+			return true;
 		}
 
-		$regex_url = self::parseUrlToRegex($url,$where);
-
-
-		# Remove last /
-		/*	
-		if($current_url[strlen($current_url)-1] == "/")
-			$current_url = substr($current_url,0,strlen($current_url)-2);
-			*/
-
-
-		if(preg_match($regex_url,$current_url,$res)){
-			unset($res[0]);
-			foreach($res as &$k)
-				$k = preg_replace("/^\/(.*)$/","$1",$k);
-
-			self::$route = (object)[
-				'url' => $url,
-				'regex_url' => $regex_url,
-				'callback' => $callback,
-				'param' => $res,
-				'alias' => $alias,
-				'full_url' => $current_url
-			];
-		}
-
-		self::$routes[$alias] = (object)[
-			'url' => $url,
-			'regex_url' => $regex_url,
-			'callback' => $callback,
-		];
+		return false;
 
 
 	}
 
-	/**
-	 * Get url from route
-	 *
-	 * @param string $alias url
-	 */
-	public static function url($alias){
+	public function getFullUrl($params){
 
-		$params = func_get_args();
-
-		$url = self::$routes[$alias] -> url;
+		$url = $this -> url;
 
 		preg_match_all("/\{([^}]*)\}/",$url,$matches);
 
@@ -120,74 +143,7 @@ class Route{
 
 
 		$url = preg_replace("/\/\{([^}\?]*)\?\}/","",$url);
-		return self::getDirUrl().$url;
-		
-	}
-
-	/**
-	 * Return true if current route
-	 *
-	 * @param bool current route
-	 */
-	public static function is($alias){
-		return self::$route !== null && self::$route -> alias == $alias;
-	}
-
-	/**
-	 * Return current route
-	 *
-	 * @param bool current route
-	 */
-	public static function active(){
-		return self::getDirUrl(''). self::$route -> full_url;
-	}
-
-	/**
-	 * Add data to a route
-	 *
-	 * @param array $route
-	 * @param array $data
-	 */
-	public static function add($route,$data){
-
-		self::$data[$route] = empty(self::$data[$route])
-			? $data
-			: array_merge(self::$data[$route],$data);
-	}
-
-	/**
-	 * Add data global
-	 *
-	 * @param array $data
-	 */
-	public static function global($data){
-		self::$global_data = array_merge(self::$global_data,$data);
-	}
-
-	/**
-	 * Set data to global scope
-	 *
-	 * @param string $alias url
-	 * @param array $data
-	 */
-	public static function view($data = []){
-
-		if(self::$route !== null)
-			$data = array_merge(self::$global_data,$data,($c = self::getDataByCurrentRoute()) !== null ? $c : []);
-
-	
-		foreach((array)$data as $n => $k)
-			$GLOBALS[$n] = $k;
-
-	}
-
-	/**
-	 * Get data by current route
-	 *
-	 * @return array
-	 */
-	public static function getDataByCurrentRoute(){
-		return isset(self::$data[self::$route -> alias]) ? self::$data[self::$route -> alias] : null;
+		return Router::getDirUrl().$url;
 	}
 
 	/**
@@ -199,10 +155,12 @@ class Route{
 	 */
 	public static function parseUrlToRegex($url,$where){
 
-		foreach($where as $n => $k){
-			if(is_array($k)) $k = implode("|",$k);
+		if($where){
+			foreach($where as $n => $k){
+				if(is_array($k)) $k = implode("|",$k);
 
-			$url = preg_replace("/\/\{(".$n.")+(\?)?\}/","(/$k)$2",$url);
+				$url = preg_replace("/\/\{(".$n.")+(\?)?\}/","(/$k)$2",$url);
+			}
 		}
 
 		/*
@@ -218,38 +176,6 @@ class Route{
 		$url = "/^".$url."$/";
 
 		return $url;
-	}
-
-	/**
-	 * Load current route
-	 *
-	 * @return mixed result of callback
-	 */
-	public static function load(){
-		
-		if(self::$route == null)
-			throw new Exceptions\RouteException("No route found for: ". self::getRelativeUrl());
-
-		return call_user_func_array(self::$route -> callback,self::$route -> param);
-	}
-
-	/**
-	 * Get relative url
-	 * 
-	 * @return string relative url
-	 */
-	public static function getRelativeUrl(){
-		return preg_replace("/(\?|&).*/",'',str_replace(dirname($_SERVER['PHP_SELF']),'',$_SERVER['REQUEST_URI']));
-	}
-
-	/**
-	 * Get relative url
-	 * 
-	 * @param string add path
-	 * @return string relative url
-	 */
-	public static function getDirUrl($path = '/'){
-		return dirname($_SERVER['PHP_SELF']).$path;
 	}
 
 }

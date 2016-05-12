@@ -3,7 +3,7 @@
 namespace Item;
 
 use CoreWine\DataBase\DB;
-use CoreWine\Route as Route;
+use CoreWine\Router;
 use CoreWine\Request as Request;
 
 use CoreWine\SourceManager\Controller as SourceController;
@@ -21,6 +21,7 @@ abstract class Controller extends SourceController{
 	const ERROR_EXCEPTION_CODE = "exception";
 	const ERROR_FIELDS_INVALID_CODE = "fields_invalid";
 	const ERROR_FIELDS_INVALID_MESSAGE = "The values sent aren't valid";
+	const ERROR_QUERY_RETRIEVING_ID = "id not retrieved";
 
 	/**
 	 * Retrieve result as array
@@ -58,16 +59,15 @@ abstract class Controller extends SourceController{
 	public $repository;
 
 	/**
-	 * Routes
+	 * Routers
 	 */
 	public function __routes(){
 
 		$url = $this -> url;
 
-
-		$this -> route("/api/{$url}",['as' => "api/{$url}",'__controller' => 'all']);
-
-		$this -> route("/api/{$url}/add",['as' => "api/{$url}/add",'__controller' => 'add']);
+		$this -> route('all') -> url("/api/{$url}") -> get();
+		$this -> route('add') -> url("/api/{$url}") -> post();
+		$this -> route('delete') -> url("/api/{$url}/{id}") -> delete();
 	}
 
 	/**
@@ -75,12 +75,7 @@ abstract class Controller extends SourceController{
 	 */
 	public function getFullApiURL(){
 
-		$base = Request::getDirUrl()."api/{$this -> url}";
-		return (object)[
-			'get' =>  $base,
-			'edit' => $base.'/edit',
-			'add' =>  $base.'/add'
-		];
+		return Request::getDirUrl()."api/{$this -> url}";
 	}
 
 	/**
@@ -187,7 +182,7 @@ abstract class Controller extends SourceController{
 		// Response status error if validation is failed
 		if(!empty($errors)){
 			$response = new \Item\Response\Error(self::ERROR_FIELDS_INVALID_CODE,self::ERROR_FIELDS_INVALID_MESSAGE);
-			return $response -> setDetails($errors) -> setData($row) -> setRequest($raw);
+			return $response -> setDetails($errors) -> setRequest($raw);
 		}
 
 
@@ -195,7 +190,49 @@ abstract class Controller extends SourceController{
 			$id = $this -> getRepository() -> insert($row);
 
 			if(!$id)
-				throw new \Exception("id not retrieved");
+				throw new \Exception(self::ERROR_QUERY_RETRIEVING_ID);
+			
+
+		}catch(\Exception $e){
+
+			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
+			return $response -> setRequest(Request::getCall());
+		}
+
+
+		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_ADD_MESSAGE);
+		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+		return $response -> setData($result) -> setRequest(Request::getCall());
+
+
+
+	}
+
+	/**
+	 * Delete a record
+	 */
+	public function delete($id){
+		return $this -> json($this -> __delete($id));
+	}
+
+
+
+	/**
+	 * Remove a new record
+	 */
+	public function __delete($id){
+
+
+
+		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_ADD_MESSAGE);
+		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+		return $response -> setRequest(Request::getCall());
+
+		try{
+			$id = $this -> getRepository() -> insert($row);
+
+			if(!$id)
+				throw new \Exception(self::ERROR_QUERY_RETRIEVING_ID);
 			
 
 		}catch(\Exception $e){

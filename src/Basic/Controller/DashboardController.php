@@ -2,7 +2,7 @@
 
 namespace Basic\Controller;
 
-use CoreWine\Route;
+use CoreWine\Router;
 use CoreWine\Request;
 use Admin\Controller\AdminController;
 use Auth\Service\Auth;
@@ -12,10 +12,12 @@ use CoreWine\SourceManager\Controller as Controller;
 class DashboardController extends Controller{
 
 	/*
-	 * Routes
+	 * Routers
 	 */
 	public function __routes(){
-		$this -> route('/admin',['as' => 'admin/dashboard','__controller' => 'indexRoute']);
+		$this -> route('indexRouter')
+		-> url('/admin')
+		-> as('admin/dashboard');
 	}
 
 	/**
@@ -25,25 +27,26 @@ class DashboardController extends Controller{
 		parent::__check();
 
 		# Redirect to /login if user isn't logged
-		if(Route::is('admin/login')){
+		if(Router::is('admin/login')){
 			if(Auth::logged()){
-				Request::redirect(Route::url('admin/dashboard'));
+				Request::redirect(Router::url('admin/dashboard'));
 			}
 		}
 
 		
 		# Redirect to /login if user isn't logged
-		if(Route::is('admin/dashboard')){
-			if(!Auth::logged())
-				Request::redirect(Route::url('admin/login'));
+		if(Router::is('admin/dashboard')){
+			if(!Auth::logged()){
+				Request::redirect(Router::url('admin/login'));
+			}
 		}
 
 	}
 	
 	/**
-	 * Route to login
+	 * Router to login
 	 */
-	public function indexRoute(){
+	public function indexRouter(){
 		return $this -> view('Admin/admin/dashboard');
 	}
 }

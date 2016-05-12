@@ -29,6 +29,11 @@ class Manager{
   	public static $controllers;
 
   	/**
+  	 * List of controllers
+  	 */
+  	public static $controllers_obj;
+
+  	/**
   	 * Basic path
   	 */
   	public static $src;
@@ -83,7 +88,16 @@ class Manager{
 			$name_class = str_replace("/","\\",$name_class);
 			$name_class = str_replace(".php","",$name_class);
 
-			self::$controllers[] = $name_class;
+
+			if(is_subclass_of($name_class,Controller::class)){
+				$reflectionClass = new \ReflectionClass($name_class);
+
+
+	    		if($reflectionClass -> IsInstantiable()){
+
+					self::$controllers[] =  new $name_class();
+				}
+			}
 		}
 
 		# Create symlink to access 
@@ -115,30 +129,15 @@ class Manager{
   	}
 
 
-	public static function loaded(){
-
-		$controllers = [];
+	public static function callControllersRoutes(){
 		foreach(self::$controllers as $controller){
-			
-			if(is_subclass_of($controller,Controller::class)){
-				$reflectionClass = new \ReflectionClass($controller);
-
-
-	    		if($reflectionClass -> IsInstantiable()){
-					$c = new $controller();	
-
-					
-					$c -> __routes();
-
-					$controllers[] = $c;
-				}
-			}
+			$controller -> __routes();
 		}
-
-		foreach($controllers as $controller){
+	}
+	public static function callControllersChecks(){
+		foreach(self::$controllers as $controller){
 			$controller -> __check();
 		}
-
 	}
 	
 

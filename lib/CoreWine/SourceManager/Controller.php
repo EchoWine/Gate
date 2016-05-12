@@ -2,20 +2,20 @@
 
 namespace CoreWine\SourceManager;
 
-use CoreWine\Route;
+use CoreWine\Router;
 use CoreWine\TemplateEngine\Engine;
 
 class Controller{
 	
 	/**
-	 * Route
+	 * Router
 	 */
 	public function __routes(){}
 
 	public function __check(){}
 	
 	public function view($file,$data = []){
-		Route::view($data);
+		Router::view($data);
 		return Engine::html($file);
 	}
 
@@ -24,16 +24,13 @@ class Controller{
 		echo json_encode($var,JSON_PRETTY_PRINT);
 		die();
 	}
-	public function route($route,$params){
+	public function route($controller = null){
 
-		if(!isset($params['callback']) && isset($params['__controller'])){
-			$controller = $params['__controller'];
-			$params['callback'] = function() use($controller){
+		if($controller !== null){
+			return Router::any() -> callback(function() use($controller){
 				return call_user_func_array(array($this,$controller), func_get_args());
-			};
+			});
 		}
-		
-		Route::get($route,$params);
 	}
 
 

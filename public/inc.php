@@ -2,7 +2,7 @@
 	
 	use CoreWine\DataBase\DB as DB;
 	use CoreWine\Request as Request;
-	use CoreWine\Route as Route;
+	use CoreWine\Router;
 	use CoreWine\SourceManager\Manager;
 	use CoreWine\TemplateEngine\Engine;
 
@@ -28,13 +28,14 @@
 	
 	# Load all sources
 	Manager::loadAll(PATH_SRC);
-	
-	Manager::loaded();
-
+		
+	Manager::callControllersRoutes();
+	Router::setRequest();
+	Manager::callControllersChecks();
 
 	# Alias
 	class_alias('CoreWine\Request', 'Request');
-	class_alias('CoreWine\Route', 'Route');
+	class_alias('CoreWine\Router', 'Router');
 	class_alias('CoreWine\Flash', 'Flash');
 	class_alias('CoreWine\TemplateEngine\Engine', 'Engine');
 
@@ -63,5 +64,15 @@
 	}
 
 	Engine::translates();
+
+	$view = Router::load();
+
+	if(empty($view)){
+		die("Current Router doens't have a view");
+	}
+
+	include $view;
+
+
 
 ?>

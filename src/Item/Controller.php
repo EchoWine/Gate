@@ -18,10 +18,13 @@ abstract class Controller extends SourceController{
 	 */
 	const SUCCESS_CODE = "success";
 	const SUCCESS_ADD_MESSAGE = "Data was added with success";
+	const SUCCESS_DELETE_MESSAGE = "Data was removed with success";
 	const ERROR_EXCEPTION_CODE = "exception";
 	const ERROR_FIELDS_INVALID_CODE = "fields_invalid";
 	const ERROR_FIELDS_INVALID_MESSAGE = "The values sent aren't valid";
 	const ERROR_QUERY_RETRIEVING_ID = "id not retrieved";
+	const ERROR_NOT_FOUND_CODE = "not_found";
+	const ERROR_NOT_FOUND_MESSAGE = "Resource not found";
 
 	/**
 	 * Retrieve result as array
@@ -156,6 +159,7 @@ abstract class Controller extends SourceController{
 	 */
 	public function __add(){
 
+
 		$row = [];
 		$raw = [];
 
@@ -223,17 +227,20 @@ abstract class Controller extends SourceController{
 	public function __delete($id){
 
 
-
-		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_ADD_MESSAGE);
 		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
-		return $response -> setRequest(Request::getCall());
+
+		if(!$result){
+
+			$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
+			return $response -> setRequest(Request::getCall());
+
+		}
 
 		try{
-			$id = $this -> getRepository() -> insert($row);
 
-			if(!$id)
-				throw new \Exception(self::ERROR_QUERY_RETRIEVING_ID);
-			
+
+			$id = $this -> getRepository() -> deleteById($id);
+
 
 		}catch(\Exception $e){
 
@@ -241,9 +248,7 @@ abstract class Controller extends SourceController{
 			return $response -> setRequest(Request::getCall());
 		}
 
-
-		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_ADD_MESSAGE);
-		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_DELETE_MESSAGE);
 		return $response -> setData($result) -> setRequest(Request::getCall());
 
 

@@ -21,7 +21,7 @@ item.ajax = function(type,url,params,callback){
 		type: type,
 		url: url, 
 		data : params,
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		contentType: "application/x-www-form-urlencoded; charsetBySource=UTF-8",
 		success: function(data) {
 			callback(data);
 		},
@@ -83,7 +83,7 @@ item.delete = function(url,params,callback){
  * @param {object} table
  */
 item.addTable = function(table){
-	item.tables.push(table);
+	item.tables[table.name] = table;
 };
 
 
@@ -91,13 +91,13 @@ item.addTable = function(table){
  * Initalization
  */
 item.ini = function(){
-	$.map(item.tables,function(table,i){
+	for(i in item.tables){
+		table = item.tables[i];
 
-		item.setEventAdd(table);
-
+		item.setBySourceEventAdd(table);
 		item.getList(table);
 
-	});
+	};
 };
 
 /**
@@ -105,7 +105,7 @@ item.ini = function(){
  *
  * @param {object} table
  */
-item.setEventAdd = function(table){
+item.setBySourceEventAdd = function(table){
 
 	$(table.add.form).on('submit',function(e){
 
@@ -145,7 +145,7 @@ item.addAlert = function(type,destination,data){
 		});
 	}
 
-	template.set(type,destination,{
+	template.setBySource(type,destination,{
 		message:data.message,
 		details:det
 	});
@@ -167,24 +167,17 @@ item.removeAlert = function(alert){
  */
 item.getList = function(table){
 	item.get(table.list.url,[],function(data){
-		
 
-		var container = $('[data-use-template='+table.template.row+']').first();
+		var rows = '';
 
-		// Get template row
-		var tmpl = $('[data-template='+table.template.row+']').first().clone();
-
-		container.html('');
 		$.map(data,function(row){
-
-			var html = tmpl.html();
-
-			$.map(row,function(val,col){
-				html = html.replace('{'+col+'}',val);
-			});
-
-			container.append(html);
+			row.table = table.name;
+			rows += template.get(table.template.row,row);
 		});
+
+
+		template.setByHtml(rows,table.template.row);
+
 
 	});
 };
@@ -192,23 +185,25 @@ item.getList = function(table){
 /**
  * Remove an item
  */
-item.remove = function(){
-	$('data-item-remove').on('click',function(){
-		id = $(this).data('item-remove');
 
-		item.delete(table.delete.url,values,function(data){
 
-			if(data.status == 'success'){
-				item.getList(table);
-				modal.closeActual();
-			}
+$('body').on('click','[data-item-remove]',function(){
+	var id = $(this).data('item-id');
 
-			if(data.status == 'error'){
-				item.addAlert('alert-danger','alert-global',data);
-			}
-		});
+	var table = item.tables[$(this).data('item-table')];
+
+	item.delete(table.delete.url+"/"+id,{},function(data){
+
+		if(data.status == 'success'){
+			item.getList(table);
+			modal.closeActual();
+		}
+
+		if(data.status == 'error'){
+			item.addAlert('alert-danger','alert-global',data);
+		}
 	});
-};
+});
 
 $(document).ready(function(){
 	item.ini();

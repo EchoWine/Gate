@@ -111,7 +111,7 @@ class Router{
 	 * @param bool current Router
 	 */
 	public static function active(){
-		return self::getDirUrl(''). self::$route -> full_url;
+		return self::getDirUrl(''). self::$route -> url_full;
 	}
 
 	/**

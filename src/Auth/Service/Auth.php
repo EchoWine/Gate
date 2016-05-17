@@ -57,7 +57,7 @@ class Auth extends Service{
 
 			$user = AuthRepository::getUserBySID($sid);
 
-			if($user !== null){
+			if(!empty($user)){
 				
 				# Temporary, i guess
 				Auth::$user = new User();

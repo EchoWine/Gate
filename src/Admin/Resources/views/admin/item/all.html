@@ -27,7 +27,7 @@
 				</div>
 			{{/for}}
 			<div class='section-table-col section-table-col-action'>
-				<button type='button' class='button-action button-danger'><i class='fa fa-trash'></i><span>Delete</span></button>
+				<button type='button' class='button-action button-danger' data-item-remove data-item-id='{id}' data-item-table='{table}'><i class='fa fa-trash'></i><span>Delete</span></button>
 				<button type='button' class='button-action button-warning'><i class='fa fa-pencil'></i><span>Edit</span></button>
 			</div>
 
@@ -119,6 +119,8 @@
 	{{parent}}
 	<script>
 		item.addTable({
+
+			name:'{{$table}}',
 			list:{
 				url:'{{$api}}'
 			},

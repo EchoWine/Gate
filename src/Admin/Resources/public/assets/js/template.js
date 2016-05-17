@@ -1,7 +1,16 @@
 var template = {};
 
 
-template.set = function(source,destination,vars,callback){
+template.setByHtml = function(html,destination,callback){
+
+	var destination = $('[data-use-template='+destination+']');
+
+	destination.html('');
+	destination.append(html);
+
+}
+
+template.setBySource = function(source,destination,vars,callback){
 
 	var destination = $('[data-use-template='+destination+']');
 	var source = $('[data-template='+source+']').first().clone();
@@ -10,9 +19,10 @@ template.set = function(source,destination,vars,callback){
 
 	var html = source.html();
 
-	$.map(vars,function(val,col){
-		html = html.replace('{'+col+'}',val);
-	});
+	for(col in vars){
+		html = html.replace(new RegExp('{'+col+'}', 'g'),vars[col]);
+
+	};
 
 	destination.append(html);
 
@@ -30,9 +40,9 @@ template.get = function(source,vars,callback){
 
 	var html = source.html();
 
-	$.map(vars,function(val,col){
-		html = html.replace('{'+col+'}',val);
-	});
+	for(col in vars){
+		html = html.replace(new RegExp('{'+col+'}', 'g'),vars[col]);
+	};
 
 	return html;
 

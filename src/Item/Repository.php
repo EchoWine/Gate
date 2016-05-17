@@ -98,6 +98,7 @@ class Repository{
 		return $this -> table($type) -> where('id',$id) -> first();
 	}
 
+
 	/**
 	 * Insert a new record
 	 *
@@ -106,6 +107,15 @@ class Repository{
 	 */
 	public function insert($values){
 		return $this -> table(null) -> insert($values);
+	}
+
+	/**
+	 * Delete by id
+	 *
+	 * @return Result
+	 */
+	public function deleteById($id){
+		return $this -> table(null) -> where('id',$id) -> delete();
 	}
 
 

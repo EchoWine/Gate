@@ -9,7 +9,7 @@ use CoreWine\SourceManager\Controller as Controller;
 class ExampleController extends Controller{
 
 	public function __routes(){
-		$this -> route('/',['as' => 'index','__controller' => 'index']);
+		$this -> route('index') -> url('/');
 	}
 
 	public function index(){

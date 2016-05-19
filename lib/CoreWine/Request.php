@@ -118,6 +118,7 @@ class Request{
 	public static function getCall(){
 		return [
 			'url' => Request::getRelativeUrl(),
+			'method' => Request::getMethod(),
 			'get' => Request::$REQUEST_GET,
 			'post' => Request::$REQUEST_POST,
 			'put' => Request::$REQUEST_PUT

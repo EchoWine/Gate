@@ -8,7 +8,7 @@
 
 	# Path
 	define('PATH_BASE','/gate-cms');
-	define('PATH',dirname(__FILE__));
+	define('PATH',__DIR__);
 	define('PATH_APP','../app');
 	define('PATH_SRC','../src');
 	define('PATH_LIB','../lib');
@@ -65,14 +65,21 @@
 
 	Engine::translates();
 
+
+		
 	$view = Router::load();
 
 	if(empty($view)){
 		die("Current Router doens't have a view");
 	}
 
-	include $view;
 
+	$s = Engine::startExtends('__body',true);
+	include $view;
+	echo "SALI ULTIMA VOLTA";	
+	echo Engine::endExtends(false);
+
+	print_r($s);
 
 
 ?>

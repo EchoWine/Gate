@@ -63,6 +63,26 @@ class Engine{
 	public static $blocks_actual = [];
 
 	/**
+	 * List of all extends nested
+	 */
+	public static $extends = [];
+
+	/**
+	 * List of all extends nested
+	 */
+	public static $extends_index = -1;
+
+	const STRUCTURE_EXTENDS = 'EXTENDS';
+
+	const STRUCTURE_BLOCK = 'BLOCK';
+
+	public static $structure = null;
+
+	public static $structure_parent = null;
+
+	public static $structure_print = true;
+
+	/**
 	 * Initialization
 	 *
 	 * @param string $storage path where views elaborated will be located
@@ -308,52 +328,140 @@ class Engine{
 		return self::$pathStorage."/".self::getInclude($page,$sub);
 	}
 
+	public static function startStructure($name,$type){
+
+
+   		//ob_start();
+   		return Engine::addStructure($name,$type);
+
+
+	}
+
+	public static function endStructure($type){
+
+  		//$content = ob_get_contents();
+   		//ob_end_clean();
+
+		$content = '';
+
+		print_r(Engine::getStructure());
+
+   		Engine::getStructure() -> setContent($content);
+
+   		/*
+		if(Engine::getStructure() -> getParent() !== null)
+			Engine::getStructure() -> getParent() -> concatContent($content);
+		*/
+
+
+		Engine::setParentStructure($type);
+
+
+   		return $content;
+
+	}
+
+
+
+	public static function addStructure($name,$type){
+
+		$structure = new Structure($name,$type);
+
+		if(Engine::$structure_parent != null){
+			$structure -> setParent(Engine::$structure_parent);
+			Engine::$structure_parent -> addChild($structure);
+		}
+
+		Engine::$structure = $structure;
+		
+
+		return $structure;
+	}
+
+
+	public static function setParentStructure($type){
+
+		Engine::$structure = Engine::$structure -> getParent();
+	}
+
+	public static function getStructure(){
+		return Engine::$structure;
+	}
+
+	/**
+	 * Start extends
+	 *
+	 * Must contain only blocks inside, no space/between
+	 */
+	public static function startExtends($name,$print = false){
+
+		Engine::$structure_print = $print;
+		$structure = Engine::startStructure($name,Engine::STRUCTURE_EXTENDS);
+		Engine::$structure_parent = $structure;
+	}
+	/**
+	 * Start extends content
+	 *
+	 * Must contain only blocks inside, no space/between
+	 */
+	public static function startExtendsContent($name){
+
+		Engine::$structure_print = true;
+
+	}
+
+	/**
+	 * End extends
+	 */
+	public static function endExtends($include = true){
+
+		$structure = Engine::getStructure();
+		$c = Engine::endStructure(Engine::STRUCTURE_EXTENDS);
+
+
+		Engine::$structure_print = true;
+
+		if($include){
+			echo "INCLUDOO: ";
+			echo $structure -> getName()."\n\n";
+			include '/'.PATH_STORAGE.'/'.Engine::getInclude($structure -> getName());
+		}
+
+		Engine::$structure_print = false;
+
+
+		Engine::$structure_parent = Engine::getStructure();
+
+		echo $c;
+		return $c;
+	}
+
+	/**
+	 * Start a block
+	 *
+	 * @param string $name
+	 */
 	public static function startBlock($name){
 
-   		ob_start();
-		Engine::$blocks_actual[$name] = '';
+		Engine::startStructure($name,Engine::STRUCTURE_BLOCK);
 	}
 
+	/**
+	 * End last block
+	 */
 	public static function endBlock(){
+		$c = Engine::endStructure(Engine::STRUCTURE_BLOCK);
+		if(Engine::$structure_print)
+			echo $c;
+		return $c;
 
-  		$content = ob_get_contents();
+		//$content = preg_replace('/{% parent %}/',$content,Engine::$blocks[$index]);
+   		
 
-   		ob_end_clean();
 
-   		$index = Engine::getLastIndexBlockNested();
-
-   		if(!isset(Engine::$blocks[$index])){
-   			Engine::$blocks[$index] = $content;
-   			Engine::$blocks_actual[$index] = $content;
-
-   		}else{
-   			$_content = Engine::$blocks[$index];
-			$_content = preg_replace('/{% parent %}/',$content,$_content);
-			$content = $_content;
-   		}
-
-   		unset(Engine::$blocks_actual[$index]);
-
-   		$count = Engine::getCountBlocksNested();
-	
-   		return $content;
 	}
 
 
-	public static function getCountBlocksNested(){
-		return count(Engine::$blocks_actual);
-	}
-
-	public static function updateLastBlockNested($html){
-		$index = Engine::getLastIndexBlockNested();
-		if($index == null)return null;
-		Engine::$blocks_actual[$index] .= $html;
-	}
-
-	public static function getLastIndexBlockNested(){
-		end(Engine::$blocks_actual);
-		return key(Engine::$blocks_actual);
-	}
 }
 
 ?>

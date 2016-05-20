@@ -62,24 +62,14 @@ class Translator{
 	 * @return string
 	 */
 	public function t_block($content){
-		if(preg_match('/{{extends ([^\}]*)}}/iU',$content,$r)){
 
-			$content = preg_replace("/^([\n\r]*){{block/iU","{{block",$content);
-			$content = preg_replace("/{{\/block}}([\s]*){{block/iU","{{/block}}{{block",$content);
-			$content = str_replace('{{extends '.$r[1].'}}',"",$content);
-			$content = preg_replace('/{{parent}}/',"{% parent %}",$content);
+		$content = preg_replace('/{{extends ([^\}]*)}}/iU','<?php Engine::startExtends("$1"); ?>',$content);
+		$content = preg_replace('/{{\/extends}}/iU','<?php Engine::endExtends(); ?>',$content);
 
-			$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?> ",$content);
-			$content = preg_replace('/{{\/block}}/',"<?php Engine::endBlock(); ?> ",$content);
+		$content = preg_replace('/{{parent}}/',"{% parent %}",$content);
 
-			$content .= "<?php include Engine::getInclude('".$r[1]."'); ?>";
-
-		}else{
-
-			$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?> ",$content);
-			$content = preg_replace('/{{\/block}}/',"<?php echo Engine::endBlock();?> ",$content);
-		}
-
+		$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?>",$content);
+		$content = preg_replace('/{{\/block}}/',"<?php Engine::endBlock(); ?>",$content);
 
 		return $content;
 	}
@@ -100,6 +90,7 @@ class Translator{
 
 		return $content;
 	}
+
 
 	/**
 	 * Translate array

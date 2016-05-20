@@ -1,0 +1,32 @@
+{{block modal}}
+	<div class='modal' id='{{block id}}modal-item-add{{/block}}'>
+		{{block body}}
+		<div class='modal-body'>
+
+			{{block header}}
+			<div class='modal-close-header'>
+				<div class='flex-fill'></div>
+				<button type='button' class='button-action button-danger modal-close'><i class='fa fa-remove'></i></button>
+			</div>
+
+			{{/block}}
+
+			{{block content}}
+
+				<h2>Add</h2>
+				<div data-use-template='alert-modal'></div>
+				<form method='POST' id='item-data-form-add'>
+					{{for $fieldsAdd as $field}}
+						<div class='item-form-label'>{{$field -> getLabel()}}:</div>
+						<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
+					{{/for}}
+
+					<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
+				</form>
+			{{/block}}
+
+		</div>
+		{{/block}}
+	</div>
+{{/block}}
+

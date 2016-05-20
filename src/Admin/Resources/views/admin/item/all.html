@@ -35,13 +35,9 @@
 	</div>
 
 	<!-- MODAL ADD -->
-	<div class='modal' id='modal-item-add'>
-		<div class='modal-body'>
-			<div class='modal-close-header'>
-				<div class='flex-fill'></div>
-				<button type='button' class='button-action button-danger modal-close'><i class='fa fa-remove'></i></button>
-			</div>
-
+	{{extends Admin/admin/modal}}
+		{{block id}}modal-item-add{{/block}}
+		{{block content}}
 			<h2>Add</h2>
 			<div data-use-template='alert-modal'></div>
 			<form method='POST' id='item-data-form-add'>
@@ -52,9 +48,8 @@
 
 				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
 			</form>
-
-		</div>
-	</div>
+		{{/block}}
+	{{/extends}}
 
 	<div class='page-row'>
 		<div class='page-section'>
@@ -146,3 +141,5 @@
 		});
 	</script>
 {{/block}}
+
+{{/extends}}

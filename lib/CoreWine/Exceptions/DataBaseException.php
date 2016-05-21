@@ -2,7 +2,7 @@
 
 namespace CoreWine\Exceptions;
 
-class RouterException extends Exception{
+class DataBaseException extends Exception{
 
 }
 ?>

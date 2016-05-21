@@ -63,7 +63,8 @@ class Translator{
 	 */
 	public function t_block($content){
 
-		$content = preg_replace('/{{extends ([^\}]*)}}/iU','<?php Engine::startExtends("$1"); ?>',$content);
+		$content = preg_replace('/{{extends ([^\s]*) ([^\}]*)}}/iU','<?php Engine::startExtends("$1","$2"); ?>',$content);
+		$content = preg_replace('/{{extends ([^\}]*)}}/iU','<?php Engine::startExtends("$1","$1"); ?>',$content);
 		$content = preg_replace('/{{\/extends}}/iU','<?php Engine::endExtends(); ?>',$content);
 
 		$content = preg_replace('/{{parent}}/',"{% parent %}",$content);

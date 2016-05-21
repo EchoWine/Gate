@@ -74,12 +74,16 @@
 	}
 
 
-	$s = Engine::startExtends('__body',true);
+	$s = Engine::startRoot();
 	include $view;
-	echo "SALI ULTIMA VOLTA";	
-	echo Engine::endExtends(false);
+	Engine::endRoot();
 
-	print_r($s);
+
+   	//\CoreWine\Debug::print();
+   		
+	//print_r($s);
+
+	//print_r($s);
 
 
 ?>

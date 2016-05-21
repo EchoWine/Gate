@@ -5,21 +5,73 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>Title</title>
+
+	<style>
+		h3{
+			margin-top:50px;
+		}
+	</style>
 </head>
 <body>
 
-	Corpo.... <br>
+	Uhm... <br><br>
+	{{block heading}}
+		<h2>Heading block</h2>
+	{{/block}}
+
 	{{block body}}
 
-		Welcome to Gate Framework
-		<br><br>
-		{{$yoho}}
+		<p>Welcome to Gate Framework: {{$yoho}}</p>
 
-		{{extends Example/row}}
+		<h3>Extends some file with overwrite block...</h3>
+
+		{{extends Example/row row1}}
 			{{block section}}
-				sexy sex sex sexy
+				Yohohohohohoooo! Row extended and overwritten!!!
 			{{/block}}
 		{{/extends}}
+
+		<h3>This block will not overwrite the next block</h3>
+		{{block row}}
+			<p>Don't overwrite me, pls :(</p>
+		{{/block}}
+
+
+
+		<h3>Extends some file with overwrite block...again...</h3>
+
+		{{extends Example/row row2}}
+			{{block section}}
+				Yohohohohohoooo! Row extended and overwritten, again !!!
+			{{/block}}
+		{{/extends}}
+
+		<h3>Extends some file in extends with overwrite block...</h3> <br>
+
+		{{extends Example/row row3}}
+			{{block section}}
+				{{block section_new}}
+					<p> The force of extends may be with you</p>
+					{{extends Example/row row8}}
+						{{block section}}
+							Yohohohohohoooo! Row extended and overwritten x2x2!!!
+						{{/block}}
+					{{/extends}}
+				{{/block}}
+
+			{{/block}}
+		{{/extends}}
+
+
+		<h3>Extends some file without overwrite block...</h3> <br>
+
+		{{extends Example/row uhm}}{{/extends}}
+
+	{{/block}}
+
+
+	{{block footer}}
+		<h4>Footer block</h4>
 	{{/block}}
 
 </body>

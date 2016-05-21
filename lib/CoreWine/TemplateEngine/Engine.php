@@ -76,6 +76,8 @@ class Engine{
 
 	const STRUCTURE_BLOCK = 'BLOCK';
 
+	const STRUCTURE_ROOT = 'ROOT';
+
 	public static $structure = null;
 
 	public static $structure_parent = null;
@@ -330,31 +332,54 @@ class Engine{
 
 	public static function startStructure($name,$type){
 
+		//echo "\n\nApertura ...".$name."\n\n";
 
-   		//ob_start();
-   		return Engine::addStructure($name,$type);
+   		ob_start();
+   		$structure = Engine::addStructure($name,$type);
+
+		//echo "\n\nStart a ...".Engine::getStructure() -> getName()."\n\n";
+
+
+   		return $structure;
 
 
 	}
 
 	public static function endStructure($type){
 
-  		//$content = ob_get_contents();
-   		//ob_end_clean();
+  		$content = ob_get_contents();
+   		ob_end_clean();
 
-		$content = '';
+		//$content = '';
 
-		print_r(Engine::getStructure());
+		//print_r(Engine::getStructure());
 
-   		Engine::getStructure() -> setContent($content);
+		\CoreWine\Debug::add("Sono a ...".Engine::getStructure() -> getName());
 
+
+   		if(Engine::getStructure() -> getOverwrite()){
+   			\CoreWine\Debug::add("Leggo il contenuto...");
+			Engine::getStructure() -> setContent($content);
+   		}else{
+   			\CoreWine\Debug::add("Contenuto già scritto in precedenza...");
+   			$content = Engine::getStructure() -> getContent();
+   		}
+
+   		\CoreWine\Debug::add($content);
    		/*
 		if(Engine::getStructure() -> getParent() !== null)
 			Engine::getStructure() -> getParent() -> concatContent($content);
 		*/
 
+		//echo Engine::getStructure();
+
+
 
 		Engine::setParentStructure($type);
+
+		if(Engine::getStructure() !== null){
+			\CoreWine\Debug::add("Chiudo e passo a ...".Engine::getStructure() -> getName());
+		};	
 
 
    		return $content;
@@ -365,13 +390,27 @@ class Engine{
 
 	public static function addStructure($name,$type){
 
+
+
 		$structure = new Structure($name,$type);
 
 		if(Engine::$structure_parent != null){
-			$structure -> setParent(Engine::$structure_parent);
-			Engine::$structure_parent -> addChild($structure);
+
+			\CoreWine\Debug::add("Parent: ".Engine::$structure_parent -> getName());
+			$_structure = Engine::$structure_parent -> findChildByName($name);
+
+			# If exists already
+			if($_structure !== null){
+				$structure = $_structure;
+				$structure -> setOverwrite(false);
+			}else{
+
+				$structure -> setParent(Engine::$structure_parent);
+				Engine::$structure_parent -> addChild($structure);
+			}
 		}
 
+		$structure -> setInner(Engine::$structure);
 		Engine::$structure = $structure;
 		
 
@@ -381,7 +420,7 @@ class Engine{
 
 	public static function setParentStructure($type){
 
-		Engine::$structure = Engine::$structure -> getParent();
+		Engine::$structure = Engine::$structure -> getInner();
 	}
 
 	public static function getStructure(){
@@ -393,21 +432,14 @@ class Engine{
 	 *
 	 * Must contain only blocks inside, no space/between
 	 */
-	public static function startExtends($name,$print = false){
+	public static function startExtends($source,$name,$print = false){
 
-		Engine::$structure_print = $print;
+		Engine::$structure_print = false;
 		$structure = Engine::startStructure($name,Engine::STRUCTURE_EXTENDS);
+		$structure -> setSource($source);
 		Engine::$structure_parent = $structure;
-	}
-	/**
-	 * Start extends content
-	 *
-	 * Must contain only blocks inside, no space/between
-	 */
-	public static function startExtendsContent($name){
 
-		Engine::$structure_print = true;
-
+		return $structure;
 	}
 
 	/**
@@ -416,23 +448,60 @@ class Engine{
 	public static function endExtends($include = true){
 
 		$structure = Engine::getStructure();
-		$c = Engine::endStructure(Engine::STRUCTURE_EXTENDS);
 
 
 		Engine::$structure_print = true;
 
 		if($include){
-			echo "INCLUDOO: ";
-			echo $structure -> getName()."\n\n";
-			include '/'.PATH_STORAGE.'/'.Engine::getInclude($structure -> getName());
+
+			\CoreWine\Debug::add("Includo...".$structure -> getSource());
+			include '/'.PATH_STORAGE.'/'.Engine::getInclude($structure -> getSource());
 		}
 
-		Engine::$structure_print = false;
+		$c = Engine::endStructure(Engine::STRUCTURE_EXTENDS);
 
+		echo $c;
+
+		Engine::$structure_parent = $structure -> getParent();
+
+
+		Engine::$structure_print = Engine::getStructure() -> getParent() -> getType() == Engine::STRUCTURE_ROOT;
+
+		return $c;
+	}
+
+		/**
+	 * Start extends
+	 *
+	 * Must contain only blocks inside, no space/between
+	 */
+	public static function startRoot(){
+
+		Engine::$structure_print = true;
+		$structure = Engine::startStructure('__root',Engine::STRUCTURE_ROOT);
+		Engine::$structure_parent = $structure;
+
+		return $structure;
+	}
+
+	/**
+	 * End extends
+	 */
+	public static function endRoot(){
+
+		$structure = Engine::getStructure();
+
+
+		// Engine::$structure_print = true;
+
+		// Engine::$structure_print = false;
+
+		$c = Engine::endStructure(Engine::STRUCTURE_ROOT);
+
+		echo $c;
 
 		Engine::$structure_parent = Engine::getStructure();
 
-		echo $c;
 		return $c;
 	}
 
@@ -450,9 +519,17 @@ class Engine{
 	 * End last block
 	 */
 	public static function endBlock(){
+		$structure = Engine::getStructure();
 		$c = Engine::endStructure(Engine::STRUCTURE_BLOCK);
-		if(Engine::$structure_print)
+
+
+		if(!Engine::$structure_print && $structure -> getInner() -> getType() == Engine::STRUCTURE_EXTENDS){
+
+		}else{
+			//\CoreWine\Debug::add("\n\nStampo blocco (Solo se dentro extend)... ".$structure -> getName()."\n\n");
 			echo $c;
+		}
+
 		return $c;
 
 		//$content = preg_replace('/{% parent %}/',$content,Engine::$blocks[$index]);

@@ -27,7 +27,7 @@
 				</div>
 			{{/for}}
 			<div class='section-table-col section-table-col-action'>
-				<button type='button' class='button-action button-action-icon button-warning'><i class='fa fa-pencil'></i></button>
+				<button type='button' class='button-action button-action-icon button-warning' data-modal='modal-item-edit' data-modal-item-id='{id}' data-modal-item-table='{table}'><i class='fa fa-pencil'></i></button>
 				<button type='button' class='button-action button-action-icon button-danger' data-modal='modal-item-delete' data-modal-item-id='{id}' data-modal-item-table='{table}'><i class='fa fa-trash'></i></button>
 			</div>
 
@@ -36,7 +36,7 @@
 
 	<!-- MODAL ADD -->
 	{{includes Admin/admin/modal modal-add}}
-		{{block __classModal}}{{/block}}
+		{{block __class}}{{/block}}
 		{{block id}}modal-item-add{{/block}}
 		{{block title}}Add new row{{/block}}
 		{{block content}}
@@ -52,16 +52,41 @@
 		{{/block}}
 	{{/includes}}
 
-	<!-- MODAL Delete confirm -->
+	<!-- MODAL EDIT -->
+	{{includes Admin/admin/modal modal-edit}}
+		{{block __class}}{{/block}}
+		{{block id}}modal-item-edit{{/block}}
+		{{block title}}Edit{{/block}}
+		{{block content}}
+			<div data-use-template='alert-modal'></div>
+			<form method='POST' item-data-form-edit data-item-table='{table}' data-item-id='{id}'>
+				{{for $fieldsEdit as $field}}
+					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
+					<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
+				{{/for}}
+
+				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Apply changes</button></div>
+			</form>
+		{{/block}}
+	{{/includes}}
+
+	<!-- MODAL DELETE CONFIRM -->
 	{{includes Admin/admin/modal modal-delete}}
+		{{block __class}}modal-body-small{{/block}}
 		{{block id}}modal-item-delete{{/block}}
 		{{block title}}Are you sure?{{/block}}
 		{{block content}}
 			<form method='POST'>
 				<div>The item #<span class='data-modal-item-id'></span> will be deleted</div>
 				<div class='item-form-actions'>
-					<button type='button' class='button-action button-primary' data-item-remove data-item-id='{id}' data-item-table='{table}'><span>Yes</span></button>
-					<button type='button' class='button-action button-danger modal-close'><span>No</span></button>
+					<button type='button' class='button-action button-primary' data-item-remove data-item-id='{id}' data-item-table='{table}'>
+						<i class='fa fa-check'></i>
+						<span>Yes</span>
+					</button>
+					<button type='button' class='button-action button-danger modal-close'>
+						<i class='fa fa-remove'></i>
+						<span>No</span>
+					</button>
 				</div>
 			</form>
 		{{/block}}
@@ -135,6 +160,9 @@
 			list:{
 				url:'{{$api}}'
 			},
+			get:{
+				url:'{{$api}}',
+			},
 			add:{
 				url:'{{$api}}',
 				form: '#item-data-form-add',
@@ -151,9 +179,26 @@
 				url:'{{$api}}',
 				form: '#item-data-form-add',
 			},
+			edit:{
+				url:'{{$api}}',
+				get: function(container,data){
+					{{for $fieldsEdit as $field}}
+						container.find('[name={{$field -> getName()}}]').val(data['{{$field -> getName()}}']);
+					{{/for}}
+				},
+				action: function(form){
+					var values = {};
+
+					{{for $fieldsEdit as $field}}
+						values.{{$field -> getName()}} = form.find('[name={{$field -> getName()}}]').val();
+					{{/for}}
+					return values;
+				}
+			},
 			template: {
 				row: 'item-row'
-			}
+			},
+
 		});
 	</script>
 {{/block}}

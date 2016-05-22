@@ -18,6 +18,7 @@ abstract class Controller extends SourceController{
 	 */
 	const SUCCESS_CODE = "success";
 	const SUCCESS_ADD_MESSAGE = "Data was added with success";
+	const SUCCESS_EDIT_MESSAGE = "Data was edited with success";
 	const SUCCESS_DELETE_MESSAGE = "Data was removed with success";
 	const ERROR_EXCEPTION_CODE = "exception";
 	const ERROR_FIELDS_INVALID_CODE = "fields_invalid";
@@ -70,6 +71,8 @@ abstract class Controller extends SourceController{
 
 		$this -> route('all') -> url("/api/{$url}") -> get();
 		$this -> route('add') -> url("/api/{$url}") -> post();
+		$this -> route('get') -> url("/api/{$url}/{id}") -> get();
+		$this -> route('edit') -> url("/api/{$url}/{id}") -> put();
 		$this -> route('delete') -> url("/api/{$url}/{id}") -> delete();
 	}
 
@@ -134,17 +137,6 @@ abstract class Controller extends SourceController{
 		return $this -> getRepository() -> get($type);
 	}
 
-
-	/**
-	 * Get a records
-	 *
-	 * @param int $id
-	 * @param int $type type of result (Array|Object)
-	 * @return results
-	 */
-	public function __first($id,$type){
-		return $this -> getRepository() -> firstById($id,$type);
-	}
 
 	/**
 	 * Add new record
@@ -213,13 +205,115 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
+	 * Retrieve a record
+	 */
+	public function get($id){
+		$first = $this -> __first($id,Controller::RESULT_ARRAY);
+
+		switch(Request::get('filter')){
+			case 'edit':
+
+			break;
+			default:
+
+			break;
+		}
+
+		return $this -> json($first);
+	}
+
+	/**
+	 * Get a records
+	 *
+	 * @param int $id
+	 * @param int $type type of result (Array|Object)
+	 * @return results
+	 */
+	public function __first($id,$type){
+		return $this -> getRepository() -> firstById($id,$type);
+	}
+
+	/**
+	 * Edit a record
+	 */
+	public function edit($id){
+		return $this -> json($this -> __edit($id,Controller::RESULT_ARRAY));
+	}
+
+	/**
+	 * Get a records
+	 *
+	 * @param int $id
+	 * @return results
+	 */
+	public function __edit($id){
+
+		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+
+		if(!$result){
+
+			$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
+			return $response -> setRequest(Request::getCall());
+
+		}
+
+
+		$row = [];
+		$raw = [];
+
+		$fields = $this -> getSchema() -> getFields();
+
+		$errors = []; 
+
+		foreach($fields as $name => $field){
+
+			if($field -> isAdd()){
+				$raw[$field -> getName()] = Request::put($field -> getName());
+			
+				$row[$field -> getName()] = $field -> parseValueEdit($raw[$field -> getName()]);
+
+				// Validate field
+				$response = $field -> isValid($raw[$field -> getName()]);
+
+				if(!$this -> responseIsSuccess($response)){
+					$errors[$field -> getName()] = $response;
+				}
+			}
+		}
+
+		// Response status error if validation is failed
+		if(!empty($errors)){
+			$response = new \Item\Response\Error(self::ERROR_FIELDS_INVALID_CODE,self::ERROR_FIELDS_INVALID_MESSAGE);
+			return $response -> setDetails($errors) -> setRequest($raw);
+		}
+
+
+		try{
+			$id = $this -> getRepository() -> update($id,$row);
+
+			if(!$id)
+				throw new \Exception(self::ERROR_QUERY_RETRIEVING_ID);
+			
+
+		}catch(\Exception $e){
+
+			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
+			return $response -> setRequest(Request::getCall());
+		}
+
+
+		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_EDIT_MESSAGE);
+		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+		return $response -> setData($result) -> setRequest(Request::getCall());
+
+	}
+
+	/**
 	 * Delete a record
 	 */
 	public function delete($id){
 		return $this -> json($this -> __delete($id));
 	}
-
-
 
 	/**
 	 * Remove a new record

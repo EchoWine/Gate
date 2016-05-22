@@ -5,6 +5,8 @@ namespace Admin\Field\Schema;
 class IdField extends StringField{
 	
 	public $add = false;
+	
+	public $edit = false;
 
 	/**
 	 * Set DB schema

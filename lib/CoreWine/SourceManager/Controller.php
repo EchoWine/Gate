@@ -4,6 +4,7 @@ namespace CoreWine\SourceManager;
 
 use CoreWine\Router;
 use CoreWine\TemplateEngine\Engine;
+use CoreWine\Exceptions as Exceptions;
 
 class Controller{
 	
@@ -28,6 +29,9 @@ class Controller{
 
 		if($controller !== null){
 			return Router::any() -> callback(function() use($controller){
+				if(!method_exists($this,$controller)){
+					throw new Exceptions\RouteException("No method $controller; Check __routes() definition");
+				}
 				return call_user_func_array(array($this,$controller), func_get_args());
 			});
 		}

@@ -60,6 +60,7 @@ abstract class AdminController extends Controller{
 			'api' => $this -> getFullApiURL(),
 			'fieldsAll' => $this -> getSchemaFieldsList(),
 			'fieldsAdd' => $this -> getSchemaFieldsAdd(),
+			'fieldsEdit' => $this -> getSchemaFieldsEdit(),
 		]);
 	}
 
@@ -96,5 +97,23 @@ abstract class AdminController extends Controller{
 
 		return $return;
 	}
+
+	/**
+	 * Get schema of fields that will be used in form edit
+	 *
+	 * @return array schema
+	 */
+	public function getSchemaFieldsEdit(){
+		$return = [];
+
+		foreach($this -> getSchema() -> getFields() as $name => $field){
+			
+			if($field -> isEdit() && $field -> isViewEdit())
+				$return[$name] = $field;
+		}
+
+		return $return;
+	}
+
 }
 ?>

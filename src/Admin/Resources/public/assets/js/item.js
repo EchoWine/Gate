@@ -28,6 +28,7 @@ item.ajax = function(type,url,params,callback){
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('Error during call: '+url);
 			console.log(errorThrown);
+			console.log(jqXHR);
 		},
 		dataType:'json'
 	});
@@ -149,6 +150,24 @@ item.add = function(table,values){
 	});
 }
 
+/** 
+ * Edit a row
+ */
+item.edit = function(table,id,values){
+
+	item.put(table.edit.url+"/"+id,values,function(data){
+
+		if(data.status == 'success'){
+			item.getList(table);
+			modal.closeActual();
+		}
+
+		if(data.status == 'error'){
+			item.addAlert('alert-danger','alert-modal',data);
+		}
+	});
+}
+
 /**
  * Remove a row
  *
@@ -176,10 +195,8 @@ item.remove = function(table,id){
 $('[item-data-form-add]').on('submit',function(e){
 
 	e.preventDefault();
-	var table = $(this).attr('data-item-table');
-	table = item.getTable(table);
 
-
+	var table = item.getTable(table = $(this).attr('data-item-table'));
 	var values = table.add.action($(this));
 
 	item.add(table,values);
@@ -190,10 +207,40 @@ $('[item-data-form-add]').on('submit',function(e){
  * Set event remove
  */
 $('body').on('click','[data-item-remove]',function(){
-	var id = $(this).attr('data-item-id');
-	var table = $(this).attr('data-item-table');
 
-	item.remove(item.getTable(table),id);
+	var table = item.getTable($(this).attr('data-item-table'));
+	var id = $(this).attr('data-item-id');
+
+	item.remove(table,id);
+});
+
+/**
+ * Set event edit
+ */
+$('[item-data-form-edit]').on('submit',function(e){
+
+	e.preventDefault();
+
+	var table = item.getTable($(this).attr('data-item-table'));
+	var id = $(this).attr('data-item-id');
+	var values = table.edit.action($(this));
+
+	item.edit(table,id,values);
+
+});
+
+modal.addDataTo('modal-item-edit',function(container,data){
+	var el = container.find('[item-data-form-edit]');
+	var id = data['data-modal-item-id'];
+
+	el.attr('data-item-table',data['data-modal-item-table']);
+	el.attr('data-item-id',id);
+
+	item.get(table.get.url+"/"+id,{filter:'edit'},function(data){
+		
+		table.edit.get(container,data);
+
+	});
 });
 
 /**
@@ -230,14 +277,15 @@ item.removeAlert = function(alert){
 
 modal.addDataTo('modal-item-delete',function(el,data){
 	var del = el.find('[data-item-remove]');
-	del.attr('data-item-id',data['data-modal-item-id']);
 	del.attr('data-item-table',data['data-modal-item-table']);
+	del.attr('data-item-id',data['data-modal-item-id']);
 });
 
 modal.addDataTo('modal-item-add',function(el,data){
 	var el = el.find('[item-data-form-add]');
 	el.attr('data-item-table',data['data-modal-item-table']);
 });
+
 
 $(document).ready(function(){
 	item.ini();

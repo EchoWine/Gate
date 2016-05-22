@@ -110,6 +110,16 @@ class Repository{
 	}
 
 	/**
+	 * Update a record
+	 *
+	 * @param array $values
+	 * @return int id of new record
+	 */
+	public function update($id,$values){
+		return $this -> table(null) -> where('id',$id) -> update($values);
+	}
+
+	/**
 	 * Delete by id
 	 *
 	 * @return Result

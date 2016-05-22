@@ -24,6 +24,9 @@ class Structure{
 		$this -> type = $type;
 	}
 
+	public function setType($type){
+		$this -> type = $type;
+	}
 
 	public function getName(){
 		return $this -> name;

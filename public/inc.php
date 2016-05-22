@@ -80,10 +80,7 @@
 
 
    	//\CoreWine\Debug::print();
-   		
-	//print_r($s);
-
-	//print_r($s);
+   	
 
 
 ?>

@@ -1,78 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+{{extends Example/base}}
 
-	<title>Title</title>
+{{block body}}
 
-	<style>
-		h3{
-			margin-top:50px;
-		}
-	</style>
-</head>
-<body>
+	<p>Welcome to Gate Framework: {{$yoho}}</p>
+	<p>This is a file extended by a Example/base file</p>
 
-	Uhm... <br><br>
-	{{block heading}}
-		<h2>Heading block</h2>
-	{{/block}}
+	<h3>Includes some file with overwrite block...</h3>
 
-	{{block body}}
-
-		<p>Welcome to Gate Framework: {{$yoho}}</p>
-
-		<h3>Extends some file with overwrite block...</h3>
-
-		{{extends Example/row row1}}
-			{{block section}}
-				Yohohohohohoooo! Row extended and overwritten!!!
-			{{/block}}
-		{{/extends}}
-
-		<h3>This block will not overwrite the next block</h3>
-		{{block row}}
-			<p>Don't overwrite me, pls :(</p>
+	{{includes Example/row row1}}
+		{{block section}}
+			Yohohohohohoooo! Row extended and overwritten!!!
 		{{/block}}
+	{{/includes}}
 
-
-
-		<h3>Extends some file with overwrite block...again...</h3>
-
-		{{extends Example/row row2}}
-			{{block section}}
-				Yohohohohohoooo! Row extended and overwritten, again !!!
-			{{/block}}
-		{{/extends}}
-
-		<h3>Extends some file in extends with overwrite block...</h3> <br>
-
-		{{extends Example/row row3}}
-			{{block section}}
-				{{block section_new}}
-					<p> The force of extends may be with you</p>
-					{{extends Example/row row8}}
-						{{block section}}
-							Yohohohohohoooo! Row extended and overwritten x2x2!!!
-						{{/block}}
-					{{/extends}}
-				{{/block}}
-
-			{{/block}}
-		{{/extends}}
-
-
-		<h3>Extends some file without overwrite block...</h3> <br>
-
-		{{extends Example/row uhm}}{{/extends}}
-
+	<h3>This block will not overwrite the next block</h3>
+	{{block row}}
+		<p>Don't overwrite me, pls :(</p>
 	{{/block}}
 
 
-	{{block footer}}
-		<h4>Footer block</h4>
-	{{/block}}
 
-</body>
-</html>
+	<h3>Includes some file with overwrite block...again...</h3>
+
+	{{includes Example/row row2}}
+		{{block section}}
+			Yohohohohohoooo! Row extended and overwritten, again !!!
+		{{/block}}
+	{{/includes}}
+
+	<h3>Includes some file in includes with overwrite block...</h3>
+
+	{{includes Example/row row3}}
+		{{block section}}
+			{{block section_new}}
+				<p> The force of includes may be with you</p>
+				{{includes Example/row row8}}
+					{{block section}}
+						Yohohohohohoooo! Row extended and overwritten x2x2!!!
+					{{/block}}
+				{{/includes}}
+			{{/block}}
+
+		{{/block}}
+	{{/includes}}
+
+
+	<h3>Includes some file without overwrite block...</h3>
+
+	{{includes Example/row uhm}}{{/includes}}
+
+	<h3>Includes some file that is extended to other file... i'm lost</h3>
+	{{includes Example/jolly jolly}}
+		{{block section}}jolly extended is the way{{/block}}
+	{{/includes}}
+
+{{/block}}

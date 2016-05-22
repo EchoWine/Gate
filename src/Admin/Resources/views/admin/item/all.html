@@ -35,7 +35,7 @@
 	</div>
 
 	<!-- MODAL ADD -->
-	{{extends Admin/admin/modal}}
+	{{includes Admin/admin/modal}}
 		{{block id}}modal-item-add{{/block}}
 		{{block content}}
 			<h2>Add</h2>
@@ -49,7 +49,7 @@
 				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
 			</form>
 		{{/block}}
-	{{/extends}}
+	{{/includes}}
 
 	<div class='page-row'>
 		<div class='page-section'>
@@ -141,5 +141,3 @@
 		});
 	</script>
 {{/block}}
-
-{{/extends}}

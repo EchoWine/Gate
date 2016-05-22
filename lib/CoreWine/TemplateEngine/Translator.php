@@ -24,6 +24,11 @@ class Translator{
 	public $relativePath;
 
 	/**
+	 * PARENT
+	 */
+	const PARENT_CONTENT = '{% PARENT_CONTENT %}';
+
+	/**
 	 * Construct
 	 *
 	 * @param string $filename
@@ -63,14 +68,37 @@ class Translator{
 	 */
 	public function t_block($content){
 
-		$content = preg_replace('/{{extends ([^\s]*) ([^\}]*)}}/iU','<?php Engine::startExtends("$1","$2"); ?>',$content);
-		$content = preg_replace('/{{extends ([^\}]*)}}/iU','<?php Engine::startExtends("$1","$1"); ?>',$content);
-		$content = preg_replace('/{{\/extends}}/iU','<?php Engine::endExtends(); ?>',$content);
+		if(preg_match('/{{extends ([^\}]*)}}/iU',$content,$r)){
 
-		$content = preg_replace('/{{parent}}/',"{% parent %}",$content);
+			$content = str_replace('{{extends '.$r[1].'}}',"<?php Engine::startExtends('$r[1]'); ?>",$content);
+			$content .= "<?php Engine::endExtends(); ?>";
 
-		$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?>",$content);
-		$content = preg_replace('/{{\/block}}/',"<?php Engine::endBlock(); ?>",$content);
+		}
+
+		$content = preg_replace('/{{includes ([^\s]*) ([^\}]*)}}/iU','<?php Engine::startIncludes("$1","$2"); ?>',$content,-1,$count_adv);
+		$content = preg_replace('/{{includes ([^\}]*)}}/iU','<?php Engine::startIncludes("$1","$1"); ?>',$content,-1,$count_basic);
+		$content = preg_replace('/{{\/includes}}/iU','<?php Engine::endIncludes(); ?>',$content,-1,$count_close);
+
+		if($count_adv + $count_basic != $count_close){
+			throw new Exceptions\IncludesException(
+				"The count of openend includes doesn't correspond with closed one. ".
+				"Opened: ".($count_adv + $count_basic)."; Closed: $count_close"
+			);
+		}
+
+		
+		$content = preg_replace('/{{parent}}/',Translator::PARENT_CONTENT,$content);
+
+
+		$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?>",$content,-1,$count_open);
+		$content = preg_replace('/{{\/block}}/',"<?php Engine::endBlock(); ?>",$content,-1,$count_close);
+
+		if($count_open != $count_close){
+			throw new Exceptions\BlockException(
+				"The count of openend blocks doesn't correspond with closed one. ".
+				"Opened: $count_open; Closed: $count_close"
+			);
+		}
 
 		return $content;
 	}

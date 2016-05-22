@@ -53,30 +53,29 @@ class Engine{
 	public static $compiled = [];
 
 	/**
-	 * List of all blocks
+	 * Const structure type root
 	 */
-	public static $blocks = [];
+	const STRUCTURE_ROOT = 'ROOT';
 
 	/**
-	 * List of all blocks current nested
+	 * Const structure type root
 	 */
-	public static $blocks_actual = [];
+	const STRUCTURE_ROOT_EXTENDED = 'ROOT_EXTENDED';
 
 	/**
-	 * List of all extends nested
+	 * Structure type extends
 	 */
-	public static $extends = [];
-
-	/**
-	 * List of all extends nested
-	 */
-	public static $extends_index = -1;
-
 	const STRUCTURE_EXTENDS = 'EXTENDS';
 
-	const STRUCTURE_BLOCK = 'BLOCK';
+	/**
+	 * Structure type includes
+	 */
+	const STRUCTURE_INCLUDES = 'INCLUDES';
 
-	const STRUCTURE_ROOT = 'ROOT';
+	/**
+	 * Structure type block
+	 */
+	const STRUCTURE_BLOCK = 'BLOCK';
 
 	public static $structure = null;
 
@@ -335,9 +334,9 @@ class Engine{
 		//echo "\n\nApertura ...".$name."\n\n";
 
    		ob_start();
+		\CoreWine\Debug::add("START Block: ".$name);
    		$structure = Engine::addStructure($name,$type);
 
-		//echo "\n\nStart a ...".Engine::getStructure() -> getName()."\n\n";
 
 
    		return $structure;
@@ -354,7 +353,7 @@ class Engine{
 
 		//print_r(Engine::getStructure());
 
-		\CoreWine\Debug::add("Sono a ...".Engine::getStructure() -> getName());
+		\CoreWine\Debug::add("END Block:".Engine::getStructure() -> getName());
 
 
    		if(Engine::getStructure() -> getOverwrite()){
@@ -362,7 +361,10 @@ class Engine{
 			Engine::getStructure() -> setContent($content);
    		}else{
    			\CoreWine\Debug::add("Contenuto già scritto in precedenza...");
+
+   			$_content = $content;
    			$content = Engine::getStructure() -> getContent();
+   			$content = preg_replace('/'.Translator::PARENT_CONTENT.'/',$_content,$content);
    		}
 
    		\CoreWine\Debug::add($content);
@@ -396,11 +398,15 @@ class Engine{
 
 		if(Engine::$structure_parent != null){
 
-			\CoreWine\Debug::add("Parent: ".Engine::$structure_parent -> getName());
+			\CoreWine\Debug::add("Parent add structure: ".Engine::$structure_parent -> getName());
 			$_structure = Engine::$structure_parent -> findChildByName($name);
 
+
+			\CoreWine\Debug::add("Find child already defined: $name in ".Engine::$structure_parent -> getName());
 			# If exists already
 			if($_structure !== null){
+
+				\CoreWine\Debug::add("Found");
 				$structure = $_structure;
 				$structure -> setOverwrite(false);
 			}else{
@@ -432,7 +438,7 @@ class Engine{
 	 *
 	 * Must contain only blocks inside, no space/between
 	 */
-	public static function startExtends($source,$name,$print = false){
+	public static function startIncludes($source,$name,$print = false){
 
 		Engine::$structure_print = false;
 		$structure = Engine::startStructure($name,Engine::STRUCTURE_EXTENDS);
@@ -445,7 +451,7 @@ class Engine{
 	/**
 	 * End extends
 	 */
-	public static function endExtends($include = true){
+	public static function endIncludes($include = true){
 
 		$structure = Engine::getStructure();
 
@@ -465,13 +471,44 @@ class Engine{
 		Engine::$structure_parent = $structure -> getParent();
 
 
-		Engine::$structure_print = Engine::getStructure() -> getParent() -> getType() == Engine::STRUCTURE_ROOT;
+		if(Engine::getStructure() -> getParent() !== null)
+			Engine::$structure_print = Engine::getStructure() -> getParent() -> getType() == Engine::STRUCTURE_ROOT;
+		else
+			Engine::$structure_print = true;
 
 		return $c;
 	}
 
-		/**
+
+	/**
 	 * Start extends
+	 */
+	public static function startExtends($source){
+
+		$structure = Engine::startStructure($source,Engine::STRUCTURE_EXTENDS);
+		$structure -> setSource($source);
+		Engine::getStructure() -> getParent() -> setType(Engine::STRUCTURE_ROOT_EXTENDED);
+
+		Engine::$structure_print = false;
+	}
+
+	/**
+	 * End extends
+	 */
+	public static function endExtends(){
+		$structure = Engine::getStructure();
+
+		Engine::$structure_print = true;
+
+		echo Engine::endStructure(Engine::STRUCTURE_EXTENDS);
+		include '/'.PATH_STORAGE.'/'.Engine::getInclude($structure -> getSource());
+		Engine::$structure_print = true;
+		
+		
+	}
+
+	/**
+	 * Start root
 	 *
 	 * Must contain only blocks inside, no space/between
 	 */

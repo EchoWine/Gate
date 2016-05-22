@@ -142,6 +142,7 @@ item.add = function(table,values){
 		if(data.status == 'success'){
 			item.getList(table);
 			modal.closeActual();
+			item.addAlert('alert-success','alert-global',data);
 		}
 
 		if(data.status == 'error'){
@@ -160,6 +161,7 @@ item.edit = function(table,id,values){
 		if(data.status == 'success'){
 			item.getList(table);
 			modal.closeActual();
+			item.addAlert('alert-success','alert-global',data);
 		}
 
 		if(data.status == 'error'){
@@ -181,6 +183,7 @@ item.remove = function(table,id){
 		if(data.status == 'success'){
 			item.getList(table);
 			modal.closeActual();
+			item.addAlert('alert-success','alert-global',data);
 		}
 
 		if(data.status == 'error'){

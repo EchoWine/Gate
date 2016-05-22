@@ -27,26 +27,42 @@
 				</div>
 			{{/for}}
 			<div class='section-table-col section-table-col-action'>
-				<button type='button' class='button-action button-danger' data-item-remove data-item-id='{id}' data-item-table='{table}'><i class='fa fa-trash'></i><span>Delete</span></button>
-				<button type='button' class='button-action button-warning'><i class='fa fa-pencil'></i><span>Edit</span></button>
+				<button type='button' class='button-action button-action-icon button-warning'><i class='fa fa-pencil'></i></button>
+				<button type='button' class='button-action button-action-icon button-danger' data-modal='modal-item-delete' data-modal-item-id='{id}' data-modal-item-table='{table}'><i class='fa fa-trash'></i></button>
 			</div>
 
 		</div>
 	</div>
 
 	<!-- MODAL ADD -->
-	{{includes Admin/admin/modal}}
+	{{includes Admin/admin/modal modal-add}}
+		{{block __classModal}}{{/block}}
 		{{block id}}modal-item-add{{/block}}
+		{{block title}}Add new row{{/block}}
 		{{block content}}
-			<h2>Add</h2>
 			<div data-use-template='alert-modal'></div>
-			<form method='POST' id='item-data-form-add'>
+			<form method='POST' item-data-form-add  data-item-table='{table}'>
 				{{for $fieldsAdd as $field}}
 					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
 					<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
 				{{/for}}
 
 				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
+			</form>
+		{{/block}}
+	{{/includes}}
+
+	<!-- MODAL Delete confirm -->
+	{{includes Admin/admin/modal modal-delete}}
+		{{block id}}modal-item-delete{{/block}}
+		{{block title}}Are you sure?{{/block}}
+		{{block content}}
+			<form method='POST'>
+				<div>The item #<span class='data-modal-item-id'></span> will be deleted</div>
+				<div class='item-form-actions'>
+					<button type='button' class='button-action button-primary' data-item-remove data-item-id='{id}' data-item-table='{table}'><span>Yes</span></button>
+					<button type='button' class='button-action button-danger modal-close'><span>No</span></button>
+				</div>
 			</form>
 		{{/block}}
 	{{/includes}}
@@ -62,7 +78,7 @@
 				<input type='text' class='input-data'>
 			</div>
 			
-			<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-title='Add'>Add</button>
+			<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-item-table='{{$table}}'>Add</button>
 
 			<div class='section-table'>
 

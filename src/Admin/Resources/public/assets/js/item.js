@@ -77,6 +77,19 @@ item.delete = function(url,params,callback){
 	item.ajax('DELETE',url,params,callback);
 };
 
+
+/**
+ * Initalization
+ */
+item.ini = function(){
+	for(i in item.tables){
+		table = item.tables[i];
+
+		item.getList(table);
+
+	};
+};
+
 /**
  * Add a table
  *
@@ -86,48 +99,102 @@ item.addTable = function(table){
 	item.tables[table.name] = table;
 };
 
-
 /**
- * Initalization
+ * Get a table
+ *
+ * @param {string} name
+ * @return{object}
  */
-item.ini = function(){
-	for(i in item.tables){
-		table = item.tables[i];
-
-		item.setBySourceEventAdd(table);
-		item.getList(table);
-
-	};
+item.getTable = function(name){
+	return item.tables[name];
 };
 
 /**
- * Add event submit to add 
+ * Update the list of all records
  *
  * @param {object} table
  */
-item.setBySourceEventAdd = function(table){
+item.getList = function(table){
+	item.get(table.list.url,[],function(data){
 
-	$(table.add.form).on('submit',function(e){
+		var rows = '';
 
-		e.preventDefault();
-
-
-		var values = table.add.action($(this));
-
-		item.post(table.add.url,values,function(data){
-
-			if(data.status == 'success'){
-				item.getList(table);
-				modal.closeActual();
-			}
-
-			if(data.status == 'error'){
-				item.addAlert('alert-danger','alert-modal',data);
-			}
+		$.map(data,function(row){
+			row.table = table.name;
+			rows += template.get(table.template.row,row);
 		});
+
+
+		template.setByHtml(rows,table.template.row);
+
 
 	});
 };
+
+/** 
+ * Add a row
+ */
+item.add = function(table,values){
+
+	item.post(table.add.url,values,function(data){
+
+		if(data.status == 'success'){
+			item.getList(table);
+			modal.closeActual();
+		}
+
+		if(data.status == 'error'){
+			item.addAlert('alert-danger','alert-modal',data);
+		}
+	});
+}
+
+/**
+ * Remove a row
+ *
+ * @param {object} table
+ * @param {string} id
+ */
+item.remove = function(table,id){
+
+	item.delete(table.delete.url+"/"+id,{},function(data){
+
+		if(data.status == 'success'){
+			item.getList(table);
+			modal.closeActual();
+		}
+
+		if(data.status == 'error'){
+			item.addAlert('alert-danger','alert-global',data);
+		}
+	});
+};
+
+/**
+ * Set event add
+ */
+$('[item-data-form-add]').on('submit',function(e){
+
+	e.preventDefault();
+	var table = $(this).attr('data-item-table');
+	table = item.getTable(table);
+
+
+	var values = table.add.action($(this));
+
+	item.add(table,values);
+
+});
+
+/**
+ * Set event remove
+ */
+$('body').on('click','[data-item-remove]',function(){
+	var id = $(this).attr('data-item-id');
+	var table = $(this).attr('data-item-table');
+
+	item.remove(item.getTable(table),id);
+});
 
 /**
  * Add Status
@@ -160,49 +227,16 @@ item.removeAlert = function(alert){
 	
 };
 
-/**
- * Update the list of all records
- *
- * @param {object} table
- */
-item.getList = function(table){
-	item.get(table.list.url,[],function(data){
 
-		var rows = '';
+modal.addDataTo('modal-item-delete',function(el,data){
+	var del = el.find('[data-item-remove]');
+	del.attr('data-item-id',data['data-modal-item-id']);
+	del.attr('data-item-table',data['data-modal-item-table']);
+});
 
-		$.map(data,function(row){
-			row.table = table.name;
-			rows += template.get(table.template.row,row);
-		});
-
-
-		template.setByHtml(rows,table.template.row);
-
-
-	});
-};
-
-/**
- * Remove an item
- */
-
-
-$('body').on('click','[data-item-remove]',function(){
-	var id = $(this).data('item-id');
-
-	var table = item.tables[$(this).data('item-table')];
-
-	item.delete(table.delete.url+"/"+id,{},function(data){
-
-		if(data.status == 'success'){
-			item.getList(table);
-			modal.closeActual();
-		}
-
-		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-global',data);
-		}
-	});
+modal.addDataTo('modal-item-add',function(el,data){
+	var el = el.find('[item-data-form-add]');
+	el.attr('data-item-table',data['data-modal-item-table']);
 });
 
 $(document).ready(function(){

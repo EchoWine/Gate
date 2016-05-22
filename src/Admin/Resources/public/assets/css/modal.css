@@ -31,13 +31,24 @@
     transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out;
 }
 
-.modal-body h2{
-	font-size:24px;
+.modal-content{
+	
 }
+
+.modal-body-small{
+	max-width:500px;
+}
+
+.modal-body .modal-title{
+	font-size:24px;
+	margin:0;
+}
+
 .modal-close{
 
 }
 
-.modal-close-header{
+.modal-header{
 	display:flex;
+	margin-bottom:10px;
 }

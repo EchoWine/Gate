@@ -8,7 +8,7 @@
 		<li>{message}</li>
 	</div>
 
-	<!-- ALERT SUCCESS TEMPLATE -->
+	<!-- ALERT SUCCESS TEMPLATE -->	
 	<div class='templates' data-template='alert-success'>
 		<div class='alert alert-success'>{message}<ul>{details}</ul></div>
 	</div>
@@ -35,7 +35,7 @@
 	</div>
 
 	<!-- MODAL ADD -->
-	{{includes Admin/admin/modal modal-add}}
+	{{includes Admin/admin/__modal modal-add}}
 		{{block __class}}{{/block}}
 		{{block id}}modal-item-add{{/block}}
 		{{block title}}Add new row{{/block}}
@@ -53,7 +53,7 @@
 	{{/includes}}
 
 	<!-- MODAL EDIT -->
-	{{includes Admin/admin/modal modal-edit}}
+	{{includes Admin/admin/__modal modal-edit}}
 		{{block __class}}{{/block}}
 		{{block id}}modal-item-edit{{/block}}
 		{{block title}}Edit{{/block}}
@@ -71,7 +71,7 @@
 	{{/includes}}
 
 	<!-- MODAL DELETE CONFIRM -->
-	{{includes Admin/admin/modal modal-delete}}
+	{{includes Admin/admin/__modal modal-delete}}
 		{{block __class}}modal-body-small{{/block}}
 		{{block id}}modal-item-delete{{/block}}
 		{{block title}}Are you sure?{{/block}}
@@ -127,7 +127,7 @@
 				<div data-use-template='item-row'>
 					<div class='section-table-row'>
 						<div class='section-table-col'>
-							{{include Admin/admin/spinner}}
+							{{include Admin/admin/__spinner}}
 						</div>
 					</div>
 				</div>

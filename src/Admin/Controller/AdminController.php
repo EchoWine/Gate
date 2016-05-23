@@ -55,7 +55,7 @@ abstract class AdminController extends Controller{
 	 */
 	public function index(){
 
-		return $this -> view('Admin/admin/item/all',[
+		return $this -> view('Admin/admin/item',[
 			'table' => $this -> url,
 			'api' => $this -> getFullApiURL(),
 			'fieldsAll' => $this -> getSchemaFieldsList(),

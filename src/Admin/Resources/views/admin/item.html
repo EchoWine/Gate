@@ -27,8 +27,21 @@
 				</div>
 			{{/for}}
 			<div class='section-table-col section-table-col-action'>
-				<button type='button' class='button-action button-action-icon button-warning' data-modal='modal-item-edit' data-modal-item-id='{id}' data-modal-item-table='{table}'><i class='fa fa-pencil'></i></button>
-				<button type='button' class='button-action button-action-icon button-danger' data-modal='modal-item-delete' data-modal-item-id='{id}' data-modal-item-table='{table}'><i class='fa fa-trash'></i></button>
+
+				{# View Button #}
+				<button type='button' class='button-action button-action-icon button-info' data-modal='modal-item-get' data-modal-item-id='{id}' data-modal-item-table='{table}'>
+					<i class="fa fa-file-text"></i>
+				</button>
+
+				{# Edit Button #}
+				<button type='button' class='button-action button-action-icon button-warning' data-modal='modal-item-edit' data-modal-item-id='{id}' data-modal-item-table='{table}'>
+					<i class='fa fa-pencil'></i>
+				</button>
+					
+				{# Delete Button #}
+				<button type='button' class='button-action button-action-icon button-danger' data-modal='modal-item-delete' data-modal-item-id='{id}' data-modal-item-table='{table}'>
+					<i class='fa fa-trash'></i>
+				</button>
 			</div>
 
 		</div>
@@ -52,6 +65,36 @@
 		{{/block}}
 	{{/includes}}
 
+
+	<!-- MODAL VIEW -->
+	{{includes Admin/admin/__modal modal-get}}
+		{{block __class}}{{/block}}
+		{{block id}}modal-item-get{{/block}}
+		{{block title}}View{{/block}}
+		{{block content}}
+
+			{{for $fieldsGet as $field}}
+				<div class='item-form-label'>{{$field -> getLabel()}}</div>
+				<div class='item-form-input'><span data-name='{{$field -> getName()}}'></span></div>
+			{{/for}}
+
+			<div class='item-form-actions'>
+				
+				{# Edit Button #}
+				<button type='button' class='button-action button-action-icon button-warning' data-modal='modal-item-edit' data-modal-item-id='{id}' data-modal-item-table='{table}'>
+					<i class='fa fa-pencil'></i>
+				</button>
+				
+
+				{# Delete Button #}
+				<button type='button' class='button-action button-action-icon button-danger' data-modal='modal-item-delete' data-modal-item-id='{id}' data-modal-item-table='{table}'>
+					<i class='fa fa-trash'></i>
+				</button>
+			</div>
+
+		{{/block}}
+	{{/includes}}
+
 	<!-- MODAL EDIT -->
 	{{includes Admin/admin/__modal modal-edit}}
 		{{block __class}}{{/block}}
@@ -69,6 +112,7 @@
 			</form>
 		{{/block}}
 	{{/includes}}
+
 
 	<!-- MODAL DELETE CONFIRM -->
 	{{includes Admin/admin/__modal modal-delete}}
@@ -162,6 +206,11 @@
 			},
 			get:{
 				url:'{{$api}}',
+				get: function(container,data){
+					{{for $fieldsGet as $field}}
+						container.find('[data-name={{$field -> getName()}}]').html(data['{{$field -> getName()}}']);
+					{{/for}}
+				},
 			},
 			add:{
 				url:'{{$api}}',

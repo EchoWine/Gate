@@ -169,7 +169,7 @@ abstract class Controller extends SourceController{
 				// Validate field
 				$response = $field -> isValid($raw[$field -> getName()]);
 
-				if(!$this -> responseIsSuccess($response)){
+				if(!$this -> isResponseSuccess($response)){
 					$errors[$field -> getName()] = $response;
 				}
 			}
@@ -248,7 +248,7 @@ abstract class Controller extends SourceController{
 	 */
 	public function __edit($id){
 
-		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+		$result = $this -> __first($id,Controller::RESULT_ARRAY);
 
 		if(!$result){
 
@@ -275,7 +275,7 @@ abstract class Controller extends SourceController{
 				// Validate field
 				$response = $field -> isValid($raw[$field -> getName()]);
 
-				if(!$this -> responseIsSuccess($response)){
+				if(!$this -> isResponseSuccess($response)){
 					$errors[$field -> getName()] = $response;
 				}
 			}
@@ -321,13 +321,11 @@ abstract class Controller extends SourceController{
 	public function __delete($id){
 
 
-		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+
+		$result = $this -> __first($id,Controller::RESULT_ARRAY);
 
 		if(!$result){
-
-			$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
-			return $response -> setRequest(Request::getCall());
-
+			return $this -> getResponseNotFound();
 		}
 
 		try{
@@ -349,11 +347,16 @@ abstract class Controller extends SourceController{
 
 	}
 
-	public function responseIsSuccess(\Item\Response\Response $response){
+	public function getResponseNotFound(){
+		$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
+		return $response -> setRequest(Request::getCall());
+	}
+
+	public function isResponseSuccess(\Item\Response\Response $response){
 		return ($response instanceof \Item\Response\Success);
 	}
 
-	public function responseIsError(\Item\Response\Response $response){
+	public function isResponseError(\Item\Response\Response $response){
 		return ($response instanceof \Item\Response\Erro);
 	}
 

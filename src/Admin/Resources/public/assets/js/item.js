@@ -246,6 +246,20 @@ modal.addDataTo('modal-item-edit',function(container,data){
 	});
 });
 
+
+modal.addDataTo('modal-item-get',function(container,data){
+	var el = container.find('[item-data-form-get]');
+	var id = data['data-modal-item-id'];
+
+	el.attr('data-item-table',data['data-modal-item-table']);
+	el.attr('data-item-id',id);
+
+	item.get(table.get.url+"/"+id,{filter:'get'},function(data){
+		table.get.get(container,data);
+
+	});
+});
+
 /**
  * Add Status
  *

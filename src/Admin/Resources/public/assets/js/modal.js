@@ -11,6 +11,10 @@ modal.filterData = {};
  * @param {object} data
  */
 modal.open = function(id,data){
+
+	modal.closeActual();
+	$('html,body').scrollTop(0);
+
 	modal.opening = true;
 	var el = $('#'+id);
 	el.addClass('modal-active');
@@ -53,7 +57,20 @@ modal.exeDataTo = function(id,el,data){
 
 	closure(el,data);
 
-}
+};
+
+/**
+ * Get data param in modal
+ *
+ * @param {object} element
+ *
+ * @return {object} data
+ */
+modal.getDataModal = function(el){
+	var data = el.dataByPrefix('modal');
+	delete data['data-modal'];
+	return data;
+};
 
 /**
  * Close the modal given the id
@@ -80,7 +97,7 @@ modal.closeActual = function(){
 $('body').on('click','[data-modal]',function(){
 	modal.open(
 		$(this).data('modal'),
-		$(this).dataByPrefix('modal')
+		modal.getDataModal($(this))
 	);
 });
 

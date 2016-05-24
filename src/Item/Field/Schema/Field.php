@@ -40,9 +40,14 @@ class Field{
 	public $add = true;
 
 	/**
-	 * Add
+	 * Edit
 	 */
 	public $edit = true;
+
+	/**
+	 * Get
+	 */
+	public $get = true;
 
 	/**
 	 * Regex of field
@@ -229,6 +234,13 @@ class Field{
 	 */
 	public function isEdit(){
 		return $this -> edit;
+	}
+
+	/**
+	 * Check if the field is enabled for get
+	 */
+	public function isGet(){
+		return $this -> get;
 	}
 
 	/**

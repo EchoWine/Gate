@@ -52,6 +52,7 @@ class Translator{
 
 		$content = $this -> t_block($content);
 		$content = $this -> t_include($content);
+		$content = $this -> t_comments($content);
 		// $content = $this -> t_array($content);
 		$content = $this -> t_if($content);
 		$content = $this -> t_for($content);
@@ -59,6 +60,19 @@ class Translator{
 
 		return $content;
 	}
+
+	/**
+	 * Translate comments
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	public function t_comments($content){
+
+		$content = preg_replace('/{# (\s|.*)#}/iU','<?php /* $1 */; ?>',$content);
+		return $content;
+	}
+
 
 	/**
 	 * Translate block

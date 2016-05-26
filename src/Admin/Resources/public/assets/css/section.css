@@ -23,6 +23,14 @@
 
 }
 
+.section-table-col-sort{
+	cursor:pointer;
+}
+
+.section-table-col-sort:hover{
+	background:rgba(0,0,0,0.03);
+}
+
 .section-table .section-table-col-action{
 	justify-content:flex-end;
 	text-align:right;

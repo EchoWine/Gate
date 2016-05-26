@@ -62,6 +62,8 @@ abstract class AdminController extends Controller{
 			'fieldsAdd' => $this -> getSchemaFieldsAdd(),
 			'fieldsEdit' => $this -> getSchemaFieldsEdit(),
 			'fieldsGet' => $this -> getSchemaFieldsGet(),
+			'sortByField' => $this -> schema -> getSortDefaultField() -> getName(),
+			'sortByDirection' => $this -> schema -> getSortDefaultDirection(),
 		]);
 	}
 

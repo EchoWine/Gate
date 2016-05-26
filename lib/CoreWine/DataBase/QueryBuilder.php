@@ -219,6 +219,23 @@ class QueryBuilder{
 	}
 
 	/**
+	 * Arrange the results in order
+	 *
+	 * @param string $v name of the column
+	 * @return object $this
+	 */
+	public function orderBy(string $c,string $order){
+
+		switch($order){
+			case 'asc': return $this -> orderByAsc($c); break;
+			case 'desc': return $this -> orderByDesc($c); break;
+		}
+
+		# Throw some error
+		return $this;
+	}
+
+	/**
 	 * Return the SQL code for sorting
 	 *
 	 * @return string SQL code

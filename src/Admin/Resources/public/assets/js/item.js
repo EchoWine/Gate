@@ -85,7 +85,8 @@ item.delete = function(url,params,callback){
 item.ini = function(){
 	for(i in item.tables){
 		table = item.tables[i];
-
+		
+		item.updateIconSort(table,table.list.sortByField,table.list.sortByDirection);
 		item.getList(table);
 
 	};
@@ -115,18 +116,29 @@ item.getTable = function(name){
  *
  * @param {object} table
  */
-item.getList = function(table){
-	item.get(table.list.url,[],function(data){
+item.getList = function(table,params = {}){
+		
+	template.setBySource('spinner-table','item-row',{});
 
-		var rows = '';
+	item.get(table.list.url,params,function(data){
 
-		$.map(data,function(row){
-			row.table = table.name;
-			rows += template.get(table.template.row,row);
-		});
+		if(data.status == 'success'){
+			var rows = '';
+
+			data = data.data;
+			$.map(data,function(row){
+				row.table = table.name;
+				rows += template.get(table.template.row,row);
+			});
 
 
-		template.setByHtml(rows,table.template.row);
+			template.setByHtml(rows,table.template.row);
+		}
+
+		if(data.status == 'error'){
+			item.addAlert('alert-danger','alert-modal',data);
+		}
+
 
 
 	});
@@ -190,6 +202,54 @@ item.remove = function(table,id){
 			item.addAlert('alert-danger','alert-global',data);
 		}
 	});
+};
+
+/**
+ * Set event sort
+ */
+$('body').on('click','[data-item-sort-field]',function(){
+
+	var table = item.getTable($(this).attr('data-item-table'));
+	var field = $(this).attr('data-item-sort-field');
+
+
+	var direction = 'asc';
+
+	if(table.list.sortByField == field){
+		direction = table.list.sortByDirection; 
+	}else{
+
+	}
+
+	direction = item.getOppositeSort(direction);
+	item.getList(table,item.getObjectSort(field,direction));
+
+	table.list.sortByDirection = direction;
+	table.list.sortByField = field;
+
+	item.updateIconSort(table,field,direction);
+
+});
+
+item.updateIconSort = function(table,field,direction){
+	var container = $('[data-item-table-container='+table.name+']');
+	container.find('[data-item-sort-none]').removeClass('hide');
+	container.find('[data-item-sort-asc]').addClass('hide');
+	container.find('[data-item-sort-desc]').addClass('hide');
+
+	var sort = container.find('[data-item-sort-field='+field+']');
+	var sort_direction = direction == 'asc' ? '[data-item-sort-asc]' : '[data-item-sort-desc]';
+
+	sort.find('[data-item-sort-none]').addClass('hide');
+	sort.find(sort_direction).removeClass('hide');
+};
+
+item.getOppositeSort = function(sort){
+	return sort == 'asc' ? 'desc' : 'asc';
+};
+
+item.getObjectSort = function(field,sort){
+	return sort == 'asc' ? {asc:field} : {desc:field};
 };
 
 /**

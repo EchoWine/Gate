@@ -20,12 +20,18 @@ abstract class Controller extends SourceController{
 	const SUCCESS_ADD_MESSAGE = "Data was added with success";
 	const SUCCESS_EDIT_MESSAGE = "Data was edited with success";
 	const SUCCESS_DELETE_MESSAGE = "Data was removed with success";
+	const SUCCESS_GET_MESSAGE = "Data retrieved with success";
 	const ERROR_EXCEPTION_CODE = "exception";
 	const ERROR_FIELDS_INVALID_CODE = "fields_invalid";
 	const ERROR_FIELDS_INVALID_MESSAGE = "The values sent aren't valid";
 	const ERROR_QUERY_RETRIEVING_ID = "id not retrieved";
 	const ERROR_NOT_FOUND_CODE = "not_found";
 	const ERROR_NOT_FOUND_MESSAGE = "Resource not found";
+	const ERROR_SORT = "Resource not found";
+	const ERROR_SORT_FIELD_NOT_EXISTS_CODE = "sort_field_not_exists";
+	const ERROR_SORT_FIELD_NOT_EXISTS_MESSAGE = "The field sent as sort field doesn't exists";
+	const ERROR_SORT_FIELD_INVALID_CODE = "sort_field_invalid";
+	const ERROR_SORT_FIELD_INVALID_MESSAGE = "The field sent as sort doensn't support sort";
 
 	/**
 	 * Retrieve result as array
@@ -123,8 +129,7 @@ abstract class Controller extends SourceController{
 	 */
 	public function all(){
 
-		$results = $this -> __all(Controller::RESULT_ARRAY);
-		return $this -> json($results);
+		return $this -> json($this -> __all(Controller::RESULT_ARRAY));
 	}
 
 	/**
@@ -134,9 +139,48 @@ abstract class Controller extends SourceController{
 	 * @return results
 	 */
 	public function __all($type){
-		return $this -> getRepository() -> get($type);
-	}
+		$repository = $this -> getRepository() -> table($type);
 
+		$sort = Request::get('desc',null);
+		$sort = Request::get('asc',$sort);
+		$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
+
+		if($sort){
+
+			# If the exists the field
+			if(!$this -> schema -> hasField($sort)){
+
+				$response = new \Item\Response\Error(self::ERROR_SORT_FIELD_NOT_EXISTS_CODE,self::ERROR_SORT_FIELD_NOT_EXISTS_MESSAGE);
+				return $response -> setRequest(Request::getCall());
+			}
+
+			$field = $this -> schema -> getField($sort);
+
+			# If the field is enabled to sorting
+			if(!$field -> isSort()){
+				$response = new \Item\Response\Error(self::ERROR_SORT_FIELD_INVALID_CODE,self::ERROR_SORT_FIELD_INVALID_MESSAGE);
+				return $response -> setRequest(Request::getCall());
+			}
+
+			$repository = $repository -> orderBy($field -> getColumn(),$direction);
+		}else{
+			$repository = $repository -> orderBy($this -> schema -> getSortDefaultField() -> getColumn(),$this -> schema -> getSortDefaultDirection());
+		}
+
+		try{
+
+			$results = $repository -> get();
+
+		}catch(\Exception $e){
+
+			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
+			return $response -> setRequest(Request::getCall());
+		}
+
+		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_GET_MESSAGE);
+		return $response -> setData($results) -> setRequest(Request::getCall());
+
+	}
 
 	/**
 	 * Add new record

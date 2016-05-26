@@ -15,6 +15,21 @@ class Schema{
 	public $table;
 
 	/**
+	 * Primary key
+	 */
+	public $primary = 'id';
+
+	/**
+	 * Field of default sorting
+	 */
+	public $sortDefaultField = 'id';
+
+	/**
+	 * Direction of default sorting
+	 */
+	public $sortDefaultDirection = 'desc';
+
+	/**
 	 * Fields
 	 */
 	public $fields;
@@ -41,6 +56,25 @@ class Schema{
 	}
 
 	/**
+	 * Get field default for sorting
+	 *
+	 * @return Field
+	 */
+	public function getSortDefaultField(){
+		return $this -> getField($this -> sortDefaultField);
+	}
+
+	/**
+	 * Get field direction for sorting
+	 *
+	 * @return Field
+	 */
+	public function getSortDefaultDirection(){
+		return $this -> sortDefaultDirection;
+	}
+
+
+	/**
 	 * Set fields
 	 */
 	public function fields(){}
@@ -53,10 +87,25 @@ class Schema{
 	}
 
 	/**
-	 * Get fields
+	 * Get field
+	 *
+	 * @param string $name
+	 *
+	 * @return Field
 	 */
 	public function getField($name){
-		return $this -> fields[$name];
+		return $this -> hasField($name) ? $this -> fields[$name] : null;
+	}
+
+	/**
+	 * Has fields
+	 *
+	 * @param string $name
+	 *
+	 * @return bool
+	 */
+	public function hasField($name){
+		return isset($this -> fields[$name]);
 	}
 
 	/**
@@ -64,6 +113,10 @@ class Schema{
 	 */
 	public function getTable(){
 		return $this -> table;
+	}
+
+	public function getPrimary(){
+		return $this -> getField($this -> primary);
 	}
 
 	public function parseResult($result){

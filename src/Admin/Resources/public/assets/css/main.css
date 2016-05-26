@@ -45,6 +45,10 @@ ul,li{
 	padding:0;
 }
 
+.hide{
+	display:none;
+}
+
 .flex-center{
 	display:flex;
 	align-items:center;

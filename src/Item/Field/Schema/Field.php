@@ -66,6 +66,11 @@ class Field{
 	public $get = true;
 
 	/**
+	 * Sort
+	 */
+	public $sort = true;
+
+	/**
 	 * Regex of field
 	 */
 	public $regex = "/^(.){0,80}$/iU";
@@ -285,6 +290,15 @@ class Field{
 	 */
 	public function isGet(){
 		return $this -> get;
+	}
+
+	/**
+	 * Check if the field is enabled for sort
+	 *
+	 * @return bool
+	 */
+	public function isSort(){
+		return $this -> sort;
 	}
 
 	/**

@@ -2,6 +2,15 @@
 
 {{block page-content}}
 	
+	<div class='templates' data-template='spinner-table'>
+
+		<div class='section-table-row'>
+			<div class='section-table-col'>
+				{{include Admin/admin/__spinner}}
+			</div>
+		</div>
+
+	</div>
 	
 	<!-- ALERT DETAILS -->
 	<div class='templates' data-template='alert-details'>
@@ -137,7 +146,7 @@
 	{{/includes}}
 
 	<div class='page-row'>
-		<div class='page-section'>
+		<div class='page-section' data-item-table-container='{{$table}}'>
 
 			<div data-use-template='alert-global'></div>
 
@@ -154,12 +163,24 @@
 				<div class='section-table-row section-table-header'>
 
 					{{for $fieldsAll as $field}}
-					<div class='section-table-col '>
-						<div class='section-table-col-text'>
-							<span>{{$field -> getLabel()}}</span>
-							<i class='fa fa-sort'></i>
-						</div>
-					</div>
+						{{if $field -> isSort()}}
+							<div class='section-table-col section-table-col-sort' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
+								<div class='section-table-col-text noselect'>
+									<span>{{$field -> getLabel()}}</span>
+
+									<i class='fa fa-sort' data-item-sort-none></i>
+									<i class='fa fa-sort-asc hide' data-item-sort-asc></i>
+									<i class='fa fa-sort-desc hide' data-item-sort-desc></i>
+								</div>
+							</div>
+						{{else}}
+
+							<div class='section-table-col'>
+								<div class='section-table-col-text'>
+									<span>{{$field -> getLabel()}}</span>
+								</div>
+							</div>
+						{{/if}}
 					{{/for}}
 					<div class='section-table-col section-table-col-action'>
 						<div class='section-table-col-text'>
@@ -202,7 +223,9 @@
 
 			name:'{{$table}}',
 			list:{
-				url:'{{$api}}'
+				url:'{{$api}}',
+				sortByField:'{{$sortByField}}',
+				sortByDirection:'{{$sortByDirection}}',
 			},
 			get:{
 				url:'{{$api}}',

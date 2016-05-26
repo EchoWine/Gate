@@ -159,18 +159,24 @@ abstract class Controller extends SourceController{
 
 		$errors = []; 
 
+
 		foreach($fields as $name => $field){
 
 			if($field -> isAdd()){
-				$raw[$field -> getName()] = Request::post($field -> getName());
-			
-				$row[$field -> getName()] = $field -> parseValueAdd($raw[$field -> getName()]);
 
-				// Validate field
-				$response = $field -> isValid($raw[$field -> getName()]);
+				$value = Request::post($field -> getName());
 
-				if(!$this -> isResponseSuccess($response)){
-					$errors[$field -> getName()] = $response;
+				if($field -> isAddNeeded($value)){
+					$raw[$field -> getName()] = $value;
+				
+					$row[$field -> getName()] = $field -> parseValueAdd($value);
+
+					// Validate field
+					$response = $field -> isValid($raw[$field -> getName()]);
+
+					if(!$this -> isResponseSuccess($response)){
+						$errors[$field -> getName()] = $response;
+					}
 				}
 			}
 		}
@@ -267,16 +273,21 @@ abstract class Controller extends SourceController{
 
 		foreach($fields as $name => $field){
 
-			if($field -> isAdd()){
-				$raw[$field -> getName()] = Request::put($field -> getName());
-			
-				$row[$field -> getName()] = $field -> parseValueEdit($raw[$field -> getName()]);
+			if($field -> isEdit()){
 
-				// Validate field
-				$response = $field -> isValid($raw[$field -> getName()]);
+				$value = Request::put($field -> getName());
 
-				if(!$this -> isResponseSuccess($response)){
-					$errors[$field -> getName()] = $response;
+				if($field -> isEditNeeded($value)){
+					$raw[$field -> getName()] = $value;
+				
+					$row[$field -> getName()] = $field -> parseValueEdit($value);
+
+					// Validate field
+					$response = $field -> isValid($value);
+
+					if(!$this -> isResponseSuccess($response)){
+						$errors[$field -> getName()] = $response;
+					}
 				}
 			}
 		}

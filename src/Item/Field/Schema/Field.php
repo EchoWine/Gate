@@ -40,9 +40,25 @@ class Field{
 	public $add = true;
 
 	/**
+	 * Add if empty
+	 *
+	 * If this value is set to false and the value of field sent in update operation is empty,
+	 * then this field will be removed in add/insert operation
+	 */
+	public $addIfEmpty = true;
+
+	/**
 	 * Edit
 	 */
 	public $edit = true;
+
+	/**
+	 * Edit if empty
+	 *
+	 * If this value is set to false and the value of field sent in update operation is empty,
+	 * then this field will be removed in edit/update operation
+	 */
+	public $editIfEmpty = true;
 
 	/**
 	 * Get
@@ -224,20 +240,48 @@ class Field{
 
 	/**
 	 * Check if the field is enabled for add
+	 *
+	 * @return bool
 	 */
 	public function isAdd(){
 		return $this -> add;
 	}
 
 	/**
+	 * Check if the field is needed for edit
+	 *
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	public function isAddNeeded($value){
+		return empty($value) ? $this -> addIfEmpty : true;
+	}
+
+	/**
 	 * Check if the field is enabled for edit
+	 *
+	 * @return bool
 	 */
 	public function isEdit(){
 		return $this -> edit;
 	}
 
 	/**
+	 * Check if the field is needed for edit
+	 *
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	public function isEditNeeded($value){
+		return empty($value) ? $this -> editIfEmpty : true;
+	}
+
+	/**
 	 * Check if the field is enabled for get
+	 *
+	 * @return bool
 	 */
 	public function isGet(){
 		return $this -> get;

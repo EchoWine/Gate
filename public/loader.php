@@ -15,16 +15,17 @@
 	}
 
   	function loaderClass($class){
-
-  		if(file_exists($file = PATH_APP.'/'.__NAMESPACE__.$class.".php"))
+		$class = str_replace("\\","/",__NAMESPACE__.$class);
+		
+  		if(file_exists($file = PATH_APP.'/'.$class.".php"))
   			return loadClass($file,$class);
   		
 
-  		if(file_exists($file = PATH_SRC.'/'.__NAMESPACE__.$class.".php"))
+  		if(file_exists($file = PATH_SRC.'/'.$class.".php"))
   			return loadClass($file,$class);
 
   		
-  		if(file_exists($file = PATH_LIB.'/'.__NAMESPACE__.$class.".php"))
+  		if(file_exists($file = PATH_LIB.'/'.$class.".php"))
   			return loadClass($file,$class);
   		
 	}

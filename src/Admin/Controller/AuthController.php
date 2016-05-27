@@ -7,12 +7,10 @@ use CoreWine\Router;
 use CoreWine\Flash;
 use CoreWine\Cfg;
 
-use Auth\Controller\AuthController as AuthController;
-
 use Auth\Service\Auth;
 use Auth\Repository\AuthRepository;
 
-class AuthController extends AuthController{
+class AuthController extends Auth\Controller\AuthController{
 
 	/**
 	 * Routers

@@ -173,8 +173,7 @@ abstract class Controller extends SourceController{
 
 		}catch(\Exception $e){
 
-			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
-			return $response -> setRequest(Request::getCall());
+			return $this -> responseException($e);
 		}
 
 		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_GET_MESSAGE);
@@ -225,12 +224,10 @@ abstract class Controller extends SourceController{
 			}
 		}
 
-		// Response status error if validation is failed
-		if(!empty($errors)){
-			$response = new \Item\Response\Error(self::ERROR_FIELDS_INVALID_CODE,self::ERROR_FIELDS_INVALID_MESSAGE);
-			return $response -> setDetails($errors) -> setRequest($raw);
-		}
-
+		# Response status error if validation is failed
+		if(!empty($errors))
+			return $this -> responseInvalidFields($errors,$raw);
+		
 
 		try{
 			$id = $this -> getRepository() -> insert($row);
@@ -241,8 +238,7 @@ abstract class Controller extends SourceController{
 
 		}catch(\Exception $e){
 
-			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
-			return $response -> setRequest(Request::getCall());
+			return $this -> responseException($e);
 		}
 
 
@@ -302,9 +298,7 @@ abstract class Controller extends SourceController{
 
 		if(!$result){
 
-			$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
-			return $response -> setRequest(Request::getCall());
-
+			return $this -> responseNotFound();
 		}
 
 
@@ -319,28 +313,27 @@ abstract class Controller extends SourceController{
 
 			if($field -> isEdit()){
 
-				$value = Request::put($field -> getName());
+				$name = $field -> getName();
+				$value = Request::put($name);
 
 				if($field -> isEditNeeded($value)){
-					$raw[$field -> getName()] = $value;
+					$raw[$name] = $value;
 				
-					$row[$field -> getName()] = $field -> parseValueEdit($value);
+					$row[$name] = $field -> parseValueEdit($value);
 
 					// Validate field
 					$response = $field -> isValid($value);
 
 					if(!$this -> isResponseSuccess($response)){
-						$errors[$field -> getName()] = $response;
+						$errors[$name] = $response;
 					}
 				}
 			}
 		}
 
-		// Response status error if validation is failed
-		if(!empty($errors)){
-			$response = new \Item\Response\Error(self::ERROR_FIELDS_INVALID_CODE,self::ERROR_FIELDS_INVALID_MESSAGE);
-			return $response -> setDetails($errors) -> setRequest($raw);
-		}
+		# Response status error if validation is failed
+		if(!empty($errors))
+			return $this -> responseInvalidFields($errors,$raw);
 
 
 		try{
@@ -352,8 +345,7 @@ abstract class Controller extends SourceController{
 
 		}catch(\Exception $e){
 
-			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
-			return $response -> setRequest(Request::getCall());
+			return $this -> responseException($e);
 		}
 
 
@@ -380,7 +372,7 @@ abstract class Controller extends SourceController{
 		$result = $this -> __first($id,Controller::RESULT_ARRAY);
 
 		if(!$result){
-			return $this -> getResponseNotFound();
+			return $this -> responseNotFound();
 		}
 
 		try{
@@ -390,9 +382,7 @@ abstract class Controller extends SourceController{
 
 
 		}catch(\Exception $e){
-
-			$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
-			return $response -> setRequest(Request::getCall());
+			return $this -> responseException($e);
 		}
 
 		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_DELETE_MESSAGE);
@@ -402,15 +392,59 @@ abstract class Controller extends SourceController{
 
 	}
 
-	public function getResponseNotFound(){
+	/**
+	 * Return an exception response
+	 *
+	 * @param Exception $e
+	 *
+	 * @return \Item\Response\Response
+	 */
+	public function responseException($e){
+		$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
+		return $response -> setRequest(Request::getCall());
+	}
+
+	/**
+	 * Return an invalid fields response
+	 *
+	 * @param array $errors
+	 * @param array $request
+	 *
+	 * @return \Item\Response\Response
+	 */
+	public function responseInvalidFields($errors,$request){
+		$response = new \Item\Response\Error(self::ERROR_FIELDS_INVALID_CODE,self::ERROR_FIELDS_INVALID_MESSAGE);
+		return $response -> setDetails($errors) -> setRequest($request);
+	}
+
+	/**
+	 * Return a not found response
+	 *
+	 * @return \Item\Response\Response
+	 */
+	public function responseNotFound(){
 		$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
 		return $response -> setRequest(Request::getCall());
 	}
 
+	/**
+	 * Return if a response is success or not
+	 *
+	 * @param \Item\Response\Response $response
+	 *
+	 * @return bool
+	 */
 	public function isResponseSuccess(\Item\Response\Response $response){
 		return ($response instanceof \Item\Response\Success);
 	}
 
+	/**
+	 * Return if a response is error or not
+	 *
+	 * @param \Item\Response\Response $response
+	 *
+	 * @return bool
+	 */
 	public function isResponseError(\Item\Response\Response $response){
 		return ($response instanceof \Item\Response\Erro);
 	}

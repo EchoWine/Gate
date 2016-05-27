@@ -92,7 +92,6 @@ class Manager{
 			if(is_subclass_of($name_class,Controller::class)){
 				$reflectionClass = new \ReflectionClass($name_class);
 
-
 	    		if($reflectionClass -> IsInstantiable()){
 
 					self::$controllers[] =  new $name_class();
@@ -100,6 +99,10 @@ class Manager{
 			}
 		}
 
+		if(!file_exists(PATH."/src/")){
+			mkdir(PATH."/src",0755);	
+		}
+		
 		# Create symlink to access 
 		if(!file_exists(PATH."/src/".$basePath)){
 			if(file_exists(PATH."/../src/".$basePath."/Resources/public/")){

@@ -14,6 +14,9 @@ class Entity{
 	 */
 	public $fields;
 
+	/**
+	 * Array of all values
+	 */
 	public $values;
 
 	/**
@@ -44,17 +47,33 @@ class Entity{
 		return $this;
 	}
 
+	/**
+	 * Get all fields
+	 *
+	 * @return array of fields
+	 */
 	public function getFields(){
 		return $this -> fields;
 	}
 
+	/**
+	 * Get all values
+	 *
+	 * @return array of values
+	 */
 	public function getValues(){
 		return $this -> values;
 	}
 	
+	/**
+	 * Call
+	 *
+	 * @param string $method
+	 * @param array $arguments
+	 *
+	 * @return mixed
+	 */
 	public function __call($method, $arguments){
-
-		echo $method;
 
 		if(isset($this -> fields[$method]))
 			return $this -> fields[$method];

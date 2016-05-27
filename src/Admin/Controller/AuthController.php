@@ -10,7 +10,7 @@ use CoreWine\Cfg;
 use Auth\Service\Auth;
 use Auth\Repository\AuthRepository;
 
-class AuthController extends Auth\Controller\AuthController{
+class AuthController extends \Auth\Controller\AuthController{
 
 	/**
 	 * Routers

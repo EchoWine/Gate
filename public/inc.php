@@ -6,6 +6,10 @@
 	use CoreWine\SourceManager\Manager;
 	use CoreWine\TemplateEngine\Engine;
 
+	# php.ini
+	error_reporting(-1);
+	ini_set('display_errors', 'On');
+
 	# Path
 	define('PATH_BASE','/gate-cms');
 	define('PATH',__DIR__);

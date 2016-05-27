@@ -36,6 +36,10 @@
 	
 }
 
+.modal-header-title-container{
+	flex-grow:1;
+}
+
 .modal-body-small{
 	max-width:500px;
 }

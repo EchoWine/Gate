@@ -5,8 +5,8 @@
 
 			{{block header}}
 			<div class='modal-header'>
-				<div class='flex-fill'>
-					<h5 class='modal-title'>{{block title}}Title Modal{{/block}}</h5>
+				<div class='modal-header-title-container'>
+					<h5 class='modal-title'>{{block title}}Title{{/block}}</h5>
 				</div>
 				<button type='button' class='button-action button-danger modal-close'><i class='fa fa-remove'></i></button>
 			</div>
@@ -14,15 +14,7 @@
 
 			<div class='modal-content'>
 			{{block content}}
-				<div data-use-template='alert-modal'></div>
-				<form method='POST' id='item-data-form-add'>
-					{{for $fieldsAdd as $field}}
-						<div class='item-form-label'>{{$field -> getLabel()}}:</div>
-						<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
-					{{/for}}
-
-					<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
-				</form>
+				Default content
 			{{/block}}
 			</div>
 		</div>

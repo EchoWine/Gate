@@ -3,6 +3,7 @@ var modal = {};
 modal.actual = null;
 modal.opening = false;
 modal.filterData = {};
+modal.html = {};
 
 /**
  * Open the modal
@@ -17,6 +18,7 @@ modal.open = function(id,data){
 
 	modal.opening = true;
 	var el = $('#'+id);
+	modal.html[id] = el.html();
 	el.addClass('modal-active');
 
 
@@ -79,6 +81,11 @@ modal.getDataModal = function(el){
  */
 modal.close = function(id){
 	$('#'+id).removeClass('modal-active');
+
+	setTimeout(function(){
+		$('#'+id).html(modal.html[id]);
+   	},300);
+
 	modal.actual = null;
 };
 

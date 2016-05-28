@@ -196,9 +196,16 @@ class SQL{
 	}	
 
 	public static function LIMIT($skip = null,$take = null){
-		$skip = $skip !== null ? $skip."," : "";
-		$take = $take !== null ? $take : "";
-		return empty($s) && empty($t) ? "" : "LIMIT {$s}{$t}";
+		
+		if($skip && $take){
+			return " LIMIT {$skip},{$take}";
+		}
+
+		if($take){
+			return " LIMIT {$take}";
+		}
+
+		return '';
 	}
 
 	public static function COL_OP_VAL($col,$op,$val){

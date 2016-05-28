@@ -193,11 +193,11 @@ class DB{
 				self::$log[] = "<i>".$query."</i>";
 
 		}catch(PDOException $e){
-			throw new Exceptions\QueryException($e -> getMessage(),$query);
+			throw new Exceptions\QueryException($e -> getMessage()."<br>".$query);
 		}
 
 		if(!$r)
-			throw new Exceptions\QueryException(self::$con -> errorInfo()[2],$query);
+			throw new Exceptions\QueryException(self::$con -> errorInfo()[2]."<br>".$query);
 		
 
 		return $r;

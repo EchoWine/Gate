@@ -27,8 +27,8 @@
 	cursor:pointer;
 }
 
-.section-table-col-sort:hover{
-	background:rgba(0,0,0,0.03);
+.section-table-col-head{
+	color: rgba(0,0,0,0.6);
 }
 
 .section-table .section-table-col-action{

@@ -164,7 +164,7 @@
 
 					{{for $fieldsAll as $field}}
 						{{if $field -> isSort()}}
-							<div class='section-table-col section-table-col-sort' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
+							<div class='section-table-col section-table-col-head section-table-col-sort' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
 								<div class='section-table-col-text noselect'>
 									<span>{{$field -> getLabel()}}</span>
 
@@ -175,7 +175,7 @@
 							</div>
 						{{else}}
 
-							<div class='section-table-col'>
+							<div class='section-table-col section-table-col-head'>
 								<div class='section-table-col-text'>
 									<span>{{$field -> getLabel()}}</span>
 								</div>
@@ -200,10 +200,11 @@
 			</div>
 			<div class='section-pagination flex-center'>
 				<div>
-					<select>
-						<option>5</option>
-						<option>10</option>
-						<option>15</option>
+					<select class='select select-data' data-item-show data-item-table='{{$table}}'>
+						<option value='2'>2</option>
+						<option value='4'>4</option>
+						<option value='50'>50</option>
+						<option value='100'>100</option>
 					</select>
 				</div>
 				<div class='flex-fill'></div>
@@ -226,6 +227,8 @@
 				url:'{{$api}}',
 				sortByField:'{{$sortByField}}',
 				sortByDirection:'{{$sortByDirection}}',
+				show:2,
+				page:1
 			},
 			get:{
 				url:'{{$api}}',

@@ -16,7 +16,10 @@ item.tables = [];
  * @param {object} params
  * @param {function} callback
  */
-item.ajax = function(type,url,params,callback){
+item.ajax = function(type,url,params = {},callback){
+	console.log('Call to: '+url+'');
+	console.log(params);
+
 	$.ajax({
 		type: type,
 		url: url, 
@@ -87,7 +90,7 @@ item.ini = function(){
 		table = item.tables[i];
 		
 		item.updateIconSort(table,table.list.sortByField,table.list.sortByDirection);
-		item.getList(table);
+		item.getListWithParams(table);
 
 	};
 };
@@ -116,9 +119,48 @@ item.getTable = function(name){
  *
  * @param {object} table
  */
+item.getListWithParams = function(table){
+
+	var container = $('[data-item-table-container='+table.name+']');
+
+	// Show and pages
+	var params = {}
+
+	// Show
+	params.show = table.list.show;
+
+	// Page
+	params.page = table.list.page
+
+	// Sorting
+	table.list.sortByDirection == 'asc' ? params.asc = table.list.sortByField : params.desc = table.list.sortByField;
+
+	// Search
+	// ...
+
+	// Send request
+	item.getList(table,params);
+};
+
+/** 
+ * Update show result
+ */
+$('[data-item-show]').on('change',function(){
+	var table = item.getTable($(this).attr('data-item-table'));
+	table.list.show = $(this).val();
+	item.getListWithParams(table);
+});
+
+/**
+ * Update the list of all records
+ *
+ * @param {object} table
+ * @param {array} params
+ */
 item.getList = function(table,params = {}){
 		
 	template.setBySource('spinner-table','item-row',{});
+
 
 	item.get(table.list.url,params,function(data){
 
@@ -136,7 +178,7 @@ item.getList = function(table,params = {}){
 		}
 
 		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-modal',data);
+			item.addAlert('alert-danger','alert-global',data);
 		}
 
 
@@ -152,7 +194,7 @@ item.add = function(table,values){
 	item.post(table.add.url,values,function(data){
 
 		if(data.status == 'success'){
-			item.getList(table);
+			item.getListWithParams(table);
 			modal.closeActual();
 			item.addAlert('alert-success','alert-global',data);
 		}
@@ -171,7 +213,7 @@ item.edit = function(table,id,values){
 	item.put(table.edit.url+"/"+id,values,function(data){
 
 		if(data.status == 'success'){
-			item.getList(table);
+			item.getListWithParams(table);
 			modal.closeActual();
 			item.addAlert('alert-success','alert-global',data);
 		}
@@ -193,7 +235,7 @@ item.remove = function(table,id){
 	item.delete(table.delete.url+"/"+id,{},function(data){
 
 		if(data.status == 'success'){
-			item.getList(table);
+			item.getListWithParams(table);
 			modal.closeActual();
 			item.addAlert('alert-success','alert-global',data);
 		}
@@ -212,7 +254,6 @@ $('body').on('click','[data-item-sort-field]',function(){
 	var table = item.getTable($(this).attr('data-item-table'));
 	var field = $(this).attr('data-item-sort-field');
 
-
 	var direction = 'asc';
 
 	if(table.list.sortByField == field){
@@ -222,15 +263,19 @@ $('body').on('click','[data-item-sort-field]',function(){
 	}
 
 	direction = item.getOppositeSort(direction);
-	item.getList(table,item.getObjectSort(field,direction));
 
 	table.list.sortByDirection = direction;
 	table.list.sortByField = field;
+
+	item.getListWithParams(table);
 
 	item.updateIconSort(table,field,direction);
 
 });
 
+/**
+ * Update icon sort
+ */
 item.updateIconSort = function(table,field,direction){
 	var container = $('[data-item-table-container='+table.name+']');
 	container.find('[data-item-sort-none]').removeClass('hide');
@@ -246,10 +291,6 @@ item.updateIconSort = function(table,field,direction){
 
 item.getOppositeSort = function(sort){
 	return sort == 'asc' ? 'desc' : 'asc';
-};
-
-item.getObjectSort = function(field,sort){
-	return sort == 'asc' ? {asc:field} : {desc:field};
 };
 
 /**
@@ -352,18 +393,26 @@ item.removeAlert = function(alert){
 };
 
 
+/**
+ * Data in modal delete
+ */
 modal.addDataTo('modal-item-delete',function(el,data){
 	var del = el.find('[data-item-remove]');
 	del.attr('data-item-table',data['data-modal-item-table']);
 	del.attr('data-item-id',data['data-modal-item-id']);
 });
 
+/**
+ * Data in modal add
+ */
 modal.addDataTo('modal-item-add',function(el,data){
 	var el = el.find('[item-data-form-add]');
 	el.attr('data-item-table',data['data-modal-item-table']);
 });
 
-
+/**
+ * Initialize
+ */
 $(document).ready(function(){
 	item.ini();
 });

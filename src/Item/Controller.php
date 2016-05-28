@@ -17,6 +17,7 @@ abstract class Controller extends SourceController{
 	 * Errors
 	 */
 	const SUCCESS_CODE = "success";
+	const ERROR_CODE = 'error';
 	const SUCCESS_ADD_MESSAGE = "Data was added with success";
 	const SUCCESS_EDIT_MESSAGE = "Data was edited with success";
 	const SUCCESS_DELETE_MESSAGE = "Data was removed with success";
@@ -32,6 +33,8 @@ abstract class Controller extends SourceController{
 	const ERROR_SORT_FIELD_NOT_EXISTS_MESSAGE = "The field sent as sort field doesn't exists";
 	const ERROR_SORT_FIELD_INVALID_CODE = "sort_field_invalid";
 	const ERROR_SORT_FIELD_INVALID_MESSAGE = "The field sent as sort doensn't support sort";
+	const ERROR_GET_SHOW_CODE = 'show_invalid';
+	const ERROR_GET_SHOW_MESSAGE = 'the parameter show is invalid';
 
 	/**
 	 * Retrieve result as array
@@ -165,6 +168,18 @@ abstract class Controller extends SourceController{
 			$repository = $repository -> orderBy($field -> getColumn(),$direction);
 		}else{
 			$repository = $repository -> orderBy($this -> schema -> getSortDefaultField() -> getColumn(),$this -> schema -> getSortDefaultDirection());
+		}
+
+		$show = Request::get('show',null);
+
+		if($show){
+
+			if($show <= 0){
+				
+				return $this -> responseErrorAllShow($show);
+			}
+
+			$repository = $repository -> take($show);
 		}
 
 		try{
@@ -393,6 +408,18 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
+	 * Return a generic error
+	 *
+	 * @param string $message
+	 *
+	 * @return \Item\Response\Response
+	 */
+	public function responseError($message){
+		$response = new \Item\Response\Error(self::ERROR_CODE,$message);
+		return $response -> setRequest(Request::getCall());
+	}
+
+	/**
 	 * Return an exception response
 	 *
 	 * @param Exception $e
@@ -424,6 +451,18 @@ abstract class Controller extends SourceController{
 	 */
 	public function responseNotFound(){
 		$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
+		return $response -> setRequest(Request::getCall());
+	}
+
+	/**
+	 * Return an error response for show parameter in all route
+	 *
+	 * @param int $show
+	 *
+	 * @return \Item\Response\Response
+	 */
+	public function responseErrorAllShow($show){
+		$response = new \Item\Response\Error(self::ERROR_GET_SHOW_CODE,self::ERROR_GET_SHOW_MESSAGE);
 		return $response -> setRequest(Request::getCall());
 	}
 

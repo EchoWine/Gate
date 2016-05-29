@@ -139,6 +139,7 @@ item.getListWithParams = function(table){
 	// ...
 
 	// Send request
+	
 	item.getList(table,params);
 };
 
@@ -159,31 +160,86 @@ $('[data-item-show]').on('change',function(){
  */
 item.getList = function(table,params = {}){
 		
-	template.setBySource('spinner-table','item-row',{});
+	//template.setBySource('spinner-table','item-row',{});
 
+	item.get(table.list.url,params,function(response){
+		var container = item.getContainerByTable(table);
 
-	item.get(table.list.url,params,function(data){
-
-		if(data.status == 'success'){
+		if(response.status == 'success'){
 			var rows = '';
 
-			data = data.data;
-			$.map(data,function(row){
+			data = response.data;
+			results = data.results;
+			$.map(results,function(row){
 				row.table = table.name;
 				rows += template.get(table.template.row,row);
 			});
 
 
 			template.setByHtml(rows,table.template.row);
+
+			table.list.page = data.page;
+			table.list.pages = data.pages;
+			table.list.count = data.count;
+
+			// Update
+			container.find('[data-item-list-page]').html(data.page);
+			container.find('[data-item-list-pages]').html(data.pages);
+			container.find('[data-item-list-count]').html(data.count);
+			container.find('[data-item-list-start]').html(data.from);
+			container.find('[data-item-list-end]').html(data.to);
+
+			item.updateListPagination(table);
+
 		}
 
-		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-global',data);
+		if(response.status == 'error'){
+			item.addAlert('alert-danger','alert-global',response);
 		}
 
 
 
 	});
+};
+
+item.getContainerByTable = function(table){
+	return container = $('[data-item-table-container='+table.name+']');
+};
+
+item.updateListPagination = function(table){
+
+	var container = item.getContainerByTable(table);
+
+	if(table.list.page == 1)
+		container.find('[data-item-list-prev]').addClass('disable');
+	else
+		container.find('[data-item-list-prev]').removeClass('disable');
+	
+
+	if(table.list.page == table.list.pages)
+		container.find('[data-item-list-next]').addClass('disable');
+	else
+		container.find('[data-item-list-next]').removeClass('disable');
+	
+};
+
+item.listPrev = function(table){
+	if(table.list.page > 1){
+		table.list.page--;
+		item.getListWithParams(table);
+	}
+
+	item.updateListPagination(table);
+
+};
+
+item.listNext = function(table){
+	if(table.list.page < table.list.pages){
+		table.list.page++;
+		item.getListWithParams(table);
+	}
+
+	item.updateListPagination(table);
 };
 
 /** 
@@ -271,6 +327,17 @@ $('body').on('click','[data-item-sort-field]',function(){
 
 	item.updateIconSort(table,field,direction);
 
+});
+
+$('body').on('click','[data-item-list-prev]',function(){
+	var table = item.getTable($(this).attr('data-item-table'));
+	item.listPrev(table);
+});
+
+$('body').on('click','[data-item-list-next]',function(){
+
+	var table = item.getTable($(this).attr('data-item-table'));
+	item.listNext(table);
 });
 
 /**

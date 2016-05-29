@@ -35,6 +35,8 @@ abstract class Controller extends SourceController{
 	const ERROR_SORT_FIELD_INVALID_MESSAGE = "The field sent as sort doensn't support sort";
 	const ERROR_GET_SHOW_CODE = 'show_invalid';
 	const ERROR_GET_SHOW_MESSAGE = 'the parameter show is invalid';
+	const ERROR_GET_PAGE_CODE = 'page_invalid';
+	const ERROR_GET_PAGE_MESSAGE = 'the parameter page is invalid';
 
 	/**
 	 * Retrieve result as array
@@ -148,6 +150,7 @@ abstract class Controller extends SourceController{
 		$sort = Request::get('asc',$sort);
 		$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
 
+		# SORTING
 		if($sort){
 
 			# If the exists the field
@@ -170,8 +173,12 @@ abstract class Controller extends SourceController{
 			$repository = $repository -> orderBy($this -> schema -> getSortDefaultField() -> getColumn(),$this -> schema -> getSortDefaultDirection());
 		}
 
-		$show = Request::get('show',null);
+		# COUNT ALL THE RESULTS
+		$count = $repository -> count();
 
+
+		# SHOWING
+		$show = Request::get('show',null);
 		if($show){
 
 			if($show <= 0){
@@ -180,6 +187,32 @@ abstract class Controller extends SourceController{
 			}
 
 			$repository = $repository -> take($show);
+
+		}else{
+			$show = 100;
+		}
+
+		# GET PAGES
+		$pages = ceil($count / $show);
+
+
+		# PAGINATION
+		$page = Request::get('page',1);
+		if($page !== 1){
+
+			if($page > $pages)
+				$page = $pages;
+
+			if($page <= 0){
+				
+				return $this -> responseErrorAllPage($page,$pages);
+			}
+
+			$skip = ($page - 1) * $show;
+
+			$repository = $repository -> skip($skip);
+		}else{
+			$skip = 0;
 		}
 
 		try{
@@ -191,8 +224,18 @@ abstract class Controller extends SourceController{
 			return $this -> responseException($e);
 		}
 
+
+		$data = new \stdClass();
+
+		$data -> results = $results;
+		$data -> count = $count;
+		$data -> page = $page;
+		$data -> pages = $pages;
+		$data -> from = $skip + 1;
+		$data -> to = $skip + count($results);
+
 		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_GET_MESSAGE);
-		return $response -> setData($results) -> setRequest(Request::getCall());
+		return $response -> setData($data) -> setRequest(Request::getCall());
 
 	}
 
@@ -463,6 +506,19 @@ abstract class Controller extends SourceController{
 	 */
 	public function responseErrorAllShow($show){
 		$response = new \Item\Response\Error(self::ERROR_GET_SHOW_CODE,self::ERROR_GET_SHOW_MESSAGE);
+		return $response -> setRequest(Request::getCall());
+	}
+
+	/**
+	 * Return an error response for page parameter in all route
+	 *
+	 * @param int $page
+	 * @param int $pages;
+	 *
+	 * @return \Item\Response\Response
+	 */
+	public function responseErrorAllPage($page,$pages){
+		$response = new \Item\Response\Error(self::ERROR_GET_PAGE_CODE,self::ERROR_GET_PAGE_MESSAGE);
 		return $response -> setRequest(Request::getCall());
 	}
 

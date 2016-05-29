@@ -201,16 +201,19 @@
 			<div class='section-pagination flex-center'>
 				<div>
 					<select class='select select-data' data-item-show data-item-table='{{$table}}'>
-						<option value='2'>2</option>
-						<option value='4'>4</option>
+						<option value='10'>10</option>
+						<option value='25'>25</option>
 						<option value='50'>50</option>
 						<option value='100'>100</option>
 					</select>
 				</div>
 				<div class='flex-fill'></div>
 				<div>
-					<button type='button' class='button-action'>Prev</button>
-					<button type='button' class='button-action'>Next</button>
+					Page <span data-item-list-page>1</span> of <span data-item-list-pages>1</span> | 
+					Showing <span data-item-list-start>1</span> to <span data-item-list-end>1</span> 
+					of <span data-item-list-count>1</span> entries 
+					<button type='button' class='button-action' data-item-list-prev data-item-table='{{$table}}'>Previous</button>
+					<button type='button' class='button-action' data-item-list-next data-item-table='{{$table}}'>Next</button>
 				</div>
 			</div>
 		</div>
@@ -227,7 +230,7 @@
 				url:'{{$api}}',
 				sortByField:'{{$sortByField}}',
 				sortByDirection:'{{$sortByDirection}}',
-				show:2,
+				show:10,
 				page:1
 			},
 			get:{

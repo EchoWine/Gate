@@ -49,6 +49,11 @@ ul,li{
 	display:none;
 }
 
+.disable{
+	opacity:0.7;
+	cursor:default !important;
+}
+
 .flex-center{
 	display:flex;
 	align-items:center;

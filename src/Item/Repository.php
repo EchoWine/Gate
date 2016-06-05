@@ -99,6 +99,14 @@ class Repository{
 		return $this -> table($type) -> where('id',$id) -> first();
 	}
 
+	/**
+	 * Check if exists a record
+	 *
+	 * @return Result
+	 */
+	public function exists($where){
+		return $this -> table() -> where($where) -> count() > 0;
+	}
 
 	/**
 	 * Insert a new record

@@ -210,69 +210,6 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
-	 * Add new record
-	 */
-	public function add(){
-		return $this -> json($this -> __add());
-	}
-
-	/**
-	 * Add a new record
-	 */
-	public function __add(){
-
-		try{
-
-			list($row,$errors) = $this -> __addFields();
-
-			# Response status error if validation is failed
-			if(!empty($errors))
-				return new Response\ApiFieldsInvalid($errors);
-			
-				$id = $this -> getRepository() -> insert($row);
-				$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
-			return new Response\ApiAddSuccess($id[0],$result);
-
-
-		}catch(\Exception $e){
-
-			return new Response\ApiException($e);
-		}
-
-	}	
-
-	public function __addFields(){
-
-		$row = [];
-		$errors = []; 
-
-
-		$fields = $this -> getSchema() -> getFields();
-
-		foreach($fields as $name => $field){
-
-			if($field -> isAdd()){
-
-				$value = Request::post($field -> getName());
-
-				if($field -> isAddNeeded($value)){
-
-					$row[$field -> getName()] = $field -> parseValueAdd($value);
-
-					// Validate field
-					$response = $field -> isValid($raw[$field -> getName()]);
-
-					if(!$this -> isResponseSuccess($response)){
-						$errors[$field -> getName()] = $response;
-					}
-				}
-			}
-		}
-
-		return [$row,$errors];
-	}
-
-	/**
 	 * Retrieve a record
 	 */
 	public function get($id){
@@ -306,6 +243,76 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
+	 * Add new record
+	 */
+	public function add(){
+		return $this -> json($this -> __add());
+	}
+
+	/**
+	 * Add a new record
+	 *
+	 * @return \Item\Response\Response
+	 */
+	public function __add(){
+
+		try{
+
+			list($row,$errors) = $this -> __addFields();
+
+			# Response status error if validation is failed
+			if(!empty($errors))
+				return new Response\ApiFieldsInvalid($errors);
+			
+				$id = $this -> getRepository() -> insert($row);
+				$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+			return new Response\ApiAddSuccess($id[0],$result);
+
+
+		}catch(\Exception $e){
+
+			return new Response\ApiException($e);
+		}
+
+	}	
+	
+	/**
+	 * Retrieve value of fields to add and relative errors
+	 *
+	 * @return array
+	 */
+	public function __addFields(){
+
+		$row = [];
+		$errors = []; 
+
+
+		$fields = $this -> getSchema() -> getFields();
+
+		foreach($fields as $name => $field){
+
+			if($field -> isAdd()){
+
+				$value = Request::post($field -> getName());
+
+				if($field -> isAddNeeded($value)){
+
+					$row[$field -> getName()] = $field -> parseValueAdd($value);
+
+					// Validate field
+					$response = $field -> isValid($raw[$field -> getName()]);
+
+					if(!$this -> isResponseSuccess($response)){
+						$errors[$field -> getName()] = $response;
+					}
+				}
+			}
+		}
+
+		return [$row,$errors];
+	}
+
+	/**
 	 * Edit a record
 	 */
 	public function edit($id){
@@ -313,10 +320,10 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
-	 * Get a records
+	 * Edit record
 	 *
 	 * @param int $id
-	 * @return results
+	 * @return \Item\Response\Response
 	 */
 	public function __edit($id){
 
@@ -331,7 +338,7 @@ abstract class Controller extends SourceController{
 				return new Response\ApiFieldsInvalid($errors);
 
 
-			$this -> __update($id,$row);
+			$this -> getRepository() -> update($id,$row);
 			
 
 			return new Response\ApiEditSuccess($id,$result,$this -> __first($id,Controller::RESULT_ARRAY));
@@ -343,11 +350,11 @@ abstract class Controller extends SourceController{
 
 	}
 
-	public function __update($id,$row){
-
-		return $this -> getRepository() -> update($id,$row);
-	}
-
+	/**
+	 * Retrieve value of fields to update and relative errors
+	 *
+	 * @return array
+	 */
 	public function __editFields(){
 
 		$row = [];
@@ -398,7 +405,6 @@ abstract class Controller extends SourceController{
 	
 		return new Response\ApiDeleteSuccess($id,$result);
 
-
 	}
 
 	/**
@@ -419,25 +425,7 @@ abstract class Controller extends SourceController{
 			return new Response\ApiNotFound();
 		
 
-		$fields = $this -> getSchema() -> getFields();
-
-		foreach($fields as $name => $field){
-
-			if($field -> isCopy()){
-
-				$value = $result[$field -> getColumn()];
-
-				if($field -> isUnique()){
-
-				}
-
-				$n = 0;
-				$value = $field -> parseValueCopy($value,$n);
-
-				$row[$field -> getName()] = $value;
-
-			}
-		}
+		list($row) = $this -> __copyFields($result);
 
 		$id = $this -> getRepository() -> insert($row);
 
@@ -447,6 +435,41 @@ abstract class Controller extends SourceController{
 
 	}
 
+	/**
+	 * Retrieve value of fields to copy and relative errors
+	 *
+	 * @return array
+	 */
+	public function __copyFields($result){
+
+		$row = [];
+		$fields = $this -> getSchema() -> getFields();
+
+		foreach($fields as $name => $field){
+
+			if($field -> isCopy()){
+
+				$col = $field -> getColumn();
+				$value = $result[$col];
+
+				if($field -> isUnique()){
+					$n = 0;
+					do{
+						$value_copied = $field -> parseValueCopy($value,$n++);
+						$exists = $this -> getRepository() -> exists([$col => $value_copied]);
+					}while($exists);
+					$value = $value_copied;
+				}
+
+
+				$row[$field -> getName()] = $value;
+
+			}
+		}
+
+		return [$row];
+
+	}
 
 	/**
 	 * Return if a response is success or not

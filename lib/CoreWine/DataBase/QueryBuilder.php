@@ -502,7 +502,16 @@ class QueryBuilder{
 	 */
 	public function location($fun_col_value,string $value_op = null,string $value = null,$builder,$sql = null,$prepare = true){
 
-		// Se si tratta di un where avanzato
+		# if Array
+		if(is_array($fun_col_value)){
+			foreach($fun_col_value as $column => $value){
+				$this -> location($column,$value,null,$builder);
+			}
+
+			return $this;
+		}
+
+		# If Advanced where
 		if(($r = $this -> locationClosure($fun_col_value,$builder,$sql)) !== null)return $r;
 
 		# If only a parameter is defined, get primary key column

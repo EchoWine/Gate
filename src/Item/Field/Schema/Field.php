@@ -78,7 +78,7 @@ class Field{
 	/**
 	 * Sort
 	 */
-	public $unique = true;
+	public $unique = false;
 
 	/**
 	 * Regex of field
@@ -371,7 +371,7 @@ class Field{
 	 * @return value parsed
 	 */
 	public function parseValueCopy($value,$i){
-		return $value;
+		return $value."_".$i;
 	}
 
 }

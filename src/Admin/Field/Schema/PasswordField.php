@@ -16,6 +16,7 @@ class PasswordField extends StringField{
 	 */
 	public $viewGet = false;
 
+
 	/**
 	 * Edit if empty
 	 *

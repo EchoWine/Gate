@@ -71,6 +71,16 @@ class Field{
 	public $sort = true;
 
 	/**
+	 * Sort
+	 */
+	public $copy = true;
+
+	/**
+	 * Sort
+	 */
+	public $unique = true;
+
+	/**
 	 * Regex of field
 	 */
 	public $regex = "/^(.){0,80}$/iU";
@@ -253,6 +263,15 @@ class Field{
 	}
 
 	/**
+	 * Check if the field is unique
+	 *
+	 * @return bool
+	 */
+	public function isUnique(){
+		return $this -> unique;
+	}
+
+	/**
 	 * Check if the field is needed for edit
 	 *
 	 * @param mixed $value
@@ -293,6 +312,15 @@ class Field{
 	}
 
 	/**
+	 * Check if the field is enabled for copy
+	 *
+	 * @return bool
+	 */
+	public function isCopy(){
+		return $this -> copy;
+	}
+
+	/**
 	 * Check if the field is enabled for sort
 	 *
 	 * @return bool
@@ -303,6 +331,10 @@ class Field{
 
 	/**
 	 * Parse the value for data
+	 *
+	 * @param mixed $value
+	 *
+	 * @return value parsed
 	 */
 	public function parseValue($value){
 		return $value;
@@ -310,6 +342,10 @@ class Field{
 
 	/**
 	 * Parse the value for add
+	 *
+	 * @param mixed $value
+	 *
+	 * @return value parsed
 	 */
 	public function parseValueAdd($value){
 		return $this -> parseValue($value);
@@ -317,9 +353,25 @@ class Field{
 
 	/**
 	 * Parse the value for edit
+	 *
+	 * @param mixed $value
+	 *
+	 * @return value parsed
 	 */
 	public function parseValueEdit($value){
 		return $this -> parseValue($value);
+	}
+
+	/**
+	 * Parse the value for edit
+	 *
+	 * @param mixed $value
+	 * @param int $i count
+	 *
+	 * @return value parsed
+	 */
+	public function parseValueCopy($value,$i){
+		return $value;
 	}
 
 }

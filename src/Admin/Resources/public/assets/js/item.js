@@ -303,6 +303,28 @@ item.remove = function(table,id){
 };
 
 /**
+ * Copy a row
+ *
+ * @param {object} table
+ * @param {string} id
+ */
+item.copy = function(table,id){
+
+	item.post(table.copy.url+"/"+id,{},function(data){
+
+		if(data.status == 'success'){
+			item.getListWithParams(table);
+			modal.closeActual();
+			item.addAlert('alert-success','alert-global',data);
+		}
+
+		if(data.status == 'error'){
+			item.addAlert('alert-danger','alert-global',data);
+		}
+	});
+};
+
+/**
  * Set event sort
  */
 $('body').on('click','[data-item-sort-field]',function(){
@@ -383,6 +405,17 @@ $('body').on('click','[data-item-remove]',function(){
 	var id = $(this).attr('data-item-id');
 
 	item.remove(table,id);
+});
+
+/**
+ * Set event copy
+ */
+$('body').on('click','[data-item-copy]',function(){
+
+	var table = item.getTable($(this).attr('data-item-table'));
+	var id = $(this).attr('data-item-id');
+
+	item.copy(table,id);
 });
 
 /**

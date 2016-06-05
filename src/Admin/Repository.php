@@ -16,18 +16,12 @@ class Repository extends \Item\Repository{
 
 		$table = DB::table($this -> getSchema() -> getTable());
 
-		foreach($this -> getSchema() -> getFields() as $field){
-			if($field -> isViewGet()){
-				$table = $table -> select($field -> getColumn());
-			}
-		}
-
 		switch($type){
 			case null:
 				return $table;
 			break;
 			case 0:
-
+				$table = $this -> selectByViewGet($table);
 				return $table -> setParserResult(function($results){
 					
 					return $results;
@@ -35,7 +29,8 @@ class Repository extends \Item\Repository{
 			break;
 
 			case 1:
-
+				
+				$table = $this -> selectByViewGet($table);
 				return $table -> setParserResult(function($results){
 					
 					foreach($results as $n => $result){
@@ -50,7 +45,17 @@ class Repository extends \Item\Repository{
 
 	}
 
+	public function selectByViewGet($table){
 
+		foreach($this -> getSchema() -> getFields() as $field){
+			if($field -> isViewGet()){
+				$table = $table -> select($field -> getColumn());
+			}
+		}
+
+		return $table;
+
+	}
 
 }
 

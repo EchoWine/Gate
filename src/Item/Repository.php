@@ -94,7 +94,7 @@ class Repository{
 	 *
 	 * @return Result
 	 */
-	public function firstById($id,$type){
+	public function firstById($id,$type = null){
 		return $this -> table($type) -> where('id',$id) -> first();
 	}
 

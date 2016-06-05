@@ -19,6 +19,7 @@ abstract class Controller extends SourceController{
 	const SUCCESS_CODE = "success";
 	const ERROR_CODE = 'error';
 	const SUCCESS_ADD_MESSAGE = "Data was added with success";
+	const SUCCESS_COPY_MESSAGE = "Data was copied with success";
 	const SUCCESS_EDIT_MESSAGE = "Data was edited with success";
 	const SUCCESS_DELETE_MESSAGE = "Data was removed with success";
 	const SUCCESS_GET_MESSAGE = "Data retrieved with success";
@@ -82,6 +83,7 @@ abstract class Controller extends SourceController{
 
 		$this -> route('all') -> url("/api/{$url}") -> get();
 		$this -> route('add') -> url("/api/{$url}") -> post();
+		$this -> route('copy') -> url("/api/{$url}/{id}") -> post();
 		$this -> route('get') -> url("/api/{$url}/{id}") -> get();
 		$this -> route('edit') -> url("/api/{$url}/{id}") -> put();
 		$this -> route('delete') -> url("/api/{$url}/{id}") -> delete();
@@ -444,6 +446,62 @@ abstract class Controller extends SourceController{
 		}
 
 		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_DELETE_MESSAGE);
+		return $response -> setData($result) -> setRequest(Request::getCall());
+
+
+
+	}
+
+	/**
+	 * Copy a record
+	 */
+	public function copy($id){
+		return $this -> json($this -> __copy($id));
+	}
+
+	/**
+	 * Copy a new record
+	 */
+	public function __copy($id){
+
+
+
+		$result = $this -> getRepository() -> firstById($id);
+
+		if(!$result){
+			return $this -> responseNotFound();
+		}
+
+		$fields = $this -> getSchema() -> getFields();
+		foreach($fields as $name => $field){
+
+			if($field -> isCopy()){
+
+				$value = $result[$field -> getColumn()];
+
+				if($field -> isUnique()){
+
+				}
+
+				$n = 0;
+				$value = $field -> parseValueCopy($value,$n);
+
+				$row[$field -> getName()] = $value;
+
+			}
+		}
+
+		try{
+
+
+			$id = $this -> getRepository() -> insert($row);
+
+
+		}catch(\Exception $e){
+			return $this -> responseException($e);
+		}
+
+		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_COPY_MESSAGE);
 		return $response -> setData($result) -> setRequest(Request::getCall());
 
 

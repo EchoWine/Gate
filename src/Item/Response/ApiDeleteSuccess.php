@@ -4,7 +4,7 @@ namespace Item\Response;
 
 use CoreWine\Request;
 
-class ApiEditSuccess extends Success{
+class ApiDeleteSuccess extends Success{
 
 	/** 
 	 * Code
@@ -20,13 +20,12 @@ class ApiEditSuccess extends Success{
 	 * Construct
 	 *
 	 * @param int $id
-	 * @param array $old
-	 * @param array $new
+	 * @param array $resource
 	 */
-	public function __construct($id,$data){
+	public function __construct($id,$resource){
 
 		parent::__construct(self::CODE,self::MESSAGE);
-		$this -> setData(['id' => $id,'resource' => $data]) -> setRequest(Request::getCall());
+		$this -> setData(['id' => $id,'resource' => $resource]) -> setRequest(Request::getCall());
 
 	}
 }

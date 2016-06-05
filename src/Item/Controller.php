@@ -311,7 +311,7 @@ abstract class Controller extends SourceController{
 			if(!$result = $this -> __first($id,Controller::RESULT_ARRAY))
 				return new Response\ApiNotFound();
 			
-			list($row,$errors) = $this -> __editFields();
+			list($row,$errors) = $this -> __editFields($id,$result);
 
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
@@ -344,7 +344,7 @@ abstract class Controller extends SourceController{
 		return new Response\ApiDeleteSuccess($id,$result);
 
 	}
-	
+
 	/**
 	 * Copy a new record
 	 */
@@ -383,17 +383,28 @@ abstract class Controller extends SourceController{
 
 			if($field -> isAdd()){
 
-				$value = Request::post($field -> getName());
+				$name = $field -> getName();
+				$col = $field -> getColumn();
+				$value = Request::post($name);
 
 				if($field -> isAddNeeded($value)){
 
-					$row[$field -> getName()] = $field -> parseValueAdd($value);
+					$row[$name] = $field -> parseValueAdd($value);
 
 					// Validate field
-					$response = $field -> isValid($raw[$field -> getName()]);
+					$response = $field -> isValid($raw[$name]);
 
 					if(!$this -> isResponseSuccess($response)){
-						$errors[$field -> getName()] = $response;
+						$errors[$name] = $response;
+					}
+
+
+					if($this -> isResponseSuccess($response)){
+						if($field -> isUnique()){
+							if($this -> getRepository() -> exists([$col => $value])){
+								$errors[$name] = new Response\ApiFieldErrorNotUnique();
+							}
+						}
 					}
 				}
 			}
@@ -405,9 +416,11 @@ abstract class Controller extends SourceController{
 	/**
 	 * Retrieve value of fields to update and relative errors
 	 *
+	 * @param int $id
+	 * @param array $result
 	 * @return array
 	 */
-	public function __editFields(){
+	public function __editFields($id,$result){
 
 		$row = [];
 		$errors = [];
@@ -418,6 +431,7 @@ abstract class Controller extends SourceController{
 			if($field -> isEdit()){
 
 				$name = $field -> getName();
+				$col = $field -> getColumn();
 				$value = Request::put($name);
 
 				if($field -> isEditNeeded($value)){
@@ -428,6 +442,15 @@ abstract class Controller extends SourceController{
 
 					if(!$this -> isResponseSuccess($response)){
 						$errors[$name] = $response;
+					}
+
+					if($this -> isResponseSuccess($response)){
+						if($field -> isUnique()){
+							if($this -> getRepository() -> existsExceptId($id,[$col => $value])){
+								$errors[$name] = new Response\ApiFieldErrorNotUnique($field -> getLabel(),$value);
+							
+							}
+						}
 					}
 				}
 			}
@@ -461,7 +484,6 @@ abstract class Controller extends SourceController{
 					}while($exists);
 					$value = $value_copied;
 				}
-
 
 				$row[$field -> getName()] = $value;
 

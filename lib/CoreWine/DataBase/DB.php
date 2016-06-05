@@ -52,6 +52,11 @@ class DB{
 	 * SQL
 	 */
 	public static $sql;
+
+	/**
+	 * Last query
+	 */
+	public static $lastQuery;
 	
 	/**
 	 * Create a new connection
@@ -112,6 +117,24 @@ class DB{
 	 */
 	public static function stopLog(){
 		self::$enableLog = false;
+	}
+
+	/**
+	 * Get last query executed
+	 *
+	 * @return string
+	 */
+	public static function getLastQuery(){
+		return self::$lastQuery;
+	}
+
+	/**
+	 * Get last query executed
+	 *
+	 * @return string
+	 */
+	public static function setLastQuery($query){
+		self::$lastQuery = $query;
 	}
 
 	/**
@@ -186,6 +209,8 @@ class DB{
 	 */
 	public static function query(string $query){
 
+		self::setLastQuery($query);
+
 		try{
 			$r = self::$con -> query($query);
 
@@ -221,6 +246,8 @@ class DB{
 
 		$q = str_replace($k,$v,$query);
 
+
+		self::setLastQuery($q);
 
 		try{
 

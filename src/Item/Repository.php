@@ -109,6 +109,16 @@ class Repository{
 	}
 
 	/**
+	 * Check if exists a record except for id
+	 *
+	 * @return Result
+	 */
+	public function existsExceptId($id,$where){
+		return $this -> table() -> where($where) -> where('id','!=',$id) -> count() > 0;
+	}
+
+
+	/**
 	 * Insert a new record
 	 *
 	 * @param array $values

@@ -2,6 +2,8 @@
 
 namespace Item\Field\Schema;
 
+use Item\Response as Response;
+
 class Field{
 	
 	/**
@@ -225,27 +227,19 @@ class Field{
 
 		if($length < $this -> getMinLength()){
 
-			$response = new \Item\Response\Error(
-				self::ERROR_INVALID_TOO_SHORT_CODE,
-				sprintf(self::ERROR_INVALID_TOO_SHORT_MESSAGE,$this -> getLabel(),$this -> getMinLength())
-			);
+			$response = new Response\ApiFieldErrorTooShort($this -> getLabel(),$this -> getMinLength());
 
 		}else if($length > $this -> getMaxLength()){
 
-			$response = new \Item\Response\Error(
-				self::ERROR_INVALID_TOO_LONG_CODE,
-				sprintf(self::ERROR_INVALID_TOO_LONG_MESSAGE,$this -> getLabel(),$this -> getMaxLength())
-			);
+			$response = new Response\ApiFieldErrorTooLong($this -> getLabel(),$this -> getMaxLength());
+
 
 		}else if(!preg_match($this -> regex,$value)){
 
-			$response = new \Item\Response\Error(
-				self::ERROR_INVALID_CODE,
-				sprintf(self::ERROR_INVALID_MESSAGE,$this -> getLabel())
-			);
+			$response = new Response\ApiFieldErrorInvalid($this -> getLabel(),$value);
 
 		}else{
-			$response = new \Item\Response\Success();
+			$response = new Response\Success();
 		}
 
 		$response -> setData(['value' => $value]);

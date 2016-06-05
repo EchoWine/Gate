@@ -256,7 +256,7 @@ item.add = function(table,values){
 		}
 
 		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-modal',data);
+			item.addAlert('alert-danger','alert-modal-add',data);
 		}
 	});
 }
@@ -275,7 +275,7 @@ item.edit = function(table,id,values){
 		}
 
 		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-modal',data);
+			item.addAlert('alert-danger','alert-modal-edit',data);
 		}
 	});
 }
@@ -363,7 +363,7 @@ item.getOppositeSort = function(sort){
 /**
  * Set event add
  */
-$('[item-data-form-add]').on('submit',function(e){
+$('body').on('submit','[item-data-form-add]',function(e){
 
 	e.preventDefault();
 
@@ -388,7 +388,7 @@ $('body').on('click','[data-item-remove]',function(){
 /**
  * Set event edit
  */
-$('[item-data-form-edit]').on('submit',function(e){
+$('body').on('submit','[item-data-form-edit]',function(e){
 
 	e.preventDefault();
 

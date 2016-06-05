@@ -62,7 +62,7 @@
 		{{block id}}modal-item-add{{/block}}
 		{{block title}}Add new row{{/block}}
 		{{block content}}
-			<div data-use-template='alert-modal'></div>
+			<div data-use-template='alert-modal-add'></div>
 			<form method='POST' item-data-form-add  data-item-table='{table}'>
 				{{for $fieldsAdd as $field}}
 					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
@@ -112,7 +112,7 @@
 		{{block id}}modal-item-edit{{/block}}
 		{{block title}}Edit{{/block}}
 		{{block content}}
-			<div data-use-template='alert-modal'></div>
+			<div data-use-template='alert-modal-edit'></div>
 			<form method='POST' item-data-form-edit data-item-table='{table}' data-item-id='{id}'>
 				{{for $fieldsEdit as $field}}
 					<div class='item-form-label'>{{$field -> getLabel()}}:</div>

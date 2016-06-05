@@ -145,3 +145,13 @@ $.fn.dataByPrefix = function( pr ){
 	});
 	return ob;
 };
+
+/*
+$(document).ready(function(){
+	$.map($('.modal'),function(modal){
+
+		var el = $('#'+id);
+		el.html(modal.html[id]);
+
+	});
+});*/

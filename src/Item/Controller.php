@@ -9,35 +9,9 @@ use CoreWine\Request as Request;
 use CoreWine\SourceManager\Controller as SourceController;
 
 use Item\Repository;
+use Item\Response as Response;
 
 abstract class Controller extends SourceController{
-
-
-	/**
-	 * Errors
-	 */
-	const SUCCESS_CODE = "success";
-	const ERROR_CODE = 'error';
-	const SUCCESS_ADD_MESSAGE = "Data was added with success";
-	const SUCCESS_COPY_MESSAGE = "Data was copied with success";
-	const SUCCESS_EDIT_MESSAGE = "Data was edited with success";
-	const SUCCESS_DELETE_MESSAGE = "Data was removed with success";
-	const SUCCESS_GET_MESSAGE = "Data retrieved with success";
-	const ERROR_EXCEPTION_CODE = "exception";
-	const ERROR_FIELDS_INVALID_CODE = "fields_invalid";
-	const ERROR_FIELDS_INVALID_MESSAGE = "The values sent aren't valid";
-	const ERROR_QUERY_RETRIEVING_ID = "id not retrieved";
-	const ERROR_NOT_FOUND_CODE = "not_found";
-	const ERROR_NOT_FOUND_MESSAGE = "Resource not found";
-	const ERROR_SORT = "Resource not found";
-	const ERROR_SORT_FIELD_NOT_EXISTS_CODE = "sort_field_not_exists";
-	const ERROR_SORT_FIELD_NOT_EXISTS_MESSAGE = "The field sent as sort field doesn't exists";
-	const ERROR_SORT_FIELD_INVALID_CODE = "sort_field_invalid";
-	const ERROR_SORT_FIELD_INVALID_MESSAGE = "The field sent as sort doensn't support sort";
-	const ERROR_GET_SHOW_CODE = 'show_invalid';
-	const ERROR_GET_SHOW_MESSAGE = 'the parameter show is invalid';
-	const ERROR_GET_PAGE_CODE = 'page_invalid';
-	const ERROR_GET_PAGE_MESSAGE = 'the parameter page is invalid';
 
 	/**
 	 * Retrieve result as array
@@ -146,98 +120,92 @@ abstract class Controller extends SourceController{
 	 * @return results
 	 */
 	public function __all($type){
-		$repository = $this -> getRepository() -> table($type);
-
-		$sort = Request::get('desc',null);
-		$sort = Request::get('asc',$sort);
-		$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
-
-		# SORTING
-		if($sort){
-
-			# If the exists the field
-			if(!$this -> schema -> hasField($sort)){
-
-				$response = new \Item\Response\Error(self::ERROR_SORT_FIELD_NOT_EXISTS_CODE,self::ERROR_SORT_FIELD_NOT_EXISTS_MESSAGE);
-				return $response -> setRequest(Request::getCall());
-			}
-
-			$field = $this -> schema -> getField($sort);
-
-			# If the field is enabled to sorting
-			if(!$field -> isSort()){
-				$response = new \Item\Response\Error(self::ERROR_SORT_FIELD_INVALID_CODE,self::ERROR_SORT_FIELD_INVALID_MESSAGE);
-				return $response -> setRequest(Request::getCall());
-			}
-
-			$repository = $repository -> orderBy($field -> getColumn(),$direction);
-		}else{
-			$repository = $repository -> orderBy($this -> schema -> getSortDefaultField() -> getColumn(),$this -> schema -> getSortDefaultDirection());
-		}
-
-		# COUNT ALL THE RESULTS
-		$count = $repository -> count();
-
-
-		# SHOWING
-		$show = Request::get('show',null);
-		if($show){
-
-			if($show <= 0){
-				
-				return $this -> responseErrorAllShow($show);
-			}
-
-			$repository = $repository -> take($show);
-
-		}else{
-			$show = 100;
-		}
-
-		# GET PAGES
-		$pages = ceil($count / $show);
-
-
-		# PAGINATION
-		$page = Request::get('page',1);
-		if($page !== 1){
-
-			if($page > $pages)
-				$page = $pages;
-
-			if($page <= 0){
-				
-				return $this -> responseErrorAllPage($page,$pages);
-			}
-
-			$skip = ($page - 1) * $show;
-
-			$repository = $repository -> skip($skip);
-		}else{
-			$skip = 0;
-		}
 
 		try{
+			$repository = $this -> getRepository() -> table($type);
 
-			$results = $repository -> get();
+			$sort = Request::get('desc',null);
+			$sort = Request::get('asc',$sort);
+			$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
 
+			# SORTING
+			if($sort){
+
+				# If the not exists the field
+				if(!$this -> schema -> hasField($sort))
+					return Response\ApiAllErrorParamSortNotExists();
+				
+
+				$field = $this -> schema -> getField($sort);
+
+				# If the field isn't enabled to sorting
+				if(!$field -> isSort())
+					return Response\ApiAllErrorParamSortNotValid();
+				
+
+				$repository = $repository -> orderBy($field -> getColumn(),$direction);
+			}else{
+				$repository = $repository -> orderBy($this -> schema -> getSortDefaultField() -> getColumn(),$this -> schema -> getSortDefaultDirection());
+			}
+
+			# COUNT ALL THE RESULTS
+			$count = $repository -> count();
+
+
+			# SHOWING
+			$show = Request::get('show',null);
+			if($show){
+
+				if($show <= 0){
+					
+					return new Response\ApiAllErrorParamShow();
+				}
+
+				$repository = $repository -> take($show);
+
+			}else{
+				$show = 100;
+			}
+
+			# GET PAGES
+			$pages = ceil($count / $show);
+
+
+			# PAGINATION
+			$page = Request::get('page',1);
+			if($page !== 1){
+
+				if($page > $pages)
+					$page = $pages;
+
+				if($page <= 0){
+					
+					return Response\ApiAllErrorParamPage();
+				}
+
+				$skip = ($page - 1) * $show;
+
+				$repository = $repository -> skip($skip);
+			}else{
+				$skip = 0;
+			}
+
+
+				$results = $repository -> get();
+
+
+			return new Response\ApiAllSuccess([
+				'results' => $results,
+				'count' => $count,
+				'page' => $page,
+				'pages' => $pages,
+				'from' => $skip + 1,
+				'to' => $skip + count($results)
+			]);
 		}catch(\Exception $e){
 
-			return $this -> responseException($e);
+			return new Response\ApiException($e);
 		}
-
-
-		$data = new \stdClass();
-
-		$data -> results = $results;
-		$data -> count = $count;
-		$data -> page = $page;
-		$data -> pages = $pages;
-		$data -> from = $skip + 1;
-		$data -> to = $skip + count($results);
-
-		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_GET_MESSAGE);
-		return $response -> setData($data) -> setRequest(Request::getCall());
 
 	}
 
@@ -248,20 +216,38 @@ abstract class Controller extends SourceController{
 		return $this -> json($this -> __add());
 	}
 
-
 	/**
 	 * Add a new record
 	 */
 	public function __add(){
 
+		try{
+
+			list($row,$errors) = $this -> __addFields();
+
+			# Response status error if validation is failed
+			if(!empty($errors))
+				return new Response\ApiFieldsInvalid($errors);
+			
+				$id = $this -> getRepository() -> insert($row);
+				$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
+			return new Response\ApiAddSuccess($id[0],$result);
+
+
+		}catch(\Exception $e){
+
+			return new Response\ApiException($e);
+		}
+
+	}	
+
+	public function __addFields(){
 
 		$row = [];
-		$raw = [];
-
-		$fields = $this -> getSchema() -> getFields();
-
 		$errors = []; 
 
+
+		$fields = $this -> getSchema() -> getFields();
 
 		foreach($fields as $name => $field){
 
@@ -270,8 +256,7 @@ abstract class Controller extends SourceController{
 				$value = Request::post($field -> getName());
 
 				if($field -> isAddNeeded($value)){
-					$raw[$field -> getName()] = $value;
-				
+
 					$row[$field -> getName()] = $field -> parseValueAdd($value);
 
 					// Validate field
@@ -284,36 +269,14 @@ abstract class Controller extends SourceController{
 			}
 		}
 
-		# Response status error if validation is failed
-		if(!empty($errors))
-			return $this -> responseInvalidFields($errors,$raw);
-		
-
-		try{
-			$id = $this -> getRepository() -> insert($row);
-
-			if(!$id)
-				throw new \Exception(self::ERROR_QUERY_RETRIEVING_ID);
-			
-
-		}catch(\Exception $e){
-
-			return $this -> responseException($e);
-		}
-
-
-		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_ADD_MESSAGE);
-		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
-		return $response -> setData($result) -> setRequest(Request::getCall());
-
-
-
+		return [$row,$errors];
 	}
 
 	/**
 	 * Retrieve a record
 	 */
 	public function get($id){
+
 		$first = $this -> __first($id,Controller::RESULT_ARRAY);
 
 		switch(Request::get('filter')){
@@ -325,7 +288,10 @@ abstract class Controller extends SourceController{
 			break;
 		}
 
-		return $this -> json($first);
+
+		$response = new Response\ApiGetSuccess($id,$first);
+
+		return $this -> json($response);
 	}
 
 	/**
@@ -354,20 +320,39 @@ abstract class Controller extends SourceController{
 	 */
 	public function __edit($id){
 
-		$result = $this -> __first($id,Controller::RESULT_ARRAY);
+		try{
 
-		if(!$result){
+			if(!$result = $this -> __first($id,Controller::RESULT_ARRAY))
+				return new Response\ApiNotFound();
+			
+			list($row,$errors) = $this -> __editFields();
 
-			return $this -> responseNotFound();
+			if(!empty($errors))
+				return new Response\ApiFieldsInvalid($errors);
+
+
+			$this -> __update($id,$row);
+			
+
+			return new Response\ApiEditSuccess($id,$result,$this -> __first($id,Controller::RESULT_ARRAY));
+
+		}catch(\Exception $e){
+
+			return new Response\ApiException($e);
 		}
 
+	}
+
+	public function __update($id,$row){
+
+		return $this -> getRepository() -> update($id,$row);
+	}
+
+	public function __editFields(){
 
 		$row = [];
-		$raw = [];
-
+		$errors = [];
 		$fields = $this -> getSchema() -> getFields();
-
-		$errors = []; 
 
 		foreach($fields as $name => $field){
 
@@ -377,11 +362,9 @@ abstract class Controller extends SourceController{
 				$value = Request::put($name);
 
 				if($field -> isEditNeeded($value)){
-					$raw[$name] = $value;
 				
 					$row[$name] = $field -> parseValueEdit($value);
 
-					// Validate field
 					$response = $field -> isValid($value);
 
 					if(!$this -> isResponseSuccess($response)){
@@ -391,28 +374,7 @@ abstract class Controller extends SourceController{
 			}
 		}
 
-		# Response status error if validation is failed
-		if(!empty($errors))
-			return $this -> responseInvalidFields($errors,$raw);
-
-
-		try{
-			$id = $this -> getRepository() -> update($id,$row);
-
-			if(!$id)
-				throw new \Exception(self::ERROR_QUERY_RETRIEVING_ID);
-			
-
-		}catch(\Exception $e){
-
-			return $this -> responseException($e);
-		}
-
-
-		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_EDIT_MESSAGE);
-		$result = $this -> __first($id[0],Controller::RESULT_ARRAY);
-		return $response -> setData($result) -> setRequest(Request::getCall());
-
+		return [$row,$errors];
 	}
 
 	/**
@@ -427,27 +389,14 @@ abstract class Controller extends SourceController{
 	 */
 	public function __delete($id){
 
-
-
 		$result = $this -> __first($id,Controller::RESULT_ARRAY);
 
-		if(!$result){
-			return $this -> responseNotFound();
-		}
-
-		try{
-
-
-			$id = $this -> getRepository() -> deleteById($id);
-
-
-		}catch(\Exception $e){
-			return $this -> responseException($e);
-		}
-
-		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_DELETE_MESSAGE);
-		return $response -> setData($result) -> setRequest(Request::getCall());
-
+		if(!$result)
+			return new Response\ApiNotFound();
+		
+		$id = $this -> getRepository() -> deleteById($id);
+	
+		return new Response\ApiDeleteSuccess($id,$result);
 
 
 	}
@@ -464,15 +413,14 @@ abstract class Controller extends SourceController{
 	 */
 	public function __copy($id){
 
-
-
 		$result = $this -> getRepository() -> firstById($id);
 
-		if(!$result){
-			return $this -> responseNotFound();
-		}
+		if(!$result)
+			return new Response\ApiNotFound();
+		
 
 		$fields = $this -> getSchema() -> getFields();
+
 		foreach($fields as $name => $field){
 
 			if($field -> isCopy()){
@@ -491,94 +439,14 @@ abstract class Controller extends SourceController{
 			}
 		}
 
-		try{
+		$id = $this -> getRepository() -> insert($row);
 
+		$resource = $this -> __first($id[0],Controller::RESULT_ARRAY);
 
-			$id = $this -> getRepository() -> insert($row);
-
-
-		}catch(\Exception $e){
-			return $this -> responseException($e);
-		}
-
-		$response = new \Item\Response\Success(self::SUCCESS_CODE,self::SUCCESS_COPY_MESSAGE);
-		return $response -> setData($result) -> setRequest(Request::getCall());
-
-
+		return new Response\ApiCopySuccess($id,$result,$resource);
 
 	}
 
-	/**
-	 * Return a generic error
-	 *
-	 * @param string $message
-	 *
-	 * @return \Item\Response\Response
-	 */
-	public function responseError($message){
-		$response = new \Item\Response\Error(self::ERROR_CODE,$message);
-		return $response -> setRequest(Request::getCall());
-	}
-
-	/**
-	 * Return an exception response
-	 *
-	 * @param Exception $e
-	 *
-	 * @return \Item\Response\Response
-	 */
-	public function responseException($e){
-		$response = new \Item\Response\Error(self::ERROR_EXCEPTION_CODE,$e -> getMessage());
-		return $response -> setRequest(Request::getCall());
-	}
-
-	/**
-	 * Return an invalid fields response
-	 *
-	 * @param array $errors
-	 * @param array $request
-	 *
-	 * @return \Item\Response\Response
-	 */
-	public function responseInvalidFields($errors,$request){
-		$response = new \Item\Response\Error(self::ERROR_FIELDS_INVALID_CODE,self::ERROR_FIELDS_INVALID_MESSAGE);
-		return $response -> setDetails($errors) -> setRequest($request);
-	}
-
-	/**
-	 * Return a not found response
-	 *
-	 * @return \Item\Response\Response
-	 */
-	public function responseNotFound(){
-		$response = new \Item\Response\Error(self::ERROR_NOT_FOUND_CODE,self::ERROR_NOT_FOUND_MESSAGE);
-		return $response -> setRequest(Request::getCall());
-	}
-
-	/**
-	 * Return an error response for show parameter in all route
-	 *
-	 * @param int $show
-	 *
-	 * @return \Item\Response\Response
-	 */
-	public function responseErrorAllShow($show){
-		$response = new \Item\Response\Error(self::ERROR_GET_SHOW_CODE,self::ERROR_GET_SHOW_MESSAGE);
-		return $response -> setRequest(Request::getCall());
-	}
-
-	/**
-	 * Return an error response for page parameter in all route
-	 *
-	 * @param int $page
-	 * @param int $pages;
-	 *
-	 * @return \Item\Response\Response
-	 */
-	public function responseErrorAllPage($page,$pages){
-		$response = new \Item\Response\Error(self::ERROR_GET_PAGE_CODE,self::ERROR_GET_PAGE_MESSAGE);
-		return $response -> setRequest(Request::getCall());
-	}
 
 	/**
 	 * Return if a response is success or not
@@ -599,7 +467,7 @@ abstract class Controller extends SourceController{
 	 * @return bool
 	 */
 	public function isResponseError(\Item\Response\Response $response){
-		return ($response instanceof \Item\Response\Erro);
+		return ($response instanceof \Item\Response\Error);
 	}
 
 }

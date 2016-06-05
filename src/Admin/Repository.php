@@ -12,35 +12,35 @@ class Repository extends \Item\Repository{
 	 *
 	 * @return CoreWine\DataBase\QueryBuilder
 	 */
-	public function table($type = 1){
+	public function table($type = null){
 
 		$table = DB::table($this -> getSchema() -> getTable());
+		
 
-		switch($type){
-			case null:
-				return $table;
-			break;
-			case 0:
-				$table = $this -> selectByViewGet($table);
-				return $table -> setParserResult(function($results){
-					
-					return $results;
-				});
-			break;
 
-			case 1:
+		if($type === null)
+			return $table;
+
+
+		$table = $this -> selectByViewGet($table);
+
+		
+		if($type === 0){
+			return $table -> setParserResult(function($results){
 				
-				$table = $this -> selectByViewGet($table);
-				return $table -> setParserResult(function($results){
-					
-					foreach($results as $n => $result){
-						$results[$n] = $this -> schema -> parseResult($result);
-					}
+				return $results;
+			});
+		}
 
-					return $results;
-				});
-			break;
+		if($type === 1){
+			return $table -> setParserResult(function($results){
+				
+				foreach($results as $n => $result){
+					$results[$n] = $this -> schema -> parseResult($result);
+				}
 
+				return $results;
+			});
 		}
 
 	}

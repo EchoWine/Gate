@@ -53,6 +53,7 @@ class Repository{
 
 		$table = DB::table($this -> getSchema() -> getTable());
 
+
 		switch($type){
 			case null:
 				return $table;

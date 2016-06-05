@@ -442,7 +442,7 @@ modal.addDataTo('modal-item-edit',function(container,data){
 
 	item.get(table.get.url+"/"+id,{filter:'edit'},function(data){
 		
-		table.edit.get(container,data);
+		table.edit.get(container,data.data.resource);
 
 	});
 });
@@ -456,7 +456,7 @@ modal.addDataTo('modal-item-get',function(container,data){
 	el.attr('data-item-id',id);
 
 	item.get(table.get.url+"/"+id,{filter:'get'},function(data){
-		table.get.get(container,data);
+		table.get.get(container,data.data.resource);
 
 	});
 });

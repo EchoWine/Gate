@@ -113,6 +113,58 @@ abstract class Controller extends SourceController{
 		return $this -> json($this -> __all(Controller::RESULT_ARRAY));
 	}
 
+
+	/**
+	 * Retrieve a record
+	 */
+	public function get($id){
+
+		$first = $this -> __first($id,Controller::RESULT_ARRAY);
+
+		switch(Request::get('filter')){
+			case 'edit':
+
+			break;
+			default:
+
+			break;
+		}
+
+
+		$response = new Response\ApiGetSuccess($id,$first);
+
+		return $this -> json($response);
+	}
+
+	/**
+	 * Add new record
+	 */
+	public function add(){
+		return $this -> json($this -> __add());
+	}
+
+	/**
+	 * Edit a record
+	 */
+	public function edit($id){
+		return $this -> json($this -> __edit($id,Controller::RESULT_ARRAY));
+	}
+
+	/**
+	 * Delete a record
+	 */
+	public function delete($id){
+		return $this -> json($this -> __delete($id));
+	}
+
+
+	/**
+	 * Copy a record
+	 */
+	public function copy($id){
+		return $this -> json($this -> __copy($id));
+	}
+
 	/**
 	 * Get all records
 	 *
@@ -208,29 +260,6 @@ abstract class Controller extends SourceController{
 		}
 
 	}
-
-	/**
-	 * Retrieve a record
-	 */
-	public function get($id){
-
-		$first = $this -> __first($id,Controller::RESULT_ARRAY);
-
-		switch(Request::get('filter')){
-			case 'edit':
-
-			break;
-			default:
-
-			break;
-		}
-
-
-		$response = new Response\ApiGetSuccess($id,$first);
-
-		return $this -> json($response);
-	}
-
 	/**
 	 * Get a records
 	 *
@@ -240,13 +269,6 @@ abstract class Controller extends SourceController{
 	 */
 	public function __first($id,$type){
 		return $this -> getRepository() -> firstById($id,$type);
-	}
-
-	/**
-	 * Add new record
-	 */
-	public function add(){
-		return $this -> json($this -> __add());
 	}
 
 	/**
@@ -276,6 +298,74 @@ abstract class Controller extends SourceController{
 
 	}	
 	
+	/**
+	 * Edit record
+	 *
+	 * @param int $id
+	 * @return \Item\Response\Response
+	 */
+	public function __edit($id){
+
+		try{
+
+			if(!$result = $this -> __first($id,Controller::RESULT_ARRAY))
+				return new Response\ApiNotFound();
+			
+			list($row,$errors) = $this -> __editFields();
+
+			if(!empty($errors))
+				return new Response\ApiFieldsInvalid($errors);
+
+
+			$this -> getRepository() -> update($id,$row);
+			
+
+			return new Response\ApiEditSuccess($id,$result,$this -> __first($id,Controller::RESULT_ARRAY));
+
+		}catch(\Exception $e){
+
+			return new Response\ApiException($e);
+		}
+
+	}
+
+	/**
+	 * Remove a new record
+	 */
+	public function __delete($id){
+
+		$result = $this -> __first($id,Controller::RESULT_ARRAY);
+
+		if(!$result)
+			return new Response\ApiNotFound();
+		
+		$id = $this -> getRepository() -> deleteById($id);
+	
+		return new Response\ApiDeleteSuccess($id,$result);
+
+	}
+	
+	/**
+	 * Copy a new record
+	 */
+	public function __copy($id){
+
+		$result = $this -> getRepository() -> firstById($id);
+
+		if(!$result)
+			return new Response\ApiNotFound();
+		
+
+		list($row) = $this -> __copyFields($result);
+
+		$id = $this -> getRepository() -> insert($row);
+
+		$resource = $this -> __first($id[0],Controller::RESULT_ARRAY);
+
+		return new Response\ApiCopySuccess($id,$result,$resource);
+
+	}
+
 	/**
 	 * Retrieve value of fields to add and relative errors
 	 *
@@ -313,44 +403,6 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
-	 * Edit a record
-	 */
-	public function edit($id){
-		return $this -> json($this -> __edit($id,Controller::RESULT_ARRAY));
-	}
-
-	/**
-	 * Edit record
-	 *
-	 * @param int $id
-	 * @return \Item\Response\Response
-	 */
-	public function __edit($id){
-
-		try{
-
-			if(!$result = $this -> __first($id,Controller::RESULT_ARRAY))
-				return new Response\ApiNotFound();
-			
-			list($row,$errors) = $this -> __editFields();
-
-			if(!empty($errors))
-				return new Response\ApiFieldsInvalid($errors);
-
-
-			$this -> getRepository() -> update($id,$row);
-			
-
-			return new Response\ApiEditSuccess($id,$result,$this -> __first($id,Controller::RESULT_ARRAY));
-
-		}catch(\Exception $e){
-
-			return new Response\ApiException($e);
-		}
-
-	}
-
-	/**
 	 * Retrieve value of fields to update and relative errors
 	 *
 	 * @return array
@@ -382,57 +434,6 @@ abstract class Controller extends SourceController{
 		}
 
 		return [$row,$errors];
-	}
-
-	/**
-	 * Delete a record
-	 */
-	public function delete($id){
-		return $this -> json($this -> __delete($id));
-	}
-
-	/**
-	 * Remove a new record
-	 */
-	public function __delete($id){
-
-		$result = $this -> __first($id,Controller::RESULT_ARRAY);
-
-		if(!$result)
-			return new Response\ApiNotFound();
-		
-		$id = $this -> getRepository() -> deleteById($id);
-	
-		return new Response\ApiDeleteSuccess($id,$result);
-
-	}
-
-	/**
-	 * Copy a record
-	 */
-	public function copy($id){
-		return $this -> json($this -> __copy($id));
-	}
-
-	/**
-	 * Copy a new record
-	 */
-	public function __copy($id){
-
-		$result = $this -> getRepository() -> firstById($id);
-
-		if(!$result)
-			return new Response\ApiNotFound();
-		
-
-		list($row) = $this -> __copyFields($result);
-
-		$id = $this -> getRepository() -> insert($row);
-
-		$resource = $this -> __first($id[0],Controller::RESULT_ARRAY);
-
-		return new Response\ApiCopySuccess($id,$result,$resource);
-
 	}
 
 	/**

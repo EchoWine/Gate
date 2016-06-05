@@ -7,10 +7,10 @@ CRUD:
 	Operation:
 		- [x] list
 		- [x] add
-		- [ ] view
-		- [ ] edit
-		- [ ] temp sort
-		- [ ] pagination
+		- [x] view
+		- [x] edit
+		- [x] temp sort
+		- [x] pagination
 		- [ ] search
 	Fields:
 		- [ ] Single/Multiple uploads file

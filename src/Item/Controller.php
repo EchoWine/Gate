@@ -392,7 +392,7 @@ abstract class Controller extends SourceController{
 					$row[$name] = $field -> parseValueAdd($value);
 
 					// Validate field
-					$response = $field -> isValid($raw[$name]);
+					$response = $field -> isValid($value);
 
 					if(!$this -> isResponseSuccess($response)){
 						$errors[$name] = $response;

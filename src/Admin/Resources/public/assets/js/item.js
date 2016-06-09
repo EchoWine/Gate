@@ -516,3 +516,13 @@ modal.addDataTo('modal-item-add',function(el,data){
 $(document).ready(function(){
 	item.ini();
 });
+
+
+$('body').on('click','[data-item-select-all]',function(){
+	var table = item.getTable($(this).attr('data-item-table'));
+
+	var container = $('[data-item-table-container='+table.name+']');
+	
+	container.find('[data-item-select]').prop('checked', $(this).prop('checked'));
+
+});

@@ -19,6 +19,11 @@
 	align-items:center;
 }
 
+.section-table-col-select{
+	width:50px;
+	max-width:50px;
+}
+
 .section-table-col-text{
 
 }

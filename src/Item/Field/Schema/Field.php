@@ -368,5 +368,19 @@ class Field{
 		return $value."_".$i;
 	}
 
+	/**
+	 * Call
+	 *
+	 * @param string $method
+	 * @param array $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($method, $arguments){
+
+		throw new \Exception("Fatal error: Call to undefined method Entity::{$method}()");
+		
+	}
+
 }
 ?>

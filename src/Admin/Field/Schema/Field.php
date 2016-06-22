@@ -56,6 +56,28 @@ class Field extends \Item\Field\Schema\Field{
 	public function isViewGet(){
 		return $this -> viewGet;
 	}
+
+	/**
+	 * Call
+	 *
+	 * @param string $method
+	 * @param array $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($method, $arguments){
+
+
+		$isClass = substr($method,0,7);
+
+		if($isClass === 'isClass'){
+			$nameClass = __NAMESPACE__."\\".substr($method,7,strlen($method)-1)."Field";
+			return $this instanceof $nameClass;
+		}
+		
+		parent::__call($method,$arguments);
+		
+	}
 }
 
 ?>

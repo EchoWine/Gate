@@ -4,8 +4,8 @@
 	
 	<div class='templates' data-template='spinner-table'>
 
-		<div class='section-table-row'>
-			<div class='section-table-col'>
+		<div class='table-row'>
+			<div class='table-col'>
 				{{include Admin/admin/__spinner}}
 			</div>
 		</div>
@@ -121,17 +121,17 @@
 
 	<!-- ROW TEMPLATE -->
 	<div class='templates' data-template='item-row'>
-		<div class='section-table-row section-table-header'>
-			<div class='section-table-col-select section-table-col'>
+		<div class='table-row table-header'>
+			<div class='table-col-select table-col'>
 				<input type='checkbox' id='select-{table}-{id}' class='check check-data check-small' data-item-select data-item-id='{id}' data-item-table='{table}'>
 				<label for='select-{table}-{id}' class='checkbox'></label>
 			</div>
 			{{for $fieldsAll as $field}}
-				<div class='section-table-col'>
-					<span class='section-table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
+				<div class='table-col {{if $field -> isClassNumber() }}table-col-number{{/if}}'>
+					<span class='table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
 				</div>
 			{{/for}}
-			<div class='section-table-col section-table-col-action'>
+			<div class='table-col table-col-action'>
 
 				{# View Button #}
 				<button type='button' class='button-action button-action-icon button-info' data-modal='modal-item-get' data-modal-item-id='{id}' data-modal-item-table='{table}'>
@@ -164,18 +164,39 @@
 		<div class='page-section page-section-content' data-item-table-container='{{$table}}'>
 
 
-			<div class='section-search flex-center'>
+			<div class='section-header flex-center'>
+				<h3 class='section-title'>Some content here...</h3>
+
 				<div class='flex-fill'></div>
-				<label>Search: </label>
-				<input type='text' class='input-data'>
+				
+				<div class='section-actions'>
+					<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-item-table='{{$table}}'>
+						<i class='fa fa-plus'></i>
+						<span>New</span>
+					</button>
+
+					<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-item-table='{{$table}}'>
+						<i class='fa fa-upload'></i>
+						<span>Import</span>
+					</button>
+
+					<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-item-table='{{$table}}'>
+						<i class='fa fa-download'></i>
+						<span>Export</span>
+					</button>
+
+					<button type='button' class='button-action button-info' data-modal='modal-item-add' data-modal-item-table='{{$table}}'>
+						<i class='fa fa-search'></i>
+						<span>Search</span>
+					</button>
+				</div>
 			</div>
 			
-			<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-item-table='{{$table}}'>Add</button>
 
-			<div class='section-table'>
+			<div class='table'>
 
-				<div class='section-table-row section-table-header'>
-					<div class='section-table-col-select section-table-col section-table-col-head'>
+				<div class='table-row table-header'>
+					<div class='table-col-select table-col table-col-head'>
 							
 						<input type='checkbox' id='select-all-{table}' class='check check-data check-small' data-item-select-all data-item-table='{{$table}}'>
 						<label for='select-all-{table}' class='checkbox'></label>
@@ -183,8 +204,8 @@
 					</div>
 					{{for $fieldsAll as $field}}
 						{{if $field -> isSort()}}
-							<div class='section-table-col section-table-col-head section-table-col-sort' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
-								<div class='section-table-col-text noselect'>
+							<div class='table-col table-col-head table-col-sort {{if $field -> isClassNumber() }}table-col-number{{/if}}' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
+								<div class='table-col-text noselect'>
 									<span>{{$field -> getLabel()}}</span>
 
 									<i class='fa fa-sort' data-item-sort-none></i>
@@ -194,23 +215,23 @@
 							</div>
 						{{else}}
 
-							<div class='section-table-col section-table-col-head'>
-								<div class='section-table-col-text'>
+							<div class='table-col table-col-head'>
+								<div class='table-col-text'>
 									<span>{{$field -> getLabel()}}</span>
 								</div>
 							</div>
 						{{/if}}
 					{{/for}}
-					<div class='section-table-col section-table-col-action'>
-						<div class='section-table-col-text'>
+					<div class='table-col table-col-action'>
+						<div class='table-col-text'>
 							<span>Action</span>
 						</div>
 					</div>
 				</div>
 
 				<div data-use-template='item-row'>
-					<div class='section-table-row'>
-						<div class='section-table-col'>
+					<div class='table-row'>
+						<div class='table-col'>
 							{{include Admin/admin/__spinner}}
 						</div>
 					</div>

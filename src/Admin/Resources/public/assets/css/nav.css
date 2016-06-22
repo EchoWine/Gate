@@ -1,6 +1,6 @@
 .nav-container{
 	max-width:220px;
-
+	min-width:220px;
 }
 
 .nav-header{

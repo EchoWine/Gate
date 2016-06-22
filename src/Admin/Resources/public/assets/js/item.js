@@ -197,8 +197,6 @@ item.getList = function(table,params = {}){
 			item.addAlert('alert-danger','alert-global',response);
 		}
 
-
-
 	});
 };
 

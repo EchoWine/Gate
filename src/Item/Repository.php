@@ -4,7 +4,7 @@ namespace Item;
 
 use CoreWine\DataBase\DB;
 
-class Repository{
+class Repository extends \CoreWine\DataBase\QueryBuilder{
 
 	/**
 	 * Schema
@@ -20,6 +20,16 @@ class Repository{
 	 */
 	public function __construct(\Item\Schema $schema){
 		$this -> schema = $schema;
+
+		parent::__construct($schema -> getTable());
+
+		$this -> setParserResult(function($results){
+			foreach($results as $n => $result){
+				$results[$n] = $this -> getSchema() -> parseResult($result);
+			}
+
+			return $results;
+		});
 	}
 
 	/**
@@ -42,109 +52,6 @@ class Repository{
 				$field -> alter($table);
 			}
 		});
-	}
-
-	/**
-	 * Get the QueryBuilder object
-	 *
-	 * @return CoreWine\DataBase\QueryBuilder
-	 */
-	public function table($type = 1){
-
-		$table = DB::table($this -> getSchema() -> getTable());
-
-
-		switch($type){
-			case null:
-				return $table;
-			break;
-			case 0:
-
-				return $table -> setParserResult(function($results){
-					
-					return $results;
-				});
-			break;
-
-			case 1:
-
-				return $table -> setParserResult(function($results){
-					
-					foreach($results as $n => $result){
-						$results[$n] = $this -> schema -> parseResult($result);
-					}
-
-					return $results;
-				});
-			break;
-
-		}
-	}
-
-	/**
-	 * Get all records
-	 *
-	 * @return Result
-	 */
-	public function get($type){
-		return $this -> table($type) -> orderByDesc('id') -> get();
-	}
-
-	/**
-	 * Get first record by id
-	 *
-	 * @return Result
-	 */
-	public function firstById($id,$type = null){
-		return $this -> table($type) -> where('id',$id) -> first();
-	}
-
-	/**
-	 * Check if exists a record
-	 *
-	 * @return Result
-	 */
-	public function exists($where){
-		return $this -> table() -> where($where) -> count() > 0;
-	}
-
-	/**
-	 * Check if exists a record except for id
-	 *
-	 * @return Result
-	 */
-	public function existsExceptId($id,$where){
-		return $this -> table() -> where($where) -> where('id','!=',$id) -> count() > 0;
-	}
-
-
-	/**
-	 * Insert a new record
-	 *
-	 * @param array $values
-	 * @return int id of new record
-	 */
-	public function insert($values){
-		return $this -> table(null) -> insert($values);
-	}
-
-	/**
-	 * Update a record
-	 *
-	 * @param array $values
-	 * @return int id of new record
-	 */
-	public function update($id,$values){
-		return $this -> table(null) -> where('id',$id) -> update($values);
-	}
-
-	/**
-	 * Delete by id
-	 *
-	 * @return Result
-	 */
-	public function deleteById($id){
-		return $this -> table(null) -> where('id',$id) -> delete();
 	}
 
 

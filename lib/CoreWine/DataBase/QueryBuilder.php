@@ -203,8 +203,9 @@ class QueryBuilder{
 	 * @return object $this
 	 */
 	public function orderByAsc(string $c){
-		$this -> builder -> orderby[] = DB::SQL()::ASC($c);
-		return $this;
+		$t = clone $this;
+		$t -> builder -> orderby[] = DB::SQL()::ASC($c);
+		return $t;
 	}
 
 	/**
@@ -214,8 +215,9 @@ class QueryBuilder{
 	 * @return object $this
 	 */
 	public function orderByDesc(string $c){
-		$this -> builder -> orderby[] = DB::SQL()::DESC($c);
-		return $this;
+		$t = clone $this;
+		$t -> builder -> orderby[] = DB::SQL()::DESC($c);
+		return clone $t;
 	}
 
 	/**

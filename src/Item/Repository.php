@@ -23,15 +23,38 @@ class Repository extends \CoreWine\DataBase\QueryBuilder{
 
 		parent::__construct($schema -> getTable());
 
-		$this -> setParserResult(function($results){
+		//$schema -> setParserResult();
+	}
+	/*
+	$schema -> setParserResult(function($results){
 			foreach($results as $n => $result){
-				$results[$n] = $this -> getSchema() -> parseResult($result);
+
+
+				$schema -> parseResult($result);
 			}
 
 			return $results;
 		});
-	}
+		*/
 
+	/**
+	 * Set fields using an array
+	 *
+	 * @param array $result
+	 */
+	public function setFieldsByArray($result){
+
+		foreach($this -> getSchema() -> getFields() as $fieldSchema){
+			$value = $result[$fieldSchema -> getColumn()];
+			$entity = $fieldSchema -> newEntity($value);
+
+			$this -> fields[$fieldSchema -> getName()] = $entity;
+			$this -> values[] = $value;
+			$this -> {$fieldSchema -> getName()} = $value;
+		}
+
+		return $this;
+	}
 	/**
 	 * Get the schema
 	 *

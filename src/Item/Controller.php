@@ -29,24 +29,9 @@ abstract class Controller extends SourceController{
 	public $url;
 
 	/**
-	 * Item\Schema
+	 * Item\Entity
 	 */
-	public $__schema = 'Item\Schema';
-
-	/**
-	 * Item\Repository
-	 */
-	public $__repository = 'Item\Repository';
-
-	/**
-	 * Item\Schema
-	 */
-	public $schema;
-
-	/**
-	 * Item\Repository
-	 */
-	public $repository;
+	public $__entity = 'Item\Entity';
 
 	/**
 	 * Routers
@@ -75,34 +60,16 @@ abstract class Controller extends SourceController{
 	 * Check
 	 */
 	public function __check(){
-		$this -> schema = new $this -> __schema();
-		$this -> repository = new $this -> __repository($this -> schema);
-		$this -> __alterSchema();
+
 	}
 
 	/**
-	 * Alter schema
-	 */
-	public function __alterSchema(){
-		$this -> getRepository() -> __alterSchema();
-	}
-
-	/**
-	 * Get schema
+	 * Get entity
 	 *
-	 * @return Schema
+	 * @return Entity
 	 */
-	public function getSchema(){
-		return $this -> schema;
-	}
-
-	/**
-	 * Get repository
-	 *
-	 * @return Repository
-	 */
-	public function getRepository(){
-		return $this -> repository;
+	public function getEntity(){
+		return $this -> __entity;
 	}
 
 	/**
@@ -315,19 +282,16 @@ abstract class Controller extends SourceController{
 	public function __add(){
 
 		try{
-			$repository = $this -> getRepository();
 
-			list($row,$errors) = $this -> __addFields($repository);
+			$errors = $this -> getEntity()::validateCreate(Request::all());
 
-			# Response status error if validation is failed
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
-			
-				$id = $repository -> insert($row);
-				$result = $this -> __first($id[0]);
 
-			return new Response\ApiAddSuccess($id[0],$result);
+			$entity = $this -> getEntity()::create(Request::all());
 
+
+			return new Response\ApiAddSuccess($entity -> id,$entity);
 
 		}catch(\Exception $e){
 
@@ -351,15 +315,16 @@ abstract class Controller extends SourceController{
 				
 			$repository = $this -> getRepository();
 
-			list($row,$errors) = $this -> __editFields($repository,$id,$result);
+			$errors = $this -> __editFields($repository,$id,$result);
 
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
 
+			$result = $repository -> where('id',$id) -> update();
 
-			$repository -> update($id,$row);
+			if(empty($result))
+				return new Response\ApiEditError();
 			
-
 			return new Response\ApiEditSuccess($id,$result,$this -> __first($id));
 
 		}catch(\Exception $e){
@@ -383,7 +348,7 @@ abstract class Controller extends SourceController{
 
 		$this -> __deleteFields($repository,$result);
 
-		$id = $repository -> deleteById($id);
+		$id = $repository -> where('id',$id) -> delete();
 	
 		return new Response\ApiDeleteSuccess($id,$result);
 
@@ -401,61 +366,14 @@ abstract class Controller extends SourceController{
 		
 		$repository = $this -> getRepository();
 
-		list($row) = $this -> __copyFields($repository,$result);
+		$this -> __copyFields($repository,$result);
 
-		$id = $repository -> insert($row);
+		$id = $repository -> insert();
 
 		$resource = $this -> __first($id[0]);
 
 		return new Response\ApiCopySuccess($id,$result,$resource);
 
-	}
-
-	/**
-	 * Retrieve value of fields to add and relative errors
-	 *
-	 * @return array
-	 */
-	public function __addFields($repository){
-
-		$row = [];
-		$errors = []; 
-
-
-		$fields = $this -> getSchema() -> getFields();
-
-		foreach($fields as $name => $field){
-
-			if($field -> isAdd()){
-
-				$name = $field -> getName();
-				$col = $field -> getColumn();
-				$value = Request::post($name);
-
-				if($field -> isAddNeeded($value)){
-
-					$row[$name] = $field -> parseValueAdd($value);
-
-					// Validate field
-					$response = $field -> isValid($value);
-
-					if(!$this -> isResponseSuccess($response)){
-						$errors[$name] = $response;
-					}
-
-
-					if($this -> isResponseSuccess($response)){
-						if($field -> isUnique()){
-							if($this -> getRepository() -> exists([$col => $value])){
-								$errors[$name] = new Response\ApiFieldErrorNotUnique();
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return [$row,$errors];
 	}
 
 	/**
@@ -465,9 +383,8 @@ abstract class Controller extends SourceController{
 	 * @param array $result
 	 * @return array
 	 */
-	public function __editFields($repository,$id,$result){
+	public function __editFields(&$repository,$id,$result){
 
-		$row = [];
 		$errors = [];
 		$fields = $this -> getSchema() -> getFields();
 
@@ -481,7 +398,7 @@ abstract class Controller extends SourceController{
 
 				if($field -> isEditNeeded($value)){
 				
-					$row[$name] = $field -> parseValueEdit($value);
+					$field -> edit($repository,$value);
 
 					$response = $field -> isValid($value);
 
@@ -491,7 +408,7 @@ abstract class Controller extends SourceController{
 
 					if($this -> isResponseSuccess($response)){
 						if($field -> isUnique()){
-							if($this -> getRepository() -> existsExceptId($id,[$col => $value])){
+							if($this -> getRepository() -> where('id','!=',$id) -> where($col,$value) -> count()){
 								$errors[$name] = new Response\ApiFieldErrorNotUnique($field -> getLabel(),$value);
 							
 							}
@@ -501,7 +418,7 @@ abstract class Controller extends SourceController{
 			}
 		}
 
-		return [$row,$errors];
+		return $errors;
 	}
 
 	/**
@@ -511,7 +428,6 @@ abstract class Controller extends SourceController{
 	 */
 	public function __copyFields($repository,$result){
 
-		$row = [];
 		$fields = $this -> getSchema() -> getFields();
 
 		foreach($fields as $name => $field){
@@ -535,7 +451,6 @@ abstract class Controller extends SourceController{
 			}
 		}
 
-		return [$row];
 	}
 
 	/**
@@ -557,28 +472,6 @@ abstract class Controller extends SourceController{
 
 	}
 
-
-	/**
-	 * Return if a response is success or not
-	 *
-	 * @param \Item\Response\Response $response
-	 *
-	 * @return bool
-	 */
-	public function isResponseSuccess(\Item\Response\Response $response){
-		return ($response instanceof \Item\Response\Success);
-	}
-
-	/**
-	 * Return if a response is error or not
-	 *
-	 * @param \Item\Response\Response $response
-	 *
-	 * @return bool
-	 */
-	public function isResponseError(\Item\Response\Response $response){
-		return ($response instanceof \Item\Response\Error);
-	}
 
 }
 

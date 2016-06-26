@@ -119,19 +119,6 @@ class Schema{
 		return $this -> getField($this -> primary);
 	}
 
-	public function parseResult($result){
-		if($this -> hasEntity())
-			return $this -> newEntity() -> setFieldsByArray($result);
-		else
-			return $result;
-	}
 
-	public function hasEntity(){
-		return $this -> __entity !== null;
-	}
-
-	public function newEntity(){
-		return new $this -> __entity($this);
-	}
 }
 ?>

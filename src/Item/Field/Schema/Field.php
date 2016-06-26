@@ -369,6 +369,31 @@ class Field{
 	}
 
 	/**
+	 * Add
+	 *
+	 * @param Repository $repository
+	 * @param mixed $value
+	 *
+	 * @return value parsed
+	 */
+	public function add(&$repository,$value,$entity = null){
+		$repository = $repository -> addInsert($this -> getColumn(),$value);
+	}
+
+	/**
+	 * Edit
+	 *
+	 * @param Repository $repository
+	 * @param mixed $value
+	 *
+	 * @return value parsed
+	 */
+	public function edit(&$repository,$value,$entity = null){
+		$repository = $repository -> addUpdate($this -> getColumn(),$value);
+	}
+
+
+	/**
 	 * Call
 	 *
 	 * @param string $method

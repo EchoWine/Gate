@@ -7,8 +7,6 @@ use Item\Schema;
 use Admin\Field\Schema as FieldSchema;
 
 class User extends Schema{
-	
-	public $__entity = 'Basic\Entity\User';
 
 	public $table = 'user';
 

@@ -311,6 +311,24 @@ class Request{
 		return Request::$method;
 	}
 
+	public static function all(){
+
+		switch(Request::getMethod()){
+			case Request::METHOD_GET:
+				return Request::$REQUEST_GET;
+			break;
+			case Request::METHOD_POST:
+				return Request::$REQUEST_POST;
+			break;
+			case Request::METHOD_PUT:
+				return Request::$REQUEST_PUT;
+			break;
+			case Request::METHOD_DELETE:
+				return Request::$REQUEST_DELETE;
+			break;
+		}
+	}
+
 }
 
 Request::ini();

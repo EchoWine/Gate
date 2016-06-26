@@ -12,9 +12,7 @@ class Handler{
 	public $renderClass;
 	public $renderMethod;
 
-	public function __construct($renderClass,$renderMethod){
-		$this -> renderClass = $renderClass;
-		$this -> renderMethod = $renderMethod;
+	public function __construct(){
 		$this -> register();
 	}
 

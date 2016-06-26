@@ -48,6 +48,15 @@ class QueryBuilder{
 	}
 	
 	/**
+	 * Get builder
+	 *
+	 * @return Builder
+	 */
+	public function getBuilder(){
+		return $this -> builder;
+	}
+
+	/**
 	 * Clone  the attribute builder
 	 */
 	public function __clone(){
@@ -105,13 +114,20 @@ class QueryBuilder{
 	/**
 	 * Execute the query and return if the record exists or not
 	 *
-	 * @param string $v name of the column
+	 * @param mixed $v name of the column
 	 * @param mixed $a value or array of value that identified the column
 	 * @return mixed bool if is only a value or array of bool if is an array of records
 	 */
-	public function exists(string $v,$a){
-		$r = is_array($a) ? $this -> whereIn($v,$a) : $this -> where($v,$a);
-		$r = $r -> select($v);
+	public function exists($v,$a = null){
+
+		if(is_array($v) && $a == null){
+			$r = $this -> where($v);
+		}else{
+
+			$r = is_array($a) ? $this -> whereIn($v,$a) : $this -> where($v,$a);
+			$r = $r -> select($v);
+		}
+
 		$r = is_array($a) ? $r -> setIndexResult($v) -> get() : $r -> first();
 
 		if(is_array($a)){
@@ -124,7 +140,7 @@ class QueryBuilder{
 
 			$r = $t;
 		}	
-		return is_array($a) ? $r : $r[$v];
+		return $a == null || is_array($a) ? $r : $r[$v];
 	}
 
 	/**
@@ -1065,6 +1081,20 @@ class QueryBuilder{
 	}
 
 	/**
+	 * Add data to insert
+	 * 
+	 * @param $column
+	 * @param $value
+	 *
+	 * @return object $this
+	 */
+	public function addInsert($column,$value){
+		$t = clone $this;
+		$t -> getBuilder() -> setInsert($column,$value);
+		return $t;
+	}
+
+	/**
 	 * Execute the query and insert a record ignoring duplicates
 	 *
 	 * @param array $v array of elements to insert (name column => value column)
@@ -1096,11 +1126,14 @@ class QueryBuilder{
 	 * @param bool $ignore ignore the duplicates(true) or reproduce an error(false)
 	 * @return int last id insert
 	 */
-	public function insert($data,bool $ignore = false){
+	public function insert($data = [],bool $ignore = false){
+
+		$t = clone $this;
+
+		$data = empty($t -> getBuilder() -> getInsert()) ? $data : array_merge($data,$t -> getBuilder() -> getInsert());
 
 		if(empty($data))return 0;
 
-		$t = clone $this;
 
 		if(is_object($data) && ($data instanceof Closure)){
 			$c = $data();
@@ -1137,24 +1170,38 @@ class QueryBuilder{
 	}
 
 	/**
+	 * Add data to update
+	 * 
+	 * @param $column
+	 * @param $value
+	 *
+	 * @return object $this
+	 */
+	public function addUpdate($column,$value){
+		$t = clone $this;
+		$t -> getBuilder() -> setUpdate($column,$value);
+		return $t;
+	}
+	/**
 	 * Execute the query and update the record
 	 *
 	 * @param mixed $v1 if $v2 is defined indicates the name of the column to update, otherwise the array (name column => value columns)
 	 * @param mixed $v2 optional value of the column to update
 	 * @return int number of row involved in the update
 	 */
-	public function update($v1,$v2 = NULL){
+	public function update($v1 = [],$v2 = NULL){
 
-		if(empty($v1))return 0;
 
 		$t = clone $this;
 
-		$set = empty($t -> builder -> update) ? [] : $t -> builder -> update;
+		$set = empty($t -> getBuilder() -> getUpdate()) ? $v1 : array_merge($v1,$t -> getBuilder() -> getUpdate());
+
+		if(empty($set))return 0;
 
 		# Update multiple records in different case
-		if(is_array($v1) && is_array($v2)){
+		if(is_array($set) && is_array($v2)){
 
-			foreach($v1 as $k => $v){
+			foreach($set as $k => $v){
 
 				if(is_array($v2[$k])){
 					$s = [];
@@ -1171,12 +1218,12 @@ class QueryBuilder{
 			}
 
 		# Update single column
-		}else if(!is_array($v1) && isset($v2)){
-			$set[] = DB::SQL()::UPDATE_VALUE($v1,$t -> setPrepare($v2));
+		}else if(!is_array($set) && isset($v2)){
+			$set[] = DB::SQL()::UPDATE_VALUE($set,$t -> setPrepare($v2));
 
 		# Update multiple column
 		}else{
-			foreach($v1 as $k => $v){
+			foreach($set as $k => $v){
 				$set[] = DB::SQL()::UPDATE_VALUE($k,$t -> setPrepare($v));
 			}
 		}

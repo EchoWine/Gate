@@ -241,6 +241,7 @@ class DB{
 		$r = array_reverse($a);
 		$k = array_keys($r);
 		$v = array_values($r);
+
 		foreach($v as &$e)
 			if(is_string($e))$e = "'{$e}'";
 
@@ -258,11 +259,11 @@ class DB{
 				self::$log[] = "<i>".$q."</i>";
 
 		}catch(PDOException $e){
-			throw new Exceptions\QueryException($e -> getMessage()."<br>".$query);
+			throw new Exceptions\QueryException($e -> getMessage()."<br>".$q);
 		}
 
 		if(!$r)
-			throw new Exceptions\QueryException(self::$con -> errorInfo()[2]."<br>".$query);
+			throw new Exceptions\QueryException(self::$con -> errorInfo()[2]."<br>".$q);
 		
 
 		return $r;

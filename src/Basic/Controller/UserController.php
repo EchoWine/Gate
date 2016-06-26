@@ -6,7 +6,7 @@ use Admin\Controller\AdminController;
 
 class UserController extends AdminController{
 
-	public $__schema = 'Basic\Schema\User';
+	public $__entity = 'Basic\Entity\User';
 
 	public $url = 'user';
 	

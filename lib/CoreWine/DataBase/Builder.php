@@ -39,6 +39,11 @@ class Builder{
 	public $update = [];
 
 	/**
+	 * Insert
+	 */
+	public $insert = [];
+
+	/**
 	 * Order by
 	 */
 	public $orderby = [];
@@ -173,6 +178,45 @@ class Builder{
 		return $this -> count;
 	}
 
+	/**
+	 * Add insert
+	 *
+	 * @param $column
+	 * @param $value
+	 * 
+	 */
+	public function setInsert($column,$value){
+		$this -> insert[$column] = $value;
+	}
+
+	/**
+	 * Get insert
+	 *
+	 * @return Array
+	 */
+	public function getInsert(){
+		return $this -> insert;
+	}
+
+	/**
+	 * Add insert
+	 *
+	 * @param $column
+	 * @param $value
+	 * 
+	 */
+	public function setUpdate($column,$value){
+		$this -> update[$column] = $value;
+	}
+
+	/**
+	 * Get insert
+	 *
+	 * @return Array
+	 */
+	public function getUpdate(){
+		return $this -> update;
+	}
 
 	/**
 	 * Return a random name (unused) to use as alias for the query

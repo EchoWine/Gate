@@ -37,6 +37,29 @@ class Response{
 	public function getData(){
 		return $data;
 	}
+
+
+	/**
+	 * Return if a response is success or not
+	 *
+	 * @param \Item\Response\Response $response
+	 *
+	 * @return bool
+	 */
+	public static function isResponseSuccess(\Item\Response\Response $response){
+		return ($response instanceof \Item\Response\Success);
+	}
+
+	/**
+	 * Return if a response is error or not
+	 *
+	 * @param \Item\Response\Response $response
+	 *
+	 * @return bool
+	 */
+	public static function isResponseError(\Item\Response\Response $response){
+		return ($response instanceof \Item\Response\Error);
+	}
 }
 
 ?>

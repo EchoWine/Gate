@@ -59,7 +59,7 @@ class Entity{
 	 */
 	public static function repository(){
 		$repository = static::$__repository;
-		return new $repository(static::schema());
+		return new $repository(get_called_class());
 	}
 
 
@@ -130,6 +130,7 @@ class Entity{
 			if($field -> isUnique()){
 
 				$repository = static::repository();
+
 
 				if($entity !== null && $entity -> id !== null)
 					$repository = $repository -> where('id','!=',$entity -> id);
@@ -215,6 +216,19 @@ class Entity{
 	}
 
 	/**
+	 * Validate all values of schema for update
+	 *
+	 * @param array $values
+	 *
+	 * @return array
+	 */
+	public static function validateUpdate($values,$entity){
+
+		return static::validateAll($values,$entity);
+	}
+
+
+	/**
 	 * Create element
 	 *
 	 * @return array
@@ -245,11 +259,94 @@ class Entity{
 
 		$ids = $repository -> insert();
 
+		static::repository() -> where('id',$ids[0]) -> first();
 
 
-		return (object)static::repository() -> where('id',$ids[0]) -> first();
+		return $this;
 	}
 
+	/**
+	 * Update elements
+	 *
+	 * @return array
+	 */
+	public function update($values){
+
+		
+		$schema = $this -> getSchema();
+
+		$repository = $this -> getRepository();
+
+		foreach($schema -> getFields() as $name => $field){
+
+			if($field -> isEdit()){
+
+				$value = isset($values[$name]) ? $values[$name] : null;
+
+				if($field -> isEditNeeded($value)){
+
+					$field -> edit($repository,$value,$this);
+
+				}
+
+			}
+		}
+
+		$repository -> where('id',$this -> id) -> update();
+
+		return $this;
+	}
+
+	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){
+		return static::repository() -> where($v1,$v2,$v3,$v4);
+	}
+
+	public function toArray(){
+
+		$schema = $this -> getSchema();
+
+		$return = [];
+		foreach($schema -> getFields() as $name => $field){
+
+			$return[$name] = $this -> {$name};
+		
+		}
+
+		return $return;
+	}
+	
+	/**
+	 * Create a new entity and set fields using an array
+	 *
+	 * @param array $result
+	 */
+	public static function new($result){
+
+		$entity = new static();
+		$entity -> fill($result);
+		return $entity;
+	}
+
+	/**
+	 * Fill entity with array
+	 *
+	 * @param array $result
+	 */
+	public function fill($result){
+
+		foreach($this -> getSchema() -> getFields() as $fieldSchema){
+			if(isset($result[$fieldSchema -> getColumn()])){
+				$value = $result[$fieldSchema -> getColumn()];
+				$entity = $fieldSchema -> newEntity($value);
+
+				$this -> fields[$fieldSchema -> getName()] = $entity;
+				$this -> values[] = $value;
+				$this -> {$fieldSchema -> getName()} = $value;
+			}
+		}
+
+		return $this;
+	}
 
 }
 

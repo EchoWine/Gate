@@ -376,8 +376,9 @@ class Field{
 	 *
 	 * @return value parsed
 	 */
-	public function add(&$repository,$value,$entity = null){
+	public function add(&$repository,$value,$entity){
 		$repository = $repository -> addInsert($this -> getColumn(),$value);
+		$entity -> {$this -> getName()} = $value;
 	}
 
 	/**
@@ -388,8 +389,9 @@ class Field{
 	 *
 	 * @return value parsed
 	 */
-	public function edit(&$repository,$value,$entity = null){
+	public function edit(&$repository,$value,$entity){
 		$repository = $repository -> addUpdate($this -> getColumn(),$value);
+		$entity -> {$this -> getName()} = $value;
 	}
 
 

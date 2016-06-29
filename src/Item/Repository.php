@@ -7,61 +7,55 @@ use CoreWine\DataBase\DB;
 class Repository extends \CoreWine\DataBase\QueryBuilder{
 
 	/**
-	 * Schema
+	 * Entity
 	 *
-	 * @var Item\Schema
+	 * @var Item\Entity
 	 */
-	public $schema;
+	public $entity;
 
 	/**
 	 * Construct
 	 *
-	 * @param \Item\Schema $schema
+	 * @param \Item\Schema $entity
 	 */
-	public function __construct(\Item\Schema $schema){
-		$this -> schema = $schema;
+	public function __construct($entity){
+		$this -> entity = $entity;
 
-		parent::__construct($schema -> getTable());
 
-		//$schema -> setParserResult();
-	}
-	/*
-	$schema -> setParserResult(function($results){
+		parent::__construct($this -> getSchema() -> getTable());
+
+		$this -> setParserResult(function($results){
+
+			$return = [];
+
 			foreach($results as $n => $result){
 
-
-				$schema -> parseResult($result);
+				$return[] = $this -> getEntity()::new($result);
 			}
 
-			return $results;
+			return $return;
 		});
-		*/
+
+	}
 
 	/**
-	 * Set fields using an array
+	 * Get the entity
 	 *
-	 * @param array $result
+	 * @return Item\Schema
 	 */
-	public function setFieldsByArray($result){
-
-		foreach($this -> getSchema() -> getFields() as $fieldSchema){
-			$value = $result[$fieldSchema -> getColumn()];
-			$entity = $fieldSchema -> newEntity($value);
-
-			$this -> fields[$fieldSchema -> getName()] = $entity;
-			$this -> values[] = $value;
-			$this -> {$fieldSchema -> getName()} = $value;
-		}
-
-		return $this;
+	public function getEntity(){
+		return $this -> entity;
 	}
+
+
 	/**
 	 * Get the schema
 	 *
 	 * @return Item\Schema
 	 */
 	public function getSchema(){
-		return $this -> schema;
+		$entity = $this -> entity;
+		return $entity::schema();
 	}
 
 	/**

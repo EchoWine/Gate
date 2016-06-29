@@ -73,6 +73,26 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
+	 * Get Schema
+	 *
+	 * @return Entity
+	 */
+	public function getSchema(){
+		$entity = $this -> getEntity();
+		return $entity::schema();
+	}
+
+	/**
+	 * Get Repository
+	 *
+	 * @return Entity
+	 */
+	public function getRepository(){
+		$entity = $this -> getEntity();
+		return $entity::repository();
+	}
+
+	/**
 	 * Get all the result
 	 */
 	public function all(){
@@ -271,7 +291,10 @@ abstract class Controller extends SourceController{
 	 * @return results
 	 */
 	public function __first($id){
-		return $this -> getRepository() -> where('id',$id) -> first();
+		if(!$entity = $this -> getEntity()::where('id',$id) -> first())
+			return new Response\ApiNotFound();
+
+		return $entity;
 	}
 
 	/**
@@ -291,7 +314,7 @@ abstract class Controller extends SourceController{
 			$entity = $this -> getEntity()::create(Request::all());
 
 
-			return new Response\ApiAddSuccess($entity -> id,$entity);
+			return new Response\ApiAddSuccess($entity -> id,$entity -> toArray());
 
 		}catch(\Exception $e){
 
@@ -310,22 +333,21 @@ abstract class Controller extends SourceController{
 
 		try{
 
-			if(!$result = $this -> __first($id))
+			if(!$entity = $this -> getEntity()::where('id',$id) -> first())
 				return new Response\ApiNotFound();
-				
-			$repository = $this -> getRepository();
-
-			$errors = $this -> __editFields($repository,$id,$result);
+			
+			$errors = $this -> getEntity()::validateUpdate(Request::all(),$entity);
 
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
 
-			$result = $repository -> where('id',$id) -> update();
+			$old_entity = clone $entity;
 
-			if(empty($result))
-				return new Response\ApiEditError();
+			$entity -> update(Request::all());
+
+
 			
-			return new Response\ApiEditSuccess($id,$result,$this -> __first($id));
+			return new Response\ApiEditSuccess($id,$old_entity -> toArray(),$entity -> toArray());
 
 		}catch(\Exception $e){
 
@@ -339,18 +361,14 @@ abstract class Controller extends SourceController{
 	 */
 	public function __delete($id){
 
-		$result = $this -> __first($id);
-
-		if(!$result)
+		if(!$entity = $this -> getEntity()::where('id',$id) -> first())
 			return new Response\ApiNotFound();
 		
-		$repository = $this -> getRepository();
+		$id = $entity -> id;
 
-		$this -> __deleteFields($repository,$result);
-
-		$id = $repository -> where('id',$id) -> delete();
+		$entity::delete();
 	
-		return new Response\ApiDeleteSuccess($id,$result);
+		return new Response\ApiDeleteSuccess($id,$entity);
 
 	}
 
@@ -358,6 +376,7 @@ abstract class Controller extends SourceController{
 	 * Copy a new record
 	 */
 	public function __copy($id){
+
 
 		$result = $this -> __first($id);
 
@@ -376,50 +395,6 @@ abstract class Controller extends SourceController{
 
 	}
 
-	/**
-	 * Retrieve value of fields to update and relative errors
-	 *
-	 * @param int $id
-	 * @param array $result
-	 * @return array
-	 */
-	public function __editFields(&$repository,$id,$result){
-
-		$errors = [];
-		$fields = $this -> getSchema() -> getFields();
-
-		foreach($fields as $name => $field){
-
-			if($field -> isEdit()){
-
-				$name = $field -> getName();
-				$col = $field -> getColumn();
-				$value = Request::put($name);
-
-				if($field -> isEditNeeded($value)){
-				
-					$field -> edit($repository,$value);
-
-					$response = $field -> isValid($value);
-
-					if(!$this -> isResponseSuccess($response)){
-						$errors[$name] = $response;
-					}
-
-					if($this -> isResponseSuccess($response)){
-						if($field -> isUnique()){
-							if($this -> getRepository() -> where('id','!=',$id) -> where($col,$value) -> count()){
-								$errors[$name] = new Response\ApiFieldErrorNotUnique($field -> getLabel(),$value);
-							
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return $errors;
-	}
 
 	/**
 	 * Retrieve value of fields to copy and relative errors

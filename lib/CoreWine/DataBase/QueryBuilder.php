@@ -106,9 +106,8 @@ class QueryBuilder{
 	 * @param Closure $closure
 	 */
 	public function setParserResult($closure){
-		$t = clone $this;
-		$t -> builder -> parserResult = $closure;
-		return $t;
+		$this -> builder -> parserResult = $closure;
+		return $this;
 	}
 
 	/**
@@ -205,6 +204,7 @@ class QueryBuilder{
 		$c = clone $this;
 		$sql = DB::SQL()::AGGREGATE($f,$v);
 
+		$c -> builder -> parserResult = null;
 		$c -> builder -> addSelect($sql);
 		$r = $c -> first();
 
@@ -1196,6 +1196,8 @@ class QueryBuilder{
 
 		$set = empty($t -> getBuilder() -> getUpdate()) ? $v1 : array_merge($v1,$t -> getBuilder() -> getUpdate());
 
+		$data = [];
+
 		if(empty($set))return 0;
 
 		# Update multiple records in different case
@@ -1211,26 +1213,27 @@ class QueryBuilder{
 						$where[] = $n1;
 					}
 
-					$set[] = DB::SQL()::UPDATE_CASE($v[1],$v[0],$v[1],$s);
+					$data[] = DB::SQL()::UPDATE_CASE($v[1],$v[0],$v[1],$s);
 				}else{
-					$set[] = DB::SQL()::UPDATE_VALUE($v,$t -> setPrepare($v2[$k]));
+					$data[] = DB::SQL()::UPDATE_VALUE($v,$t -> setPrepare($v2[$k]));
 				}
 			}
 
 		# Update single column
 		}else if(!is_array($set) && isset($v2)){
-			$set[] = DB::SQL()::UPDATE_VALUE($set,$t -> setPrepare($v2));
+			$data[] = DB::SQL()::UPDATE_VALUE($set,$t -> setPrepare($v2));
 
 		# Update multiple column
 		}else{
 			foreach($set as $k => $v){
-				$set[] = DB::SQL()::UPDATE_VALUE($k,$t -> setPrepare($v));
+				$data[] = DB::SQL()::UPDATE_VALUE($k,$t -> setPrepare($v));
 			}
+
 		}
 		
 
 		$r = DB::count($q = $t -> query(
-			DB::SQL()::UPDATE($this -> getBuilderTable(),$this -> SQL_JOIN(),$set,$this -> SQL_WHERE())
+			DB::SQL()::UPDATE($this -> getBuilderTable(),$this -> SQL_JOIN(),$data,$this -> SQL_WHERE())
 		));
 
 		return ($r == 0 && $q) ? 1 : $r;

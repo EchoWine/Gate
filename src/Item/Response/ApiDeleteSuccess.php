@@ -24,7 +24,7 @@ class ApiDeleteSuccess extends Success{
 	 */
 	public function __construct($id,$resource){
 
-		parent::__construct(self::CODE,self::MESSAGE);
+		parent::__construct(static::CODE,static::MESSAGE);
 		$this -> setData(['id' => $id,'resource' => $resource]) -> setRequest(Request::getCall());
 
 	}

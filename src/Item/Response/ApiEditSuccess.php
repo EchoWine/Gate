@@ -25,7 +25,7 @@ class ApiEditSuccess extends Success{
 	 */
 	public function __construct($id,$old,$resource){
 
-		parent::__construct(self::CODE,self::MESSAGE);
+		parent::__construct(static::CODE,static::MESSAGE);
 		$this -> setData(['id' => $id,'old' => $old,'resource' => $resource]) -> setRequest(Request::getCall());
 
 	}

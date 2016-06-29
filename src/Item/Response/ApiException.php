@@ -18,7 +18,7 @@ class ApiException extends Error{
 	 */
 	public function __construct(\Exception $e){
 
-		parent::__construct(self::CODE,$e -> getMessage());
+		parent::__construct(static::CODE,$e -> getMessage());
 		$this -> setRequest(Request::getCall());
 	}
 }

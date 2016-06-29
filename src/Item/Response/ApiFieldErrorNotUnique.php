@@ -23,7 +23,7 @@ class ApiFieldErrorNotUnique extends Error{
 	 */
 	public function __construct($label,$value){
 
-		parent::__construct(self::CODE,sprintf(self::MESSAGE,$label));
+		parent::__construct(static::CODE,sprintf(static::MESSAGE,$label));
 		$this -> setData(['label' => $label,'value' => $value]);
 		$this -> setRequest(Request::getCall());
 	}

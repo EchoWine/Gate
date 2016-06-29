@@ -23,7 +23,7 @@ class ApiAllSuccess extends Success{
 	 */
 	public function __construct($data){
 
-		parent::__construct(self::CODE,self::MESSAGE);
+		parent::__construct(static::CODE,static::MESSAGE);
 		$this -> setData($data) -> setRequest(Request::getCall());
 
 	}

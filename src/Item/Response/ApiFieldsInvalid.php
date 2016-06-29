@@ -23,7 +23,7 @@ class ApiFieldsInvalid extends Error{
 	 */
 	public function __construct($details){
 
-		parent::__construct(self::CODE,self::MESSAGE);
+		parent::__construct(static::CODE,static::MESSAGE);
 		$this -> setDetails($details);
 		$this -> setRequest(Request::getCall());
 	}

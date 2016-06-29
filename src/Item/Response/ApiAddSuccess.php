@@ -25,7 +25,7 @@ class ApiAddSuccess extends Success{
 	 */
 	public function __construct($id,$new){
 
-		parent::__construct(self::CODE,self::MESSAGE);
+		parent::__construct(static::CODE,static::MESSAGE);
 		$this -> setData(['id' => $id,'resource' => $new]) -> setRequest(Request::getCall());
 
 	}

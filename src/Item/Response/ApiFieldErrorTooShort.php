@@ -23,7 +23,7 @@ class ApiFieldErrorTooShort extends Error{
 	 */
 	public function __construct($label,$value){
 
-		parent::__construct(self::CODE,sprintf(self::MESSAGE,$label,$value));
+		parent::__construct(static::CODE,sprintf(static::MESSAGE,$label,$value));
 		$this -> setData(['label' => $label,'value' => $value]);
 		$this -> setRequest(Request::getCall());
 	}

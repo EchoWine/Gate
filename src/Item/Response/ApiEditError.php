@@ -21,7 +21,7 @@ class ApiEditError extends Error{
 	 */
 	public function __construct(){
 
-		parent::__construct(self::CODE,self::MESSAGE);
+		parent::__construct(static::CODE,static::MESSAGE);
 		$this -> setRequest(Request::getCall());
 
 	}

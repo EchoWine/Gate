@@ -96,6 +96,8 @@ class DB{
 			self::iniRestore();
 
 		self::startLog();
+
+		static::$log = [];
 	}
 	
 	/**

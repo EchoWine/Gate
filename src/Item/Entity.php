@@ -262,7 +262,7 @@ class Entity{
 		static::repository() -> where('id',$ids[0]) -> first();
 
 
-		return $this;
+		return $entity;
 	}
 
 	/**

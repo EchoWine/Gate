@@ -127,6 +127,7 @@ class QueryBuilder{
 			$r = $r -> select($v);
 		}
 
+		$this -> setParserResult(null);
 		$r = is_array($a) ? $r -> setIndexResult($v) -> get() : $r -> first();
 
 		if(is_array($a)){
@@ -204,7 +205,7 @@ class QueryBuilder{
 		$c = clone $this;
 		$sql = DB::SQL()::AGGREGATE($f,$v);
 
-		$c -> builder -> parserResult = null;
+		$c -> setParserResult(null);
 		$c -> builder -> addSelect($sql);
 		$r = $c -> first();
 

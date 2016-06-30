@@ -178,16 +178,16 @@ item.getList = function(table,params = {}){
 
 			template.setByHtml(rows,table.template.row);
 
-			table.list.page = data.page;
-			table.list.pages = data.pages;
-			table.list.count = data.count;
+			table.list.page = data.pagination.page;
+			table.list.pages = data.pagination.pages;
+			table.list.count = data.pagination.count;
 
 			// Update
-			container.find('[data-item-list-page]').html(data.page);
-			container.find('[data-item-list-pages]').html(data.pages);
-			container.find('[data-item-list-count]').html(data.count);
-			container.find('[data-item-list-start]').html(data.from);
-			container.find('[data-item-list-end]').html(data.to);
+			container.find('[data-item-list-page]').html(data.pagination.page);
+			container.find('[data-item-list-pages]').html(data.pagination.pages);
+			container.find('[data-item-list-count]').html(data.pagination.count);
+			container.find('[data-item-list-start]').html(data.pagination.from);
+			container.find('[data-item-list-end]').html(data.pagination.to);
 
 			item.updateListPagination(table);
 

@@ -171,11 +171,7 @@ abstract class Controller extends SourceController{
 
 			return new Response\ApiAllSuccess([
 				'results' => $results,
-				'count' => $pagination -> count,
-				'page' => $pagination -> page,
-				'pages' => $pagination -> pages,
-				'from' => $pagination -> from,
-				'to' => $pagination -> to
+				'pagination' => $pagination
 			]);
 
 		}catch(\Exception $e){
@@ -335,7 +331,7 @@ abstract class Controller extends SourceController{
 
 			if(!$entity = $this -> getEntity()::where('id',$id) -> first())
 				return new Response\ApiNotFound();
-			
+
 			$errors = $this -> getEntity()::validateUpdate(Request::all(),$entity);
 
 			if(!empty($errors))
@@ -345,8 +341,6 @@ abstract class Controller extends SourceController{
 
 			$entity -> update(Request::all());
 
-
-			
 			return new Response\ApiEditSuccess($id,$old_entity -> toArray(),$entity -> toArray());
 
 		}catch(\Exception $e){

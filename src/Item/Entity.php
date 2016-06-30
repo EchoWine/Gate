@@ -99,7 +99,8 @@ class Entity{
 	public function getValues(){
 		return $this -> values;
 	}
-	
+
+
 	/**
 	 * Call
 	 *
@@ -109,6 +110,7 @@ class Entity{
 	 * @return mixed
 	 */
 	public function __call($method, $arguments){
+		echo "awd";
 
 		if(isset($this -> fields[$method]))
 			return $this -> fields[$method];

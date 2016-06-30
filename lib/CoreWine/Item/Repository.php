@@ -30,8 +30,10 @@ class Repository extends QueryBuilder{
 			$return = [];
 
 			foreach($results as $n => $result){
-
-				$return[] = $this -> getEntity()::new($result);
+				$entity = $this -> getEntity()::new();
+				$entity -> fillRaw($result);
+				$entity -> setPersist();
+				$return[] = $entity;
 			}
 
 			return $return;

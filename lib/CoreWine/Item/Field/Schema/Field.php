@@ -88,9 +88,21 @@ class Field{
 	public $unique = false;
 
 	/**
+	 * Persist
+	 */
+	public $persist = true;
+
+	/**
 	 * Regex of field
 	 */
 	public $regex = "/^(.){0,255}$/iU";
+
+	const VALIDATION_ERROR_REQUIRED = "error_required";
+	const VALIDATION_ERROR_EMPTY = "error_empty";
+	const VALIDATION_ERROR_TOO_SHORT = "error_too_short";
+	const VALIDATION_ERROR_TOO_LONG = "error_too_long";
+	const VALIDATION_ERROR_INVALID = "error_invalid";
+	const VALIDATION_ERROR_NOT_UNIQUE = "error_not_unique";
 
 	/**
 	 * Construct
@@ -195,12 +207,10 @@ class Field{
 		return $this -> minLength;
 	}
 
-
-
 	/**
 	 * Set required
 	 */
-	public function required($required){
+	public function required($required = true){
 		$this -> required = $required;
 		return $this;
 	}
@@ -230,36 +240,43 @@ class Field{
 	 * @param mixed $value
 	 * @return Entity
 	 */
-	public function newEntity($value){
+	public function newEntity($value = null){
 		return new $this -> __entity($this,$value);
 	}
+
 
 	/**
 	 * Check if the value is valid
 	 */
-	public function isValid($value){
+	public function validate($value,$values,$entity,$repository){
+
+		if($this -> isRequired() && $value == null)
+			return static::VALIDATION_ERROR_REQUIRED;
 
 		$length = strlen($value);
 
-		if($length < $this -> getMinLength()){
-
-			$response = new Response\FieldErrorTooShort($this -> getLabel(),$this -> getMinLength());
-
-		}else if($length > $this -> getMaxLength()){
-
-			$response = new Response\FieldErrorTooLong($this -> getLabel(),$this -> getMaxLength());
+		if($length < $this -> getMinLength())
+			return static::VALIDATION_ERROR_TOO_SHORT;
 
 
-		}else if(!preg_match($this -> regex,$value)){
+		if($length > $this -> getMaxLength())
+			return static::VALIDATION_ERROR_TOO_LONG;
 
-			$response = new Response\FieldErrorInvalid($this -> getLabel(),$value);
+		if(!preg_match($this -> regex,$value))
+			return static::VALIDATION_ERROR_INVALID_VALUE;
 
-		}else{
-			$response = new Response\Success();
+
+		if($this -> isUnique()){
+
+			if($entity !== null && $entity -> id !== null)
+				$repository = $repository -> where($this -> getColumn(),'!=',$entity -> {$this -> getName()});
+
+			if($repository -> exists([$this -> getColumn() => $value])){
+				return static::VALIDATION_ERROR_NOT_UNIQUE;
+			}
 		}
 
-		$response -> setData(['value' => $value]);
-		return $response;
+		return null;
 
 	}
 
@@ -273,12 +290,21 @@ class Field{
 	}
 
 	/**
-	 * Check if the field is unique
+	 * Return if the field is unique
 	 *
 	 * @return bool
 	 */
 	public function isUnique(){
 		return $this -> unique;
+	}
+
+	/**
+	 * Return if the field is required
+	 *
+	 * @return bool
+	 */
+	public function isRequired(){
+		return $this -> required;
 	}
 
 	/**
@@ -392,9 +418,8 @@ class Field{
 	 *
 	 * @return value parsed
 	 */
-	public function add(&$repository,$value,$entity){
-		$repository = $repository -> addInsert($this -> getColumn(),$value);
-		$entity -> {$this -> getName()} = $value;
+	public function add($value){
+		$this -> getEntity() -> {$this -> getName()} = $value;
 	}
 
 	/**
@@ -405,11 +430,21 @@ class Field{
 	 *
 	 * @return value parsed
 	 */
-	public function edit(&$repository,$value,$entity){
-		$repository = $repository -> addUpdate($this -> getColumn(),$value);
+	public function edit($value){
 		$entity -> {$this -> getName()} = $value;
 	}
 
+	/**
+	 * Set
+	 *
+	 * @param Repository $repository
+	 * @param mixed $value
+	 *
+	 * @return value parsed
+	 */
+	public function set($value){
+		$entity -> {$this -> getName()} = $value;
+	}
 
 	/**
 	 * Call

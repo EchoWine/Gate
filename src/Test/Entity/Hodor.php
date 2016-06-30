@@ -16,11 +16,12 @@ class Hodor extends Entity{
 				-> label('#');
 
 		# Foo
-		$schema -> field(Field\StringField::class,'foo')
-				-> label('foo')
+		$schema -> field(Field\StringField::class,'door')
+				-> label('door')
 				-> maxLength(128)
-				-> minLength(50)
-				-> default('Default value for foo');
+				-> minLength(3)
+				-> required()
+				-> default('Opened');
 
 	}
 }

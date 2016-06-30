@@ -82,6 +82,17 @@ class Schema{
 	public function fields(){}
 
 	/**
+	 * Is set a field
+	 *
+	 * @param string $name
+	 *
+	 * @return bool
+	 */
+	public function isField($name){
+		return isset($this -> fields[$name]);
+	}
+
+	/**
 	 * Get fields
 	 */
 	public function getFields(){

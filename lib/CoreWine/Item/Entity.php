@@ -27,20 +27,101 @@ class Entity{
 	public static $repository = null;
 
 	/**
+	 * Last validation
+	 */
+	public static $last_validate = [];
+
+	/**
 	 * Array of all fields
 	 */
 	public $fields = [];
 
 	/**
-	 * Array of all values
+	 * Persist
 	 */
-	public $values = [];
+	public $persist = true;
 
 	/**
 	 * Construct
 	 */
 	public function __construct(){
+		
+		$this -> iniFields();
+	}
 
+	public function iniFields(){
+		foreach(self::schema() -> getFields() as $name => $field){
+			$this -> setField($name,$field -> newEntity());
+		}
+	}
+
+	/**
+	 * Get
+	 *
+	 * @param string $attribute
+	 *
+	 * @return mixed
+	 */
+	public function __get($attribute){
+		
+		if($this -> isField($attribute))
+			return $this -> getField($attribute) -> getValue();
+		
+
+		return null;
+		
+	}
+
+	/**
+	 * Set
+	 *
+	 * @param string $attribute
+	 * @param mixed $value
+	 *
+	 * @return mixed
+	 */
+	public function __set($attribute,$value){
+		
+		if($this -> isField($attribute)){
+			$this -> getField($attribute) -> setValue($value);
+		}
+		
+	}
+
+	/**
+	 * Call
+	 *
+	 * @param string $method
+	 * @param array $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($method, $arguments){
+
+		if($this -> isField($method))
+			return $this -> getField($method);
+		
+
+		throw new \Exception("Fatal error: Call to undefined method Entity::{$method}()");
+		
+	}
+
+	/**
+	 * Set persist
+	 *
+	 * @return bool
+	 */
+	public function setPersist($persist = false){
+		$this -> persist = $persist;
+	}
+
+	/**
+	 * Get persist
+	 *
+	 * @return bool
+	 */
+	public function getPersist(){
+		return $this -> persist;
 	}
 
 	/**
@@ -68,7 +149,6 @@ class Entity{
 		return new $repository(get_called_class());
 	}
 
-
 	/**
 	 * Get schema
 	 *
@@ -87,6 +167,15 @@ class Entity{
 		return static::repository();
 	}
 
+	/**
+	 * Set a field
+	 *
+	 * @param $name
+	 * @param $field
+	 */
+	public function setField($name,$field){
+		$this -> fields[$name] = $field;
+	}
 
 	/**
 	 * Get all fields
@@ -98,56 +187,30 @@ class Entity{
 	}
 
 	/**
-	 * Get all values
+	 * Is set a field
 	 *
-	 * @return array of values
+	 * @param string $name
+	 *
+	 * @return bool
 	 */
-	public function getValues(){
-		return $this -> values;
+	public function isField($name){
+		return isset($this -> fields[$name]);
 	}
-	
+
 	/**
-	 * Call
+	 * Get a field
 	 *
-	 * @param string $method
-	 * @param array $arguments
+	 * @param string $name
 	 *
-	 * @return mixed
+	 * @return Field
 	 */
-	public function __call($method, $arguments){
-
-		if(isset($this -> fields[$method]))
-			return $this -> fields[$method];
-		
-
-		throw new \Exception("Fatal error: Call to undefined method Entity::{$method}()");
-		
+	public function getField($name){
+		return $this -> fields[$name];
 	}
 
-	public static function validateField($field,$value,$values,$entity = null){
+	public static function validateField($field,$value,$values,$entity){
 
-		$response = $field -> isValid($value,$values);
-
-		if(!Response\Response::isResponseSuccess($response)){
-			return $response;
-		}
-
-		if(Response\Response::isResponseSuccess($response)){
-			if($field -> isUnique()){
-
-				$repository = static::repository();
-
-
-				if($entity !== null && $entity -> id !== null)
-					$repository = $repository -> where('id','!=',$entity -> id);
-
-				if($repository -> exists([$field -> getColumn() => $value])){
-					return new Response\ApiFieldErrorNotUnique($field -> getLabel(),$value);
-				}
-			}
-		}
-
-		return null;
+		return  $field -> validate($value,$values,$entity,static::repository());
 
 	}
 
@@ -168,9 +231,9 @@ class Entity{
 
 		foreach($values as $name => $value){
 
-			if(isset($fields[$name])){
+			if($schema -> isField($name)){
 
-				if($response = static::validateField($field,$value,$values,$entity)){
+				if($response = static::validateField($schema -> getField($name),$value,$values,$entity)){
 					$errors[$name] = $response;
 				}
 
@@ -190,7 +253,7 @@ class Entity{
 	 *
 	 * @return array
 	 */
-	public static function validateAll($values,$entity = null){
+	public static function validateAll($values = [],$entity = null){
 
 		$errors = []; 
 
@@ -216,7 +279,7 @@ class Entity{
 	 *
 	 * @return array
 	 */
-	public static function validateCreate($values){
+	public static function validateCreate($values = []){
 
 		return static::validateAll($values,null);
 	}
@@ -228,26 +291,60 @@ class Entity{
 	 *
 	 * @return array
 	 */
-	public static function validateUpdate($values,$entity){
+	public static function validateUpdate($values = [],$entity){
 
 		return static::validateAll($values,$entity);
 	}
 
+	/**
+	 * Set last validation response
+	 *
+	 * @param array $validation
+	 */
+	public static function setLastValidate($validate){
+		static::$last_validate = $validate;
+	}
 
 	/**
-	 * Create element
+	 * Get last validation response
 	 *
-	 * @return array
+	 * @param array $validation
 	 */
-	public static function create($values){
+	public static function getLastValidate(){
+		return static::$last_validate;
+	}
 
+	/**
+	 * Return a new entity and save
+	 *
+	 * @param array $values
+	 *
+	 * @return Entity
+	 */
+	public static function create($values = []){
 		
-		$schema = static::schema();
+		$entity = static::new($values);
 
-		$repository = static::repository();
+		return $entity -> save() 
+			? $entity 
+			: false;
+
+	}
+
+
+	/**
+	 * Return a new entity
+	 * 
+	 * @param array $values
+	 *
+	 * @return Entity
+	 */
+	public static function new($values = []){
 
 		$entity = new static();
+		$entity -> fill($values);
 
+		/*
 		foreach($schema -> getFields() as $name => $field){
 
 			if($field -> isAdd()){
@@ -256,19 +353,102 @@ class Entity{
 
 				if($field -> isAddNeeded($value)){
 
-					$field -> add($repository,$value,$entity);
+					$field -> add($value,$entity);
 
 				}
 
 			}
 		}
-
-		$ids = $repository -> insert();
-
-		$entity = static::repository() -> where('id',$ids[0]) -> first();
-
+		*/
 
 		return $entity;
+	}
+
+
+	/**
+	 * Fill entity with array
+	 *
+	 * @param array $result
+	 */
+	public function fill($values = []){
+
+		foreach($values as $name => $value){
+			$this -> {$name} = $value;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Fill entity with array given by repository
+	 *
+	 * @param array $result
+	 */
+	public function fillRaw($values = []){
+
+		foreach($values as $name => $value){
+			if($this -> isField($name)){
+				$this -> getField($name) -> setValueRaw($value);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Get field to persist
+	 *
+	 * @return array
+	 */
+	public function getFieldsToPersist(){
+		$fields = [];
+		foreach($this -> getFields() as $name => $field){
+			if($field -> getPersist()){
+				$fields[$name] = $field;
+			}
+		}
+		return $fields;
+	}
+
+	/**
+	 * Return all values of given fields
+	 *
+	 * @return Array
+	 */
+	public static function getValues($fields){
+		$values = [];
+
+		foreach($fields as $name => $field){
+			$values[$name] = $field -> getValue();
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Save the entity
+	 */
+	public function save(){
+
+		$fields = $this -> getFieldsToPersist();
+		$values = static::getValues($fields);
+		
+		$validation = static::validate($values);
+		static::setLastValidate($validation);
+
+		if(!empty($validation))
+			return false;
+		
+		if($this -> getPersist()){
+			# Insert
+			echo "insert";
+		}else{
+			# Update
+			echo "update";
+		}
+		
+		return $this;
+
 	}
 
 	/**
@@ -319,39 +499,6 @@ class Entity{
 		}
 
 		return $return;
-	}
-	
-	/**
-	 * Create a new entity and set fields using an array
-	 *
-	 * @param array $result
-	 */
-	public static function new($result){
-
-		$entity = new static();
-		$entity -> fill($result);
-		return $entity;
-	}
-
-	/**
-	 * Fill entity with array
-	 *
-	 * @param array $result
-	 */
-	public function fill($result){
-
-		foreach($this -> getSchema() -> getFields() as $fieldSchema){
-			if(isset($result[$fieldSchema -> getColumn()])){
-				$value = $result[$fieldSchema -> getColumn()];
-				$entity = $fieldSchema -> newEntity($value);
-
-				$this -> fields[$fieldSchema -> getName()] = $entity;
-				$this -> values[] = $value;
-				$this -> {$fieldSchema -> getName()} = $value;
-			}
-		}
-
-		return $this;
 	}
 
 }

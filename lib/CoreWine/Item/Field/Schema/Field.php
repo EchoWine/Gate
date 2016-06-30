@@ -1,15 +1,15 @@
 <?php
 
-namespace Item\Field\Schema;
+namespace CoreWine\Item\Field\Schema;
 
-use Item\Response as Response;
+use CoreWine\Item\Response as Response;
 
 class Field{
 	
 	/**
 	 * Entity
 	 */
-	public $__entity = 'Item\Field\Entity';
+	public $__entity = 'CoreWine\Item\Field\Entity';
 
 	/**
 	 * Name
@@ -24,7 +24,7 @@ class Field{
 	/**
 	 * Lenght
 	 */
-	public $maxLength = 80;
+	public $maxLength = 255;
 
 	/**
 	 * Lenght
@@ -35,6 +35,11 @@ class Field{
 	 * Required
 	 */
 	public $required = false;
+
+	/**
+	 * Default
+	 */
+	public $default = NULL;
 
 	/**
 	 * Add
@@ -85,7 +90,7 @@ class Field{
 	/**
 	 * Regex of field
 	 */
-	public $regex = "/^(.){0,80}$/iU";
+	public $regex = "/^(.){0,255}$/iU";
 
 	/**
 	 * Construct
@@ -98,34 +103,30 @@ class Field{
 	}
 
 	/**
-	 * Call
-	 *
-	 * @param string $method
-	 * @param array $arguments
-	 *
-	 * @return mixed
-	 */
-	public function __call($method, $arguments){
-
-
-		$isClass = substr($method,0,7);
-
-		if($isClass === 'isClass'){
-			$nameClass = __NAMESPACE__."\\".substr($method,7,strlen($method)-1)."Field";
-			return $this instanceof $nameClass;
-		}
-		
-		parent::__call($method,$arguments);
-		
-	}
-
-	/**
 	 * Set name
 	 */
 	public function name($name){
 		$this -> name = $name;
 		return $this;
 	}
+
+	/**
+	 * Set default value
+	 */
+	public function default($default){
+		$this -> default = $default;
+		return $this;
+	}
+
+	/**
+	 * Get default
+	 * 
+	 * @return mixed
+	 */
+	public function getDefault(){
+		return $this -> default;
+	}
+
 
 	/**
 	 * Get name

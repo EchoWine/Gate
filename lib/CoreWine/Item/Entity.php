@@ -9,12 +9,12 @@ class Entity{
 	/**
 	 * Item\Repository
 	 */
-	public static $__repository = 'Item\Repository';
+	public static $__repository = 'CoreWine\Item\Repository';
 
 	/**
 	 * Item\Schema
 	 */
-	public static $__schema = 'Item\Schema';
+	public static $__schema = 'CoreWine\Item\Schema';
 
 	/**
 	 * Schema
@@ -29,12 +29,12 @@ class Entity{
 	/**
 	 * Array of all fields
 	 */
-	public $fields;
+	public $fields = [];
 
 	/**
 	 * Array of all values
 	 */
-	public $values;
+	public $values = [];
 
 	/**
 	 * Construct
@@ -47,11 +47,17 @@ class Entity{
 	 * Get static schema
 	 */
 	public static function schema(){
+
 		if(static::$schema !== null)
-			return $schema;
+			return static::$schema;
 
 		$schema = static::$__schema;
-		return new $schema();
+		$schema = new $schema();
+		static::__fields($schema);
+		$schema -> setTable(static::$__table);
+		static::$schema = $schema;
+		static::repository() -> __alterSchema();
+		return $schema;
 	}
 
 	/**
@@ -136,7 +142,7 @@ class Entity{
 					$repository = $repository -> where('id','!=',$entity -> id);
 
 				if($repository -> exists([$field -> getColumn() => $value])){
-					return new Response\FieldErrorNotUnique($field -> getLabel(),$value);
+					return new Response\ApiFieldErrorNotUnique($field -> getLabel(),$value);
 				}
 			}
 		}
@@ -259,7 +265,7 @@ class Entity{
 
 		$ids = $repository -> insert();
 
-		static::repository() -> where('id',$ids[0]) -> first();
+		$entity = static::repository() -> where('id',$ids[0]) -> first();
 
 
 		return $entity;

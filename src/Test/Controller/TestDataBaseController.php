@@ -8,14 +8,14 @@ use CoreWine\Router;
 use CoreWine\SourceManager\Controller as Controller;
 
 
-class TestController extends Controller{
+class TestDataBaseController extends Controller{
 	
 	/**
 	 * Set all Routers
 	 */
 	public function __routes(){
 
-		$this -> route('index') -> url("/test/db") -> as("test/db");
+		$this -> route('index') -> url("/test/db");
 
 	}
 

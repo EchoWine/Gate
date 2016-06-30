@@ -1,7 +1,8 @@
 <?php
 
-namespace Item;
+namespace CoreWine\Item;
 
+use CoreWine\Item\Field\Schema\Field as Field;
 
 class Schema{
 
@@ -39,7 +40,7 @@ class Schema{
 	 * Add a field
 	 */
 	public function field($class,$name){
-		if(is_subclass_of($class,Field\Schema\Field::class)){
+		if(is_subclass_of($class,Field::class)){
 
 			$field = new $class($name);
 			$this -> fields[$name] = $field;
@@ -107,6 +108,13 @@ class Schema{
 	 */
 	public function hasField($name){
 		return isset($this -> fields[$name]);
+	}
+
+	/**
+	 * Set table
+	 */
+	public function setTable($table){
+		$this -> table = $table;
 	}
 
 	/**

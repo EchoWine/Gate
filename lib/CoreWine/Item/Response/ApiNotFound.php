@@ -1,20 +1,20 @@
 <?php
 
-namespace CoreWine\Item\Response;
+namespace Item\Response;
 
 use CoreWine\Request;
 
-class ApiAddError extends Error{
+class ApiNotFound extends Error{
 
 	/** 
 	 * Code
 	 */
-	const CODE = 'error';
+	const CODE = 'not_found';
 
 	/**
 	 * Message
 	 */
-	const MESSAGE = "An error was occurred";
+	const MESSAGE = "Resource not found";
 
 	/**
 	 * Construct
@@ -23,7 +23,6 @@ class ApiAddError extends Error{
 
 		parent::__construct(static::CODE,static::MESSAGE);
 		$this -> setRequest(Request::getCall());
-
 	}
 }
 

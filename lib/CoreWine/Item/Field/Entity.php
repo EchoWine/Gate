@@ -34,6 +34,24 @@ class Entity{
 	}
 
 	/**
+	 * Is primary
+	 *
+	 * @return bool
+	 */
+	public function isPrimary(){
+		return $this -> getSchema() -> getPrimary();
+	}
+
+	/**
+	 * Is Autoincrement
+	 *
+	 * @return bool
+	 */
+	public function isAutoIncrement(){
+		return $this -> getSchema() -> getAutoIncrement();
+	}
+
+	/**
 	 * Get the schema
 	 *
 	 * @return Item\Field\Schema
@@ -135,5 +153,39 @@ class Entity{
 	public function __tostring(){
 		return $this -> getValue();
 	}
+
+	/**
+	 * Add the field to query to add an entity
+	 *
+	 * @param Repository $repository
+	 *
+	 * @return Repository
+	 */
+	public function add($repository){
+		return $repository -> addInsert($this -> getSchema() -> getColumn(),$this -> getValueRaw());
+	}
+
+	/**
+	 * Add the field to query to edit an entity
+	 *
+	 * @param Repository $repository
+	 *
+	 * @return Repository
+	 */
+	public function edit($repository){
+		return $repository -> addUpdate($this -> getSchema() -> getColumn(),$this -> getValueRaw());
+	}
+
+	/**
+	 * Add the field to query to find the entity
+	 *
+	 * @param Repository $repository
+	 *
+	 * @return Repository
+	 */
+	public function where($repository){
+		return $repository -> where($this -> getSchema() -> getColumn(),$this -> getValueRaw());
+	}
+
 }
 ?>

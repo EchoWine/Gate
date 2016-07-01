@@ -78,12 +78,22 @@ class Field{
 	public $sort = true;
 
 	/**
-	 * Sort
+	 * Primary
+	 */
+	public $primary = false;
+
+	/**
+	 * Auto Increment
+	 */
+	public $auto_increment = false;
+
+	/**
+	 * Copy
 	 */
 	public $copy = true;
 
 	/**
-	 * Sort
+	 * Unique
 	 */
 	public $unique = false;
 
@@ -120,6 +130,34 @@ class Field{
 	public function name($name){
 		$this -> name = $name;
 		return $this;
+	}
+
+	/**
+	 * Get primary
+	 */
+	public function getPrimary(){
+		return $this -> primary;
+	}
+
+	/**
+	 * Set primary
+	 */
+	public function primary($primary = true){
+		$this -> primary = $primary;
+	}
+
+	/**
+	 * Get auto increment
+	 */
+	public function getAutoIncrement(){
+		return $this -> auto_increment;
+	}
+
+	/**
+	 * Set auto Increment
+	 */
+	public function autoIncrement($auto_increment = true){
+		$this -> auto_increment = $auto_increment;
 	}
 
 	/**

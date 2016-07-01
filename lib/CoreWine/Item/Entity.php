@@ -208,6 +208,39 @@ class Entity{
 		return $this -> fields[$name];
 	}
 
+
+	/**
+	 * Get the primary field
+	 *
+	 * @return Array
+	 */
+	public function getPrimaryFields(){
+
+		$fields = [];
+		foreach($this -> getFields() as $field){
+			if($field -> isPrimary())
+				$fields[] = $field;
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Get the autoincrement field
+	 *
+	 * @return Array
+	 */
+	public function getAutoIncrementField(){
+
+		foreach($this -> getFields() as $field){
+			if($field -> isAutoIncrement())
+				return $field;
+		}
+
+		return null;
+	}
+
+
 	public static function validateField($field,$value,$values,$entity){
 
 		return  $field -> validate($value,$values,$entity,static::repository());
@@ -344,23 +377,6 @@ class Entity{
 		$entity = new static();
 		$entity -> fill($values);
 
-		/*
-		foreach($schema -> getFields() as $name => $field){
-
-			if($field -> isAdd()){
-
-				$value = isset($values[$name]) ? $values[$name] : null;
-
-				if($field -> isAddNeeded($value)){
-
-					$field -> add($value,$entity);
-
-				}
-
-			}
-		}
-		*/
-
 		return $entity;
 	}
 
@@ -389,6 +405,22 @@ class Entity{
 		foreach($values as $name => $value){
 			if($this -> isField($name)){
 				$this -> getField($name) -> setValueRaw($value);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Fill from another entity
+	 *
+	 * @param array $result
+	 */
+	public function fillFrom($entity){
+
+		foreach($entity -> getFields() as $name => $field){
+			if($this -> isField($name)){
+				$field -> setValueRaw($field -> getValue());
 			}
 		}
 
@@ -432,7 +464,7 @@ class Entity{
 
 		$fields = $this -> getFieldsToPersist();
 		$values = static::getValues($fields);
-		
+
 		$validation = static::validate($values);
 		static::setLastValidate($validation);
 
@@ -440,53 +472,80 @@ class Entity{
 			return false;
 		
 		if($this -> getPersist()){
-			# Insert
-			echo "insert";
+			$ai = $this -> insert($fields);
+
+			if(($field = $this -> getAutoIncrementField()) !== null)
+				$field -> setValueRaw($ai[0]);
+
 		}else{
-			# Update
-			echo "update";
+			$this -> update($fields);
 		}
-		
+
+
+
 		return $this;
 
+	}
+
+	protected function wherePrimary($repository){
+
+		foreach($this -> getPrimaryFields() as $field){
+			$repository = $field -> where($repository);
+		}
+
+		return $repository;
 	}
 
 	/**
-	 * Update elements
+	 * Update Entity
+	 * 
+	 * @param Array $fields
 	 *
-	 * @return array
+	 * @return bool
 	 */
-	public function update($values){
-
-		
-		$schema = $this -> getSchema();
+	public function update($fields){
 
 		$repository = $this -> getRepository();
 
-		foreach($schema -> getFields() as $name => $field){
+		$repository = $this -> wherePrimary($repository);
 
-			if($field -> isEdit()){
-
-				$value = isset($values[$name]) ? $values[$name] : null;
-
-				if($field -> isEditNeeded($value)){
-
-					$field -> edit($repository,$value,$this);
-
-				}
-
-			}
+		foreach($fields as $name => $field){
+			$repository = $field -> edit($repository);
 		}
 
-		$repository -> where('id',$this -> id) -> update();
-
-		return $this;
+		return $repository -> update();
 	}
 
+	/**
+	 * Insert Entity
+	 * 
+	 * @param Array $fields
+	 *
+	 * @return bool
+	 */
+	public function insert($fields){
+
+		$repository = $this -> getRepository();
+
+		foreach($fields as $name => $field){
+			$repository = $field -> add($repository);
+		}
+
+		return $repository -> insert();
+
+		
+	}
+
+	/**
+	 * Alias where repository
+	 */
 	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){
 		return static::repository() -> where($v1,$v2,$v3,$v4);
 	}
 
+	/**
+	 * To array
+	 */
 	public function toArray(){
 
 		$schema = $this -> getSchema();

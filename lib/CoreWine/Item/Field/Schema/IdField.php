@@ -9,6 +9,11 @@ class IdField extends Field{
 	 */
 	public $unique = true;
 
+
+	public $primary = true;
+	
+	public $auto_increment = true;
+
 	public $persist = false;
 
 	public $add = false;

@@ -21,23 +21,33 @@ class TestItemController extends Controller{
 	 */
 	public function index(){
 
-		$hodor = Hodor::where('id',1) -> first();
-		$hodor -> door = 'Saveee';
-		$hodor -> save();
-
+		# Create a new Entity
 		$hodor = new Hodor();
 		$hodor = Hodor::new();
 		$hodor -> door = 'Hold the door';
 		$hodor -> fill(['door' => 'Hold the door']);
-		echo $hodor -> door;
-		echo "!!! but only for: ";
-		echo $hodor -> door() -> getSchema() -> getMaxLength();
-		echo $hodor -> getField('door') -> getSchema() -> getMaxLength();
-		echo $hodor -> getSchema() -> getField('door') -> getMaxLength();
+		$hodor -> save();
+		$hodor -> id; # Field AutoIncrement accessible
+		$hodor = Hodor::create(['door' => "I'm busy"]);
+		
 
+		# Search entity
+		$hodor = Hodor::where('id',1) -> first();
+		$hodor -> door = 'Rekt';
 		$hodor -> save();
 
+
+		# Get Schema
+		$hodor -> door() -> getSchema() -> getMaxLength();
+		$hodor -> getField('door') -> getSchema() -> getMaxLength();
+		$hodor -> getSchema() -> getField('door') -> getMaxLength();
+
+		# Get last validation failed during saving an entity
+		$hodor -> door = 'to'; # Too short
+		$hodor -> save();
 		print_r(Hodor::getLastValidate());
+
+
 		die();
 
 		$this -> create(Hodor::class);

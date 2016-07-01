@@ -131,6 +131,13 @@ class DB{
 	}
 
 	/**
+	 * Clear log
+	 */
+	public static function clearLog(){
+		self::$log = [];
+	}
+
+	/**
 	 * Get last query executed
 	 *
 	 * @return string

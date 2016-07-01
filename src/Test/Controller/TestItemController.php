@@ -2,6 +2,7 @@
 
 namespace Test\Controller;
 
+use CoreWine\DataBase\DB;
 use CoreWine\SourceManager\Controller as Controller;
 use Test\Entity\Hodor;
 
@@ -21,21 +22,33 @@ class TestItemController extends Controller{
 	 */
 	public function index(){
 
-		# Create a new Entity
+		DB::clearLog();
+
+		# New Entity
 		$hodor = new Hodor();
+
+		# Alias new entity
 		$hodor = Hodor::new();
+
+		# Defining an attribute
 		$hodor -> door = 'Hold the door';
+
+		# Fill entity with array of attributes
 		$hodor -> fill(['door' => 'Hold the door']);
+
+		# Save changes
 		$hodor -> save();
-		$hodor -> id; # Field AutoIncrement accessible
+
+		# Get ID
+		$hodor -> id;
+
+		# New entity and save in one method
 		$hodor = Hodor::create(['door' => "I'm busy"]);
-		
 
 		# Search entity
 		$hodor = Hodor::where('id',1) -> first();
 		$hodor -> door = 'Rekt';
 		$hodor -> save();
-
 
 		# Get Schema
 		$hodor -> door() -> getSchema() -> getMaxLength();
@@ -45,42 +58,25 @@ class TestItemController extends Controller{
 		# Get last validation failed during saving an entity
 		$hodor -> door = 'to'; # Too short
 		$hodor -> save();
-		print_r(Hodor::getLastValidate());
 
+		# Get array of last validation
+		Hodor::getLastValidate();
+
+		# Delete
+		$hodor = new Hodor();
+		$hodor -> door = 'awa';
+		$hodor -> save();
+		$hodor -> delete();
+
+		DB::printLog();
 
 		die();
 
-		$this -> create(Hodor::class);
-		$this -> create(Hodor::class,[
-			'door' => '?'
-		]);
-
-		$this -> create(Hodor::class,[
-			'door' => 'Hold the door'
-		]);
-		die();
-	}
-
-	public function create($class,$data = []){
-
-		print_r("Trying to create with data: <br>\n");
-		print_r($data);
-		$user = Hodor::create($data);
-
-		if(!$user){
-			$validate = Hodor::getLastValidate();
-			print_r("\n\n<br><br>Error:\n<br>");
-			print_r($validate);
-		}else{
-			print_r("\n\n<br><br>");
-			print_r("ID: ".$user -> id."<br>\n");
-			print_r("Door: ".$user -> door);
-		}
-
-		print_r("\n\n<br><br>----------------------------------------------------------------------------\n<br>\n\n<br>");
 		
 
+
 	}
+
 
 }
 

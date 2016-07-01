@@ -1,32 +1,33 @@
 TODO list
 
-- [ ] Move part of 'src/Item' under 'lib/CoreWine/Item' and rename the remaining 'src/Api'
+- [x] Move part of 'src/Item' under 'lib/CoreWine/Item'
+- [ ] Rename 'src/item' in src/Api' and cleanup
 - [ ] Soft/Hard alter table (hard: delete not declared column, only for dev, not for prod)
 - [ ] Backup of database for every alteration in folder
+- [ ] Resolve problem about column/repository of field
 
 - [ ] Api
-	- [x] list
-	- [x] add
-	- [x] view
-	- [x] edit
-	- [x] temp sort
-	- [x] pagination
+	- [ ] list
+	- [ ] add
+	- [ ] view
+	- [ ] edit
+	- [ ] temp sort
+	- [ ] pagination
 	- [ ] search
 
 - [ ] Item
 	- [ ] Refactoring
-	- [ ] Create
-	- [ ] Save
-	- [ ] New
-	- [ ] Fill
-	- [ ] Retrieve (get, first, etc..)
+	- [x] Create
+	- [x] Save
+	- [x] New
+	- [x] Fill
+	- [x] Retrieve (get, first, etc..)
 	- [ ] Delete
 	- [ ] Copy
 	- [ ] Fields:
-		- [ ] Templating 
-		- [ ] ID
+		- [x] ID
 		- [ ] Integer
-		- [ ] String
+		- [x] String
 		- [ ] Text
 		- [ ] Float
 		- [ ] Date

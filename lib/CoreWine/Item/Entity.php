@@ -481,6 +481,8 @@ class Entity{
 			$this -> update($fields);
 		}
 
+		$this -> setPersist(0);
+
 
 
 		return $this;
@@ -488,7 +490,6 @@ class Entity{
 	}
 
 	protected function wherePrimary($repository){
-
 		foreach($this -> getPrimaryFields() as $field){
 			$repository = $field -> where($repository);
 		}
@@ -541,6 +542,17 @@ class Entity{
 	 */
 	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){
 		return static::repository() -> where($v1,$v2,$v3,$v4);
+	}
+
+	/**
+	 * Delete
+	 */
+	public function delete(){
+
+		if($this -> getPersist())
+			return null;
+
+		$this -> wherePrimary($this -> getRepository()) -> delete();
 	}
 
 	/**

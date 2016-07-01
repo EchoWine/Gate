@@ -22,11 +22,6 @@ class Entity{
 	public static $schema = null;
 
 	/**
-	 * Repositorya
-	 */
-	public static $repository = null;
-
-	/**
 	 * Last validation
 	 */
 	public static $last_validate = [];
@@ -50,7 +45,7 @@ class Entity{
 	}
 
 	public function iniFields(){
-		foreach(self::schema() -> getFields() as $name => $field){
+		foreach(static::schema() -> getFields() as $name => $field){
 			$entityField = $field -> newEntity();
 			$entityField -> setTable($this);
 			$this -> setField($name,$entityField);
@@ -130,13 +125,17 @@ class Entity{
 	 * Get static schema
 	 */
 	public static function schema(){
-
 		if(static::$schema !== null)
 			return static::$schema;
+
+		$tmp = null;
+		static::$schema = &$tmp;
+		unset($tmp);
 
 		$schema = static::$__schema;
 		$schema = new $schema();
 		static::__fields($schema);
+
 		$schema -> setTable(static::$__table);
 		static::$schema = $schema;
 		static::repository() -> __alterSchema();
@@ -148,7 +147,7 @@ class Entity{
 	 */
 	public static function repository(){
 		$repository = static::$__repository;
-		return new $repository(get_called_class());
+		return new $repository(static::class);
 	}
 
 	/**

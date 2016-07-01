@@ -10,6 +10,11 @@ class Entity{
 	public $schema;
 
 	/**
+	 * Table
+	 */
+	public $table;
+
+	/**
 	 * Value
 	 */
 	public $value;
@@ -34,12 +39,32 @@ class Entity{
 	}
 
 	/**
+	 * Set tabe
+	 */
+	public function setTable($table){
+		$this -> table = $table;
+	}
+
+	public function getTable(){
+		return $this -> table;
+	}
+
+	/**
 	 * Is primary
 	 *
 	 * @return bool
 	 */
 	public function isPrimary(){
 		return $this -> getSchema() -> getPrimary();
+	}
+
+	/**
+	 * Is unique
+	 *
+	 * @return bool
+	 */
+	public function isUnique(){
+		return $this -> getSchema() -> getUnique();
 	}
 
 	/**
@@ -116,6 +141,30 @@ class Entity{
 	}
 
 	/**
+	 * Set value copied
+	 *
+	 * @param mixed $value
+	 */
+	public function setValueCopied($value = null){
+
+		if(!$this -> getSchema() -> isCopy())
+			return;
+
+		if($this -> isUnique()){
+			$i = 0;
+			do{
+				$value_copied = $this -> parseValueCopy($value,$i++);
+				$res = $this -> getTable() -> getRepository() -> exists([$this -> getSchema() -> getColumn() => $value_copied]);
+				
+			}while($res);
+
+			$value = $value_copied;
+		}
+
+		$this -> setValue($value);
+	}
+
+	/**
 	 * Get the value
 	 *
 	 * @return mixed
@@ -124,6 +173,50 @@ class Entity{
 		return $this -> value;
 	}
 
+	/**
+	 * Parse the value for data
+	 *
+	 * @param mixed $value
+	 *
+	 * @return value parsed
+	 */
+	public function parseValue($value){
+		return $value;
+	}
+
+	/**
+	 * Parse the value for add
+	 *
+	 * @param mixed $value
+	 *
+	 * @return value parsed
+	 */
+	public function parseValueAdd($value){
+		return $this -> parseValue($value);
+	}
+
+	/**
+	 * Parse the value for edit
+	 *
+	 * @param mixed $value
+	 *
+	 * @return value parsed
+	 */
+	public function parseValueEdit($value){
+		return $this -> parseValue($value);
+	}
+
+	/**
+	 * Parse the value for edit
+	 *
+	 * @param mixed $value
+	 * @param int $i count
+	 *
+	 * @return value parsed
+	 */
+	public function parseValueCopy($value,$i){
+		return $value."_".$i;
+	}
 	
 	/**
 	 * Parse the value from raw to value

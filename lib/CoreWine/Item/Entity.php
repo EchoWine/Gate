@@ -51,7 +51,9 @@ class Entity{
 
 	public function iniFields(){
 		foreach(self::schema() -> getFields() as $name => $field){
-			$this -> setField($name,$field -> newEntity());
+			$entityField = $field -> newEntity();
+			$entityField -> setTable($this);
+			$this -> setField($name,$entityField);
 		}
 	}
 
@@ -364,6 +366,26 @@ class Entity{
 
 	}
 
+	/**
+	 * Return a new entity copied
+	 *
+	 * @param array $values
+	 *
+	 * @return Entity
+	 */
+	public static function copy($source){
+		
+		$entity = static::new();
+
+		$entity -> fillFrom($source);
+
+
+		return $entity -> save() 
+			? $entity 
+			: false;
+
+	}
+
 
 	/**
 	 * Return a new entity
@@ -420,7 +442,7 @@ class Entity{
 
 		foreach($entity -> getFields() as $name => $field){
 			if($this -> isField($name)){
-				$field -> setValueRaw($field -> getValue());
+				$this -> getField($name) -> setValueCopied($field -> getValue());
 			}
 		}
 
@@ -551,6 +573,8 @@ class Entity{
 
 		if($this -> getPersist())
 			return null;
+
+		$this -> setPersist(1);
 
 		$this -> wherePrimary($this -> getRepository()) -> delete();
 	}

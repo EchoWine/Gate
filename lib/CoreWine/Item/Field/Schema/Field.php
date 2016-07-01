@@ -288,7 +288,7 @@ class Field{
 	 */
 	public function validate($value,$values,$entity,$repository){
 
-		if($this -> isRequired() && $value == null)
+		if($this -> getRequired() && $value == null)
 			return static::VALIDATION_ERROR_REQUIRED;
 
 		$length = strlen($value);
@@ -304,7 +304,7 @@ class Field{
 			return static::VALIDATION_ERROR_INVALID_VALUE;
 
 
-		if($this -> isUnique()){
+		if($this -> getUnique()){
 
 			if($entity !== null && $entity -> id !== null)
 				$repository = $repository -> where($this -> getColumn(),'!=',$entity -> {$this -> getName()});
@@ -328,11 +328,21 @@ class Field{
 	}
 
 	/**
+	 * Set unique
+	 *
+	 * @param bool $unique
+	 */
+	public function unique($unique = true){
+		$this -> unique = $unique;
+		return $this;
+	}
+
+	/**
 	 * Return if the field is unique
 	 *
 	 * @return bool
 	 */
-	public function isUnique(){
+	public function getUnique(){
 		return $this -> unique;
 	}
 
@@ -341,7 +351,7 @@ class Field{
 	 *
 	 * @return bool
 	 */
-	public function isRequired(){
+	public function getRequired(){
 		return $this -> required;
 	}
 
@@ -403,50 +413,7 @@ class Field{
 		return $this -> sort;
 	}
 
-	/**
-	 * Parse the value for data
-	 *
-	 * @param mixed $value
-	 *
-	 * @return value parsed
-	 */
-	public function parseValue($value){
-		return $value;
-	}
 
-	/**
-	 * Parse the value for add
-	 *
-	 * @param mixed $value
-	 *
-	 * @return value parsed
-	 */
-	public function parseValueAdd($value){
-		return $this -> parseValue($value);
-	}
-
-	/**
-	 * Parse the value for edit
-	 *
-	 * @param mixed $value
-	 *
-	 * @return value parsed
-	 */
-	public function parseValueEdit($value){
-		return $this -> parseValue($value);
-	}
-
-	/**
-	 * Parse the value for edit
-	 *
-	 * @param mixed $value
-	 * @param int $i count
-	 *
-	 * @return value parsed
-	 */
-	public function parseValueCopy($value,$i){
-		return $value."_".$i;
-	}
 
 	/**
 	 * Add

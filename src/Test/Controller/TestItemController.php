@@ -64,8 +64,14 @@ class TestItemController extends Controller{
 
 		# Delete
 		$hodor = new Hodor();
-		$hodor -> door = 'awa';
+		$hodor -> door = 'awass';
 		$hodor -> save();
+		$hodor -> delete();
+		$hodor -> save();
+
+
+		# Create a copy
+		$hodor = Hodor::copy($hodor);
 		$hodor -> delete();
 
 		DB::printLog();

@@ -5,15 +5,9 @@ TODO list
 - [ ] Soft/Hard alter table (hard: delete not declared column, only for dev, not for prod)
 - [ ] Backup of database for every alteration in folder
 - [ ] Resolve problem about column/repository of field
+- [ ] Make clear distinction between Field/Entity and Field/Schema
+- [ ] Make clear distinction between Item/Entity and Item/Schema
 
-- [ ] Api
-	- [ ] list
-	- [ ] add
-	- [ ] view
-	- [ ] edit
-	- [ ] temp sort
-	- [ ] pagination
-	- [ ] search
 
 - [ ] Item
 	- [ ] Refactoring
@@ -22,8 +16,8 @@ TODO list
 	- [x] New
 	- [x] Fill
 	- [x] Retrieve (get, first, etc..)
-	- [ ] Delete
-	- [ ] Copy
+	- [x] Delete
+	- [x] Copy
 	- [ ] Fields:
 		- [x] ID
 		- [ ] Integer
@@ -33,7 +27,14 @@ TODO list
 		- [ ] Date
 		- [ ] Time
 		- [ ] DateTime
-		- [ ] Sort
-		- [ ] Single/Multiple uploads file
-		- [ ] Single/Multiple uploads image
+
+
+- [ ] Api
+	- [ ] list
+	- [ ] add
+	- [ ] view
+	- [ ] edit
+	- [ ] temp sort
+	- [ ] pagination
+	- [ ] search
 		

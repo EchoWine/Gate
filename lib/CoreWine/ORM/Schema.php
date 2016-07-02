@@ -40,7 +40,6 @@ class Schema{
 	 * Add a field
 	 */
 	public function field($class,$name){
-		
 		if(is_subclass_of($class,Field::class)){
 
 			$field = new $class($name);
@@ -136,7 +135,7 @@ class Schema{
 		return $this -> table;
 	}
 
-	public function getPrimary(){
+	public function getPrimaryField(){
 		return $this -> getField($this -> primary);
 	}
 

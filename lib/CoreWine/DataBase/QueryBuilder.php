@@ -1324,7 +1324,7 @@ class QueryBuilder{
 	public function first(){
 		$r = $this -> take(1) -> get();
 
-		return !empty($r) ? $r[0] : array();
+		return !empty($r) ? $r[0] : false;
 	}
 
 	/**

@@ -39,10 +39,11 @@ class Field{
 	}
 
 	/**
-	 * Set tabe
+	 * Set Model
 	 */
 	public function setModel($model){
 		$this -> model = $model;
+		$model -> setField($this -> getSchema() -> getName(),$this);
 	}
 
 	public function getModel(){
@@ -104,11 +105,25 @@ class Field{
 	}
 
 	/**
-	 * Set the value raw
+	 * Set the value raw by repository
 	 *
 	 * @return mixed
 	 */
-	public function setValueRaw($value_raw,$persist = false){
+	public function setValueRawToRepository($value_raw,$persist = false){
+		$this -> value_raw = $value_raw;
+
+		if(!$persist){
+			$this -> setValue($this -> parseRawToValue($value_raw),false);
+			$this -> persist = $persist;
+		}
+	}
+
+	/**
+	 * Set the value raw by repository
+	 *
+	 * @return mixed
+	 */
+	public function setValueRawFromRepository($value_raw,$persist = false){
 		$this -> value_raw = $value_raw;
 
 		if(!$persist){
@@ -135,7 +150,7 @@ class Field{
 		$this -> value = $value;
 
 		if($persist){
-			$this -> setValueRaw($this -> parseValueToRaw($value),true);
+			$this -> setValueRawToRepository($this -> parseValueToRaw($value),true);
 			$this -> persist = $persist;
 		}
 	}

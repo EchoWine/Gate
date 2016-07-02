@@ -5,6 +5,7 @@ namespace Test\Model;
 use CoreWine\ORM\Model;
 use CoreWine\ORM\Field\Schema as Field;
 
+
 class Episode extends Model{
 
 
@@ -19,6 +20,7 @@ class Episode extends Model{
 
 		$schema -> field(Field\ModelField::class,'serie')
 				-> relation(Serie::class);
+
 
 	}
 

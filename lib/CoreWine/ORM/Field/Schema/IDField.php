@@ -5,6 +5,11 @@ namespace CoreWine\ORM\Field\Schema;
 class IDField extends Field{
 	
 	/**
+	 * Model
+	 */
+	public $__model = 'CoreWine\ORM\Field\Model\IDField';
+
+	/**
 	 * Unique
 	 */
 	public $unique = true;

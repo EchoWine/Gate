@@ -48,7 +48,7 @@ class Model{
 		foreach(static::schema() -> getFields() as $name => $field){
 			$modelField = $field -> new();
 			$modelField -> setModel($this);
-			$this -> setField($name,$modelField);
+			// $this -> setField($name,$modelField);
 		}
 	}
 
@@ -217,15 +217,14 @@ class Model{
 	 *
 	 * @return Array
 	 */
-	public function getPrimaryFields(){
+	public function getPrimaryField(){
 
-		$fields = [];
 		foreach($this -> getFields() as $field){
 			if($field -> isPrimary())
-				$fields[] = $field;
+				return $field;
 		}
 
-		return $fields;
+		return null;;
 	}
 
 	/**
@@ -423,11 +422,11 @@ class Model{
 	 *
 	 * @param array $result
 	 */
-	public function fillRaw($values = []){
+	public function fillRawFromRepository($values = []){
 
 		foreach($values as $name => $value){
 			if($this -> isField($name)){
-				$this -> getField($name) -> setValueRaw($value);
+				$this -> getField($name) -> setValueRawFromRepository($value);
 			}
 		}
 
@@ -498,7 +497,7 @@ class Model{
 			$ai = $this -> insert($fields);
 
 			if(($field = $this -> getAutoIncrementField()) !== null)
-				$field -> setValueRaw($ai[0]);
+				$field -> setValueRawFromRepository($ai[0]);
 
 		}else{
 			$this -> update($fields);
@@ -513,11 +512,7 @@ class Model{
 	}
 
 	protected function wherePrimary($repository){
-		foreach($this -> getPrimaryFields() as $field){
-			$repository = $field -> where($repository);
-		}
-
-		return $repository;
+		return $this -> getPrimaryField() -> where($repository);
 	}
 
 	/**

@@ -31,7 +31,7 @@ class Repository extends QueryBuilder{
 
 			foreach($results as $n => $result){
 				$model = $this -> getModel()::new();
-				$model -> fillRaw($result);
+				$model -> fillRawFromRepository($result);
 				$model -> setPersist();
 				$return[] = $model;
 			}
@@ -71,6 +71,13 @@ class Repository extends QueryBuilder{
 				$field -> alter($table);
 			}
 		});
+	}
+
+	/**
+	 * Get where primary
+	 */
+	public function firstByPrimary($value){
+		return $this -> where('id',$value) -> first();
 	}
 
 

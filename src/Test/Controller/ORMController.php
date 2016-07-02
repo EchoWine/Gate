@@ -37,15 +37,18 @@ class ORMController extends Controller{
 		$ep = new Episode();
 		$ep -> name = 'Hold the Door';
 		$ep -> serie = $got;
-		$ep -> serie_id = $got -> id;
+		// $ep -> serie_id = $got -> id;
 		$ep -> save();
+
+		$ep -> id;
+
+		$ep = Episode::where('id',$ep -> id) -> first();
+		$ep -> serie -> id;
 
 		$got -> delete();
 
 		DB::printLog();
 		die();
-
-
 
 	}
 

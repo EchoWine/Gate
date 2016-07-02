@@ -255,7 +255,7 @@ class Field{
 	 * Set DB schema
 	 */
 	public function alter($table){
-		$col = $table -> string($this -> name,$this -> maxLength);
+		$col = $table -> string($this -> getColumn(),$this -> maxLength);
 
 		if(!$this -> required)
 			$col -> null();

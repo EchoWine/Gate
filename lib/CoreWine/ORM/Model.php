@@ -1,20 +1,20 @@
 <?php
 
-namespace CoreWine\Item;
+namespace CoreWine\ORM;
 
-use CoreWine\Item\Response as Response;
+use CoreWine\ORM\Response as Response;
 
-class Entity{
-
-	/**
-	 * Item\Repository
-	 */
-	public static $__repository = 'CoreWine\Item\Repository';
+class Model{
 
 	/**
-	 * Item\Schema
+	 * ORM\Repository
 	 */
-	public static $__schema = 'CoreWine\Item\Schema';
+	public static $__repository = 'CoreWine\ORM\Repository';
+
+	/**
+	 * ORM\Schema
+	 */
+	public static $__schema = 'CoreWine\ORM\Schema';
 
 	/**
 	 * Schema
@@ -46,9 +46,9 @@ class Entity{
 
 	public function iniFields(){
 		foreach(static::schema() -> getFields() as $name => $field){
-			$entityField = $field -> newEntity();
-			$entityField -> setTable($this);
-			$this -> setField($name,$entityField);
+			$modelField = $field -> new();
+			$modelField -> setModel($this);
+			$this -> setField($name,$modelField);
 		}
 	}
 
@@ -99,7 +99,7 @@ class Entity{
 			return $this -> getField($method);
 		
 
-		throw new \Exception("Fatal error: Call to undefined method Entity::{$method}()");
+		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
 		
 	}
 
@@ -125,20 +125,22 @@ class Entity{
 	 * Get static schema
 	 */
 	public static function schema(){
+
 		if(static::$schema !== null)
 			return static::$schema;
 
+		# Ugly, tiny stuff
 		$tmp = null;
 		static::$schema = &$tmp;
 		unset($tmp);
 
-		$schema = static::$__schema;
-		$schema = new $schema();
-		static::__fields($schema);
-
+		$schema = new static::$__schema();
 		$schema -> setTable(static::$__table);
+
 		static::$schema = $schema;
-		static::repository() -> __alterSchema();
+		static::setSchemaFields($schema);
+		static::repository() -> alterSchema();
+
 		return $schema;
 	}
 
@@ -242,9 +244,9 @@ class Entity{
 	}
 
 
-	public static function validateField($field,$value,$values,$entity){
+	public static function validateField($field,$value,$values,$model){
 
-		return  $field -> validate($value,$values,$entity,static::repository());
+		return  $field -> validate($value,$values,$model,static::repository());
 
 	}
 
@@ -255,7 +257,7 @@ class Entity{
 	 *
 	 * @return array
 	 */
-	public static function validate($values,$entity = null){
+	public static function validate($values,$model = null){
 
 		$errors = []; 
 
@@ -267,7 +269,7 @@ class Entity{
 
 			if($schema -> isField($name)){
 
-				if($response = static::validateField($schema -> getField($name),$value,$values,$entity)){
+				if($response = static::validateField($schema -> getField($name),$value,$values,$model)){
 					$errors[$name] = $response;
 				}
 
@@ -287,7 +289,7 @@ class Entity{
 	 *
 	 * @return array
 	 */
-	public static function validateAll($values = [],$entity = null){
+	public static function validateAll($values = [],$model = null){
 
 		$errors = []; 
 
@@ -297,7 +299,7 @@ class Entity{
 
 			$value = isset($values[$name]) ? $values[$name] : null;
 
-			if($response = static::validateField($field,$value,$values,$entity)){
+			if($response = static::validateField($field,$value,$values,$model)){
 				$errors[$name] = $response;
 			}
 
@@ -325,9 +327,9 @@ class Entity{
 	 *
 	 * @return array
 	 */
-	public static function validateUpdate($values = [],$entity){
+	public static function validateUpdate($values = [],$model){
 
-		return static::validateAll($values,$entity);
+		return static::validateAll($values,$model);
 	}
 
 	/**
@@ -349,61 +351,61 @@ class Entity{
 	}
 
 	/**
-	 * Return a new entity and save
+	 * Return a new model and save
 	 *
 	 * @param array $values
 	 *
-	 * @return Entity
+	 * @return Model
 	 */
 	public static function create($values = []){
 		
-		$entity = static::new($values);
+		$model = static::new($values);
 
-		return $entity -> save() 
-			? $entity 
+		return $model -> save() 
+			? $model 
 			: false;
 
 	}
 
 	/**
-	 * Return a new entity copied
+	 * Return a new model copied
 	 *
 	 * @param array $values
 	 *
-	 * @return Entity
+	 * @return Model
 	 */
 	public static function copy($source){
 		
-		$entity = static::new();
+		$model = static::new();
 
-		$entity -> fillFrom($source);
+		$model -> fillFrom($source);
 
 
-		return $entity -> save() 
-			? $entity 
+		return $model -> save() 
+			? $model 
 			: false;
 
 	}
 
 
 	/**
-	 * Return a new entity
+	 * Return a new model
 	 * 
 	 * @param array $values
 	 *
-	 * @return Entity
+	 * @return Model
 	 */
 	public static function new($values = []){
 
-		$entity = new static();
-		$entity -> fill($values);
+		$model = new static();
+		$model -> fill($values);
 
-		return $entity;
+		return $model;
 	}
 
 
 	/**
-	 * Fill entity with array
+	 * Fill model with array
 	 *
 	 * @param array $result
 	 */
@@ -417,7 +419,7 @@ class Entity{
 	}
 
 	/**
-	 * Fill entity with array given by repository
+	 * Fill model with array given by repository
 	 *
 	 * @param array $result
 	 */
@@ -433,13 +435,13 @@ class Entity{
 	}
 
 	/**
-	 * Fill from another entity
+	 * Fill from another model
 	 *
 	 * @param array $result
 	 */
-	public function fillFrom($entity){
+	public function fillFrom($model){
 
-		foreach($entity -> getFields() as $name => $field){
+		foreach($model -> getFields() as $name => $field){
 			if($this -> isField($name)){
 				$this -> getField($name) -> setValueCopied($field -> getValue());
 			}
@@ -479,7 +481,7 @@ class Entity{
 	}
 
 	/**
-	 * Save the entity
+	 * Save the model
 	 */
 	public function save(){
 
@@ -519,7 +521,7 @@ class Entity{
 	}
 
 	/**
-	 * Update Entity
+	 * Update Model
 	 * 
 	 * @param Array $fields
 	 *
@@ -539,7 +541,7 @@ class Entity{
 	}
 
 	/**
-	 * Insert Entity
+	 * Insert Model
 	 * 
 	 * @param Array $fields
 	 *

@@ -1,15 +1,15 @@
 <?php
 
-namespace CoreWine\Item;
+namespace CoreWine\ORM;
 
-use CoreWine\Item\Field\Schema\Field as Field;
+use CoreWine\ORM\Field\Schema\Field as Field;
 
 class Schema{
 
 	/**
-	 * Entity
+	 * Model
 	 */
-	public $__entity;
+	public $__model;
 
 	/**
 	 * Name of table
@@ -40,6 +40,7 @@ class Schema{
 	 * Add a field
 	 */
 	public function field($class,$name){
+		
 		if(is_subclass_of($class,Field::class)){
 
 			$field = new $class($name);

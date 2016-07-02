@@ -1,8 +1,8 @@
 <?php
 
-namespace CoreWine\Item\Field;
+namespace CoreWine\ORM\Field\Model;
 
-class Entity{
+class Field{
 	
 	/**
 	 * Schema
@@ -10,9 +10,9 @@ class Entity{
 	public $schema;
 
 	/**
-	 * Table
+	 * Model
 	 */
-	public $table;
+	public $model;
 
 	/**
 	 * Value
@@ -41,12 +41,12 @@ class Entity{
 	/**
 	 * Set tabe
 	 */
-	public function setTable($table){
-		$this -> table = $table;
+	public function setModel($model){
+		$this -> model = $model;
 	}
 
-	public function getTable(){
-		return $this -> table;
+	public function getModel(){
+		return $this -> model;
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Entity{
 	/**
 	 * Get the schema
 	 *
-	 * @return Item\Field\Schema
+	 * @return ORM\Field\Schema
 	 */
 	public function getSchema(){
 		return $this -> schema;
@@ -248,7 +248,7 @@ class Entity{
 	}
 
 	/**
-	 * Add the field to query to add an entity
+	 * Add the field to query to add an model
 	 *
 	 * @param Repository $repository
 	 *
@@ -259,7 +259,7 @@ class Entity{
 	}
 
 	/**
-	 * Add the field to query to edit an entity
+	 * Add the field to query to edit an model
 	 *
 	 * @param Repository $repository
 	 *
@@ -270,7 +270,7 @@ class Entity{
 	}
 
 	/**
-	 * Add the field to query to find the entity
+	 * Add the field to query to find the model
 	 *
 	 * @param Repository $repository
 	 *

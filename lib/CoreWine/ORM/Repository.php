@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Item;
+namespace CoreWine\ORM;
 
 use CoreWine\DataBase\DB;
 use CoreWine\DataBase\QueryBuilder;
@@ -8,19 +8,19 @@ use CoreWine\DataBase\QueryBuilder;
 class Repository extends QueryBuilder{
 
 	/**
-	 * Entity
+	 * Model
 	 *
-	 * @var Item\Entity
+	 * @var ORM\Model
 	 */
-	public $entity;
+	public $model;
 
 	/**
 	 * Construct
 	 *
-	 * @param \Item\Schema $entity
+	 * @param \ORM\Schema $model
 	 */
-	public function __construct($entity){
-		$this -> entity = $entity;
+	public function __construct($model){
+		$this -> model = $model;
 
 
 		parent::__construct($this -> getSchema() -> getTable());
@@ -30,10 +30,10 @@ class Repository extends QueryBuilder{
 			$return = [];
 
 			foreach($results as $n => $result){
-				$entity = $this -> getEntity()::new();
-				$entity -> fillRaw($result);
-				$entity -> setPersist();
-				$return[] = $entity;
+				$model = $this -> getModel()::new();
+				$model -> fillRaw($result);
+				$model -> setPersist();
+				$return[] = $model;
 			}
 
 			return $return;
@@ -42,29 +42,28 @@ class Repository extends QueryBuilder{
 	}
 
 	/**
-	 * Get the entity
+	 * Get the model
 	 *
-	 * @return Item\Schema
+	 * @return ORM\Schema
 	 */
-	public function getEntity(){
-		return $this -> entity;
+	public function getModel(){
+		return $this -> model;
 	}
 
 
 	/**
 	 * Get the schema
 	 *
-	 * @return Item\Schema
+	 * @return ORM\Schema
 	 */
 	public function getSchema(){
-		$entity = $this -> entity;
-		return $entity::schema();
+		return $this -> getModel()::schema();
 	}
 
 	/**
 	 * Alter the schema of database
 	 */
-	public function __alterSchema(){
+	public function alterSchema(){
 
 		$fields = $this -> getSchema() -> getFields();
 		DB::schema($this -> getSchema() -> getTable(),function($table) use ($fields){

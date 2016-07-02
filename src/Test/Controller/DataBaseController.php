@@ -8,7 +8,7 @@ use CoreWine\Router;
 use CoreWine\SourceManager\Controller as Controller;
 
 
-class TestDataBaseController extends Controller{
+class DataBaseController extends Controller{
 	
 	/**
 	 * Set all Routers

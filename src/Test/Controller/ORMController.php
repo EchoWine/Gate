@@ -4,18 +4,20 @@ namespace Test\Controller;
 
 use CoreWine\DataBase\DB;
 use CoreWine\SourceManager\Controller as Controller;
-use Test\Entity\Serie;
-use Test\Entity\Episode;
 
-class TestItemController extends Controller{
+use Test\Model\Hodor;
+use Test\Model\Serie;
+use Test\Model\Episode;
+
+class ORMController extends Controller{
 	
 	/**
 	 * Set all Routers
 	 */
 	public function __routes(){
 
-		$this -> route('basic') -> url("/test/item/basic");
-		$this -> route('relation') -> url("/test/item/relation");
+		$this -> route('basic') -> url("/test/ORM/basic");
+		$this -> route('relation') -> url("/test/ORM/relation");
 
 	}
 		
@@ -26,7 +28,7 @@ class TestItemController extends Controller{
 
 		DB::clearLog();
 
-		# New Entity
+		# New Model
 		$got = new Serie();
 		$got -> name = 'Game of Thrones';
 		$got -> save();
@@ -54,16 +56,16 @@ class TestItemController extends Controller{
 
 		DB::clearLog();
 
-		# New Entity
+		# New Model
 		$hodor = new Hodor();
 
-		# Alias new entity
+		# Alias new Model
 		$hodor = Hodor::new();
 
 		# Defining an attribute
 		$hodor -> door = 'Hold the door';
 
-		# Fill entity with array of attributes
+		# Fill Model with array of attributes
 		$hodor -> fill(['door' => 'Hold the door']);
 
 		# Save changes
@@ -72,10 +74,10 @@ class TestItemController extends Controller{
 		# Get ID
 		$hodor -> id;
 
-		# New entity and save in one method
+		# New Model and save in one method
 		$hodor = Hodor::create(['door' => "I'm busy"]);
 
-		# Search entity
+		# Search Model
 		$hodor = Hodor::where('id',1) -> first();
 		$hodor -> door = 'Rekt';
 		$hodor -> save();
@@ -85,7 +87,7 @@ class TestItemController extends Controller{
 		$hodor -> getField('door') -> getSchema() -> getMaxLength();
 		$hodor -> getSchema() -> getField('door') -> getMaxLength();
 
-		# Get last validation failed during saving an entity
+		# Get last validation failed during saving an Model
 		$hodor -> door = 'to'; # Too short
 		$hodor -> save();
 

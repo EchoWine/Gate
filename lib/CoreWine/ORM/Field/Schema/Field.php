@@ -1,15 +1,13 @@
 <?php
 
-namespace CoreWine\Item\Field\Schema;
-
-use CoreWine\Item\Response as Response;
+namespace CoreWine\ORM\Field\Schema;
 
 class Field{
 	
 	/**
-	 * Entity
+	 * Model
 	 */
-	public $__entity = 'CoreWine\Item\Field\Entity';
+	public $__model = 'CoreWine\ORM\Field\Model\Field';
 
 	/**
 	 * Name
@@ -264,29 +262,22 @@ class Field{
 	}
 
 	/**
-	 * Return if the schema has an entity
-	 *
-	 * @return bool
-	 */
-	public function hasEntity(){
-		return $this -> __entity !== null;
-	}
-
-	/**
-	 * Return a new istance of entity
+	 * Return a new istance of modelField
 	 *
 	 * @param mixed $value
-	 * @return Entity
+	 * @return Model
 	 */
-	public function newEntity($value = null){
-		return new $this -> __entity($this,$value);
+	public function new($value = null){
+		return new $this -> __model($this,$value);
 	}
-
 
 	/**
 	 * Check if the value is valid
 	 */
-	public function validate($value,$values,$entity,$repository){
+	public function validate($value,$values,$model,$repository){
+
+		if(is_object($value))
+			return null;
 
 		if($this -> getRequired() && $value == null)
 			return static::VALIDATION_ERROR_REQUIRED;
@@ -306,8 +297,8 @@ class Field{
 
 		if($this -> getUnique()){
 
-			if($entity !== null && $entity -> id !== null)
-				$repository = $repository -> where($this -> getColumn(),'!=',$entity -> {$this -> getName()});
+			if($model !== null && $model -> id !== null)
+				$repository = $repository -> where($this -> getColumn(),'!=',$model -> {$this -> getName()});
 
 			if($repository -> exists([$this -> getColumn() => $value])){
 				return static::VALIDATION_ERROR_NOT_UNIQUE;
@@ -424,7 +415,7 @@ class Field{
 	 * @return value parsed
 	 */
 	public function add($value){
-		$this -> getEntity() -> {$this -> getName()} = $value;
+		$this -> getModel() -> {$this -> getName()} = $value;
 	}
 
 	/**
@@ -436,7 +427,7 @@ class Field{
 	 * @return value parsed
 	 */
 	public function edit($value){
-		$entity -> {$this -> getName()} = $value;
+		$model -> {$this -> getName()} = $value;
 	}
 
 	/**
@@ -448,7 +439,7 @@ class Field{
 	 * @return value parsed
 	 */
 	public function set($value){
-		$entity -> {$this -> getName()} = $value;
+		$model -> {$this -> getName()} = $value;
 	}
 
 	/**
@@ -461,7 +452,7 @@ class Field{
 	 */
 	public function __call($method, $arguments){
 
-		throw new \Exception("Fatal error: Call to undefined method Entity::{$method}()");
+		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
 		
 	}
 

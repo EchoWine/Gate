@@ -1,6 +1,6 @@
 <?php
 
-namespace Item;
+namespace Api;
 
 use CoreWine\DataBase\DB;
 use CoreWine\Router;
@@ -8,8 +8,8 @@ use CoreWine\Request as Request;
 
 use CoreWine\SourceManager\Controller as SourceController;
 
-use Item\Repository;
-use Item\Response as Response;
+use Api\Repository;
+use Api\Response as Response;
 
 abstract class Controller extends SourceController{
 

@@ -1,18 +1,18 @@
 <?php
 
-namespace Test\Entity;
+namespace Test\Model;
 
-use CoreWine\Item\Entity;
-use CoreWine\Item\Field\Schema as Field;
+use CoreWine\ORM\Model;
+use CoreWine\ORM\Field\Schema as Field;
 
-class Hodor extends Entity{
+class Hodor extends Model{
 
 	public static $__table = 'hodor';
 
-	public static function __fields($schema){
+	public static function setSchemaFields($schema){
 
 		# ID
-		$schema -> field(Field\IdField::class,'id')
+		$schema -> field(Field\IDField::class,'id')
 				-> label('#');
 
 		# Foo

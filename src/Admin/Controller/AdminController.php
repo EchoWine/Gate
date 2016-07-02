@@ -7,7 +7,7 @@ use CoreWine\Router;
 use CoreWine\Request as Request;
 use Auth\Service\Auth;
 
-use Item\Controller;
+use Api\Controller;
 
 abstract class AdminController extends Controller{
 

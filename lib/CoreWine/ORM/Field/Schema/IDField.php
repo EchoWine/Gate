@@ -1,8 +1,8 @@
 <?php
 
-namespace CoreWine\Item\Field\Schema;
+namespace CoreWine\ORM\Field\Schema;
 
-class IdField extends Field{
+class IDField extends Field{
 	
 	/**
 	 * Unique

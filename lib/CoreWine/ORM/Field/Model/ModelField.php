@@ -18,13 +18,17 @@ class ModelField extends Field{
 	 *
 	 * @return mixed
 	 */
-	public function setValueRawFromRepository($value_raw,$persist = false){
-		$value_raw = $this -> getSchema() -> getRelation()::repository() -> firstByPrimary($value_raw);
-
+	public function setValueRawFromRepository($value_raw,$persist = false,$relations = []){
+		
 		$this -> value_raw = $value_raw;
 
+		if(isset($relations[$this -> getSchema() -> getRelation()][$value_raw]))
+			$value = $relations[$this -> getSchema() -> getRelation()][$value_raw];
+		else
+			$value = null;
+
 		if(!$persist){
-			$this -> setValue($this -> parseRawToValue($value_raw),false);
+			$this -> setValue($this -> parseRawToValue($value),false);
 			$this -> persist = $persist;
 		}
 	}

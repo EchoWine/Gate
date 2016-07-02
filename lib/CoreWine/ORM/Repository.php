@@ -29,17 +29,54 @@ class Repository extends QueryBuilder{
 
 			$return = [];
 
+			# Select all model relation recursively
+			$relations = [];
+
+			foreach($this -> getRelations($results,$this -> getSchema()) as $relation => $values){
+				$get = $relation::repository() -> whereIn($relation::schema() -> getPrimaryField() -> getColumn(),$values) -> get();
+
+				foreach($get as $k){	
+					$relations[$relation][$k -> getPrimaryField() -> getValue()] = $k;
+				}
+			}
+
 			foreach($results as $n => $result){
 				$model = $this -> getModel()::new();
-				$model -> fillRawFromRepository($result);
+				$model -> fillRawFromRepository($result,$relations);
 				$model -> setPersist();
 				$return[] = $model;
 			}
+
+
 
 			return $return;
 		});
 
 	}
+
+	/**
+	 * Get relations for this schema and results
+	 *
+	 * @param array $results
+	 * @param Schema $schema
+	 * @param array $relations
+	 *
+	 * @return array
+	 */
+	public function getRelations($results,$schema,$relations = []){
+		$relation = [];
+		foreach($schema -> getFields() as $field){
+			
+
+			if($field instanceof \CoreWine\ORM\Field\Schema\ModelField){
+				foreach($results as $result){
+					$relation[$field -> getRelation()][] = $result[$field -> getColumn()];
+				}
+			}
+		}
+		return array_merge($relation,$relations);
+	}
+
 
 	/**
 	 * Get the model

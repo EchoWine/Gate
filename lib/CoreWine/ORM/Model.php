@@ -420,13 +420,14 @@ class Model{
 	/**
 	 * Fill model with array given by repository
 	 *
-	 * @param array $result
+	 * @param array $values
+	 * @param array $relations
 	 */
-	public function fillRawFromRepository($values = []){
+	public function fillRawFromRepository($values = [],$relations = []){
 
 		foreach($values as $name => $value){
 			if($this -> isField($name)){
-				$this -> getField($name) -> setValueRawFromRepository($value);
+				$this -> getField($name) -> setValueRawFromRepository($value,false,$relations);
 			}
 		}
 
@@ -511,6 +512,13 @@ class Model{
 
 	}
 
+	/**
+	 * Get repository where primary
+	 *
+	 * @param $repository
+	 *
+	 * @return Repository
+	 */
 	protected function wherePrimary($repository){
 		return $this -> getPrimaryField() -> where($repository);
 	}
@@ -560,6 +568,13 @@ class Model{
 	 */
 	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){
 		return static::repository() -> where($v1,$v2,$v3,$v4);
+	}
+
+	/**
+	 * Return all
+	 */
+	public static function all(){
+		return static::repository() -> get();
 	}
 
 	/**

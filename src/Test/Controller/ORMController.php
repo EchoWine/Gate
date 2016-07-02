@@ -28,6 +28,7 @@ class ORMController extends Controller{
 
 		DB::clearLog();
 
+		$time = microtime(true);
 		# New Model
 		$got = new Serie();
 		$got -> name = 'Game of Thrones';
@@ -44,8 +45,17 @@ class ORMController extends Controller{
 
 		$ep = Episode::where('id',$ep -> id) -> first();
 		$ep -> serie -> id;
+		$ep -> delete();
 
-		$got -> delete();
+		foreach(Episode::all() as $ep){
+			if($ep -> serie){
+				echo $ep -> serie -> id;
+				echo "<br>";
+			}
+		}
+
+		echo microtime(true) - $time;
+
 
 		DB::printLog();
 		die();

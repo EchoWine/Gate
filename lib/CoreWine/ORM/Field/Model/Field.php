@@ -123,7 +123,7 @@ class Field{
 	 *
 	 * @return mixed
 	 */
-	public function setValueRawFromRepository($value_raw,$persist = false){
+	public function setValueRawFromRepository($value_raw,$persist = false,$relations = []){
 		$this -> value_raw = $value_raw;
 
 		if(!$persist){

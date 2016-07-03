@@ -47,14 +47,23 @@ class Field{
 		$model -> setField($this -> getSchema() -> getName(),$this);
 	}
 
+	/**
+	 * Initialize alias
+	 */
 	public function iniAlias(){
 		$this -> alias = [$this -> getSchema() -> getName()];
 	}
 
+	/**
+	 * Check if alias exists
+	 */
 	public function isAlias($alias){
 		return in_array($alias,$this -> alias);
 	}
 
+	/**
+	 * Return the model
+	 */
 	public function getModel(){
 		return $this -> model;
 	}

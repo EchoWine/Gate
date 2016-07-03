@@ -135,8 +135,22 @@ class Schema{
 		return $this -> table;
 	}
 
+	/**
+	 * Get primary field
+	 *
+	 * @return ORM\Field\Schema\Field
+	 */
 	public function getPrimaryField(){
 		return $this -> getField($this -> primary);
+	}
+
+	/**
+	 * Get primary field column
+	 *
+	 * @return string
+	 */
+	public function getPrimaryColumn(){
+		return $this -> getField($this -> primary) -> getColumn();
 	}
 
 

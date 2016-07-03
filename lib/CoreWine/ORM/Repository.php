@@ -10,9 +10,16 @@ class Repository extends QueryBuilder{
 	/**
 	 * Model
 	 *
-	 * @var ORM\Model
+	 * @var string ORM\Model
 	 */
 	public $model;
+
+	/**
+	 * List of all objects ORM
+	 *
+	 * @var Array ORM\Model
+	 */
+	public static $objects_ORM = [];
 
 	/**
 	 * Construct
@@ -29,29 +36,96 @@ class Repository extends QueryBuilder{
 
 			$return = [];
 
-			# Select all model relation recursively
-			$relations = [];
-
-			foreach($this -> getRelations($results,$this -> getSchema()) as $relation => $values){
-				$get = $relation::repository() -> whereIn($relation::schema() -> getPrimaryField() -> getColumn(),$values) -> get();
-
-				foreach($get as $k){	
-					$relations[$relation][$k -> getPrimaryField() -> getValue()] = $k;
-				}
-			}
+			# Create EMPTY model if doens't exists and save in a stack
+			# Otherwise retrieve
 
 			foreach($results as $n => $result){
-				$model = $this -> getModel()::new();
-				$model -> fillRawFromRepository($result,$relations);
-				$model -> setPersist();
+				if(!$this -> isObjectORM($this -> getModel(),$result[$this -> getSchema() -> getPrimaryField() -> getColumn()])){
+					
+					$model = $this -> getModel()::new();
+					$this -> setObjectORM(
+						$this -> getModel(),
+						$result[$this -> getSchema() -> getPrimaryField() -> getColumn()],
+						$model
+					);
+				}else{
+					$model = $this -> getObjectORM($this -> getModel(),$result[$this -> getSchema() -> getPrimaryField() -> getColumn()]);
+					
+				}
+
 				$return[] = $model;
 			}
 
+			# Retrieve relations for this results
+			$__relations = $this -> retrieveRelations($results,$this -> getSchema());
 
+
+			# Getting all records for all relations
+			# This call recursively setParserResult in order to create all ORM Object empty
+			foreach($__relations as $relation => $values){
+				
+				$relation::repository() 
+				-> whereIn($relation::schema() -> getPrimaryField() -> getColumn(),$values)
+				-> get();
+
+			}
+
+
+			# Fill all fields of ORM Object
+			foreach($return as $n => $model){
+				$model -> fillRawFromRepository($results[$n],$this -> getObjectsORM());
+				$model -> setPersist();
+			}
+
+			
 
 			return $return;
 		});
 
+	}
+
+	/**
+	 * Set object ORM
+	 *
+	 * @param string $name
+	 * @param mixed $primary
+	 * @param ORM\Model $obj
+	 */
+	public function setObjectORM($name,$primary,$obj){
+		static::$objects_ORM[$name][$primary] = $obj;
+	}
+
+	/**
+	 * Get object ORM
+	 *
+	 * @param string $name
+	 * @param mixed $primary
+	 *
+	 * @return ORM\Model $obj
+	 */
+	public function getObjectORM($name,$primary){
+		return static::$objects_ORM[$name][$primary];
+	}
+
+	/**
+	 * Exists object ORM
+	 *
+	 * @param string $name
+	 * @param mixed $primary
+	 *
+	 * @return bool
+	 */
+	public function isObjectORM($name,$primary){
+		return isset(static::$objects_ORM[$name][$primary]);
+	}
+
+	/**
+	 * Get all objects ORM
+	 *
+	 * @return Array ORM\Model
+	 */
+	public function getObjectsORM(){
+		return static::$objects_ORM;
 	}
 
 	/**
@@ -63,18 +137,25 @@ class Repository extends QueryBuilder{
 	 *
 	 * @return array
 	 */
-	public function getRelations($results,$schema,$relations = []){
+	public function retrieveRelations($results,$schema,$relations = []){
 		$relation = [];
 		foreach($schema -> getFields() as $field){
 			
 
 			if($field instanceof \CoreWine\ORM\Field\Schema\ModelField){
 				foreach($results as $result){
-					if(!empty($result[$field -> getColumn()]))
-						$relation[$field -> getRelation()][] = $result[$field -> getColumn()];
+					if(!empty($result[$field -> getColumn()])){
+						if(!$this -> isObjectORM($field -> getRelation(),$result[$field -> getColumn()])){
+							
+							//print_r($this -> getObjectsORM());
+							$relation[$field -> getRelation()][] = $result[$field -> getColumn()];
+							//print_r($relation);
+						}
+					}
 				}
 			}
 		}
+
 		return array_merge($relation,$relations);
 	}
 

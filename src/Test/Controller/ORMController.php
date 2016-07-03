@@ -30,33 +30,42 @@ class ORMController extends Controller{
 
 		$time = microtime(true);
 		# New Model
+		
 		$got = new Serie();
 		$got -> name = 'Game of Thrones';
 		$got -> save();
+	
 
-
-		$ep = new Episode();
-		$ep -> name = 'Hold the Door';
-		$ep -> serie = $got;
-		// $ep -> serie_id = $got -> id;
+		$ep = Episode::create(['name' => 'episode 1','serie' => $got]);
+		$ep2 = Episode::create(['name' => 'episode 2','serie' => $got]);
+		$ep2 -> prev = $ep;
+		$ep2 -> save();
+		$ep -> next = $ep2;
 		$ep -> save();
-
 		$ep -> id;
 
-		$ep = Episode::where('id',$ep -> id) -> first();
-		$ep -> serie -> id;
+		$ep2 = Episode::where('name','episode 2') -> first();
+		$ep = Episode::where('name','episode 1') -> first();
+
+		$ep2 -> serie -> name = 'Trono di spade';
+		$ep -> next -> prev -> name = "Close the door";
+		echo $ep -> serie -> name;
+		echo $ep -> name;
+		echo "<br><br>";
+		
+		
 
 		foreach(Episode::all() as $ep){
 			if($ep -> serie){
-				echo $ep -> serie -> id;
-				echo "<br>";
+				//echo $ep -> serie -> id;
 			}
 		}
 
 		echo microtime(true) - $time;
+		
 
-		Episode::truncate();
-		Serie::truncate();
+		// Episode::truncate();
+		// Serie::truncate();
 		DB::printLog();
 		die();
 

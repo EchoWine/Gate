@@ -21,6 +21,13 @@ class Episode extends Model{
 		$schema -> field(Field\ModelField::class,'serie')
 				-> relation(Serie::class);
 
+		$schema -> field(Field\ModelField::class,'next')
+				-> relation(Episode::class);
+
+		$schema -> field(Field\ModelField::class,'prev')
+				-> relation(Episode::class);
+
+
 
 	}
 

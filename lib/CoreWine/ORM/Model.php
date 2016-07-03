@@ -610,6 +610,10 @@ class Model{
 	public static function truncate(){
 		return static::repository() -> truncate();
 	}
+
+	public function __tostring(){
+		echo static::class;
+	}
 }
 
 ?>

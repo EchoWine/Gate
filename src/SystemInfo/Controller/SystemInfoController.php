@@ -2,7 +2,7 @@
 
 namespace SystemInfo\Controller;
 
-use SystemInfo\Model\SystemInfo;
+use SystemInfo\Service\SystemInfo;
 use CoreWine\DataBase\DB;
 use CoreWine\Router;
 
@@ -12,17 +12,24 @@ use CoreWine\SourceManager\Controller as Controller;
 class SystemInfoController extends Controller{
 	
 
+	public function __check(){
+
+		SystemInfo::load();
+	}
 	/**
 	 * Routers
 	 */
 	public function __routes(){
-		$this -> route('/system-info',['as' => 'system-info','__controller' => 'index']);
+
+		$this -> route('index') -> url("/admin/system-info");
+
 	}
 
 	/**
 	 * Set index
 	 */
 	public function index(){
+
 
 		return $this -> view('SystemInfo/admin/index');
 

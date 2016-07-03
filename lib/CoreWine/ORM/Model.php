@@ -190,6 +190,22 @@ class Model{
 	}
 
 	/**
+	 * Get all fields and all alias
+	 *
+	 * @return array of fields
+	 */
+	public function getFieldsWithAlias(){
+		$return = [];
+		foreach($this -> getFields() as $field){
+			foreach($field -> getAlias() as $alias){
+				$return[$alias] = $field;
+			}
+		}
+		return $return;
+	}
+
+
+	/**
 	 * Is set a field
 	 *
 	 * @param string $name
@@ -215,6 +231,23 @@ class Model{
 
 		return null;
 	}
+
+	/**
+	 * Get a field by column
+	 *
+	 * @param string $name
+	 *
+	 * @return Field
+	 */
+	public function getFieldByColumn($column){
+		foreach($this -> getFields() as $field){
+			if($field -> getSchema() -> getColumn() == $column)
+				return $field;
+		}
+
+		return null;
+	}
+
 
 
 	/**
@@ -523,7 +556,7 @@ class Model{
 	 * @return Repository
 	 */
 	protected function wherePrimary($repository){
-		return $this -> getPrimaryField() -> where($repository);
+		return $this -> getPrimaryField() -> whereRepository($repository);
 	}
 
 	/**
@@ -540,7 +573,7 @@ class Model{
 		$repository = $this -> wherePrimary($repository);
 
 		foreach($fields as $name => $field){
-			$repository = $field -> edit($repository);
+			$repository = $field -> editRepository($repository);
 		}
 
 		return $repository -> update();
@@ -558,7 +591,7 @@ class Model{
 		$repository = $this -> getRepository();
 
 		foreach($fields as $name => $field){
-			$repository = $field -> add($repository);
+			$repository = $field -> addRepository($repository);
 		}
 
 		return $repository -> insert();
@@ -624,6 +657,13 @@ class Model{
 	 */
 	public function __tostring(){
 		return static::class;
+	}
+
+	/**
+	 * Return if current model is equal 
+	 */
+	public function isEqual($model){
+		return $this -> getPrimaryField() -> getValue() == $model -> getPrimaryField() -> getValue();
 	}
 }
 

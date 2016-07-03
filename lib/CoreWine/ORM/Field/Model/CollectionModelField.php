@@ -4,6 +4,87 @@ namespace CoreWine\ORM\Field\Model;
 
 class CollectionModelField extends Field{
 
+	/** 
+	 * List of all Model to save()
+	 */
+	public $value_to_save = [];
+
+
+	/**
+	 * Add a model to collection if isn't already added
+	 *
+	 * @param ORM\Model $model
+	 */
+	public function add($model){
+
+		$model -> getFieldByColumn($this -> getSchema() -> getReference()) -> setValue($this -> getModel());
+		$this -> addValue($model);
+		$this -> addValueToSave($model);
+	}
+
+	/**
+	 * Add model in value
+	 *
+	 * @param ORM\Model $model
+	 */
+	public function addValue($model){
+		$this -> value[] = $model;
+	}
+
+	/**
+	 * Remove model in value
+	 *
+	 * @param ORM\Model $model
+	 */
+	public function removeValue($index){
+		unset($this -> value[$index]);
+	}
+
+	/**
+	 * Add to model to save
+	 *
+	 * @param ORM\Model $model
+	 */
+	public function addValueToSave($model){
+		$this -> value_to_save[$model -> getPrimaryField() -> getValue()] = $model;
+	}
+
+	/**
+	 * Get list of all model to save
+	 *
+	 * @return array ORM\Model
+	 */
+	public function getValueToSave(){
+		return $this -> value_to_save;
+	}
+
+	/**
+	 * Remove a model to collection if exist
+	 *
+	 * @param ORM\Model $model
+	 */
+	public function remove($model){
+		foreach($this -> getValue() as $n => $_model){
+			if($model -> isEqual($_model)){
+				$_model -> getFieldByColumn($this -> getSchema() -> getReference()) -> setValue(null);
+
+				$this -> addValueToSave($model);
+				$this -> removeValue($n);
+			}
+		}
+
+	}
+
+	/**
+	 * Save all model in collection
+	 */
+	public function save(){
+		foreach($this -> getValueToSave() as $value){
+			$value -> save();
+		}
+
+	}
+
 	/**
 	 * Set the value raw by repository
 	 *
@@ -29,7 +110,7 @@ class CollectionModelField extends Field{
 						$this -> getModel() -> getPrimaryField() -> getValue()
 					){
 						
-						$value[] = $result;
+						$value[$result -> getPrimaryField() -> getValue()] = $result;
 					}
 				}
 			}
@@ -65,7 +146,7 @@ class CollectionModelField extends Field{
 	 *
 	 * @return Repository
 	 */
-	public function add($repository){
+	public function addRepository($repository){
 		return $repository;
 	}
 
@@ -76,7 +157,7 @@ class CollectionModelField extends Field{
 	 *
 	 * @return Repository
 	 */
-	public function edit($repository){
+	public function editRepository($repository){
 		return $repository;
 	}
 

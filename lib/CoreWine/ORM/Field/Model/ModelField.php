@@ -43,7 +43,9 @@ class ModelField extends Field{
 	 */
 	public function setValueRawToRepository($value_raw,$persist = false){
 
-		$value_raw = $value_raw -> getPrimaryField() -> getValue();
+		if($value_raw !== null)
+			$value_raw = $value_raw -> getPrimaryField() -> getValue();
+		
 		$this -> value_raw = $value_raw;
 
 		if(!$persist){

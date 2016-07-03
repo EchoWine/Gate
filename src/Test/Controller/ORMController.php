@@ -55,13 +55,20 @@ class ORMController extends Controller{
 		echo "<br><br>";
 
 		$got = Serie::where('name','Game of Thrones') -> first();
+
+		$ep3 = new Episode();
+		$ep3 -> name = "Winter is coming";
+		$ep3 -> save();
+
+		$got -> episodes() -> add($ep3);
+		$got -> episodes() -> remove($ep2);
+		$got -> episodes() -> save();
+
 		foreach($got -> episodes as $episode){
 			echo $episode -> name;
 			echo "<br>";
 		}
 
-		echo $got -> name;
-		echo "<br><br>";
 		
 		
 

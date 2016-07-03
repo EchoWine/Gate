@@ -58,7 +58,14 @@ class Field{
 	 * Check if alias exists
 	 */
 	public function isAlias($alias){
-		return in_array($alias,$this -> alias);
+		return in_array($alias,$this -> getAlias());
+	}
+
+	/**
+	 * Get all alias
+	 */
+	public function getAlias(){
+		return $this -> alias;
 	}
 
 	/**
@@ -291,7 +298,7 @@ class Field{
 	 *
 	 * @return Repository
 	 */
-	public function add($repository){
+	public function addRepository($repository){
 		return $repository -> addInsert($this -> getSchema() -> getColumn(),$this -> getValueRaw());
 	}
 
@@ -302,7 +309,7 @@ class Field{
 	 *
 	 * @return Repository
 	 */
-	public function edit($repository){
+	public function editRepository($repository){
 		return $repository -> addUpdate($this -> getSchema() -> getColumn(),$this -> getValueRaw());
 	}
 
@@ -313,7 +320,7 @@ class Field{
 	 *
 	 * @return Repository
 	 */
-	public function where($repository){
+	public function whereRepository($repository){
 		return $repository -> where($this -> getSchema() -> getColumn(),$this -> getValueRaw());
 	}
 

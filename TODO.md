@@ -11,7 +11,7 @@ TODO list
 - [x] Get relation N to 1 ORM
 - [x] Save relations N to 1 ORM
 - [x] Get relations 1 to N ORM
-- [ ] Save relations 1 to N ORM
+- [x] Save relations 1 to N ORM
 - [ ] Improve relations (select which relations, get relation after retrieved)
 - [x] Create basic ORM
 	- [x] Create
@@ -49,3 +49,5 @@ TODO list
 - [ ] Move part of Auth in CoreWine
 - [ ] Admin/UserController
 - [ ] Admin/ExampleController: Example/Testing for ORM
+- [ ] Throw exception for unauthorized client in route /admin
+- [ ] Handle exception for unauthorized client in route /admin and redirect to login

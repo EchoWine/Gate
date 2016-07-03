@@ -21,8 +21,14 @@ class Handler{
 		set_exception_handler([$this,'report']);
 		//ini_set( "display_errors", "off" );
 		error_reporting( E_ALL );
+		set_error_handler([$this,'error']);
 
 	}
+
+	public function error($errno, $errstr, $errfile, $errline){
+		throw new FatalException($errstr, '', $errno, $errfile, $errline);
+	}
+
 
 	public function report($e){
 		$this -> render($e);
@@ -35,6 +41,5 @@ class Handler{
 		die();
 	}
 }
-
 
 ?>

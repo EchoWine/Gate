@@ -208,7 +208,12 @@ class Model{
 	 * @return Field
 	 */
 	public function getField($name){
-		return $this -> fields[$name];
+		foreach($this -> fields as $field){
+			if($field -> isAlias($name))
+				return $field;
+		}
+
+		return null;
 	}
 
 
@@ -425,10 +430,8 @@ class Model{
 	 */
 	public function fillRawFromRepository($values = [],$relations = []){
 
-		foreach($values as $name => $value){
-			if($this -> isField($name)){
-				$this -> getField($name) -> setValueRawFromRepository($value,false,$relations);
-			}
+		foreach($this -> getFields() as $name => $field){
+			$this -> getField($name) -> setValueRawFromRepository($values,false,$relations);
 		}
 
 		return $this;
@@ -498,7 +501,7 @@ class Model{
 			$ai = $this -> insert($fields);
 
 			if(($field = $this -> getAutoIncrementField()) !== null)
-				$field -> setValueRawFromRepository($ai[0]);
+				$field -> setValueRawFromRepository([$field -> getSchema() -> getColumn() => $ai[0]]);
 
 		}else{
 			$this -> update($fields);
@@ -607,12 +610,20 @@ class Model{
 		return $return;
 	}
 
+	/**
+	 * Truncate the table
+	 *
+	 * @return Result
+	 */
 	public static function truncate(){
 		return static::repository() -> truncate();
 	}
 
+	/**
+	 * To string
+	 */
 	public function __tostring(){
-		echo static::class;
+		return static::class;
 	}
 }
 

@@ -7,10 +7,8 @@ class ModelField extends Field{
 	/**
 	 * Set Model
 	 */
-	public function setModel($model){
-		$this -> model = $model;
-		$model -> setField($this -> getSchema() -> getName(),$this);
-		$model -> setField($this -> getSchema() -> getColumn(),$this);
+	public function iniAlias(){
+		$this -> alias = [$this -> getSchema() -> getColumn(),$this -> getSchema() -> getName()];
 	}
 
 	/**
@@ -20,6 +18,8 @@ class ModelField extends Field{
 	 */
 	public function setValueRawFromRepository($value_raw,$persist = false,$relations = []){
 		
+		$value_raw = isset($value_raw[$this -> getSchema() -> getColumn()]) ? $value_raw[$this -> getSchema() -> getColumn()] : null;
+
 		$this -> value_raw = $value_raw;
 
 		if(isset($relations[$this -> getSchema() -> getRelation()]) && isset($relations[$this -> getSchema() -> getRelation()][$value_raw])){

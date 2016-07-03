@@ -405,43 +405,6 @@ class Field{
 	}
 
 
-
-	/**
-	 * Add
-	 *
-	 * @param Repository $repository
-	 * @param mixed $value
-	 *
-	 * @return value parsed
-	 */
-	public function add($value){
-		$this -> getModel() -> {$this -> getName()} = $value;
-	}
-
-	/**
-	 * Edit
-	 *
-	 * @param Repository $repository
-	 * @param mixed $value
-	 *
-	 * @return value parsed
-	 */
-	public function edit($value){
-		$model -> {$this -> getName()} = $value;
-	}
-
-	/**
-	 * Set
-	 *
-	 * @param Repository $repository
-	 * @param mixed $value
-	 *
-	 * @return value parsed
-	 */
-	public function set($value){
-		$model -> {$this -> getName()} = $value;
-	}
-
 	/**
 	 * Call
 	 *
@@ -456,6 +419,9 @@ class Field{
 		
 	}
 
+	public function __tostring(){
+		return static::class;
+	}
 
 }
 ?>

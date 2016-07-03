@@ -40,6 +40,7 @@ class Schema{
 	 * Add a field
 	 */
 	public function field($class,$name){
+
 		if(is_subclass_of($class,Field::class)){
 
 			$field = new $class($name);
@@ -54,7 +55,6 @@ class Schema{
 	 * Construct
 	 */
 	public function __construct(){
-		$this -> fields();
 	}
 
 	/**

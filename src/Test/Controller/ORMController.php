@@ -50,7 +50,17 @@ class ORMController extends Controller{
 		$ep2 -> serie -> name = 'Trono di spade';
 		$ep -> next -> prev -> name = "Close the door";
 		echo $ep -> serie -> name;
+		echo "<br>";
 		echo $ep -> name;
+		echo "<br><br>";
+
+		$got = Serie::where('name','Game of Thrones') -> first();
+		foreach($got -> episodes as $episode){
+			echo $episode -> name;
+			echo "<br>";
+		}
+
+		echo $got -> name;
 		echo "<br><br>";
 		
 		
@@ -64,8 +74,8 @@ class ORMController extends Controller{
 		echo microtime(true) - $time;
 		
 
-		// Episode::truncate();
-		// Serie::truncate();
+		Episode::truncate();
+		Serie::truncate();
 		DB::printLog();
 		die();
 

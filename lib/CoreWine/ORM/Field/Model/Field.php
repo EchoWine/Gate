@@ -43,7 +43,16 @@ class Field{
 	 */
 	public function setModel($model){
 		$this -> model = $model;
+		$this -> iniAlias();
 		$model -> setField($this -> getSchema() -> getName(),$this);
+	}
+
+	public function iniAlias(){
+		$this -> alias = [$this -> getSchema() -> getName()];
+	}
+
+	public function isAlias($alias){
+		return in_array($alias,$this -> alias);
 	}
 
 	public function getModel(){
@@ -110,6 +119,7 @@ class Field{
 	 * @return mixed
 	 */
 	public function setValueRawToRepository($value_raw,$persist = false){
+
 		$this -> value_raw = $value_raw;
 
 		if(!$persist){
@@ -124,6 +134,9 @@ class Field{
 	 * @return mixed
 	 */
 	public function setValueRawFromRepository($value_raw,$persist = false,$relations = []){
+		
+		$value_raw = isset($value_raw[$this -> getSchema() -> getColumn()]) ? $value_raw[$this -> getSchema() -> getColumn()] : null;
+
 		$this -> value_raw = $value_raw;
 
 		if(!$persist){

@@ -13,6 +13,7 @@ class Debug{
 	 * Add to stack.
 	 *
 	 * @param DataType $data
+	 */
 	public static function add($data){
 		Debug::$data[] = $data;
 	}

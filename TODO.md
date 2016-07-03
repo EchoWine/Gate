@@ -1,16 +1,19 @@
 TODO list
 
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'
-- [ ] Rename 'src/item' in src/Api' and cleanup
-- [ ] Soft/Hard alter table (hard: delete not declared column, only for dev, not for prod)
-- [ ] Backup of database for every alteration in folder
+- [x] Rename 'src/item' in src/Api' and cleanup
+
 - [ ] Resolve problem about column/repository of field
-- [ ] Make clear distinction between Field/Entity and Field/Schema
-- [ ] Make clear distinction between Item/Entity and Item/Schema
+- [x] Make clear distinction between Field/Entity and Field/Schema
+- [x] Make clear distinction between ORM/Entity and ORM/Schema
 
-
-- [ ] Item
-	- [ ] Refactoring
+- [x] Basic relations between object in ORM
+- [x] Get relation N to 1 ORM
+- [x] Save relations N to 1 ORM
+- [x] Get relations 1 to N ORM
+- [ ] Save relations 1 to N ORM
+- [ ] Improve relations (select which relations, get relation after retrieved)
+- [x] Create basic ORM
 	- [x] Create
 	- [x] Save
 	- [x] New
@@ -20,7 +23,7 @@ TODO list
 	- [x] Copy
 	- [ ] Fields:
 		- [x] ID
-		- [ ] Integer
+		- [x] Integer
 		- [x] String
 		- [ ] Text
 		- [ ] Float
@@ -28,13 +31,21 @@ TODO list
 		- [ ] Time
 		- [ ] DateTime
 
+- [ ] Soft/Hard alter table (hard: delete not declared column, only for dev, not for prod)
+- [ ] Backup of database for every alteration in folder
+
+
 
 - [ ] Api
-	- [ ] list
+	- [ ] index
 	- [ ] add
-	- [ ] view
+	- [ ] get
 	- [ ] edit
-	- [ ] temp sort
+	- [ ] sort
 	- [ ] pagination
 	- [ ] search
-		
+
+- [x] Cleanup src/Session
+- [ ] Move part of Auth in CoreWine
+- [ ] Admin/UserController
+- [ ] Admin/ExampleController: Example/Testing for ORM

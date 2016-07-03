@@ -607,6 +607,9 @@ class Model{
 		return $return;
 	}
 
+	public static function truncate(){
+		return static::repository() -> truncate();
+	}
 }
 
 ?>

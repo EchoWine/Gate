@@ -45,7 +45,6 @@ class ORMController extends Controller{
 
 		$ep = Episode::where('id',$ep -> id) -> first();
 		$ep -> serie -> id;
-		$ep -> delete();
 
 		foreach(Episode::all() as $ep){
 			if($ep -> serie){
@@ -56,7 +55,8 @@ class ORMController extends Controller{
 
 		echo microtime(true) - $time;
 
-
+		Episode::truncate();
+		Serie::truncate();
 		DB::printLog();
 		die();
 

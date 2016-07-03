@@ -22,7 +22,7 @@ class ModelField extends Field{
 		
 		$this -> value_raw = $value_raw;
 
-		if(isset($relations[$this -> getSchema() -> getRelation()][$value_raw]))
+		if(isset($relations[$this -> getSchema() -> getRelation()]) && isset($relations[$this -> getSchema() -> getRelation()][$value_raw]))
 			$value = $relations[$this -> getSchema() -> getRelation()][$value_raw];
 		else
 			$value = null;
@@ -48,6 +48,7 @@ class ModelField extends Field{
 			$this -> persist = $persist;
 		}
 	}
+
 
 	/**
 	 * Get the value raw

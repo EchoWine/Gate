@@ -70,7 +70,8 @@ class Repository extends QueryBuilder{
 
 			if($field instanceof \CoreWine\ORM\Field\Schema\ModelField){
 				foreach($results as $result){
-					$relation[$field -> getRelation()][] = $result[$field -> getColumn()];
+					if(!empty($result[$field -> getColumn()]))
+						$relation[$field -> getRelation()][] = $result[$field -> getColumn()];
 				}
 			}
 		}

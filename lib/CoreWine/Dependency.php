@@ -38,6 +38,9 @@ class Dependency{
 		static::checkPHPVersion();
 	}
 
+	/**
+	 * Check version PHP
+	 */
 	public static function checkPHPVersion(){
 		if(version_compare(PHP_VERSION, static::getPHPVersion(), '<')){
 			throw new PHPVersionException("PHP: ".PHP_VERSION.". Required version PHP: ".static::getPHPVersion());

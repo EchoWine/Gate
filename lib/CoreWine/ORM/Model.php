@@ -104,6 +104,18 @@ class Model{
 	}
 
 	/**
+	 * Define the fields schema
+	 *
+	 * @param Schema $schema
+	 */
+	public static function setSchemaFields($schema){}
+
+	/**
+	 * Seed
+	 */
+	public static function setSeed(){}
+
+	/**
 	 * Set persist
 	 *
 	 * @return bool
@@ -140,6 +152,7 @@ class Model{
 		static::$schema = $schema;
 		static::setSchemaFields($schema);
 		static::repository() -> alterSchema();
+		static::setSeed();
 
 		return $schema;
 	}
@@ -597,6 +610,13 @@ class Model{
 		return $repository -> insert();
 
 		
+	}
+
+	/**
+	 * Alias count
+	 */
+	public static function count(){
+		return static::repository() -> count();
 	}
 
 	/**

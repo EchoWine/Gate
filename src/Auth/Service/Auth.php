@@ -7,9 +7,8 @@ use CoreWine\Cfg;
 use CoreWine\Request;
 use CoreWine\Service;
 
-use Auth\Repository\AuthRepository;
-use Auth\Entity\User;
-use Auth\Entity\Session;
+use Auth\Model\User;
+use Auth\Model\Session;
 
 class Auth extends Service{
 
@@ -26,24 +25,13 @@ class Auth extends Service{
 	/**
 	 * Initilization
 	 */
-	public static function ini(){
-		AuthRepository::alterSchema();
-		Auth::createFirstUser();
-		AuthRepository::removeSessionExpired();
-		Auth::checkSession();
-	}
+	public static function load(){
 
-	/**
-	 * Create first user if is empty
-	 */
-	public static function createFirstUser(){		
-		if(AuthRepository::user() -> count() == 0){
-			AuthRepository::user() -> insert([
-				'username' => Cfg::get('Auth.default.username'),
-				'email' => Cfg::get('Auth.default.email'),
-				'password' => Auth::getHashPass(Cfg::get('Auth.default.password'))
-			]);
-		}
+		User::schema();
+		Session::schema();
+
+		Auth::removeSessionExpired();
+		Auth::checkSession();
 	}
 
 	/**
@@ -55,20 +43,12 @@ class Auth extends Service{
 
 		if(!empty($sid)){
 
-			$user = AuthRepository::getUserBySID($sid);
+			$session = Session::where('sid',$sid) -> first();
 
-			if(!empty($user)){
-				
-				# Temporary, i guess
-				Auth::$user = new User();
-				Auth::$user -> id = $user['user_id'];
-				Auth::$user -> username = $user['username'];
-				Auth::$user -> password = $user['password'];
-				Auth::$user -> email = $user['email'];
-				Auth::$session = new Session();
-				Auth::$session -> sid = $user['sid'];
-				Auth::$session -> user_id = $user['user_id'];
-				Auth::$session -> expire = $user['expire'];
+			if(!empty($session)){
+
+				Auth::$user = $session -> user;
+				Auth::$session = $session;
 				
 
 			}else
@@ -112,7 +92,7 @@ class Auth extends Service{
 	public static function logout(){
 
 		# Delete from table
-		AuthRepository::deleteSessionBySID(Auth::session() -> SID);
+		Auth::deleteSessionBySID(Auth::session() -> SID);
 
 		# Delete from cookies
 		Request::unsetCookie(Cfg::get('Auth.cookie'));
@@ -128,10 +108,12 @@ class Auth extends Service{
 	 */
 	public static function login($user,$type){
 
-		$sid = AuthRepository::generateSID();
+		$sid = Auth::generateSID();
+
 		$expire = time()+$type['expire'];
-		AuthRepository::session() -> insert([
-			'user_id' => $user['id'],
+
+		Session::create([
+			'user' => $user,
 			'sid' => $sid,
 			'expire' => $expire
 		]);
@@ -177,6 +159,63 @@ class Auth extends Service{
 	public static function getUserDisplay(){
 		if(!Auth::logged())return '[User not logged]';
 		return Cfg::get('Auth.display') == 0 ? Auth::user() -> username : Auth::user() -> email;
+	}
+
+	/**
+	 * Delete session expired
+	 */
+	public static function removeSessionExpired(){
+		return Session::where('expire','<',time()) -> delete();
+	}
+
+	/**
+	 * Delete session of user using sid
+	 *
+	 * @param string $sid
+	 */
+	public static function deleteSessionBySID($sid){
+		return Session::where('sid',$sid) -> delete();
+	}
+
+	/**
+	 * Get new SID that isn't already used
+	 *
+	 * @return string sid
+	 */
+	public static function generateSID(){
+
+		do{
+			$sid = md5(microtime());
+			$q = Session::where('sid',$sid) -> count();
+		}while($q == 1);
+
+		return $sid;
+	}
+
+	/**
+	 * Get a user using a username/email 
+	 * 
+	 * @param string $usernameOrEmail
+	 * @param string $password
+	 * @return result
+	 */
+	public static function getUsersByRaw($usernameOrEmail,$password){
+		
+		# Building query
+		$q = User::where('password',$password);
+		
+		if(Cfg::get('Auth.login_user'))
+			$q = $q -> orWhere('username',$usernameOrEmail);
+
+		if(Cfg::get('Auth.login_mail'))
+			$q = $q -> orWhere('email',$usernameOrEmail);
+
+		# Execute query
+		$q = $q -> get();
+
+		return $q;
+
+
 	}
 
 }

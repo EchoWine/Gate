@@ -10,7 +10,6 @@ use CoreWine\Cfg;
 use CoreWine\SourceManager\Controller as Controller;
 
 use Auth\Service\Auth;
-use Auth\Repository\AuthRepository;
 
 abstract class AuthController extends Controller{
 
@@ -27,9 +26,7 @@ abstract class AuthController extends Controller{
 	 * Check
 	 */
 	public function __check(){
-
-		Auth::ini();
-
+		Auth::load();
 		$this -> checkAttemptLogout();
 		$this -> checkAttemptLogin();
 	}
@@ -61,7 +58,7 @@ abstract class AuthController extends Controller{
 		$pass = Request::post('pass');
 		$type = Request::post('remember') !== null;
 		$password = Auth::getHashPass($pass);
-		$users = AuthRepository::getUsersByRaw($user,$password);
+		$users = Auth::getUsersByRaw($user,$password);
 
 		$type = $type == 1 ? Cfg::get('Auth.remember') : Cfg::get('Auth.normal');
 

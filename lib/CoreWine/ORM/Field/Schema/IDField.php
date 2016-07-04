@@ -2,7 +2,7 @@
 
 namespace CoreWine\ORM\Field\Schema;
 
-class IDField extends Field{
+class IDField extends IntegerField{
 	
 	/**
 	 * Model

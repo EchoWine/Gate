@@ -2,7 +2,7 @@
 
 namespace CoreWine\ORM\Field\Model;
 
-class IDField extends IntegerField{
+class TimestampField extends IntegerField{
 
 }
 ?>

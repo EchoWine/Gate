@@ -600,6 +600,13 @@ class Model{
 	}
 
 	/**
+	 * Alias first
+	 */
+	public static function first(){
+		return static::repository() -> first();
+	}
+
+	/**
 	 * Alias where repository
 	 */
 	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){

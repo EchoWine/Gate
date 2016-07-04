@@ -52,13 +52,47 @@ class ORMController extends Controller{
 		echo $ep -> serie -> name;
 		echo "<br>";
 		echo $ep -> name;
+		$ep -> save();
 		echo "<br><br>";
 
-		$got = Serie::where('name','Game of Thrones') -> first();
+		/*
+		# Select all series and only the episodes with name 'episode 1'
+		$got = Serie::with(['episodes' => function($q){
+			return $q -> where('name','episode 1');
+		}]) -> first();
+
+		# Select all series that have an episode with name 'episode 1'
+		$got = Serie::has(['episodes' => function($q){
+			return $q -> where('name','episode 1');
+		}]) -> first();
+		
+
+		$episodes = Episode::where('name','episode 1') -> get();
+		$series = [];
+		foreach($episodes as $episode)
+			$series[] = $episode -> serie
+
+
+		# Select all series that have an episode with name 'episode 1' and select only the episodes with name 'episode 1'
+		$got = Serie::only(['episodes' => function($q){
+			return $q -> where('name','episode 1');
+		}]) -> first();
+
+		# Select all series that have at least 10 episode
+		$got = Serie::has(['episodes' => function($q){
+			return $q -> count() > 10;
+		}]) -> first();
+		*/
+
+		$got = Serie::first();
+
+		foreach($got -> episodes as $episode){
+			echo $episode -> name;
+			echo "<br>";
+		}
 
 		$ep3 = new Episode();
 		$ep3 -> name = "Winter is coming";
-		$ep3 -> save();
 
 		$got -> episodes() -> add($ep3);
 		$got -> episodes() -> remove($ep2);

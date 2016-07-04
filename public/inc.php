@@ -5,6 +5,7 @@
 	use CoreWine\Router;
 	use CoreWine\SourceManager\Manager;
 	use CoreWine\TemplateEngine\Engine;
+	use CoreWine\Dependency as Dependency;
 
 	# php.ini
 	error_reporting(-1);
@@ -24,6 +25,8 @@
 	include "helpers.php";
 	
 	new \CoreWine\Exceptions\Handler('ExceptionsController','render');
+	Dependency::setPHPVersion('7.0.0');
+	Dependency::check();
 
 	# Load template
 	Engine::ini(dirname(__FILE__)."/".PATH_STORAGE);

@@ -34,8 +34,6 @@ TODO list
 - [ ] Soft/Hard alter table (hard: delete not declared column, only for dev, not for prod)
 - [ ] Backup of database for every alteration in folder
 
-
-
 - [ ] Api
 	- [ ] index
 	- [ ] add
@@ -51,3 +49,5 @@ TODO list
 - [ ] Admin/ExampleController: Example/Testing for ORM
 - [ ] Throw exception for unauthorized client in route /admin
 - [ ] Handle exception for unauthorized client in route /admin and redirect to login
+- [ ] Throw exception php version < 7
+- [ ] Move route/test in TestControler

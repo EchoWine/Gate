@@ -45,10 +45,11 @@ TODO list
 
 - [x] Cleanup src/Session
 - [ ] Move part of Auth in CoreWine
-- [ ] Update Auth with new ORM
+- [x] Update Auth with new ORM
 - [ ] Admin/UserController
 - [ ] Admin/ExampleController: Example/Testing for ORM
 - [ ] Throw exception for unauthorized client in route /admin
 - [ ] Handle exception for unauthorized client in route /admin and redirect to login
 - [x] Throw exception php version < 7
 - [ ] Move route/test in TestControler
+- [ ] CoreWine\Response html/json

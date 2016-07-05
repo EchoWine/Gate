@@ -16,7 +16,7 @@ class User extends Model{
 	public static $__table = 'users';
 
 	/**
-	 * Called when schema is initialized
+	 * Set schema fields
 	 *
 	 * @param Schema $schema
 	 */

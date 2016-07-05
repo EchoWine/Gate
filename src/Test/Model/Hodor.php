@@ -25,7 +25,7 @@ class Hodor extends Model{
 		$schema -> field(Field\IDField::class,'id')
 				-> label('#');
 
-		# Foo
+		# Door
 		$schema -> field(Field\StringField::class,'door')
 				-> label('door')
 				-> maxLength(128)

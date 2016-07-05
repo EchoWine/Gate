@@ -2,7 +2,7 @@
 
 namespace CoreWine\ORM;
 
-use CoreWine\ORM\Field\Schema\Field as Field;
+use CoreWine\ORM\Field\Schema as Field;
 
 class Schema{
 
@@ -40,15 +40,38 @@ class Schema{
 	 * Add a field
 	 */
 	public function field($class,$name){
-
-		if(is_subclass_of($class,Field::class)){
+		if(is_subclass_of($class,Field\Field::class)){
 
 			$field = new $class($name);
 			$this -> fields[$name] = $field;
 			return $field;
 		}else{
-			throw new \Exception('Error during creation of field');
+			throw new \Exception('Error during creation of field '.$class);
 		}
+	}
+
+	/**
+	 * Add one to one relation
+	 *
+	 * @param string $model
+	 * @param string $field
+	 */
+	public function toOne($model,$field){
+		$this -> field(Field\ModelField::class,$field)
+			  -> relation($model);
+	}
+
+	/**
+	 * Add one to many relation
+	 *
+	 * @param string $model
+	 * @param string $field
+	 * @param string $reference
+	 */
+	public function toMany($model,$field,$reference){
+		$this -> field(Field\CollectionModelField::class,$field)
+			  -> relation($model)
+			  -> reference($reference);
 	}
 
 	/**

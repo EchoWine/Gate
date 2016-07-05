@@ -31,9 +31,7 @@ class User extends Model{
 
 		$schema -> field(Field\StringField::class,'email');
 
-		$schema -> field(Field\CollectionModelField::class,'sessions')
-				-> relation(Session::class)
-				-> reference('user_id');
+		$schema -> toMany(Session::class,'sessions','user_id');
 
 	}
 

@@ -29,8 +29,7 @@ class Session extends Model{
 
 		$schema -> field(Field\TimestampField::class,'expire');
 
-		$schema -> field(Field\ModelField::class,'user')
-				-> relation(User::class);
+		$schema -> toOne(User::class,'user');
 
 	}
 

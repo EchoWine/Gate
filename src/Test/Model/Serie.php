@@ -25,9 +25,7 @@ class Serie extends Model{
 	
 		$schema -> field(Field\StringField::class,'name');
 
-		$schema -> field(Field\CollectionModelField::class,'episodes')
-				-> relation(Episode::class)
-				-> reference('serie_id');
+		$schema -> toMany(Episode::class,'episodes','serie_id');
 
 	}
 }

@@ -4,7 +4,7 @@ namespace Auth\Model;
 
 use CoreWine\ORM\Model;
 use CoreWine\ORM\Field\Schema as Field;
-use Auth\Service\Auth;
+use Auth\Field\Schema as AuthField;
 
 class User extends Model{
 
@@ -24,7 +24,7 @@ class User extends Model{
 
 		$schema -> field(Field\IDField::class,'id');
 	
-		$schema -> field(Field\StringField::class,'password')
+		$schema -> field(AuthField\PasswordField::class,'password')
 				-> maxLength(128);
 
 		$schema -> field(Field\StringField::class,'username');
@@ -47,7 +47,7 @@ class User extends Model{
 			User::create([
 				'username' => 'admin',
 				'email' => 'admin@admin.com',
-				'password' => Auth::getHashPass('admin')
+				'password' => 'admin'
 			]);
 		}
 

@@ -1,5 +1,19 @@
 TODO list
 
+General:
+
+- [x] Cleanup src/Session
+- [ ] Move part of Auth in CoreWine
+- [x] Update Auth with new ORM
+- [ ] Admin/UserController
+- [ ] Admin/ExampleController: Example/Testing for ORM
+- [ ] Throw exception for unauthorized client in route /admin
+- [ ] Handle exception for unauthorized client in route /admin and redirect to login
+- [x] Throw exception php version < 7
+- [ ] Move route/test in TestControler
+- [ ] CoreWine\Response html/json
+
+ORM:
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'
 - [x] Rename 'src/item' in src/Api' and cleanup
 
@@ -30,11 +44,9 @@ TODO list
 		- [ ] Date
 		- [ ] Time
 		- [ ] DateTime
+		- [x] Timestamp
 
-- [ ] Soft/Hard alter table (hard: delete not declared column, only for dev, not for prod)
-- [ ] Backup of database for every alteration in folder
-
-- [ ] Api
+- src/Api:
 	- [ ] index
 	- [ ] add
 	- [ ] get
@@ -43,13 +55,9 @@ TODO list
 	- [ ] pagination
 	- [ ] search
 
-- [x] Cleanup src/Session
-- [ ] Move part of Auth in CoreWine
-- [x] Update Auth with new ORM
-- [ ] Admin/UserController
-- [ ] Admin/ExampleController: Example/Testing for ORM
-- [ ] Throw exception for unauthorized client in route /admin
-- [ ] Handle exception for unauthorized client in route /admin and redirect to login
-- [x] Throw exception php version < 7
-- [ ] Move route/test in TestControler
-- [ ] CoreWine\Response html/json
+DataBase:
+- [ ] Option to cleanup table model, defined previously, and not exist
+- [ ] Migrations
+- [ ] Soft/Hard alter table (hard: delete not declared column, only for dev, not for prod)
+- [ ] Backup of database for every alteration in folder
+

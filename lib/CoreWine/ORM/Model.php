@@ -7,6 +7,13 @@ use CoreWine\ORM\Response as Response;
 class Model{
 
 	/**
+	 * Table
+	 *
+	 * @var
+	 */
+	public static $table;
+
+	/**
 	 * ORM\Repository
 	 */
 	public static $__repository = 'CoreWine\ORM\Repository';
@@ -147,7 +154,7 @@ class Model{
 		unset($tmp);
 
 		$schema = new static::$__schema();
-		$schema -> setTable(static::$__table);
+		$schema -> setTable(static::$table);
 
 		static::$schema = $schema;
 		static::setSchemaFields($schema);

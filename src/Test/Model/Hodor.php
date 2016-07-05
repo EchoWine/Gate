@@ -12,7 +12,7 @@ class Hodor extends Model{
 	 *
 	 * @var
 	 */
-	public static $__table = 'hodor';
+	public static $table = 'hodor';
 
 	/**
 	 * Set schema fields

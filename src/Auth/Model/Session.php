@@ -13,7 +13,7 @@ class Session extends Model{
 	 *
 	 * @var
 	 */
-	public static $__table = 'sessions';
+	public static $table = 'sessions';
 
 	/**
 	 * Called when schema is initialized

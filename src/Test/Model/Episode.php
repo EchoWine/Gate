@@ -13,7 +13,7 @@ class Episode extends Model{
 	 *
 	 * @var
 	 */
-	public static $__table = 'episodes';
+	public static $table = 'episodes';
 
 	/**
 	 * Set schema fields

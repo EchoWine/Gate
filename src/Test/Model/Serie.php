@@ -12,7 +12,7 @@ class Serie extends Model{
 	 *
 	 * @var
 	 */
-	public static $__table = 'series';
+	public static $table = 'series';
 
 	/**
 	 * Set schema fields

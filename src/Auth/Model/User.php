@@ -13,7 +13,7 @@ class User extends Model{
 	 *
 	 * @var
 	 */
-	public static $__table = 'users';
+	public static $table = 'users';
 
 	/**
 	 * Set schema fields

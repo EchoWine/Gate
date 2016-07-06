@@ -12,7 +12,7 @@
 		new CoreWine\SourceManager\SourceManagerApp(),
 
 
-		//new CoreWine\DataBase\DataBaseApp(),
+		new CoreWine\DataBase\DataBaseApp(),
 		new CoreWine\FrameworkApp(),
 		
 

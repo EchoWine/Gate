@@ -31,9 +31,6 @@ class FrameworkApp extends App{
 		Engine::ini(PATH."/".PATH_STORAGE);
 
 
-		# Load template
-
-		DB::connect(include PATH_CONFIG.'/database.php');
 
 		# Load all sources
 		Manager::loadAll(PATH_SRC);

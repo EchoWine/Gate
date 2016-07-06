@@ -14,16 +14,6 @@ use Api\Response as Response;
 abstract class Controller extends SourceController{
 
 	/**
-	 * Retrieve result as array
-	 */
-	const RESULT_ARRAY = 0;
-
-	/**
-	 * Retrieve results as object
-	 */
-	const RESULT_OBJECT = 1;
-
-	/**
 	 * Name of obj in url
 	 */
 	public $url;
@@ -159,16 +149,14 @@ abstract class Controller extends SourceController{
 	public function __all(){
 
 		try{
-
+			
 			$repository = $this -> getRepository();
-
 
 			$sort = $this -> __allSort($repository);
 
 			$pagination = $this -> __allPagination($repository);
 
-			$results = $repository -> get();
-
+			$results = $repository -> get() -> toArray();
 			return new Response\ApiAllSuccess([
 				'results' => $results,
 				'pagination' => $pagination
@@ -296,7 +284,7 @@ abstract class Controller extends SourceController{
 	/**
 	 * Add a new record
 	 *
-	 * @return \Item\Response\Response
+	 * @return \Api\Response\Response
 	 */
 	public function __add(){
 
@@ -323,7 +311,7 @@ abstract class Controller extends SourceController{
 	 * Edit record
 	 *
 	 * @param int $id
-	 * @return \Item\Response\Response
+	 * @return \Api\Response\Response
 	 */
 	public function __edit($id){
 

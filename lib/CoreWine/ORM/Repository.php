@@ -32,32 +32,32 @@ class Repository extends QueryBuilder{
 
 		parent::__construct($this -> getSchema() -> getTable());
 
-		$this -> setParserResult(function($results){
-
+		$this -> setParserResult(function($rep,$results){
 			$return = [];
 
 			# Create EMPTY model if doens't exists and save in a stack
 			# Otherwise retrieve
 
 			foreach($results as $n => $result){
-				if(!$this -> isObjectORM($this -> getModel(),$result[$this -> getSchema() -> getPrimaryColumn()])){
+				if(!$rep -> isObjectORM($rep -> getModel(),$result[$rep -> getSchema() -> getPrimaryColumn()])){
 					
-					$model = $this -> getModel()::new();
-					$this -> setObjectORM(
-						$this -> getModel(),
-						$result[$this -> getSchema() -> getPrimaryColumn()],
+					$model = $rep -> getModel()::new();
+					$rep -> setObjectORM(
+						$rep -> getModel(),
+						$result[$rep -> getSchema() -> getPrimaryColumn()],
 						$model
 					);
 				}else{
-					$model = $this -> getObjectORM($this -> getModel(),$result[$this -> getSchema() -> getPrimaryColumn()]);
+					$model = $rep -> getObjectORM($rep -> getModel(),$result[$rep -> getSchema() -> getPrimaryColumn()]);
 					
 				}
 
 				$return[] = $model;
 			}
 
+
 			# Retrieve relations for this results
-			$__relations = $this -> retrieveRelations($results,$this -> getSchema());
+			$__relations = $rep -> retrieveRelations($results,$rep -> getSchema());
 
 			# Getting all records for all relations
 			# This call recursively setParserResult in order to create all ORM Object empty
@@ -71,18 +71,30 @@ class Repository extends QueryBuilder{
 
 			}
 
-
 			# Fill all fields of ORM Object
 			foreach($return as $n => $model){
-				$model -> fillRawFromRepository($results[$n],$this -> getObjectsORM());
+				$model -> fillRawFromRepository($results[$n],$rep -> getObjectsORM());
 				$model -> setPersist();
 			}
-
-			
 
 			return $return;
 		});
 
+	}
+
+	/**
+	 * Set repository to array
+	 */
+	public function toArray(){
+		$this -> to_array = true;
+		return $this;
+	}
+
+	/**
+	 * Get
+	 */
+	public function get(){
+		return new CollectionResults(parent::get());
 	}
 
 	/**

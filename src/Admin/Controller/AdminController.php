@@ -18,7 +18,13 @@ abstract class AdminController extends Controller{
 	public $__repository = 'Admin\Repository';
 
 	const PREFIX_URL = 'admin/';
+
 	const PREFIX_ROUTE = 'admin/';
+
+	public $view_list = [];
+	public $view_edit = [];
+	public $view_add = [];
+	public $view_get = [];
 
 
 	/**
@@ -75,12 +81,10 @@ abstract class AdminController extends Controller{
 	public function getSchemaFieldsList(){
 		$return = [];
 
-		foreach($this -> getSchema() -> getFields() as $name => $field){
-			
-			if($field -> isViewGet() && $field -> isViewAll())
-				$return[$name] = $field;
-		}
-
+		foreach($this -> view_list as $name)
+			$return[$name] = $this -> getSchema() -> getField($name);
+		
+		
 		return $return;
 	}
 	
@@ -92,12 +96,9 @@ abstract class AdminController extends Controller{
 	public function getSchemaFieldsAdd(){
 		$return = [];
 
-		foreach($this -> getSchema() -> getFields() as $name => $field){
-			
-			if($field -> isAdd() && $field -> isViewAdd())
-				$return[$name] = $field;
-		}
-
+		foreach($this -> view_add as $name)
+			$return[$name] = $this -> getSchema() -> getField($name);
+		
 		return $return;
 	}
 
@@ -109,12 +110,9 @@ abstract class AdminController extends Controller{
 	public function getSchemaFieldsEdit(){
 		$return = [];
 
-		foreach($this -> getSchema() -> getFields() as $name => $field){
-			
-			if($field -> isEdit() && $field -> isViewEdit())
-				$return[$name] = $field;
-		}
-
+		foreach($this -> view_edit as $name)
+			$return[$name] = $this -> getSchema() -> getField($name);
+		
 		return $return;
 	}
 
@@ -126,12 +124,9 @@ abstract class AdminController extends Controller{
 	public function getSchemaFieldsGet(){
 		$return = [];
 
-		foreach($this -> getSchema() -> getFields() as $name => $field){
-			
-			if($field -> isGet() && $field -> isViewGet())
-				$return[$name] = $field;
-		}
-
+		foreach($this -> view_get as $name)
+			$return[$name] = $this -> getSchema() -> getField($name);
+		
 		return $return;
 	}
 

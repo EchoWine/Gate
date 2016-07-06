@@ -127,7 +127,7 @@
 				<label for='select-{table}-{id}' class='checkbox'></label>
 			</div>
 			{{for $fieldsAll as $field}}
-				<div class='table-col {{if $field -> isClassNumber() }}table-col-number{{/if}}'>
+				<div class='table-col {# {{if $field -> isClassNumber() }}table-col-number{{/if}} #}'>
 					<span class='table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
 				</div>
 			{{/for}}
@@ -206,7 +206,7 @@
 					</div>
 					{{for $fieldsAll as $field}}
 						{{if $field -> isSort()}}
-							<div class='table-col table-col-head table-col-sort {{if $field -> isClassNumber() }}table-col-number{{/if}}' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
+							<div class='table-col table-col-head table-col-sort {# {{if $field -> isClassNumber() }}table-col-number{{/if}} #}' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
 								<div class='table-col-text noselect'>
 									<span>{{$field -> getLabel()}}</span>
 

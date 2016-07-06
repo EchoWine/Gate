@@ -15,6 +15,11 @@ class Field{
 	public $model;
 
 	/**
+	 * has value raw
+	 */
+	public $has_value_raw = true;
+
+	/**
 	 * Value
 	 */
 	public $value;
@@ -168,6 +173,15 @@ class Field{
 	 */
 	public function getValueRaw(){
 		return $this -> value_raw;
+	}
+
+	/**
+	 * Has the value raw
+	 *
+	 * @return mixed
+	 */
+	public function hasValueRaw(){
+		return $this -> has_value_raw;
 	}
 
 	/**

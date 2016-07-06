@@ -4,11 +4,15 @@ namespace CoreWine\ORM\Field\Model;
 
 class CollectionModelField extends Field{
 
+	/**
+	 * has value raw
+	 */
+	public $has_value_raw = false;
+
 	/** 
 	 * List of all Model to save()
 	 */
 	public $value_to_save = [];
-
 
 	/**
 	 * Add a model to collection if isn't already added
@@ -95,31 +99,32 @@ class CollectionModelField extends Field{
 		$this -> value_raw = null;
 		$value = [];
 
-		foreach($relations[$this -> getSchema() -> getRelation()] as $result){
+		if(isset($relations[$this -> getSchema() -> getRelation()])){
+			foreach($relations[$this -> getSchema() -> getRelation()] as $result){
 
-			foreach($result -> getFields() as $field){
+				foreach($result -> getFields() as $field){
 
-				if($field -> getSchema() instanceof \CoreWine\ORM\Field\Schema\ModelField){
+					if($field -> getSchema() instanceof \CoreWine\ORM\Field\Schema\ModelField){
 
-					if(!$this -> getModel() -> getPrimaryField()){
-						print_r($this -> getModel());
-						die('...');
-					}
+						if(!$this -> getModel() -> getPrimaryField()){
+							print_r($this -> getModel());
+							die('...');
+						}
 
-					# Of all results take only with a relation, with a column reference, with a value of primary == reference
-					if(
-						$field -> getSchema() -> getRelation() == $this -> getModel() && 
-						$field -> getSchema() -> getColumn() == $this -> getSchema() -> getReference() &&
-						$result -> getField($this -> getSchema() -> getReference()) -> getValueRaw() == 
-						$this -> getModel() -> getPrimaryField() -> getValue()
-					){
-						
-						$value[$result -> getPrimaryField() -> getValue()] = $result;
+						# Of all results take only with a relation, with a column reference, with a value of primary == reference
+						if(
+							$field -> getSchema() -> getRelation() == $this -> getModel() && 
+							$field -> getSchema() -> getColumn() == $this -> getSchema() -> getReference() &&
+							$result -> getField($this -> getSchema() -> getReference()) -> getValueRaw() == 
+							$this -> getModel() -> getPrimaryField() -> getValue()
+						){
+							
+							$value[$result -> getPrimaryField() -> getValue()] = $result;
+						}
 					}
 				}
 			}
 		}
-
 
 		if(!$persist){
 			

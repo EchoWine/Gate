@@ -1296,6 +1296,8 @@ class QueryBuilder{
 	 * @return array result of the query
 	 */
 	public function get(){
+
+
 		$r = $this -> assoc($this -> SQL_UNION());
 
 		if(!empty($this -> builder -> indexResult)){
@@ -1309,7 +1311,7 @@ class QueryBuilder{
 
 		if($this -> builder -> parserResult != null){
 			$callback = $this -> builder -> parserResult;
-			$r = $callback($r);
+			$r = $callback($this,$r);
 		}
 		
 

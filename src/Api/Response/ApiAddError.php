@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Item\Response;
+namespace CoreWine\Api\Response;
 
 use CoreWine\Request;
 

@@ -537,6 +537,22 @@ class Model{
 	}
 
 	/**
+	 * Return all values of all fields
+	 *
+	 * @return Array
+	 */
+	public function getAllValuesRaw(){
+		$values = [];
+
+		foreach($this -> getFields() as $name => $field){
+			if($field -> hasValueRaw())
+				$values[$name] = $field -> getValueRaw();
+		}
+
+		return $values;
+	}
+
+	/**
 	 * Save the model
 	 */
 	public function save(){

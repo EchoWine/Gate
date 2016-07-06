@@ -22,6 +22,7 @@ class Controller{
 
 	public function json($var){
 		header('Content-Type: application/json');
+
 		echo json_encode($var,JSON_PRETTY_PRINT);
 		die();
 	}

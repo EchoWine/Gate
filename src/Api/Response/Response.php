@@ -1,6 +1,6 @@
 <?php
 
-namespace Item\Response;
+namespace Api\Response;
 
 class Response{
 
@@ -42,23 +42,23 @@ class Response{
 	/**
 	 * Return if a response is success or not
 	 *
-	 * @param \Item\Response\Response $response
+	 * @param \Api\Response\Response $response
 	 *
 	 * @return bool
 	 */
-	public static function isResponseSuccess(\Item\Response\Response $response){
-		return ($response instanceof \Item\Response\Success);
+	public static function isResponseSuccess(\Api\Response\Response $response){
+		return ($response instanceof \Api\Response\Success);
 	}
 
 	/**
 	 * Return if a response is error or not
 	 *
-	 * @param \Item\Response\Response $response
+	 * @param \Api\Response\Response $response
 	 *
 	 * @return bool
 	 */
-	public static function isResponseError(\Item\Response\Response $response){
-		return ($response instanceof \Item\Response\Error);
+	public static function isResponseError(\Api\Response\Response $response){
+		return ($response instanceof \Api\Response\Error);
 	}
 }
 

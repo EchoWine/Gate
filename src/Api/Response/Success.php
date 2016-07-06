@@ -1,6 +1,6 @@
 <?php
 
-namespace Item\Response;
+namespace Api\Response;
 
 class Success extends Response{
 

@@ -157,6 +157,7 @@ abstract class Controller extends SourceController{
 			$pagination = $this -> __allPagination($repository);
 
 			$results = $repository -> get() -> toArray();
+			
 			return new Response\ApiAllSuccess([
 				'results' => $results,
 				'pagination' => $pagination
@@ -327,7 +328,8 @@ abstract class Controller extends SourceController{
 
 			$old_entity = clone $entity;
 
-			$entity -> update(Request::all());
+			$entity -> fill(Request::all());
+			$entity -> save();
 
 			return new Response\ApiEditSuccess($id,$old_entity -> toArray(),$entity -> toArray());
 

@@ -681,16 +681,7 @@ class Model{
 	 */
 	public function toArray(){
 
-		$schema = $this -> getSchema();
-
-		$return = [];
-		foreach($schema -> getFields() as $name => $field){
-
-			$return[$name] = $this -> {$name};
-		
-		}
-
-		return $return;
+		return $this -> getAllValuesRaw();
 	}
 
 	/**

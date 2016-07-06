@@ -461,7 +461,7 @@ class Engine{
 		if($include){
 
 			\CoreWine\Debug::add("Includo...".$structure -> getSource());
-			include PATH.'/'.PATH_STORAGE.'/'.Engine::getInclude($structure -> getSource());
+			include self::$pathStorage.'/'.Engine::getInclude($structure -> getSource());
 		}
 
 		$c = Engine::endStructure(Engine::STRUCTURE_EXTENDS);
@@ -501,7 +501,7 @@ class Engine{
 		Engine::$structure_print = true;
 
 		echo Engine::endStructure(Engine::STRUCTURE_EXTENDS);
-		include PATH.'/'.PATH_STORAGE.'/'.Engine::getInclude($structure -> getSource());
+		include self::$pathStorage.'/'.Engine::getInclude($structure -> getSource());
 		Engine::$structure_print = true;
 		
 		

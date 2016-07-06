@@ -1,5 +1,17 @@
 <?php
 		
+	# Error reporting
+	error_reporting(-1);
+	ini_set('display_errors', 'On');
+
+	# Path
+	define('PATH',__DIR__);
+	define('PATH_APP','../app');
+	define('PATH_SRC','../src');
+	define('PATH_LIB','../lib');
+	define('PATH_PUBLIC','');
+	define('PATH_STORAGE','../storage');
+	define('PATH_CONFIG','../config');
 
 	include "loader.php";
 	include "helpers.php";
@@ -10,12 +22,8 @@
 		new CoreWine\Requirements\RequirementsApp(),
 		new CoreWine\TemplateEngine\TemplateEngineApp(),
 		new CoreWine\SourceManager\SourceManagerApp(),
-
-
 		new CoreWine\DataBase\DataBaseApp(),
 		new CoreWine\FrameworkApp(),
-		
-
 	];
 
 	foreach($apps as $app){

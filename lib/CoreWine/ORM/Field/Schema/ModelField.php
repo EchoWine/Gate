@@ -32,6 +32,24 @@ class ModelField extends IntegerField{
 		return $this -> relation;
 	}
 
+	/**
+	 * Construct
+	 */
+	public function __construct($relation,$name = null){
+		$this -> name = $name;
+		$this -> label = $name;
+		$this -> column = $name;
+		$this -> relation($relation);
+		return $this;
+	}
+
+	/**
+	 * New
+	 */
+	public static function factory($relation,$name = null){
+		return new static($relation,$name);
+	}
+
 }
 
 ?>

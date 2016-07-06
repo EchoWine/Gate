@@ -157,7 +157,7 @@ class Model{
 		$schema -> setTable(static::$table);
 
 		static::$schema = $schema;
-		static::setSchemaFields($schema);
+		static::setSchemaFields(new SchemaBuilder($schema));
 		static::repository() -> alterSchema();
 		static::setSeed();
 

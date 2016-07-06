@@ -14,7 +14,6 @@ class IDField extends IntegerField{
 	 */
 	public $unique = true;
 
-
 	public $primary = true;
 	
 	public $auto_increment = true;

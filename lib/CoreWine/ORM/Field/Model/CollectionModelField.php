@@ -101,6 +101,10 @@ class CollectionModelField extends Field{
 
 				if($field -> getSchema() instanceof \CoreWine\ORM\Field\Schema\ModelField){
 
+					if(!$this -> getModel() -> getPrimaryField()){
+						print_r($this -> getModel());
+						die('...');
+					}
 
 					# Of all results take only with a relation, with a column reference, with a value of primary == reference
 					if(

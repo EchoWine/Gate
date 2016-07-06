@@ -123,6 +123,13 @@ class Field{
 	}
 
 	/**
+	 * New
+	 */
+	public static function factory($name){
+		return new static($name);
+	}
+
+	/**
 	 * Set name
 	 */
 	public function name($name){
@@ -417,6 +424,10 @@ class Field{
 
 		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
 		
+	}
+
+	public function addToModelSchema($schema){
+		$schema -> setField($this -> getName(),$this);
 	}
 
 	public function __tostring(){

@@ -9,8 +9,6 @@
 	define('PATH_APP','../app');
 	define('PATH_SRC','../src');
 	define('PATH_LIB','../lib');
-	define('PATH_PUBLIC','');
-	define('PATH_STORAGE','../storage');
 	define('PATH_CONFIG','../config');
 
 	include "loader.php";
@@ -23,6 +21,7 @@
 		new CoreWine\TemplateEngine\TemplateEngineApp(),
 		new CoreWine\SourceManager\SourceManagerApp(),
 		new CoreWine\DataBase\DataBaseApp(),
+		new CoreWine\ORM\ORMApp(),
 		new CoreWine\FrameworkApp(),
 	];
 

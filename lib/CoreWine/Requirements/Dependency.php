@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine;
+namespace CoreWine\Requirements;
 
 use CoreWine\Exceptions\PHPVersionException;
 

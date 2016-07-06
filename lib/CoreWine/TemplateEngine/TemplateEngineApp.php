@@ -9,7 +9,7 @@ class TemplateEngineApp extends App{
 	public function __construct(){
 
 		# Load template
-		Engine::ini(PATH."/".PATH_APP."/cache/views");
+		Engine::ini(PATH_APP."/cache/views");
 
 	}
 

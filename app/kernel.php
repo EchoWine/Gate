@@ -5,7 +5,7 @@
 	ini_set('display_errors', 'On');
 
 	# Path
-	define('PATH',__DIR__);
+	define('PATH',__DIR__.'/../public');
 	define('PATH_APP','../app');
 	define('PATH_SRC','../src');
 	define('PATH_LIB','../lib');

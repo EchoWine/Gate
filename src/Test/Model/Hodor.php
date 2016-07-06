@@ -22,12 +22,10 @@ class Hodor extends Model{
 	public static function setSchemaFields($schema){
 
 		# ID
-		$schema -> field(Field\IDField::class,'id')
-				-> label('#');
+		$schema -> id();
 
 		# Door
-		$schema -> field(Field\StringField::class,'door')
-				-> label('door')
+		$schema -> string('door')
 				-> maxLength(128)
 				-> minLength(3)
 				-> required()

@@ -25,6 +25,10 @@ class PasswordField extends Field{
 	 */
 	public $regex = "/^(.){0,255}$/iU";
 
+	public $name = 'password';
+	public $label = 'password';
+	public $column = 'password';
+
 
 }
 ?>

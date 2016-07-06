@@ -9,6 +9,10 @@ class IDField extends IntegerField{
 	 */
 	public $__model = 'CoreWine\ORM\Field\Model\IDField';
 
+	public $name = 'id';
+	public $label = 'id';
+	public $column = 'id';
+
 	/**
 	 * Unique
 	 */

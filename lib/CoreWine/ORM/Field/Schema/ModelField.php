@@ -35,7 +35,7 @@ class ModelField extends IntegerField{
 	/**
 	 * Construct
 	 */
-	public function __construct($relation,$name = null){
+	public function __construct($relation = null,$name = null){
 		$this -> name = $name;
 		$this -> label = $name;
 		$this -> column = $name;
@@ -46,7 +46,7 @@ class ModelField extends IntegerField{
 	/**
 	 * New
 	 */
-	public static function factory($relation,$name = null){
+	public static function factory($relation = null,$name = null){
 		return new static($relation,$name);
 	}
 

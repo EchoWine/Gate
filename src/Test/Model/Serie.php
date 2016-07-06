@@ -21,9 +21,9 @@ class Serie extends Model{
 	 */
 	public static function setSchemaFields($schema){
 
-		$schema -> field(Field\IDField::class,'id');
+		$schema -> id();
 	
-		$schema -> field(Field\StringField::class,'name');
+		$schema -> string('name');
 
 		$schema -> toMany(Episode::class,'episodes','serie_id');
 

@@ -13,7 +13,7 @@ use CoreWine\SourceManager\Manager;
 class FrameworkApp extends App{
 
 	public function __construct(){
-		
+		class_alias("CoreWine\Flash","Flash");
 	}
 
 	public function app(){

@@ -71,7 +71,7 @@ class CollectionModelField extends IntegerField{
 	/**
 	 * Construct
 	 */
-	public function __construct($relation,$name = null,$reference = null){
+	public function __construct($relation = null,$name = null,$reference = null){
 		$this -> name = $name;
 		$this -> label = $name;
 		$this -> column = $name;
@@ -83,7 +83,7 @@ class CollectionModelField extends IntegerField{
 	/**
 	 * New
 	 */
-	public static function factory($relation,$name = null,$reference = null){
+	public static function factory($relation = null,$name = null,$reference = null){
 		return new static($relation,$name,$reference);
 	}
 

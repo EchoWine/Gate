@@ -22,12 +22,12 @@ class Session extends Model{
 	 */
 	public static function setSchemaFields($schema){
 
-		$schema -> field(Field\IDField::class,'id');
+		$schema -> id();
 	
-		$schema -> field(Field\StringField::class,'sid')
+		$schema -> string('sid')
 				-> maxLength(128);
 
-		$schema -> field(Field\TimestampField::class,'expire');
+		$schema -> timestamp('expire');
 
 		$schema -> toOne(User::class,'user');
 

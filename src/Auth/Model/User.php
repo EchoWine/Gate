@@ -22,14 +22,14 @@ class User extends Model{
 	 */
 	public static function setSchemaFields($schema){
 
-		$schema -> field(Field\IDField::class,'id');
+		$schema -> id();
 	
-		$schema -> field(AuthField\PasswordField::class,'password')
+		$schema -> password()
 				-> maxLength(128);
 
-		$schema -> field(Field\StringField::class,'username');
+		$schema -> string('username');
 
-		$schema -> field(Field\StringField::class,'email');
+		$schema -> string('email');
 
 		$schema -> toMany(Session::class,'sessions','user_id');
 

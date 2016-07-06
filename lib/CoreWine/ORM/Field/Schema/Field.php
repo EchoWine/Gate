@@ -115,17 +115,19 @@ class Field{
 	/**
 	 * Construct
 	 */
-	public function __construct($name){
-		$this -> name = $name;
-		$this -> label = $name;
-		$this -> column = $name;
+	public function __construct($name = null){
+		if($name != null){
+			$this -> name = $name;
+			$this -> label = $name;
+			$this -> column = $name;
+		}
 		return $this;
 	}
 
 	/**
 	 * New
 	 */
-	public static function factory($name){
+	public static function factory($name = null){
 		return new static($name);
 	}
 

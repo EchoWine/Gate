@@ -4,34 +4,20 @@ namespace CoreWine;
 
 use CoreWine\Components\App;
 
-use Request;
-use Router;
-use Flash;
-use Engine;
-use DB;
-use Manager;
+use CoreWine\TemplateEngine\Engine;
+use CoreWine\Request;
+use CoreWine\Flash;
+use CoreWine\Router;
+use CoreWine\SourceManager\Manager;
 
 class FrameworkApp extends App{
 
 	public function __construct(){
 		
-		class_alias('CoreWine\Request', 'Request');
-		class_alias('CoreWine\Router', 'Router');
-		class_alias('CoreWine\Flash', 'Flash');
-		class_alias('CoreWine\TemplateEngine\Engine', 'Engine');
-		class_alias('CoreWine\SourceManager\Manager', 'Manager');
-		class_alias('CoreWine\DataBase\DB', 'DB');
 	}
 
 	public function app(){
 		
-		
-
-		# Load template
-		Engine::ini(PATH."/".PATH_STORAGE);
-
-
-
 		# Load all sources
 		Manager::loadAll(PATH_SRC);
 			
@@ -62,8 +48,6 @@ class FrameworkApp extends App{
 
 		Engine::translates();
 
-
-			
 		$view = Router::load();
 
 		if(empty($view)){

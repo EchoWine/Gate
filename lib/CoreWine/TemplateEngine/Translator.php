@@ -29,6 +29,15 @@ class Translator{
 	const PARENT_CONTENT = '{% PARENT_CONTENT %}';
 
 	/**
+	 * Return call to engine
+	 *
+	 * @return string
+	 */
+	public function getEngineCall(){
+		return __NAMESPACE__."\Engine";
+	}
+
+	/**
 	 * Construct
 	 *
 	 * @param string $filename
@@ -84,14 +93,14 @@ class Translator{
 
 		if(preg_match('/{{extends ([^\}]*)}}/iU',$content,$r)){
 
-			$content = str_replace('{{extends '.$r[1].'}}',"<?php Engine::startExtends('$r[1]'); ?>",$content);
-			$content .= "<?php Engine::endExtends(); ?>";
+			$content = str_replace('{{extends '.$r[1].'}}',"<?php ".$this -> getEngineCall()."::startExtends('$r[1]'); ?>",$content);
+			$content .= "<?php ".$this -> getEngineCall()."::endExtends(); ?>";
 
 		}
 
-		$content = preg_replace('/{{includes ([^\s]*) ([^\}]*)}}/iU','<?php Engine::startIncludes("$1","$2"); ?>',$content,-1,$count_adv);
-		$content = preg_replace('/{{includes ([^\}]*)}}/iU','<?php Engine::startIncludes("$1","$1"); ?>',$content,-1,$count_basic);
-		$content = preg_replace('/{{\/includes}}/iU','<?php Engine::endIncludes(); ?>',$content,-1,$count_close);
+		$content = preg_replace('/{{includes ([^\s]*) ([^\}]*)}}/iU','<?php '.$this -> getEngineCall().'::startIncludes("$1","$2"); ?>',$content,-1,$count_adv);
+		$content = preg_replace('/{{includes ([^\}]*)}}/iU','<?php '.$this -> getEngineCall().'::startIncludes("$1","$1"); ?>',$content,-1,$count_basic);
+		$content = preg_replace('/{{\/includes}}/iU','<?php '.$this -> getEngineCall().'::endIncludes(); ?>',$content,-1,$count_close);
 
 		if($count_adv + $count_basic != $count_close){
 			throw new Exceptions\IncludesException(
@@ -104,8 +113,8 @@ class Translator{
 		$content = preg_replace('/{{parent}}/',Translator::PARENT_CONTENT,$content);
 
 
-		$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php Engine::startBlock('$1'); ?>",$content,-1,$count_open);
-		$content = preg_replace('/{{\/block}}/',"<?php Engine::endBlock(); ?>",$content,-1,$count_close);
+		$content = preg_replace('/{{block ([^\}]*)}}/iU',"<?php ".$this -> getEngineCall()."::startBlock('$1'); ?>",$content,-1,$count_open);
+		$content = preg_replace('/{{\/block}}/',"<?php ".$this -> getEngineCall()."::endBlock(); ?>",$content,-1,$count_close);
 
 		if($count_open != $count_close){
 			throw new Exceptions\BlockException(
@@ -128,7 +137,7 @@ class Translator{
 		# Include
 		preg_match_all('/{{include ([^\}]*)}}/iU',$content,$r);
 		foreach($r[1] as $n => $k){
-			$content = str_replace($r[0][$n],'<?php include Engine::getInclude("'.$k.'"); ?>',$content);
+			$content = str_replace($r[0][$n],'<?php include '.$this -> getEngineCall().'::getInclude("'.$k.'"); ?>',$content);
 		}
 
 		return $content;

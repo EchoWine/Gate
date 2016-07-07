@@ -44,6 +44,17 @@ class Model{
 	public $persist = true;
 
 	/**
+	 * Callable to repository
+	 *
+	 * List of all callable to repository
+	 *
+	 * @var array
+	 */
+	public static $callable_to_repository = [
+		'all','first','wherePrimary','where','count','firstByPrimary'
+	];
+
+	/**
 	 * Construct
 	 */
 	public function __construct(){
@@ -100,11 +111,28 @@ class Model{
 	 *
 	 * @return mixed
 	 */
-	public function __call($method, $arguments){
+	public function __call($method,$arguments){
 
 		if($this -> isField($method))
 			return $this -> getField($method);
+
+		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
 		
+	}
+
+	/**
+	 * Call
+	 *
+	 * @param string $method
+	 * @param array $arguments
+	 *
+	 * @return mixed
+	 */
+	public static function __callStatic($method,$arguments){
+
+		if(in_array($method,static::$callable_to_repository) && is_callable(array(static::repository(),$method))){
+			return call_user_func_array([static::repository(),$method],$arguments);
+		}	
 
 		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
 		
@@ -244,9 +272,11 @@ class Model{
 	 * @return Field
 	 */
 	public function getField($name){
+
 		foreach($this -> fields as $field){
-			if($field -> isAlias($name))
+			if($field -> isAlias($name)){
 				return $field;
+			}
 		}
 
 		return null;
@@ -677,7 +707,7 @@ class Model{
 	 * To string
 	 */
 	public function __tostring(){
-		return static::class;
+		return static::class.": ".json_encode($this -> toArray())."\n";
 	}
 
 	/**
@@ -687,50 +717,6 @@ class Model{
 		return $this -> getPrimaryField() -> getValue() == $model -> getPrimaryField() -> getValue();
 	}
 
-	// ------------------------------------
-	//
-	//		ALIAS STATIC REPOSITORY
-	//
-	// ------------------------------------
-
-	/**
-	 * Get repository where primary value is
-	 *
-	 * @param $value
-	 *
-	 * @return Repository
-	 */
-	public static function wherePrimary($value){
-		return static::repository() -> wherePrimary($value);
-	}
-	
-	/**
-	 * Alias count
-	 */
-	public static function count(){
-		return static::repository() -> count();
-	}
-
-	/**
-	 * Alias first
-	 */
-	public static function first(){
-		return static::repository() -> first();
-	}
-
-	/**
-	 * Alias where repository
-	 */
-	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){
-		return static::repository() -> where($v1,$v2,$v3,$v4);
-	}
-
-	/**
-	 * Return all
-	 */
-	public static function all(){
-		return static::repository() -> get();
-	}
 }
 
 ?>

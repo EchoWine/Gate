@@ -83,14 +83,6 @@ class Repository extends QueryBuilder{
 	}
 
 	/**
-	 * Set repository to array
-	 */
-	public function toArray(){
-		$this -> to_array = true;
-		return $this;
-	}
-
-	/**
 	 * Get
 	 */
 	public function get(){
@@ -193,6 +185,14 @@ class Repository extends QueryBuilder{
 		return array_merge($relation,$relations);
 	}
 
+	/**
+	 * Get all
+	 *
+	 * @return ORM\CollectionResults
+	 */
+	public function all(){
+		return $this -> get();
+	}
 
 	/**
 	 * Get the model
@@ -237,7 +237,7 @@ class Repository extends QueryBuilder{
 	 * Get where primary
 	 */
 	public function firstByPrimary($value){
-		return $this -> wherePrimary() -> first();
+		return $this -> wherePrimary($value) -> first();
 	}
 
 

@@ -6,41 +6,57 @@ class Field{
 	
 	/**
 	 * Model
+	 *
+	 * @var string
 	 */
 	public $__model = 'CoreWine\ORM\Field\Model\Field';
 
 	/**
 	 * Name
+	 *
+	 * @var bool
 	 */
 	public $name;
 
 	/**
 	 * Column
+	 *
+	 * @var bool
 	 */
 	public $column;
 
 	/**
-	 * Lenght
+	 * Max length
+	 *
+	 * @var bool
 	 */
 	public $maxLength = 255;
 
 	/**
-	 * Lenght
+	 * Min length
+	 *
+	 * @var bool
 	 */
 	public $minLength = 0;
 
 	/**
 	 * Required
+	 *
+	 * @var bool
 	 */
 	public $required = false;
 
 	/**
 	 * Default
+	 *
+	 * @var bool
 	 */
 	public $default = NULL;
 
 	/**
 	 * Add
+	 *
+	 * @var bool
 	 */
 	public $add = true;
 
@@ -54,6 +70,8 @@ class Field{
 
 	/**
 	 * Edit
+	 *
+	 * @var bool
 	 */
 	public $edit = true;
 
@@ -67,38 +85,66 @@ class Field{
 
 	/**
 	 * Get
+	 *
+	 * @var bool
 	 */
 	public $get = true;
 
 	/**
 	 * Sort
+	 *
+	 * @var bool
 	 */
 	public $sort = true;
 
 	/**
 	 * Primary
+	 *
+	 * @var bool
 	 */
 	public $primary = false;
 
 	/**
 	 * Auto Increment
+	 *
+	 * @var bool
 	 */
 	public $auto_increment = false;
 
 	/**
 	 * Copy
+	 *
+	 * @var bool
 	 */
 	public $copy = true;
 
 	/**
 	 * Unique
+	 *
+	 * @var bool
 	 */
 	public $unique = false;
 
 	/**
 	 * Persist
+	 *
+	 * @var bool
 	 */
 	public $persist = true;
+
+	/**
+	 * Hidden
+	 *
+	 * @var bool
+	 */
+	public $hidden = false;
+
+	/**
+	 * Include field in toArray operations
+	 *
+	 * @var bool
+	 */
+	public $enable_to_array = true;
 
 	/**
 	 * Regex of field
@@ -139,6 +185,14 @@ class Field{
 		return $this;
 	}
 
+
+	/**
+	 * Set primary
+	 */
+	public function primary($primary = true){
+		$this -> primary = $primary;
+	}
+
 	/**
 	 * Get primary
 	 */
@@ -146,11 +200,19 @@ class Field{
 		return $this -> primary;
 	}
 
+
 	/**
-	 * Set primary
+	 * Set hidden
 	 */
-	public function primary($primary = true){
-		$this -> primary = $primary;
+	public function hidden($hidden = true){
+		$this -> hidden = $hidden;
+	}
+	
+	/**
+	 * Get hidden
+	 */
+	public function getHidden(){
+		return $this -> hidden;
 	}
 
 	/**

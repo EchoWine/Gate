@@ -591,7 +591,7 @@ class Model{
 	 *
 	 * @return Repository
 	 */
-	protected function wherePrimary($repository){
+	protected function wherePrimaryByRepository($repository){
 		return $this -> getPrimaryField() -> whereRepository($repository);
 	}
 
@@ -606,7 +606,7 @@ class Model{
 
 		$repository = $this -> getRepository();
 
-		$repository = $this -> wherePrimary($repository);
+		$repository = $this -> wherePrimaryByRepository($repository);
 
 		foreach($fields as $name => $field){
 			$repository = $field -> editRepository($repository);
@@ -636,34 +636,6 @@ class Model{
 	}
 
 	/**
-	 * Alias count
-	 */
-	public static function count(){
-		return static::repository() -> count();
-	}
-
-	/**
-	 * Alias first
-	 */
-	public static function first(){
-		return static::repository() -> first();
-	}
-
-	/**
-	 * Alias where repository
-	 */
-	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){
-		return static::repository() -> where($v1,$v2,$v3,$v4);
-	}
-
-	/**
-	 * Return all
-	 */
-	public static function all(){
-		return static::repository() -> get();
-	}
-
-	/**
 	 * Delete
 	 */
 	public function delete(){
@@ -673,7 +645,7 @@ class Model{
 
 		$this -> setPersist(1);
 
-		$this -> wherePrimary($this -> getRepository()) -> delete();
+		$this -> wherePrimaryByRepository($this -> getRepository()) -> delete();
 	}
 
 	/**
@@ -713,6 +685,51 @@ class Model{
 	 */
 	public function isEqual($model){
 		return $this -> getPrimaryField() -> getValue() == $model -> getPrimaryField() -> getValue();
+	}
+
+	// ------------------------------------
+	//
+	//		ALIAS STATIC REPOSITORY
+	//
+	// ------------------------------------
+
+	/**
+	 * Get repository where primary value is
+	 *
+	 * @param $value
+	 *
+	 * @return Repository
+	 */
+	public static function wherePrimary($value){
+		return static::repository() -> wherePrimary($value);
+	}
+	
+	/**
+	 * Alias count
+	 */
+	public static function count(){
+		return static::repository() -> count();
+	}
+
+	/**
+	 * Alias first
+	 */
+	public static function first(){
+		return static::repository() -> first();
+	}
+
+	/**
+	 * Alias where repository
+	 */
+	public static function where($v1 = null,$v2 = null,$v3 = null,$v4 = null){
+		return static::repository() -> where($v1,$v2,$v3,$v4);
+	}
+
+	/**
+	 * Return all
+	 */
+	public static function all(){
+		return static::repository() -> get();
 	}
 }
 

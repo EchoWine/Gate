@@ -227,10 +227,17 @@ class Repository extends QueryBuilder{
 	}
 
 	/**
+	 * where primary
+	 */
+	public function wherePrimary($value){
+		return $this -> where($this -> getSchema() -> getPrimaryColumn(),$value);
+	}
+
+	/**
 	 * Get where primary
 	 */
 	public function firstByPrimary($value){
-		return $this -> where('id',$value) -> first();
+		return $this -> wherePrimary() -> first();
 	}
 
 

@@ -7,14 +7,25 @@ use Admin\Controller\AdminController;
 
 class UserController extends AdminController{
 
-	public $__entity = 'Auth\Model\User';
+	/**
+	 * ORM\Model
+	 *
+	 * @var
+	 */
+	public $model = 'Auth\Model\User';
 
 	public $url = 'user';
 
-	public $view_list = ['id','username','password','email'];
-	public $view_edit = ['id','username','password','email'];
-	public $view_add = ['id','username','password','email'];
-	public $view_get = ['id','username','password','email'];
+
+	/**
+	 * Views
+	 *
+	 * @var
+	 */
+	public $view_list = ['id','username','email'];
+	public $view_edit = ['username','password','email'];
+	public $view_add = ['username','password','email'];
+	public $view_get = ['id','username','email'];
 
 	public function index(){
 	

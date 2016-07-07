@@ -19,14 +19,12 @@ class ApiGetSuccess extends Success{
 	/**
 	 * Construct
 	 *
-	 * @param int $id
-	 * @param array $old
-	 * @param array $new
+	 * @param ORM\Model $model
 	 */
-	public function __construct($id,$resource){
+	public function __construct($model){
 
 		parent::__construct(static::CODE,static::MESSAGE);
-		$this -> setData(['id' => $id,'resource' => $resource]) -> setRequest(Request::getCall());
+		$this -> setData(['id' => $model -> id,'resource' => $model -> toArray()]) -> setRequest(Request::getCall());
 
 	}
 }

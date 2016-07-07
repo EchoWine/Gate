@@ -99,22 +99,7 @@ abstract class Controller extends SourceController{
 	 * Retrieve a record
 	 */
 	public function get($id){
-
-		$first = $this -> __first($id);
-
-		switch(Request::get('filter')){
-			case 'edit':
-
-			break;
-			default:
-
-			break;
-		}
-
-
-		$response = new Response\ApiGetSuccess($id,$first);
-
-		return $this -> json($response);
+		return $this -> json($this -> __first($id));
 	}
 
 	/**
@@ -282,10 +267,22 @@ abstract class Controller extends SourceController{
 	 * @return results
 	 */
 	public function __first($id){
-		if(!$model = $this -> getModel()::where('id',$id) -> first())
+
+	
+		# Return error if not found
+		if(!$model = $this -> getModel()::firstByPrimary($id))
 			return new Response\ApiNotFound();
 
-		return $model;
+		switch(Request::get('filter')){
+			case 'edit':
+
+			break;
+			default:
+
+			break;
+		}
+
+		return new Response\ApiGetSuccess($model);
 	}
 
 	/**

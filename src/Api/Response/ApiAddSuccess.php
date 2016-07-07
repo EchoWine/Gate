@@ -19,14 +19,13 @@ class ApiAddSuccess extends Success{
 	/**
 	 * Construct
 	 *
-	 * @param int $id
-	 * @param array $old
+	 * @param ORM\Model $model
 	 * @param array $new
 	 */
-	public function __construct($id,$new){
+	public function __construct($model){
 
 		parent::__construct(static::CODE,static::MESSAGE);
-		$this -> setData(['id' => $id,'resource' => $new]) -> setRequest(Request::getCall());
+		$this -> setData(['id' => $model -> id,'resource' => $model]) -> setRequest(Request::getCall());
 
 	}
 }

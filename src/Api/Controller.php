@@ -19,9 +19,11 @@ abstract class Controller extends SourceController{
 	public $url;
 
 	/**
-	 * Item\Entity
+	 * ORM\Model
+	 *
+	 * @var
 	 */
-	public $__entity = 'Item\Entity';
+	public $model = 'Item\Model';
 
 	/**
 	 * Routers
@@ -54,32 +56,32 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
-	 * Get entity
+	 * Get model
 	 *
-	 * @return Entity
+	 * @return Model
 	 */
-	public function getEntity(){
-		return $this -> __entity;
+	public function getModel(){
+		return $this -> model;
 	}
 
 	/**
 	 * Get Schema
 	 *
-	 * @return Entity
+	 * @return Model
 	 */
 	public function getSchema(){
-		$entity = $this -> getEntity();
-		return $entity::schema();
+		$model = $this -> getModel();
+		return $model::schema();
 	}
 
 	/**
 	 * Get Repository
 	 *
-	 * @return Entity
+	 * @return Model
 	 */
 	public function getRepository(){
-		$entity = $this -> getEntity();
-		return $entity::repository();
+		$model = $this -> getModel();
+		return $model::repository();
 	}
 
 	/**
@@ -276,10 +278,10 @@ abstract class Controller extends SourceController{
 	 * @return results
 	 */
 	public function __first($id){
-		if(!$entity = $this -> getEntity()::where('id',$id) -> first())
+		if(!$model = $this -> getModel()::where('id',$id) -> first())
 			return new Response\ApiNotFound();
 
-		return $entity;
+		return $model;
 	}
 
 	/**
@@ -291,15 +293,13 @@ abstract class Controller extends SourceController{
 
 		try{
 
-			$errors = $this -> getEntity()::validateCreate(Request::all());
+			$model = $this -> getModel()::create(Request::all());
+			$errors = $this -> getModel()::getLastValidate();
 
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
 
-			$entity = $this -> getEntity()::create(Request::all());
-
-
-			return new Response\ApiAddSuccess($entity -> id,$entity -> toArray());
+			return new Response\ApiAddSuccess($model);
 
 		}catch(\Exception $e){
 
@@ -318,20 +318,20 @@ abstract class Controller extends SourceController{
 
 		try{
 
-			if(!$entity = $this -> getEntity()::where('id',$id) -> first())
+			if(!$model = $this -> getModel()::wherePrimary($id) -> first())
 				return new Response\ApiNotFound();
 
-			$errors = $this -> getEntity()::validateUpdate(Request::all(),$entity);
+			$errors = $this -> getModel()::validateUpdate(Request::all(),$model);
 
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
 
-			$old_entity = clone $entity;
+			$old_model = clone $model;
 
-			$entity -> fill(Request::all());
-			$entity -> save();
+			$model -> fill(Request::all());
+			$model -> save();
 
-			return new Response\ApiEditSuccess($id,$old_entity -> toArray(),$entity -> toArray());
+			return new Response\ApiEditSuccess($id,$old_model -> toArray(),$model -> toArray());
 
 		}catch(\Exception $e){
 
@@ -345,14 +345,14 @@ abstract class Controller extends SourceController{
 	 */
 	public function __delete($id){
 
-		if(!$entity = $this -> getEntity()::where('id',$id) -> first())
+		if(!$model = $this -> getModel()::where('id',$id) -> first())
 			return new Response\ApiNotFound();
 		
-		$id = $entity -> id;
+		$id = $model -> id;
 
-		$entity::delete();
+		$model::delete();
 	
-		return new Response\ApiDeleteSuccess($id,$entity);
+		return new Response\ApiDeleteSuccess($id,$model);
 
 	}
 

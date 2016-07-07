@@ -15,18 +15,20 @@ abstract class Controller extends SourceController{
 
 	/**
 	 * Name of obj in url
+	 *
+	 * @var string
 	 */
 	public $url;
 
 	/**
-	 * ORM\Model
+	 * ClassName ORM\Model
 	 *
-	 * @var
+	 * @var string
 	 */
 	public $model = 'Item\Model';
 
 	/**
-	 * Routers
+	 * Defining routes
 	 */
 	public function __routes(){
 
@@ -42,6 +44,8 @@ abstract class Controller extends SourceController{
 
 	/**
 	 * Get api url
+	 *
+	 * @return string
 	 */
 	public function getFullApiURL(){
 
@@ -51,14 +55,12 @@ abstract class Controller extends SourceController{
 	/**
 	 * Check
 	 */
-	public function __check(){
-
-	}
+	public function __check(){}
 
 	/**
 	 * Get model
 	 *
-	 * @return Model
+	 * @return string ClassName Model
 	 */
 	public function getModel(){
 		return $this -> model;
@@ -67,7 +69,7 @@ abstract class Controller extends SourceController{
 	/**
 	 * Get Schema
 	 *
-	 * @return Model
+	 * @return ORM\Schema
 	 */
 	public function getSchema(){
 		$model = $this -> getModel();
@@ -77,7 +79,7 @@ abstract class Controller extends SourceController{
 	/**
 	 * Get Repository
 	 *
-	 * @return Model
+	 * @return ORM\Repository
 	 */
 	public function getRepository(){
 		$model = $this -> getModel();
@@ -86,11 +88,12 @@ abstract class Controller extends SourceController{
 
 	/**
 	 * Get all the result
+	 *
+	 * @return Response;
 	 */
 	public function all(){
 		return $this -> json($this -> __all());
 	}
-
 
 	/**
 	 * Retrieve a record
@@ -275,6 +278,7 @@ abstract class Controller extends SourceController{
 	 * Get a records
 	 *
 	 * @param int $id
+	 *
 	 * @return results
 	 */
 	public function __first($id){
@@ -293,16 +297,22 @@ abstract class Controller extends SourceController{
 
 		try{
 
+			# Create and retrieve a new model
 			$model = $this -> getModel()::create(Request::all());
+
+			# Get last validation
 			$errors = $this -> getModel()::getLastValidate();
 
+			# Return error if validation failed
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
 
+			# Return success
 			return new Response\ApiAddSuccess($model);
 
 		}catch(\Exception $e){
 
+			# Return exception
 			return new Response\ApiException($e);
 		}
 
@@ -312,6 +322,7 @@ abstract class Controller extends SourceController{
 	 * Edit record
 	 *
 	 * @param int $id
+	 *
 	 * @return \Api\Response\Response
 	 */
 	public function __edit($id){
@@ -335,6 +346,7 @@ abstract class Controller extends SourceController{
 
 		}catch(\Exception $e){
 
+			# Return exception
 			return new Response\ApiException($e);
 		}
 
@@ -342,17 +354,22 @@ abstract class Controller extends SourceController{
 
 	/**
 	 * Remove a new record
+	 *
+	 * @param mixed $id
+	 *
+	 * @return \Api\Response\Response
 	 */
 	public function __delete($id){
 
-		if(!$model = $this -> getModel()::where('id',$id) -> first())
+		# Retrieve model and return error if model is false
+		if(!$model = $this -> getModel()::wherePrimary($id) -> first())
 			return new Response\ApiNotFound();
-		
-		$id = $model -> id;
 
-		$model::delete();
-	
-		return new Response\ApiDeleteSuccess($id,$model);
+		# Delete
+		$model -> delete();
+		
+		# Return success
+		return new Response\ApiDeleteSuccess($model);
 
 	}
 

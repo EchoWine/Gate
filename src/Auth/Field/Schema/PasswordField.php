@@ -9,26 +9,55 @@ class PasswordField extends Field{
 	
 	/**
 	 * Model
+	 *
+	 * @var string
 	 */
 	public $__model = 'Auth\Field\Model\PasswordField';
+
+	/**
+	 * Name
+	 *
+	 * @var string
+	 */
+	public $name = 'password';
+
+	/**
+	 * Column
+	 *
+	 * @var string
+	 */
+	public $column = 'password';
+
+	/**
+	 * Label
+	 *
+	 * @var string
+	 */
+	public $label = 'password';
+
+	/**
+	 * Regex of field
+	 *
+	 * @var string
+	 */
+	public $regex = "/^(.){0,255}$/iU";
 
 	/**
 	 * Edit if empty
 	 *
 	 * If this value is set to false and the value of field sent in update operation is empty,
 	 * then this field will be removed in edit/update operation
+	 *
+	 * @var bool
 	 */
 	public $editIfEmpty = false;
 
 	/**
-	 * Regex of field
+	 * Include field in toArray operations
+	 *
+	 * @var bool
 	 */
-	public $regex = "/^(.){0,255}$/iU";
-
-	public $name = 'password';
-	public $label = 'password';
-	public $column = 'password';
-
+	public $enable_to_array = false;
 
 }
 ?>

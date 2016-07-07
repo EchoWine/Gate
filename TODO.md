@@ -12,11 +12,12 @@ General:
 - [x] Throw exception php version < 7
 - [ ] Move route/test in TestControler
 - [ ] CoreWine\Response html/json
+- [ ] Add __call exception
 
 ORM:
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'
 - [x] Rename 'src/item' in src/Api' and cleanup
-
+- [ ] Throw exception when ORM/Model relations is null and a field is invoked
 - [ ] Resolve problem about column/repository of field
 - [x] Make clear distinction between Field/Entity and Field/Schema
 - [x] Make clear distinction between ORM/Entity and ORM/Schema
@@ -48,12 +49,14 @@ ORM:
 
 - src/Api:
 	- [ ] index
-	- [ ] add
-	- [ ] get
-	- [ ] edit
-	- [ ] sort
-	- [ ] pagination
-	- [ ] search
+		- [x] sort
+		- [x] pagination
+		- [ ] search
+	- [x] add
+	- [x] get
+	- [x] edit
+	- [x] delete
+	- [ ] refactoring
 
 DataBase:
 - [ ] Option to cleanup table model, defined previously, and not exist

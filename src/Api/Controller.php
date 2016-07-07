@@ -365,7 +365,7 @@ abstract class Controller extends SourceController{
 		try{
 
 			# Return error if not found
-			if(!$from_model = $this -> getModel()::firstByPrimary($id))
+			if(!$model = $this -> getModel()::firstByPrimary($id))
 				return new Response\ApiNotFound();
 
 			# Delete

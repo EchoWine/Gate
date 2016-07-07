@@ -185,9 +185,10 @@ class Field{
 		return $this;
 	}
 
-
 	/**
 	 * Set primary
+	 *
+	 * @param bool
 	 */
 	public function primary($primary = true){
 		$this -> primary = $primary;
@@ -195,14 +196,17 @@ class Field{
 
 	/**
 	 * Get primary
+	 *
+	 * @return bool
 	 */
 	public function getPrimary(){
 		return $this -> primary;
 	}
 
-
 	/**
 	 * Set hidden
+	 *
+	 * @param bool
 	 */
 	public function hidden($hidden = true){
 		$this -> hidden = $hidden;
@@ -210,9 +214,20 @@ class Field{
 	
 	/**
 	 * Get hidden
+	 *
+	 * @return bool
 	 */
 	public function getHidden(){
 		return $this -> hidden;
+	}
+
+	/**
+	 * Get enable to array
+	 *
+	 * @return bool
+	 */
+	public function getEnableToArray(){
+		return $this -> enable_to_array;
 	}
 
 	/**

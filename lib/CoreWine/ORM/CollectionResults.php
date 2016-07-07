@@ -9,7 +9,7 @@ class CollectionResults extends Collection{
     public function toArray(){
         $return = [];
         foreach($this -> container as $item){
-            $return[] = $item -> getAllValuesRaw();
+            $return[] = $item -> toArray();
         }
 
         return $return;

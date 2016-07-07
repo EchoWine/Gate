@@ -19,14 +19,13 @@ class ApiCopySuccess extends Success{
 	/**
 	 * Construct
 	 *
-	 * @param int $id
-	 * @param array $from
-	 * @param array $new
+	 * @param ORM\Model $new_model
+	 * @param ORM\Model $from_model
 	 */
-	public function __construct($id,$from,$new){
+	public function __construct($new_model,$from_model){
 
 		parent::__construct(static::CODE,static::MESSAGE);
-		$this -> setData(['id' => $id,'from' => $from,'resource' => $new]) -> setRequest(Request::getCall());
+		$this -> setData(['id' => $new_model -> id,'resource' => $new_model -> toArray(),'from' => $from_model -> toArray()]) -> setRequest(Request::getCall());
 
 	}
 }

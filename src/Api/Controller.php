@@ -365,89 +365,52 @@ abstract class Controller extends SourceController{
 	 */
 	public function __delete($id){
 
-		# Retrieve model and return error if model is false
-		if(!$model = $this -> getModel()::wherePrimary($id) -> first())
-			return new Response\ApiNotFound();
+		try{
 
-		# Delete
-		$model -> delete();
-		
-		# Return success
-		return new Response\ApiDeleteSuccess($model);
+			# Return error if not found
+			if(!$from_model = $this -> getModel()::firstByPrimary($id))
+				return new Response\ApiNotFound();
+
+			# Delete
+			$model -> delete();
+			
+			# Return success
+			return new Response\ApiDeleteSuccess($model);
+
+		}catch(\Exception $e){
+
+			# Return exception
+			return new Response\ApiException($e);
+		}
+
 
 	}
 
 	/**
 	 * Copy a new record
+	 *
+	 * @param mixed $id
+	 *
+	 * @return \Api\Response\Response
 	 */
 	public function __copy($id){
 
+		try{
 
-		$result = $this -> __first($id);
+			# Return error if not found
+			if(!$from_model = $this -> getModel()::firstByPrimary($id))
+				return new Response\ApiNotFound();
 
-		if(!$result)
-			return new Response\ApiNotFound();
-		
-		$repository = $this -> getRepository();
+			# Copy
+			$new_model = $this -> getModel()::copy($from_model);
 
-		$this -> __copyFields($repository,$result);
+			# Return success
+			return new Response\ApiCopySuccess($new_model,$from_model);
 
-		$id = $repository -> insert();
+		}catch(\Exception $e){
 
-		$resource = $this -> __first($id[0]);
-
-		return new Response\ApiCopySuccess($id,$result,$resource);
-
-	}
-
-
-	/**
-	 * Retrieve value of fields to copy and relative errors
-	 *
-	 * @return array
-	 */
-	public function __copyFields($repository,$result){
-
-		$fields = $this -> getSchema() -> getFields();
-
-		foreach($fields as $name => $field){
-
-			if($field -> isCopy()){
-
-				$col = $field -> getColumn();
-				$value = $result[$col];
-
-				if($field -> isUnique()){
-					$n = 0;
-					do{
-						$value_copied = $field -> parseValueCopy($value,$n++);
-						$exists = $this -> getRepository() -> exists([$col => $value_copied]);
-					}while($exists);
-					$value = $value_copied;
-				}
-
-				$row[$field -> getName()] = $value;
-
-			}
-		}
-
-	}
-
-	/**
-	 * Retrieve value of fields to copy and relative errors
-	 *
-	 * @param $repository
-	 * @param $result
-	 *
-	 * @return array
-	 */
-	public function __deleteFields($repository,$result){
-
-		$fields = $this -> getSchema() -> getFields();
-
-		foreach($fields as $name => $field){
-
-			
+			# Return exception
+			return new Response\ApiException($e);
 		}
 
 	}

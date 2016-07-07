@@ -103,8 +103,7 @@ class ORMController extends Controller{
 			echo "<br>";
 		}
 
-		
-		
+		$serie = Serie::copy($got);
 
 		foreach(Episode::all() as $ep){
 			if($ep -> serie){

@@ -362,7 +362,7 @@ class Field{
 	 */
 	public function validate($value,$values,$model,$repository){
 
-		if(is_object($value))
+		if(is_object($value) || is_array($value))
 			return null;
 
 		if($this -> getRequired() && $value == null)

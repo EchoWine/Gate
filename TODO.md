@@ -21,6 +21,7 @@ ORM:
 - [ ] Resolve problem about column/repository of field
 - [x] Make clear distinction between Field/Entity and Field/Schema
 - [x] Make clear distinction between ORM/Entity and ORM/Schema
+- [ ] Improve ::copy in relations
 
 - [x] Basic relations between object in ORM
 - [x] Get relation N to 1 ORM

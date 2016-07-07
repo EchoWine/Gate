@@ -19,14 +19,13 @@ class ApiEditSuccess extends Success{
 	/**
 	 * Construct
 	 *
-	 * @param int $id
-	 * @param array $old
-	 * @param array $resource
+	 * @param ORM\Model $model
+	 * @param ORM\Model $old
 	 */
-	public function __construct($id,$old,$resource){
+	public function __construct($model,$old){
 
 		parent::__construct(static::CODE,static::MESSAGE);
-		$this -> setData(['id' => $id,'old' => $old,'resource' => $resource]) -> setRequest(Request::getCall());
+		$this -> setData(['id' => $model -> id,'old' => $old -> toArray(),'resource' => $model -> toArray()]) -> setRequest(Request::getCall());
 
 	}
 }

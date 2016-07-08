@@ -263,42 +263,14 @@ class Repository extends QueryBuilder{
 	 */
 	public function paginate($show,$page){
 
-		
 		$t = clone $this;
-
+		
 		$count = $this -> count();
 
-		if($show < 1)
-			$show = 1;
+		$pagination = new Pagination($count,$show,$page);
 
-		# Take $show Results
-		$t -> take($show);
-
-		# Calculate pages
-		$pages = ceil($count / $show);
-
-		if($page !== 1){
-
-			if($page < 1)
-				$page = 1;
-
-			if($page > $pages)
-				$page = $pages;
-			
-			$skip = ($page - 1) * $show;
-
-			$t -> skip($skip);
-		}else{
-			$skip = 0;
-		}
-
-		$pagination = new Pagination();
-		$pagination -> count = $count;
-		$pagination -> page = $page;
-		$pagination -> pages = $pages;
-		$pagination -> from = $skip + 1;
-		$pagination -> to = $skip + $show;
-
+		$t -> take($pagination -> getShow());
+		$t -> skip($pagination -> getSkip());
 		$t -> pagination = $pagination;
 
 		return $t;

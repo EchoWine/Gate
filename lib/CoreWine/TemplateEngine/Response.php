@@ -9,14 +9,14 @@ class Response extends BasicResponse{
 	/**
 	 * Set content
 	 */
-	public function sendContent(){
+	public function sendBody(){
 
 		foreach($GLOBALS as $n => $k){
 			$$n = $k;
 		}
 
 		$s = Engine::startRoot();
-		include $this -> getContent();
+		include $this -> getBody();
 		Engine::endRoot();
 	}
 }

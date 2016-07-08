@@ -15,8 +15,8 @@ class JSONResponse extends Response{
 	/**
 	 * Set content
 	 */
-	public function sendContent(){
-		echo json_encode($this -> getContent(),JSON_PRETTY_PRINT);
+	public function sendBody(){
+		echo json_encode($this -> getBody(),JSON_PRETTY_PRINT);
 	}
 
 }

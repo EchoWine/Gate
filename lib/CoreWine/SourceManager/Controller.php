@@ -20,7 +20,7 @@ class Controller{
 		Router::view($data);
 
 		$response = new ViewResponse();
-		$response -> setContent(Engine::html($file));
+		$response -> setBody(Engine::html($file));
 		return $response;
 	}
 

@@ -40,7 +40,7 @@ class Response extends JSONResponse{
 		return $data;
 	}
 
-	public function getContent(){
+	public function getBody(){
 		return (object)[
 			'status' => $this -> status,
 			'code' => $this -> code,

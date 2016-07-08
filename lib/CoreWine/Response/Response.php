@@ -5,11 +5,11 @@ namespace CoreWine\Response;
 class Response{
 		
 	/**
-	 * Content of response
+	 * Body of response
 	 *
 	 * @var mixed
 	 */
-	public $content;
+	public $body;
 
 	/**
 	 * Headers
@@ -34,21 +34,21 @@ class Response{
 	}
 
 	/**
-	 * Set content
+	 * Set body
 	 *
-	 * @param mixed $content
+	 * @param mixed $body
 	 */
-	public function setContent($content){
-		$this -> content = $content;
+	public function setBody($body){
+		$this -> body = $body;
 	}
 
 	/**
-	 * Get content
+	 * Get body
 	 *
 	 * @return mixed
 	 */
-	public function getContent(){
-		return $this -> content;
+	public function getBody(){
+		return $this -> body;
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Response{
 	 */
 	public function send(){
 		$this -> sendHeaders();
-		$this -> sendContent();
+		$this -> sendBody();
 	}
 
 	/**
@@ -78,9 +78,9 @@ class Response{
 	}
 
 	/**
-	 * Send content
+	 * Send body
 	 */
-	public function sendContent(){
-		echo $this -> getContent();
+	public function sendBody(){
+		echo $this -> getBody();
 	}
 }

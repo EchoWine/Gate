@@ -34,6 +34,7 @@ abstract class Controller extends SourceController{
 
 		$url = $this -> url;
 
+		
 		$this -> route('all') -> url("/api/{$url}") -> get();
 		$this -> route('add') -> url("/api/{$url}") -> post();
 		$this -> route('copy') -> url("/api/{$url}/{id}") -> post();
@@ -139,124 +140,65 @@ abstract class Controller extends SourceController{
 	public function __all(){
 
 		try{
-			
+
 			$repository = $this -> getRepository();
 
-			$sort = $this -> __allSort($repository);
 
-			$pagination = $this -> __allPagination($repository);
+			# PAGINATION
+			$page = Request::get('page',1);
+			$show = Request::get('show',100);
+			$sort = Request::get('desc',null);
+			$sort = Request::get('asc',$sort);
 
-			$results = $repository -> get() -> toArray();
+			/*
+			if($page <= 0){
+				return Response\ApiAllErrorParamPage();
+			}
+			*/
+			$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
+
+			# SORTING
+			if($sort){
+
+				# If the not exists the field
+				if(!$this -> getSchema() -> hasField($sort))
+					return Response\ApiAllErrorParamSortNotExists();
+				
+
+				$field = $this -> getSchema() -> getField($sort);
+
+				# If the field isn't enabled to sorting
+				if(!$field -> isSort())
+					return Response\ApiAllErrorParamSortNotValid();
+				
+
+				$repository = $repository -> orderBy(
+					$field -> getColumn(),
+					$direction
+				);
+
+			}else{
+
+				$repository = $repository -> orderBy(
+					$this -> getSchema() -> getSortDefaultField() -> getColumn(),
+					$this -> getSchema() -> getSortDefaultDirection()
+				);
+			}
+
+
+			$repository = $repository -> paginate($show,$page);
+
+			$results = $repository -> get();
 			
 			return new Response\ApiAllSuccess([
-				'results' => $results,
-				'pagination' => $pagination
+				'results' => $results -> toArray(),
+				'pagination' => $results -> getPagination() -> toArray()
 			]);
 
 		}catch(\Exception $e){
 
 			return new Response\ApiException($e);
 		}
-	}
-
-	/**
-	 * Get sort information
-	 *
-	 * @param Repository $repository
-	 *
-	 * @return Sort Part
-	 */
-	public function __allSort(&$repository){
-		$sort = Request::get('desc',null);
-		$sort = Request::get('asc',$sort);
-		$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
-
-		# SORTING
-		if($sort){
-
-			# If the not exists the field
-			if(!$this -> getSchema() -> hasField($sort))
-				return Response\ApiAllErrorParamSortNotExists();
-			
-
-			$field = $this -> getSchema() -> getField($sort);
-
-			# If the field isn't enabled to sorting
-			if(!$field -> isSort())
-				return Response\ApiAllErrorParamSortNotValid();
-			
-
-			$repository = $repository -> orderBy($field -> getColumn(),$direction);
-
-		}else{
-
-			$repository = $repository -> orderBy($this -> getSchema() -> getSortDefaultField() -> getColumn(),$this -> getSchema() -> getSortDefaultDirection());
-		}
-	}
-
-	/**
-	 * Pagination
-	 *
-	 * @param Repository $repository
-	 *
-	 * @return Pagination Part
-	 */
-	public function __allPagination(&$repository){
-
-		# COUNT ALL THE RESULTS
-		$count = $repository -> count();
-
-		$show = $this -> __allShow($repository);
-
-		# GET PAGES
-		$pages = ceil($count / $show);
-
-		# PAGINATION
-		$page = Request::get('page',1);
-
-		if($page !== 1){
-
-			if($page > $pages)
-				$page = $pages;
-
-			if($page <= 0){
-				
-				return Response\ApiAllErrorParamPage();
-			}
-
-			$skip = ($page - 1) * $show;
-
-			$repository = $repository -> skip($skip);
-		}else{
-			$skip = 0;
-		}
-
-		return (object)[
-			'count' => $count,
-			'page' => $page,
-			'pages' => $pages,
-			'from' => $skip + 1,
-			'to' => $skip + $count,
-		];
-	}
-
-	public function __allShow(&$repository){
-
-		$show = Request::get('show',null);
-		if($show){
-
-			if($show <= 0){
-				
-				return new Response\ApiAllErrorParamShow();
-			}
-
-			$repository = $repository -> take($show);
-
-		}else{
-			$show = 100;
-		}
-
-		return $show;
 	}
 
 	/**

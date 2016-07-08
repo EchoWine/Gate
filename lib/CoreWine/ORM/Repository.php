@@ -15,6 +15,13 @@ class Repository extends QueryBuilder{
 	public $model;
 
 	/**
+	 * Pagination
+	 *
+	 * @var Pagination
+	 */
+	public $pagination;
+
+	/**
 	 * List of all objects ORM
 	 *
 	 * @var Array ORM\Model
@@ -82,11 +89,17 @@ class Repository extends QueryBuilder{
 
 	}
 
+	public function getPagination(){
+		return $this -> pagination;
+	}
+
 	/**
 	 * Get
 	 */
 	public function get(){
-		return new CollectionResults(parent::get());
+		$results = new CollectionResults(parent::get());
+		$results -> setRepository($this);
+		return $results;
 	}
 
 	/**
@@ -240,7 +253,57 @@ class Repository extends QueryBuilder{
 		return $this -> wherePrimary($value) -> first();
 	}
 
+	/**
+	 * Paginate
+	 *
+	 * @param integer $show
+	 * @param integer $page
+	 *
+	 * @return object pagination
+	 */
+	public function paginate($show,$page){
 
+		
+		$t = clone $this;
+
+		$count = $this -> count();
+
+		if($show < 1)
+			$show = 1;
+
+		# Take $show Results
+		$t -> take($show);
+
+		# Calculate pages
+		$pages = ceil($count / $show);
+
+		if($page !== 1){
+
+			if($page < 1)
+				$page = 1;
+
+			if($page > $pages)
+				$page = $pages;
+			
+			$skip = ($page - 1) * $show;
+
+			$t -> skip($skip);
+		}else{
+			$skip = 0;
+		}
+
+		$pagination = new Pagination();
+		$pagination -> count = $count;
+		$pagination -> page = $page;
+		$pagination -> pages = $pages;
+		$pagination -> from = $skip + 1;
+		$pagination -> to = $skip + $show;
+
+		$t -> pagination = $pagination;
+
+		return $t;
+
+	}
 }
 
 ?>

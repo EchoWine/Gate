@@ -5,6 +5,7 @@ namespace CoreWine\SourceManager;
 use CoreWine\Router;
 use CoreWine\TemplateEngine\Engine;
 use CoreWine\Exceptions as Exceptions;
+use CoreWine\TemplateEngine\Response as ViewResponse;
 
 class Controller{
 	
@@ -17,15 +18,12 @@ class Controller{
 	
 	public function view($file,$data = []){
 		Router::view($data);
-		return Engine::html($file);
+
+		$response = new ViewResponse();
+		$response -> setContent(Engine::html($file));
+		return $response;
 	}
 
-	public function json($var){
-		header('Content-Type: application/json');
-
-		echo json_encode($var,JSON_PRETTY_PRINT);
-		die();
-	}
 	public function route($controller = null){
 
 		if($controller !== null){

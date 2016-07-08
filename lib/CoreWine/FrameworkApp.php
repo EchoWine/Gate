@@ -9,6 +9,7 @@ use CoreWine\Request;
 use CoreWine\Flash;
 use CoreWine\Router;
 use CoreWine\SourceManager\Manager;
+use CoreWine\Response;
 
 class FrameworkApp extends App{
 
@@ -48,20 +49,14 @@ class FrameworkApp extends App{
 
 		Engine::translates();
 
-		$view = Router::load();
+		$response = Router::load();
 
-		if(empty($view)){
-			die("Current Router doens't have a view");
-		}
+		
+		if(empty($response))
+			die("Current Router must return a Response");
+		
 
-		foreach($GLOBALS as $n => $k){
-			$$n = $k;
-		}
-
-		$s = Engine::startRoot();
-		include $view;
-		Engine::endRoot();
-
+		$response -> send();
 
 	}
 

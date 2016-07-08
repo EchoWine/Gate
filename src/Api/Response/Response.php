@@ -2,7 +2,9 @@
 
 namespace Api\Response;
 
-class Response{
+use CoreWine\Response\JSONResponse as JSONResponse;
+
+class Response extends JSONResponse{
 
 	public $status;
 	public $code;
@@ -15,7 +17,7 @@ class Response{
 	public function __construct($code = null,$message = null){
 		$this -> code = $code;
 		$this -> message = $message;
-		return $this;
+		parent::__construct();
 
 	}
 
@@ -38,27 +40,15 @@ class Response{
 		return $data;
 	}
 
-
-	/**
-	 * Return if a response is success or not
-	 *
-	 * @param \Api\Response\Response $response
-	 *
-	 * @return bool
-	 */
-	public static function isResponseSuccess(\Api\Response\Response $response){
-		return ($response instanceof \Api\Response\Success);
-	}
-
-	/**
-	 * Return if a response is error or not
-	 *
-	 * @param \Api\Response\Response $response
-	 *
-	 * @return bool
-	 */
-	public static function isResponseError(\Api\Response\Response $response){
-		return ($response instanceof \Api\Response\Error);
+	public function getContent(){
+		return (object)[
+			'status' => $this -> status,
+			'code' => $this -> code,
+			'message' => $this -> message,
+			'details' => $this -> details,
+			'data' => $this -> data,
+			'request' => $this -> request
+		];
 	}
 }
 

@@ -93,35 +93,35 @@ abstract class Controller extends SourceController{
 	 * @return Response;
 	 */
 	public function all(){
-		return $this -> json($this -> __all());
+		return $this -> __all();
 	}
 
 	/**
 	 * Retrieve a record
 	 */
 	public function get($id){
-		return $this -> json($this -> __first($id));
+		return $this -> __first($id);
 	}
 
 	/**
 	 * Add new record
 	 */
 	public function add(){
-		return $this -> json($this -> __add());
+		return $this -> __add();
 	}
 
 	/**
 	 * Edit a record
 	 */
 	public function edit($id){
-		return $this -> json($this -> __edit($id));
+		return $this -> __edit($id);
 	}
 
 	/**
 	 * Delete a record
 	 */
 	public function delete($id){
-		return $this -> json($this -> __delete($id));
+		return $this -> __delete($id);
 	}
 
 
@@ -129,7 +129,7 @@ abstract class Controller extends SourceController{
 	 * Copy a record
 	 */
 	public function copy($id){
-		return $this -> json($this -> __copy($id));
+		return $this -> __copy($id);
 	}
 
 	/**

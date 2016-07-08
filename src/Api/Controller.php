@@ -2,14 +2,10 @@
 
 namespace Api;
 
-use CoreWine\DataBase\DB;
-use CoreWine\Router;
-use CoreWine\Request as Request;
-
 use CoreWine\SourceManager\Controller as SourceController;
-
-use Api\Repository;
-use Api\Response as Response;
+use Api\Response;
+use Api\Exceptions;
+use CoreWine\Request;
 
 abstract class Controller extends SourceController{
 
@@ -18,19 +14,20 @@ abstract class Controller extends SourceController{
 	 *
 	 * @var string
 	 */
-	public $url;
+	public $url = null;
 
 	/**
 	 * ClassName ORM\Model
 	 *
 	 * @var string
 	 */
-	public $model = 'Item\Model';
+	public $model = null;
 
 	/**
 	 * Defining routes
 	 */
 	public function __routes(){
+
 
 		$url = $this -> url;
 
@@ -56,7 +53,20 @@ abstract class Controller extends SourceController{
 	/**
 	 * Check
 	 */
-	public function __check(){}
+	public function __check(){
+
+		if($this -> getUrl() == null)
+			throw new Exceptions\UrlNullException();
+
+		if($this -> getModel() == null)
+			throw new Exceptions\ModelNullException();
+
+		else if(!class_exists($this -> getModel()))
+			throw new Exceptions\ModelNotExistsException($this -> getModel());
+
+		
+
+	}
 
 	/**
 	 * Get model
@@ -65,6 +75,15 @@ abstract class Controller extends SourceController{
 	 */
 	public function getModel(){
 		return $this -> model;
+	}
+
+	/**
+	 * Get url
+	 *
+	 * @return string
+	 */
+	public function getUrl(){
+		return $this -> url;
 	}
 
 	/**

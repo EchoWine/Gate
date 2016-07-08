@@ -14,6 +14,11 @@ class UserController extends AdminController{
 	 */
 	public $model = 'Auth\Model\User';
 
+	/**
+	 * Url
+	 *
+	 * @var
+	 */
 	public $url = 'user';
 
 

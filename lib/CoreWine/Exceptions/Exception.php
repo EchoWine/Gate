@@ -4,7 +4,7 @@ namespace CoreWine\Exceptions;
 
 class Exception extends \Exception{
 
-	protected $message = 'Unknown exception';
+	protected $message;
 	private $string;
 	protected $code;
 	protected $file;
@@ -14,16 +14,18 @@ class Exception extends \Exception{
 
 	public function __construct($message = null,$detail = '',$code = 0,$file = null,$line = null){
 
-		if(!$message)
+		if(!$this -> message)
+			$this -> message = $message;
+
+		if(!$this -> message)
 			throw new $this('Unknown '. get_class($this));
 
-		$this -> message = $message;
 		$this -> detail = $detail;
 		$this -> code = $code;
 		$this -> file = $file;
 		$this -> line = $line;
 
-		parent::__construct($message, $code);
+		parent::__construct($this -> message,$this -> code);
 	}
 
 	public function __toString(){

@@ -143,18 +143,12 @@ abstract class Controller extends SourceController{
 
 			$repository = $this -> getRepository();
 
-
-			# PAGINATION
+			# Request
 			$page = Request::get('page',1);
 			$show = Request::get('show',100);
 			$sort = Request::get('desc',null);
 			$sort = Request::get('asc',$sort);
 
-			/*
-			if($page <= 0){
-				return Response\ApiAllErrorParamPage();
-			}
-			*/
 			$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
 
 			# SORTING
@@ -172,17 +166,11 @@ abstract class Controller extends SourceController{
 					return Response\ApiAllErrorParamSortNotValid();
 				
 
-				$repository = $repository -> orderBy(
-					$field -> getColumn(),
-					$direction
-				);
+				$repository = $repository -> sortByField($field,$direction);
 
 			}else{
 
-				$repository = $repository -> orderBy(
-					$this -> getSchema() -> getSortDefaultField() -> getColumn(),
-					$this -> getSchema() -> getSortDefaultDirection()
-				);
+				$repository = $repository -> sortByField();
 			}
 
 

@@ -276,6 +276,25 @@ class Repository extends QueryBuilder{
 		return $t;
 
 	}
+
+	/**
+	 * Sort by field
+	 *
+	 * @param ORM\Field $field
+	 * @param string $direction
+	 */
+	public function sortByField($field = null,$direction = null){
+		if($field == null){
+			$field = $this -> getSchema() -> getSortDefaultField();
+		}
+
+		if($direction == null){
+			$direction = $this -> getSchema() -> getSortDefaultDirection();
+		}
+
+		return $this -> orderBy($field -> getColumn(),$direction);
+
+	}
 }
 
 ?>

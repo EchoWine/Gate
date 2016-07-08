@@ -46,6 +46,13 @@ class Pagination{
 	 */
 	public $to;
 
+	/**
+	 * Construct
+	 *
+	 * @param int $count
+	 * @param int $show
+	 * @param int $page
+	 */
 	public function __construct($count,$show,$page){
 
 
@@ -80,63 +87,137 @@ class Pagination{
 
 	}
 
+	/**
+	 * Set show
+	 *
+	 * @param int $show
+	 */
 	public function setShow($show){
 		$this -> show = $show;
 	}
 
+	/**
+	 * Get show
+	 *
+	 * @return int
+	 */
 	public function getShow(){
 		return $this -> show;
 	}
 
+	/**
+	 * Set count
+	 *
+	 * @param int $count
+	 */
 	public function setCount($count){
 		$this -> count = $count;
 	}
 
+	/**
+	 * Get count
+	 *
+	 * @return int
+	 */
 	public function getCount(){
 		return $this -> count;
 	}
 
+	/**
+	 * Set page
+	 *
+	 * @param int $page
+	 */
 	public function setPage($page){
 		$this -> page = $page;
 	}
 
+	/**
+	 * Get page
+	 *
+	 * @return int
+	 */
 	public function getPage(){
 		return $this -> page;
 	}
 
+	/**
+	 * Set pages
+	 *
+	 * @param int $pages
+	 */
 	public function setPages($pages){
 		$this -> pages = $pages;
 	}
 
+	/**
+	 * Get pages
+	 *
+	 * @return int
+	 */
 	public function getPages(){
 		return $this -> pages;
 	}
 
+	/**
+	 * Set from
+	 *
+	 * @param int $from
+	 */
 	public function setFrom($from){
 		$this -> from = $from;
 	}
 
+	/**
+	 * Get from
+	 *
+	 * @return int
+	 */
 	public function getFrom(){
 		return $this -> from;
 	}
 
+	/**
+	 * Set to
+	 *
+	 * @param int $to
+	 */
 	public function setTo($to){
 		$this -> to = $to;
 	}
 
+	/**
+	 * Get to
+	 *
+	 * @return int
+	 */
 	public function getTo(){
 		return $this -> to;
 	}
 
-
+	/**
+	 * Set skip
+	 *
+	 * @param int $skip
+	 */
 	public function setSkip($skip){
 		$this -> skip = $skip;
 	}
 
+	/**
+	 * Get skip
+	 *
+	 * @return int
+	 */
 	public function getSkip(){
 		return $this -> skip;
 	}
 
+	/**
+	 * Returns array representation of object
+	 *
+	 * @return Array
+	 */
 	public function toArray(){
 		return [
 			'count' => $this -> getCount(),

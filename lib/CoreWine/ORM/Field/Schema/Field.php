@@ -157,6 +157,7 @@ class Field{
 	const VALIDATION_ERROR_TOO_LONG = "error_too_long";
 	const VALIDATION_ERROR_INVALID = "error_invalid";
 	const VALIDATION_ERROR_NOT_UNIQUE = "error_not_unique";
+	const VALIDATION_ERROR_INVALID_VALUE = "error_invalid_value";
 
 	/**
 	 * Construct

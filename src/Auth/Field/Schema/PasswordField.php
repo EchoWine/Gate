@@ -43,6 +43,27 @@ class PasswordField extends Field{
 	public $regex = "/^(.){0,255}$/iU";
 
 	/**
+	 * Required
+	 *
+	 * @var bool
+	 */
+	public $required = true;
+
+	/**
+	 * Max length
+	 *
+	 * @var int
+	 */
+	public $max_length = 128;
+
+	/**
+	 * Min length
+	 *
+	 * @var int
+	 */
+	public $min_length = 1;
+
+	/**
 	 * Edit if empty
 	 *
 	 * If this value is set to false and the value of field sent in update operation is empty,
@@ -58,6 +79,5 @@ class PasswordField extends Field{
 	 * @var bool
 	 */
 	public $enable_to_array = false;
-
 }
 ?>

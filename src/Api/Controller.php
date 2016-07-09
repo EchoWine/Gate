@@ -64,8 +64,7 @@ abstract class Controller extends SourceController{
 		else if(!class_exists($this -> getModel()))
 			throw new Exceptions\ModelNotExistsException(static::class,$this -> getModel());
 
-		
-
+	
 	}
 
 	/**
@@ -92,8 +91,7 @@ abstract class Controller extends SourceController{
 	 * @return ORM\Schema
 	 */
 	public function getSchema(){
-		$model = $this -> getModel();
-		return $model::schema();
+		return $this -> getModel()::schema();
 	}
 
 	/**
@@ -102,8 +100,7 @@ abstract class Controller extends SourceController{
 	 * @return ORM\Repository
 	 */
 	public function getRepository(){
-		$model = $this -> getModel();
-		return $model::repository();
+		return $this -> getModel()::repository();
 	}
 
 	/**

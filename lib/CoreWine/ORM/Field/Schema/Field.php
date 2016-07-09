@@ -30,14 +30,14 @@ class Field{
 	 *
 	 * @var bool
 	 */
-	public $maxLength = 255;
+	public $max_length = 255;
 
 	/**
 	 * Min length
 	 *
 	 * @var bool
 	 */
-	public $minLength = 0;
+	public $min_length = 0;
 
 	/**
 	 * Required
@@ -304,7 +304,7 @@ class Field{
 	 * Set length
 	 */
 	public function maxLength($length){
-		$this -> maxLength = $length;
+		$this -> max_length = $length;
 		return $this;
 	}
 
@@ -312,7 +312,7 @@ class Field{
 	 * Set length
 	 */
 	public function minLength($length){
-		$this -> minLength = $length;
+		$this -> min_length = $length;
 		return $this;
 	}
 
@@ -320,14 +320,14 @@ class Field{
 	 * Get length
 	 */
 	public function getMaxLength(){
-		return $this -> maxLength;
+		return $this -> max_length;
 	}
 
 	/**
 	 * Get length
 	 */
 	public function getMinLength(){
-		return $this -> minLength;
+		return $this -> min_length;
 	}
 
 	/**
@@ -342,7 +342,7 @@ class Field{
 	 * Set DB schema
 	 */
 	public function alter($table){
-		$col = $table -> string($this -> getColumn(),$this -> maxLength);
+		$col = $table -> string($this -> getColumn(),$this -> max_length);
 
 		if(!$this -> required)
 			$col -> null();
@@ -366,7 +366,7 @@ class Field{
 		if(is_object($value) || is_array($value))
 			return null;
 
-		if($this -> getRequired() && $value == null)
+		if($this -> getRequired() && $value === null)
 			return static::VALIDATION_ERROR_REQUIRED;
 
 		$length = strlen($value);

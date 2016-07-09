@@ -27,7 +27,9 @@ class User extends Model{
 		$schema -> password()
 				-> maxLength(128);
 
-		$schema -> string('username');
+		$schema -> string('username')
+				-> required()
+				-> unique();
 
 		$schema -> email();
 

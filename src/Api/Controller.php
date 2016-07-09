@@ -107,56 +107,11 @@ abstract class Controller extends SourceController{
 	}
 
 	/**
-	 * Get all the result
-	 *
-	 * @return Response;
-	 */
-	public function all(){
-		return $this -> __all();
-	}
-
-	/**
-	 * Retrieve a record
-	 */
-	public function get($id){
-		return $this -> __first($id);
-	}
-
-	/**
-	 * Add new record
-	 */
-	public function add(){
-		return $this -> __add();
-	}
-
-	/**
-	 * Edit a record
-	 */
-	public function edit($id){
-		return $this -> __edit($id);
-	}
-
-	/**
-	 * Delete a record
-	 */
-	public function delete($id){
-		return $this -> __delete($id);
-	}
-
-
-	/**
-	 * Copy a record
-	 */
-	public function copy($id){
-		return $this -> __copy($id);
-	}
-
-	/**
 	 * Get all records
 	 *
 	 * @return results
 	 */
-	public function __all(){
+	public function all(){
 
 		try{
 
@@ -215,7 +170,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return results
 	 */
-	public function __first($id){
+	public function get($id){
 
 	
 		# Return error if not found
@@ -239,7 +194,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function __add(){
+	public function add(){
 
 		try{
 
@@ -271,7 +226,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function __edit($id){
+	public function edit($id){
 
 		try{
 
@@ -309,7 +264,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function __delete($id){
+	public function delete($id){
 
 		try{
 
@@ -339,7 +294,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function __copy($id){
+	public function copy($id){
 
 		try{
 

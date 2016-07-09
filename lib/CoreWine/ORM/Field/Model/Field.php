@@ -212,7 +212,7 @@ class Field{
 			$i = 0;
 			do{
 				$value_copied = $this -> parseValueCopy($value,$i++);
-				$res = $this -> getTable() -> getRepository() -> exists([$this -> getSchema() -> getColumn() => $value_copied]);
+				$res = $this -> getModel() -> getRepository() -> exists([$this -> getSchema() -> getColumn() => $value_copied]);
 				
 			}while($res);
 
@@ -337,6 +337,7 @@ class Field{
 	public function whereRepository($repository){
 		return $repository -> where($this -> getSchema() -> getColumn(),$this -> getValueRaw());
 	}
+
 
 }
 ?>

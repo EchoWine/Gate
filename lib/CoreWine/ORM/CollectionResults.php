@@ -13,10 +13,19 @@ class CollectionResults extends Collection{
 	 */
 	public $repository;
 
+    /**
+     * Convert collection into array
+     *
+     * @return array
+     */
     public function toArray(){
         $return = [];
         foreach($this -> container as $item){
-            $return[] = $item -> toArray();
+            if($item instanceof Model)
+                $return[] = $item -> toArray();
+            else{
+                $return[] = $item;
+            }
         }
 
         return $return;

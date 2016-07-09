@@ -39,6 +39,13 @@ class EmailField extends Field{
 	 */
 	public $regex = "/^.+\@.+\..+$/iU";
 
+	/**
+	 * Unique
+	 *
+	 * @var bool
+	 */
+	public $unique = true;
+
 
 
 }

@@ -26,6 +26,8 @@ item.ajax = function(type,url,params = {},callback){
 		data : params,
 		contentType: "application/x-www-form-urlencoded; charsetBySource=UTF-8",
 		success: function(data) {
+
+		console.log(data);
 			callback(data);
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -468,10 +470,10 @@ item.addAlert = function(type,destination,data){
 
 	det = '';
 
-	for(detail in data.details){
-		detail = data.details[detail];
+	for(index in data.details){
+		detail = data.details[index];
 		det += template.get('alert-details',{
-			message:detail.message
+			message:index+": "+detail
 		});
 	}
 

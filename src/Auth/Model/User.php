@@ -29,7 +29,7 @@ class User extends Model{
 
 		$schema -> string('username');
 
-		$schema -> string('email');
+		$schema -> email();
 
 		$schema -> toMany(Session::class,'sessions','user_id');
 

@@ -56,13 +56,13 @@ abstract class Controller extends SourceController{
 	public function __check(){
 
 		if($this -> getUrl() == null)
-			throw new Exceptions\UrlNullException();
+			throw new Exceptions\UrlNullException(static::class);
 
 		if($this -> getModel() == null)
-			throw new Exceptions\ModelNullException();
+			throw new Exceptions\ModelNullException(static::class);
 
 		else if(!class_exists($this -> getModel()))
-			throw new Exceptions\ModelNotExistsException($this -> getModel());
+			throw new Exceptions\ModelNotExistsException(static::class,$this -> getModel());
 
 		
 

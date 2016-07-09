@@ -17,6 +17,5 @@ class PasswordField extends Field{
 	public function parseValueToRaw($value){
 		return Auth::getHashPass($value);
 	}
-
 }
 ?>

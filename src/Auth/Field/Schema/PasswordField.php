@@ -71,7 +71,7 @@ class PasswordField extends Field{
 	 *
 	 * @var bool
 	 */
-	public $editIfEmpty = false;
+	public $edit_if_empty = false;
 
 	/**
 	 * Include field in toArray operations

@@ -66,7 +66,7 @@ class Field{
 	 * If this value is set to false and the value of field sent in update operation is empty,
 	 * then this field will be removed in add/insert operation
 	 */
-	public $addIfEmpty = true;
+	public $add_if_empty = false;
 
 	/**
 	 * Edit
@@ -81,7 +81,7 @@ class Field{
 	 * If this value is set to false and the value of field sent in update operation is empty,
 	 * then this field will be removed in edit/update operation
 	 */
-	public $editIfEmpty = true;
+	public $edit_if_empty = false;
 
 	/**
 	 * Get
@@ -169,6 +169,20 @@ class Field{
 			$this -> column = $name;
 		}
 		return $this;
+	}
+
+	/**
+	 * Call
+	 *
+	 * @param string $method
+	 * @param array $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($method, $arguments){
+
+		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
+		
 	}
 
 	/**
@@ -339,64 +353,6 @@ class Field{
 	}
 
 	/**
-	 * Set DB schema
-	 */
-	public function alter($table){
-		$col = $table -> string($this -> getColumn(),$this -> max_length);
-
-		if(!$this -> required)
-			$col -> null();
-	}
-
-	/**
-	 * Return a new istance of modelField
-	 *
-	 * @param mixed $value
-	 * @return Model
-	 */
-	public function new($value = null){
-		return new $this -> __model($this,$value);
-	}
-
-	/**
-	 * Check if the value is valid
-	 */
-	public function validate($value,$values,$model,$repository){
-
-		if(is_object($value) || is_array($value))
-			return null;
-
-		if($this -> getRequired() && $value === null)
-			return static::VALIDATION_ERROR_REQUIRED;
-
-		$length = strlen($value);
-
-		if($length < $this -> getMinLength())
-			return static::VALIDATION_ERROR_TOO_SHORT;
-
-
-		if($length > $this -> getMaxLength())
-			return static::VALIDATION_ERROR_TOO_LONG;
-
-		if(!preg_match($this -> regex,$value))
-			return static::VALIDATION_ERROR_INVALID_VALUE;
-
-
-		if($this -> getUnique()){
-
-			if($model !== null && $model -> id !== null)
-				$repository = $repository -> where($this -> getColumn(),'!=',$model -> {$this -> getName()});
-
-			if($repository -> exists([$this -> getColumn() => $value])){
-				return static::VALIDATION_ERROR_NOT_UNIQUE;
-			}
-		}
-
-		return null;
-
-	}
-
-	/**
 	 * Check if the field is enabled for add
 	 *
 	 * @return bool
@@ -434,34 +390,12 @@ class Field{
 	}
 
 	/**
-	 * Check if the field is needed for edit
-	 *
-	 * @param mixed $value
-	 *
-	 * @return bool
-	 */
-	public function isAddNeeded($value){
-		return empty($value) ? $this -> addIfEmpty : true;
-	}
-
-	/**
 	 * Check if the field is enabled for edit
 	 *
 	 * @return bool
 	 */
 	public function isEdit(){
 		return $this -> edit;
-	}
-
-	/**
-	 * Check if the field is needed for edit
-	 *
-	 * @param mixed $value
-	 *
-	 * @return bool
-	 */
-	public function isEditNeeded($value){
-		return empty($value) ? $this -> editIfEmpty : true;
 	}
 
 	/**
@@ -491,25 +425,103 @@ class Field{
 		return $this -> sort;
 	}
 
-
 	/**
-	 * Call
+	 * Return a new istance of modelField
 	 *
-	 * @param string $method
-	 * @param array $arguments
-	 *
-	 * @return mixed
+	 * @param mixed $value
+	 * @return Model
 	 */
-	public function __call($method, $arguments){
-
-		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
-		
+	public function new($value = null){
+		return new $this -> __model($this,$value);
 	}
 
+	/**
+	 * Set DB schema
+	 */
+	public function alter($table){
+		$col = $table -> string($this -> getColumn(),$this -> max_length);
+
+		if(!$this -> required)
+			$col -> null();
+	}
+
+	/**
+	 * Check if the value is valid
+	 */
+	public function validate($value,$values,$model){
+		if(is_object($value) || is_array($value))
+			return null;
+
+		if($this -> getRequired() && $value === null)
+			return static::VALIDATION_ERROR_REQUIRED;
+
+		$length = strlen($value);
+
+		if($length < $this -> getMinLength())
+			return static::VALIDATION_ERROR_TOO_SHORT;
+
+
+		if($length > $this -> getMaxLength())
+			return static::VALIDATION_ERROR_TOO_LONG;
+
+		if(!preg_match($this -> regex,$value))
+			return static::VALIDATION_ERROR_INVALID_VALUE;
+
+
+		if($this -> getUnique()){
+
+			$repository = $model::repository();
+
+			if($model !== null && $model -> id !== null){
+				$repository = $repository -> where($model -> getSchema() -> getPrimaryColumn(),"!=",$model -> getPrimaryField() -> getValue());
+
+			}
+
+			if($repository -> exists([$this -> getColumn() => $value])){
+				return static::VALIDATION_ERROR_NOT_UNIQUE;
+			}
+		}
+
+		return null;
+
+	}
+
+	/**
+	 * Insert if value is empty
+	 *
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	public function insertIfValueEmpty($value){
+		return empty($value) ? $this -> add_if_empty : true;
+	}
+
+	/**
+	 * Update if value is empty
+	 *
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	public function updateIfValueEmpty($value){
+		return empty($value) ? $this -> edit_if_empty : true;
+	}
+
+	/**
+	 * Add schema field to model
+	 *
+	 * @param ORM\Schema
+	 */
 	public function addToModelSchema($schema){
 		$schema -> setField($this -> getName(),$this);
 	}
 
+	/**
+	 * To string
+	 *
+	 * @return string
+	 */
 	public function __tostring(){
 		return static::class;
 	}

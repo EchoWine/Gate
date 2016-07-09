@@ -231,18 +231,18 @@ abstract class Controller extends SourceController{
 			if(!$model = $this -> getModel()::firstByPrimary($id))
 				return new Response\ApiNotFound();
 
+			# Get an "old model"
+			$old_model = clone $model;
+
+			$model -> fill(Request::all());
+			$model -> save();
+
 			# Get last validation
 			$errors = $this -> getModel()::getLastValidate();
 
 			# Return error if validation failed
 			if(!empty($errors))
 				return new Response\ApiFieldsInvalid($errors);
-
-			# Get an "old model"
-			$old_model = clone $model;
-
-			$model -> fill(Request::all());
-			$model -> save();
 
 			return new Response\ApiEditSuccess($model,$old_model);
 

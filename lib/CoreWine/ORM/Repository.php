@@ -265,7 +265,7 @@ class Repository extends QueryBuilder{
 
 		$t = clone $this;
 		
-		$count = $this -> count();
+		$count = $t -> count();
 
 		$pagination = new Pagination($count,$show,$page);
 

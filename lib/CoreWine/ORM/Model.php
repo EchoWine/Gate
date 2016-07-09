@@ -121,6 +121,18 @@ class Model{
 	}
 
 	/**
+	 * Clone 
+	 */
+	public function __clone(){
+		$fields = [];
+		foreach($this -> fields as $name => $field){
+			$fields[$name] = clone $field;
+		}
+
+		$this -> fields = $fields;
+	}
+
+	/**
 	 * Call
 	 *
 	 * @param string $method
@@ -332,8 +344,7 @@ class Model{
 
 
 	public static function validateField($field,$value,$values,$model){
-
-		return  $field -> validate($value,$values,$model,static::repository());
+		return  $field -> validate($value,$values,$model);
 
 	}
 
@@ -347,7 +358,6 @@ class Model{
 	public static function validate($values,$model = null){
 
 		$errors = []; 
-
 		$schema = static::schema();
 
 		$fields = $schema -> getFields();
@@ -474,7 +484,6 @@ class Model{
 
 	}
 
-
 	/**
 	 * Return a new model
 	 * 
@@ -489,7 +498,6 @@ class Model{
 
 		return $model;
 	}
-
 
 	/**
 	 * Fill model with array
@@ -567,6 +575,41 @@ class Model{
 	}
 
 	/**
+	 * Return all values of given fields
+	 *
+	 * @return Array
+	 */
+	public static function getValuesInsert($fields){
+		$values = [];
+
+		foreach($fields as $name => $field){
+			if($field -> getSchema() -> insertIfValueEmpty($field -> getValue()))
+				$values[$name] = $field -> getValue();
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Return all values of given fields
+	 *
+	 * @return Array
+	 */
+	public static function getValuesUpdate($fields){
+		$values = [];
+
+		foreach($fields as $name => $field){
+			if($field -> getSchema() -> updateIfValueEmpty($field -> getValue())){
+				$values[$name] = $field -> getValue();
+			}
+
+		}
+
+		return $values;
+	}
+
+
+	/**
 	 * Return all values of all fields
 	 *
 	 * @return Array
@@ -588,15 +631,23 @@ class Model{
 	public function save(){
 
 		$fields = $this -> getFieldsToPersist();
-		$values = static::getValues($fields);
 
-		$validation = static::validate($values);
+		if($this -> getPersist()){
+			$values = $this -> getValuesInsert($fields);
+		}else{
+			$values = $this -> getValuesUpdate($fields);
+
+		}
+
+
+		$validation = static::validate($values,$this);
 		static::setLastValidate($validation);
 
 		if(!empty($validation))
 			return false;
-		
+
 		if($this -> getPersist()){
+
 			$ai = $this -> insert($fields);
 
 			if(($field = $this -> getAutoIncrementField()) !== null)

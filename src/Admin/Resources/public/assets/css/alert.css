@@ -4,9 +4,13 @@
 }
 
 .alert ul{
-	margin-top:10px;
-	margin-bottom:0;
+	margin:0;
 }
+
+.alert ul > li:first-child{
+	margin-top:10px;
+}
+
 .alert li{
 	margin-left:40px;
 }

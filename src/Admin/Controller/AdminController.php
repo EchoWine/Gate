@@ -100,12 +100,12 @@ abstract class AdminController extends Controller{
 		return $this -> view('Admin/admin/item',[
 			'table' => $this -> url,
 			'api' => $this -> getFullApiURL(),
-			'fieldsAll' => $this -> getSchemaFieldsList(),
-			'fieldsAdd' => $this -> getSchemaFieldsAdd(),
-			'fieldsEdit' => $this -> getSchemaFieldsEdit(),
-			'fieldsGet' => $this -> getSchemaFieldsGet(),
-			'sortByField' => $this -> getSchema() -> getSortDefaultField() -> getName(),
-			'sortByDirection' => $this -> getSchema() -> getSortDefaultDirection(),
+			'fields_all' => $this -> getSchemaFieldsList(),
+			'fields_add' => $this -> getSchemaFieldsAdd(),
+			'fields_edit' => $this -> getSchemaFieldsEdit(),
+			'fields_get' => $this -> getSchemaFieldsGet(),
+			'sort_by_field' => $this -> getSchema() -> getSortDefaultField() -> getName(),
+			'sort_by_direction' => $this -> getSchema() -> getSortDefaultDirection(),
 		]);
 	}
 

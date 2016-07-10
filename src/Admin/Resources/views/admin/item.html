@@ -36,7 +36,7 @@
 		{{block content}}
 			<div data-use-template='alert-modal-add'></div>
 			<form method='POST' item-data-form-add  data-item-table='{table}'>
-				{{for $fieldsAdd as $field}}
+				{{for $fields_add as $field}}
 					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
 					<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
 				{{/for}}
@@ -54,7 +54,7 @@
 		{{block title}}View{{/block}}
 		{{block content}}
 
-			{{for $fieldsGet as $field}}
+			{{for $fields_get as $field}}
 				<div class='item-form-label'>{{$field -> getLabel()}}</div>
 				<div class='item-form-input'><span data-name='{{$field -> getName()}}'></span></div>
 			{{/for}}
@@ -85,7 +85,7 @@
 		{{block content}}
 			<div data-use-template='alert-modal-edit'></div>
 			<form method='POST' item-data-form-edit data-item-table='{table}' data-item-id='{id}'>
-				{{for $fieldsEdit as $field}}
+				{{for $fields_edit as $field}}
 					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
 					<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
 				{{/for}}
@@ -126,7 +126,7 @@
 				<input type='checkbox' id='select-{table}-{id}' class='check check-data check-small' data-item-select data-item-id='{id}' data-item-table='{table}'>
 				<label for='select-{table}-{id}' class='checkbox'></label>
 			</div>
-			{{for $fieldsAll as $field}}
+			{{for $fields_all as $field}}
 				<div class='table-col {# {{if $field -> isClassNumber() }}table-col-number{{/if}} #}'>
 					<span class='table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
 				</div>
@@ -204,7 +204,7 @@
 						<label for='select-all-{table}' class='checkbox'></label>
 
 					</div>
-					{{for $fieldsAll as $field}}
+					{{for $fields_all as $field}}
 						{{if $field -> isSort()}}
 							<div class='table-col table-col-head table-col-sort {# {{if $field -> isClassNumber() }}table-col-number{{/if}} #}' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
 								<div class='table-col-text noselect'>
@@ -269,15 +269,15 @@
 			name:'{{$table}}',
 			list:{
 				url:'{{$api}}',
-				sortByField:'{{$sortByField}}',
-				sortByDirection:'{{$sortByDirection}}',
+				sort_by_field:'{{$sort_by_field}}',
+				sort_by_direction:'{{$sort_by_direction}}',
 				show:10,
 				page:1
 			},
 			get:{
 				url:'{{$api}}',
 				get: function(container,data){
-					{{for $fieldsGet as $field}}
+					{{for $fields_get as $field}}
 						container.find('[data-name={{$field -> getName()}}]').html(data['{{$field -> getName()}}']);
 					{{/for}}
 				},
@@ -288,7 +288,7 @@
 				action: function(form){
 					var values = {};
 
-					{{for $fieldsAdd as $field}}
+					{{for $fields_add as $field}}
 						values.{{$field -> getName()}} = form.find('[name={{$field -> getName()}}]').val();
 					{{/for}}
 					return values;
@@ -304,14 +304,14 @@
 			edit:{
 				url:'{{$api}}',
 				get: function(container,data){
-					{{for $fieldsEdit as $field}}
+					{{for $fields_edit as $field}}
 						container.find('[name={{$field -> getName()}}]').val(data['{{$field -> getName()}}']);
 					{{/for}}
 				},
 				action: function(form){
 					var values = {};
 
-					{{for $fieldsEdit as $field}}
+					{{for $fields_edit as $field}}
 						values.{{$field -> getName()}} = form.find('[name={{$field -> getName()}}]').val();
 					{{/for}}
 					return values;

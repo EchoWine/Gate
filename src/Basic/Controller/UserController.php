@@ -21,21 +21,34 @@ class UserController extends AdminController{
 	 */
 	public $url = 'users';
 
-
 	/**
-	 * Views
+	 * View list
 	 *
-	 * @var
+	 * @var array
 	 */
 	public $view_list = ['id','username','email'];
-	public $view_edit = ['username','password','email'];
+
+	/**
+	 * View add
+	 *
+	 * @var array
+	 */
 	public $view_add = ['username','password','email'];
+
+	/**
+	 * View edit
+	 *
+	 * @var array
+	 */
+	public $view_edit = ['username','password','email'];
+
+	/**
+	 * View get
+	 *
+	 * @var array
+	 */
 	public $view_get = ['id','username','email'];
 
-	public function index(){
-	
-		return parent::index();
-	}
 }
 
 ?>

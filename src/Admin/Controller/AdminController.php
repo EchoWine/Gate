@@ -2,7 +2,6 @@
 
 namespace Admin\Controller;
 
-use CoreWine\DataBase\DB;
 use CoreWine\Router;
 use CoreWine\Request as Request;
 use Auth\Service\Auth;
@@ -11,19 +10,54 @@ use Api\Controller;
 
 abstract class AdminController extends Controller{
 
+	/**
+	 * Prefix url
+	 *
+	 * @var string
+	 */
+	const PREFIX_URL = 'admin/';
+
+	/**
+	 * Prefix route
+	 *
+	 * @var string
+	 */
+	const PREFIX_ROUTE = 'admin/';
+
 
 	/**
 	 * Admin\Repository
+	 *
+	 * @var string
 	 */
 	public $__repository = 'Admin\Repository';
 
-	const PREFIX_URL = 'admin/';
-
-	const PREFIX_ROUTE = 'admin/';
-
+	/**
+	 * View list
+	 *
+	 * @var array
+	 */
 	public $view_list = [];
-	public $view_edit = [];
+
+	/**
+	 * View add
+	 *
+	 * @var array
+	 */
 	public $view_add = [];
+
+	/**
+	 * View edit
+	 *
+	 * @var array
+	 */
+	public $view_edit = [];
+
+	/**
+	 * View get
+	 *
+	 * @var array
+	 */
 	public $view_get = [];
 
 
@@ -42,7 +76,6 @@ abstract class AdminController extends Controller{
 
 	}
 
-
 	/**
 	 * Check
 	 */
@@ -56,8 +89,11 @@ abstract class AdminController extends Controller{
 		}
 
 	}
+
 	/**
 	 * Index
+	 *
+	 * @return Response
 	 */
 	public function index(){
 

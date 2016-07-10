@@ -526,5 +526,15 @@ class Field{
 		return static::class;
 	}
 
+	/**
+	 * Add the field to query to find the model
+	 *
+	 * @param Repository $repository
+	 *
+	 * @return Repository
+	 */
+	public function searchRepository($repository,$value){
+		return $repository -> whereLike($this -> getColumn(),'%'.$value.'%');
+	}
 }
 ?>

@@ -49,6 +49,13 @@ class UserController extends AdminController{
 	 */
 	public $view_get = ['id','username','email'];
 
+	/**
+	 * View search
+	 *
+	 * @var array
+	 */
+	public $view_search = ['id','username','email'];
+
 }
 
 ?>

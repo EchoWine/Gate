@@ -50,6 +50,10 @@
 	color: rgba(0,0,0,0.6);
 }
 
+.table-col-search .input-data{
+	width:100%;
+}
+
 .table .table-col-action{
 	justify-content:flex-end;
 	text-align:right;

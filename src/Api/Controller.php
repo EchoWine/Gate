@@ -119,6 +119,7 @@ abstract class Controller extends SourceController{
 			$show = Request::get('show',100);
 			$sort = Request::get('desc',null);
 			$sort = Request::get('asc',$sort);
+			$search = Request::get('search',[]);
 
 			$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
 
@@ -144,11 +145,22 @@ abstract class Controller extends SourceController{
 				$repository = $repository -> sortByField();
 			}
 
+			foreach((array)$search as $field => $value){
+
+				if(!$this -> getSchema() -> hasField($field)){
+					# ... some error
+				}
+				
+				$field = $this -> getSchema() -> getField($field);
+				$repository = $field -> searchRepository($repository,$value);
+				
+			}
 
 			$repository = $repository -> paginate($show,$page);
 
 			$results = $repository -> get();
 			
+
 			return new Response\ApiAllSuccess([
 				'results' => $results -> toArray(),
 				'pagination' => $results -> getPagination() -> toArray()

@@ -19,7 +19,7 @@ class UserController extends AdminController{
 	 *
 	 * @var
 	 */
-	public $url = 'user';
+	public $url = 'users';
 
 
 	/**

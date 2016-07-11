@@ -76,7 +76,6 @@ abstract class AdminController extends Controller{
 		parent::__routes();
 
 		$page = $this -> url;
-
 		$this -> route('index')
 		-> url("/".AdminController::PREFIX_URL.$page)
 		-> as(AdminController::PREFIX_ROUTE.$page);

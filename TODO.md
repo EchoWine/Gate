@@ -13,6 +13,7 @@ General:
 - [ ] Move route/test in TestControler
 - [ ] CoreWine\Response html/json
 - [ ] Add __call exception
+- [ ] Add middleware
 
 ORM:
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'
@@ -49,15 +50,15 @@ ORM:
 		- [x] Timestamp
 
 - src/Api:
-	- [ ] index
+	- [x] index
 		- [x] sort
 		- [x] pagination
-		- [ ] search
+		- [x] search
 	- [x] add
 	- [x] get
 	- [x] edit
 	- [x] delete
-	- [ ] refactoring
+	- [x] refactoring
 
 DataBase:
 - [ ] Option to cleanup table model, defined previously, and not exist

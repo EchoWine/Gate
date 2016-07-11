@@ -138,10 +138,9 @@ item.getListWithParams = function(table){
 	table.list.sortByDirection == 'asc' ? params.asc = table.list.sortByField : params.desc = table.list.sortByField;
 
 	// Search
-	// ...
+	params.search = table.search.data;
 
 	// Send request
-	
 	item.getList(table,params);
 };
 
@@ -153,6 +152,24 @@ $('[data-item-show]').on('change',function(){
 	table.list.show = $(this).val();
 	item.getListWithParams(table);
 });
+
+/** 
+ * Search
+ */
+$('[data-item-search]').on('click',function(){
+	var table = item.getTable($(this).attr('data-item-table'));
+
+	var container = item.getContainerByTable(table);	
+	var values = table.search.action(container.find('.table-row-search').first(9));
+
+	table.search.data = values;
+
+	item.getListWithParams(table);
+});
+
+item.addParamSearch = function(){
+
+};
 
 /**
  * Update the list of all records
@@ -176,7 +193,6 @@ item.getList = function(table,params = {}){
 				row.table = table.name;
 				rows += template.get(table.template.row,row);
 			});
-
 
 			template.setByHtml(rows,table.template.row);
 

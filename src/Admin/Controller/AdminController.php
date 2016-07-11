@@ -60,6 +60,13 @@ abstract class AdminController extends Controller{
 	 */
 	public $view_get = [];
 
+	/**
+	 * View get
+	 *
+	 * @var array
+	 */
+	public $view_search = [];
+
 
 	/**
 	 * Set all Routers
@@ -104,6 +111,7 @@ abstract class AdminController extends Controller{
 			'fields_add' => $this -> getSchemaFieldsAdd(),
 			'fields_edit' => $this -> getSchemaFieldsEdit(),
 			'fields_get' => $this -> getSchemaFieldsGet(),
+			'fields_search' => $this -> getSchemaFieldsSearch(),
 			'sort_by_field' => $this -> getSchema() -> getSortDefaultField() -> getName(),
 			'sort_by_direction' => $this -> getSchema() -> getSortDefaultDirection(),
 		]);
@@ -161,6 +169,20 @@ abstract class AdminController extends Controller{
 		$return = [];
 
 		foreach($this -> view_get as $name)
+			$return[$name] = $this -> getSchema() -> getField($name);
+		
+		return $return;
+	}
+
+	/**
+	 * Get schema of fields that will be used in get
+	 *
+	 * @return array schema
+	 */
+	public function getSchemaFieldsSearch(){
+		$return = [];
+
+		foreach($this -> view_search as $name)
 			$return[$name] = $this -> getSchema() -> getField($name);
 		
 		return $return;

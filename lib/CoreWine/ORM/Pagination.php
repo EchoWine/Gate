@@ -62,6 +62,8 @@ class Pagination{
 		# Calculate pages
 		$pages = ceil($count / $show);
 
+		$skip = 0;
+
 		if($page !== 1){
 
 			if($page < 1)
@@ -72,9 +74,11 @@ class Pagination{
 			
 			$skip = ($page - 1) * $show;
 
-		}else{
-			$skip = 0;
 		}
+
+		if($skip < 0)
+			$skip = 0;
+
 
 		$this -> setCount($count);
 		$this -> setShow($show);

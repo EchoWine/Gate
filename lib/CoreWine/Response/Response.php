@@ -42,9 +42,15 @@ class Response{
 
 
 	/**
+	 * Default protocol version.
+	 *
+	 */
+	const HTTP_DEFAULT_PROTOCOL_VERSION = '1.0';
+
+
+	/**
 	* HTTP Response codes.
 	*
-	* @var int
 	*/
 	const HTTP_CONTINUE = 100;
     const HTTP_SWITCHING_PROTOCOLS = 101;
@@ -184,7 +190,7 @@ class Response{
 	/**
      * Sends HTTP headers.
      *
-     * @return CoreWine\Response\Response
+     * @return \CoreWine\Response\Response
      */
 	public function sendHeaders() {
 		// sent already?
@@ -207,6 +213,7 @@ class Response{
 
 
 		// cookies
+
 		
 
 		return $this;
@@ -220,6 +227,19 @@ class Response{
 	 */
 	public function sendBody(){
 		echo $this -> getBody();
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * Set HTTP Protocol version.
+	 *
+	 * @param string $version 
+	 * @return \CoreWine\Response\Response
+	 */
+	public function setVersion($version = HTTP_DEFAULT_PROTOCOL_VERSION) {
+		$this -> version = $version;
 
 		return $this;
 	}

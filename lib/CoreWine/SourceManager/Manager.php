@@ -67,6 +67,25 @@ class Manager{
 	}
 
 	/**
+	 * Search all files with given path
+	 *
+	 * @param string $path
+	 *
+	 * @retun array
+	 */
+	public static function getAllFiles($path){
+		$files = [];
+		foreach(glob($path.'/*') as $file){
+			if(is_dir($file))
+				$files = array_merge($files,self::getAllFiles($file));
+			else
+				$files[] = $file;
+
+		}
+		return $files;
+	}
+
+	/**
 	 * Load a module
 	 *
 	 * @param string $path path of module
@@ -79,7 +98,9 @@ class Manager{
 
 		self::$list[$basePath] = $path;
 
-		foreach(glob($path."/Controller/*") as $file){
+		$files = self::getAllFiles($path."/Controller");
+
+		foreach($files as $file){
 
 			self::$files[] = $file;
 			require_once $file;

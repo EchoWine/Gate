@@ -2,16 +2,42 @@
 
 namespace CoreWine\Utils;
 
+use Iterator;
 use ArrayAccess;
 
-class Collection implements ArrayAccess{
+class Collection implements Iterator,ArrayAccess{
 
-    protected $container = [];
+    private $container = [];
 
-    public function __construct($values = []){
-        foreach($values as $value){
-            $this -> container[] = $value;
+    public function __construct($array = []){
+        if(is_array($array)){
+            $this -> container = $array;
         }
+    }
+
+    public function rewind(){
+        reset($this -> container);
+    }
+  
+    public function current(){
+        $container = current($this -> container);
+        return $container;
+    }
+  
+    public function key(){
+        $container = key($this -> container);
+        return $container;
+    }
+  
+    public function next(){
+        $container = next($this -> container);
+        return $container;
+    }
+  
+    public function valid(){
+        $key = key($this -> container);
+        $container = ($key !== NULL && $key !== FALSE);
+        return $container;
     }
 
     public function offsetSet($offset, $value){
@@ -33,5 +59,4 @@ class Collection implements ArrayAccess{
     public function offsetGet($offset){
         return isset($this -> container[$offset]) ? $this -> container[$offset] : null;
     }
-
 }

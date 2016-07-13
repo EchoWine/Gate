@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Middleware;
+namespace Auth\Middleware;
 
 use CoreWine\Request;
 use CoreWine\Router;
@@ -15,10 +15,6 @@ class Authenticate extends Middleware{
 	public function handle(){
 
 		Auth::load();
-
-		if(!Auth::logged()){
-			Request::redirect(Router::url('admin/login'));
-		}
 
 	}
 

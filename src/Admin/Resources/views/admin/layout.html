@@ -97,8 +97,8 @@
 					<div class='page-header-button flex-center'>{{Auth::getUserDisplay()}}</div>
 					<div class='page-header-separator'></div>
 					<div>
-						<form method='POST'>
-							<button type='submit' name='logout'>
+						<form method='GET' action="{{route('admin/logout')}}">
+							<button type='submit'>
 								<div class='page-header-button flex-center'><i class='page-header-icon fa fa-sign-out'></i> </div>
 							</button>
 						</form>

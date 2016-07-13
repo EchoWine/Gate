@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Controller;
+namespace Test\Controller\Admin;
 
 use Admin\Controller\AdminController as BasicController;
 

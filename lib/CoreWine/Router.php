@@ -180,7 +180,25 @@ class Router{
 		if(self::$route == null)
 			throw new Exceptions\RouteException("No Route found for: ". self::getRelativeUrl());
 
+		if($response = self::middleware())
+			return $response;
+
 		return call_user_func_array(self::$route -> callback,self::$route -> param);
+	}
+
+	/**
+	 * Call all middleware
+	 */
+	private static function middleware(){
+		foreach(self::$route -> middleware as $middleware){
+
+			$middleware = new $middleware();
+			$response = $middleware -> handle();
+
+			if($response)
+				return $response;
+
+		}
 	}
 
 	/**

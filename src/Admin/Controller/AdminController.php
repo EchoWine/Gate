@@ -11,6 +11,13 @@ use Api\Controller;
 abstract class AdminController extends Controller{
 
 	/**
+	 * Middleware
+	 *
+	 * @var Array
+	 */
+	public $middleware = ['Admin\Middleware\Authenticate'];
+
+	/**
 	 * Prefix url
 	 *
 	 * @var string
@@ -87,12 +94,6 @@ abstract class AdminController extends Controller{
 	 */
 	public function __check(){
 		parent::__check();
-
-		# Redirect to /login if user isn't logged
-		if(Router::is(AdminController::PREFIX_ROUTE.$this -> url)){
-			if(!Auth::logged())
-				Request::redirect(Router::url('admin/login'));
-		}
 
 	}
 

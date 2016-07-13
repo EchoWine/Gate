@@ -10,6 +10,13 @@ use CoreWine\TemplateEngine\Response as ViewResponse;
 class Controller{
 	
 	/**
+	 * Middleware
+	 *
+	 * @var Array
+	 */
+	public $middleware = [];
+
+	/**
 	 * Router
 	 */
 	public function __routes(){}
@@ -45,12 +52,13 @@ class Controller{
 	public function route($method = null){
 
 		if($method !== null){
-			return Router::any() -> callback(function() use($methodr){
+			return Router::any() -> callback(function() use($method){
 				if(!method_exists($this,$method)){
 					throw new Exceptions\RouteException("No method $method; Check __routes() definition");
 				}
+
 				return call_user_func_array(array($this,$method), func_get_args());
-			});
+			}) -> middleware($this -> middleware);
 		}
 	}
 

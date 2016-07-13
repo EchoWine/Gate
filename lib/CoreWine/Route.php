@@ -20,6 +20,8 @@ class Route{
 
 	public $callback;
 
+	public $middleware;
+
 	public function __construct($url_regex = null){
 		$this -> url_regex = $url_regex;
 	}
@@ -65,6 +67,11 @@ class Route{
 
 	public function callback($callback){
 		$this -> callback = $callback;
+		return $this;
+	}
+
+	public function middleware($middleware){
+		$this -> middleware= $middleware;
 		return $this;
 	}
 

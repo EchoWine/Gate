@@ -14,8 +14,19 @@ class Controller{
 	 */
 	public function __routes(){}
 
+	/**
+	 * Check
+	 */
 	public function __check(){}
 	
+	/**
+	 * Return a ViewResponse
+	 *
+	 * @param string $file
+	 * @param array $data
+	 *
+	 * @return ViewResponse
+	 */
 	public function view($file,$data = []){
 		Router::view($data);
 
@@ -24,14 +35,21 @@ class Controller{
 		return $response;
 	}
 
-	public function route($controller = null){
+	/**
+	 * Set a route
+	 *
+	 * @param string $method
+	 *
+	 * @return Route
+	 */
+	public function route($method = null){
 
-		if($controller !== null){
-			return Router::any() -> callback(function() use($controller){
-				if(!method_exists($this,$controller)){
-					throw new Exceptions\RouteException("No method $controller; Check __routes() definition");
+		if($method !== null){
+			return Router::any() -> callback(function() use($methodr){
+				if(!method_exists($this,$method)){
+					throw new Exceptions\RouteException("No method $method; Check __routes() definition");
 				}
-				return call_user_func_array(array($this,$controller), func_get_args());
+				return call_user_func_array(array($this,$method), func_get_args());
 			});
 		}
 	}

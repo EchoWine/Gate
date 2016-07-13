@@ -90,14 +90,6 @@ abstract class AdminController extends Controller{
 	}
 
 	/**
-	 * Check
-	 */
-	public function __check(){
-		parent::__check();
-
-	}
-
-	/**
 	 * Index
 	 *
 	 * @return Response

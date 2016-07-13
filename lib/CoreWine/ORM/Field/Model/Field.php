@@ -135,35 +135,12 @@ class Field{
 	}
 
 	/**
-	 * Set the value raw by repository
+	 * Set the value raw
 	 *
-	 * @return mixed
+	 * @param mixed $value_raw
 	 */
-	public function setValueRawToRepository($value_raw,$persist = false){
-
+	public function setValueRaw($value_raw){
 		$this -> value_raw = $value_raw;
-
-		if(!$persist){
-			$this -> setValue($this -> parseRawToValue($value_raw),false);
-			$this -> persist = $persist;
-		}
-	}
-
-	/**
-	 * Set the value raw by repository
-	 *
-	 * @return mixed
-	 */
-	public function setValueRawFromRepository($value_raw,$persist = false,$relations = []){
-		
-		$value_raw = isset($value_raw[$this -> getSchema() -> getColumn()]) ? $value_raw[$this -> getSchema() -> getColumn()] : null;
-
-		$this -> value_raw = $value_raw;
-
-		if(!$persist){
-			$this -> setValue($this -> parseRawToValue($value_raw),false);
-			$this -> persist = $persist;
-		}
 	}
 
 	/**
@@ -184,6 +161,39 @@ class Field{
 		return $this -> has_value_raw;
 	}
 
+
+	/**
+	 * Set the value raw by repository
+	 *
+	 * @return mixed
+	 */
+	public function setValueRawToRepository($value_raw,$persist = false){
+
+		$this -> setValueRaw($value_raw);
+
+		if(!$persist){
+			$this -> setValue($this -> parseRawToValue($value_raw),false);
+			$this -> persist = $persist;
+		}
+	}
+
+	/**
+	 * Set the value raw by repository
+	 *
+	 * @return mixed
+	 */
+	public function setValueRawFromRepository($value_raw,$persist = false,$relations = []){
+		
+		$value_raw = isset($value_raw[$this -> getSchema() -> getColumn()]) ? $value_raw[$this -> getSchema() -> getColumn()] : null;
+
+		$this -> setValueRaw($value_raw);
+
+		if(!$persist){
+			$this -> setValue($this -> parseRawToValue($value_raw),false);
+			$this -> persist = $persist;
+		}
+	}
+
 	/**
 	 * Set the value
 	 *
@@ -196,6 +206,15 @@ class Field{
 			$this -> setValueRawToRepository($this -> parseValueToRaw($value),true);
 			$this -> persist = $persist;
 		}
+	}
+
+	/**
+	 * Get the value
+	 *
+	 * @return mixed
+	 */
+	public function getValue(){
+		return $this -> value;
 	}
 
 	/**
@@ -222,14 +241,6 @@ class Field{
 		$this -> setValue($value);
 	}
 
-	/**
-	 * Get the value
-	 *
-	 * @return mixed
-	 */
-	public function getValue(){
-		return $this -> value;
-	}
 
 	/**
 	 * Parse the value for data

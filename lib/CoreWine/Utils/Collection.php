@@ -7,7 +7,7 @@ use ArrayAccess;
 
 class Collection implements Iterator,ArrayAccess{
 
-    private $container = [];
+    protected $container = [];
 
     public function __construct($array = []){
         if(is_array($array)){

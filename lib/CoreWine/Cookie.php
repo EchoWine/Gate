@@ -1,12 +1,14 @@
 <?php
 
 namespace CoreWine\Response;
+
+//use InvalidArgumentException;
 //namespace CoreWine\Facility\Response;
 
 
 /**
  *
- * Cookie
+ * Represents a Cookie.
  *
  */
 class Cookie {
@@ -41,6 +43,37 @@ class Cookie {
 	 */
 	protected $secure;
 
+	/**
+     * @var string ASCII codes not valid for for use in a cookie name
+     *
+     * Cookie names are defined as 'token', according to RFC 2616, Section 2.2
+     * A valid token may contain any CHAR except CTLs (ASCII 0 - 31 or 127)
+     * or any of the following separators
+     */
+	protected static $invalidChars;
+
+	/**
+     * Default cookie properties
+     *
+     * @var array
+     */
+    protected $defaults = [
+        'value' => '',
+        'domain' => null,
+        'hostonly' => null,
+        'path' => null,
+        'expires' => null,
+        'secure' => false,
+        'httponly' => false
+    ];
+
+    /**
+     * Cookie
+     *
+     * @var array
+     */
+    protected $cookies = [];
+
 
 	/**
 	 *
@@ -59,7 +92,7 @@ class Cookie {
 	public function __construct($name, $value = null, $expire = 0, $path = '/', $domain, $secure = false) {
 
 		// Cookie's name is required.
-		if (empty($name)) {
+		if (empty($name) && !is_numeric($name)) {
 			throw new \InvalidArgumentException("Cookie's name is required.");
 		}
 
@@ -73,13 +106,16 @@ class Cookie {
 			throw new \InvalidArgumentException("Invalid Cookie's expiration time.");
 		}
 
-		// expiration
-		if (!isPathValid($expire)) {
+		// path
+		if (!isPathValid($path)) {
 			throw new \InvalidArgumentException("Invalid Cookie's domain path.");
 		}
 
+		// All values are valid, but some may be empty. Let's use the default values
+		// provided by the configuration file.
+		//$this -> initialize($default_values);
 
-
+		// This is the only time an inline, one-to-one assignment is tollerated.
 		$this -> name = $name;
 		$this -> value = $value;
 		$this -> expire = $expire;
@@ -207,6 +243,65 @@ class Cookie {
 
 	// a possibility
 	public function toCustomType() {}
+
+	/**
+	 *
+	 * Perform some booting operations.
+	 *
+	 * @param array $default_values default key-value pair array.
+	 */
+	public function initialize($default_values = []) {
+
+		if ($default_values === null || empty($default_values)) {
+			throw new \InvalidArgumentException("Invalid Cookie's default values.");
+		}
+
+		// check structure conformity and (when needed) field definition conformity
+
+		$this -> setDefaults($default_values);
+
+		
+	}
+
+	/**
+	 *
+	 * Set cookie fields to default values as defined in its dedicated configuration file. This does not set the name since it's required.
+	 *
+	 * @return null
+	 */
+	private function setDefaults(array $default_values = null) {
+
+		if (empty($default_values) || $default_values === null) {
+			foreach ($this -> defaults as $key => $value) {
+				$this -> cookies[$key] = $this -> defaults[$value];
+			}
+		} else {
+
+			//$this -> name = $default_values['name'];
+			$this -> value = $default_values['value'];
+			$this -> expire = $default_values['expire'];
+			$this -> path = $default_values['path'];
+			$this -> domain = $default_values['domain'];
+			$this -> secure = $default_values['secure']; 
+
+		}
+
+	}
+
+	/**
+	 *
+	 * Set cookie 
+	 *
+	 * @param string $name Cookie name
+	 * @param string $value Cookie value
+	 */
+	public function set($name, $value) {
+		// check $value, $name
+
+		$this -> cookies[$name] = $value;
+
+		return $this;
+	}
 
 
 

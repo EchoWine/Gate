@@ -2,6 +2,7 @@
 
 namespace CoreWine\Response;
 //namespace CoreWine\Facility\Response;
+use CoreWine\Response\HeaderIteratorInterface as HeaderInterface;
 
 
 /**
@@ -9,7 +10,7 @@ namespace CoreWine\Response;
  * Header
  *
  */
-class Header implements iterator {
+class Header implements \iterator {
 
 	/**
 	 * @var int 
@@ -98,7 +99,7 @@ class Header implements iterator {
 			return false;
 		}
 
-		if (! isValid($this -> headers[$this -> index])) {
+		if (! isValueValid($this -> headers[$this -> index])) {
 			return false;
 		}
 
@@ -112,7 +113,7 @@ class Header implements iterator {
 	 * @param string $value The header value 
 	 * @return bool
 	 */
-	function isValid($value) {
+	function isValueValid($value) {
 		// match it up against some well know pattern
 		return true;
 	}

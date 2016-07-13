@@ -193,10 +193,14 @@ class Router{
 		foreach(self::$route -> middleware as $middleware){
 
 			$middleware = new $middleware();
-			$response = $middleware -> handle();
 
-			if($response)
-				return $response;
+			if($middleware instanceof \CoreWine\Middleware){
+				
+				$response = $middleware -> handle();
+
+				if($response)
+					return $response;
+			}
 
 		}
 	}

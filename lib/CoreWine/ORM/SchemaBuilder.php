@@ -2,7 +2,7 @@
 
 namespace CoreWine\ORM;
 
-use CoreWine\ORM\Field\Schema as Field;
+use CoreWine\ORM\Field\Field\Schema as FieldSchema;
 
 class SchemaBuilder{
 
@@ -67,8 +67,7 @@ class SchemaBuilder{
 	 * @param $name
 	 */
 	public function field($class,$name){
-
-		if(is_subclass_of($class,Field\Field::class)){
+		if(is_subclass_of($class,FieldSchema::class)){
 			$arguments = func_get_args();
 			unset($arguments[0]);
 			$field = call_user_func_array($class.'::factory', $arguments);
@@ -92,7 +91,7 @@ class SchemaBuilder{
 
 		if($this -> isField($method)){
 			$class = $this -> getField($method);
-			if(is_subclass_of($class,Field\Field::class)){
+			if(is_subclass_of($class,FieldSchema::class)){
 
 
 				$field = call_user_func_array($class.'::factory', $arguments);

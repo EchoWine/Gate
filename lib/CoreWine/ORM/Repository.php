@@ -160,7 +160,7 @@ class Repository extends QueryBuilder{
 		foreach($schema -> getFields() as $field){
 			
 			# N -> 1 || 1 -> 1
-			if($field instanceof \CoreWine\ORM\Field\Schema\ModelField){
+			if($field instanceof \CoreWine\ORM\Field\Model\Schema){
 				foreach($results as $result){
 					if(!empty($result[$field -> getColumn()])){
 						if(!$this -> isObjectORM($field -> getRelation(),$result[$field -> getColumn()])){
@@ -172,7 +172,7 @@ class Repository extends QueryBuilder{
 			}
 
 			# 1 -> N
-			if($field instanceof \CoreWine\ORM\Field\Schema\CollectionModelField){
+			if($field instanceof \CoreWine\ORM\Field\CollectionModel\Schema){
 				
 				$field_relation = null;
 

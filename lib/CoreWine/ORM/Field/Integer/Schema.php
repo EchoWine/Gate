@@ -1,13 +1,15 @@
 <?php
 
-namespace CoreWine\ORM\Field\Schema;
+namespace CoreWine\ORM\Field\Integer;
 
-class IntegerField extends Field{
+use CoreWine\ORM\Field\Field\Schema as FieldSchema;
+
+class Schema extends FieldSchema{
 	
 	/**
 	 * Model
 	 */
-	public $__model = 'CoreWine\ORM\Field\Model\IntegerField';
+	public $__model = 'CoreWine\ORM\Field\Integer\Model';
 
 	/**
 	 * Lenght

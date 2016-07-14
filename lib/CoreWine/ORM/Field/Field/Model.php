@@ -1,8 +1,8 @@
 <?php
 
-namespace CoreWine\ORM\Field\Model;
+namespace CoreWine\ORM\Field\Field;
 
-class Field{
+class Model{
 	
 	/**
 	 * Schema

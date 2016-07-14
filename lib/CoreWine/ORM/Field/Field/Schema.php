@@ -1,15 +1,15 @@
 <?php
 
-namespace CoreWine\ORM\Field\Schema;
+namespace CoreWine\ORM\Field\Field;
 
-class Field{
+class Schema{
 	
 	/**
 	 * Model
 	 *
 	 * @var string
 	 */
-	public $__model = 'CoreWine\ORM\Field\Model\Field';
+	public $__model = 'CoreWine\ORM\Field\Field\Model';
 
 	/**
 	 * Name

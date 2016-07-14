@@ -1,16 +1,16 @@
 <?php
 
-namespace CoreWine\ORM\Field\Schema;
+namespace CoreWine\ORM\Field\CollectionModel;
 
-class CollectionModelField extends IntegerField{
+use CoreWine\ORM\Field\Field\Schema as FieldSchema;
+
+class Schema extends FieldSchema{
 	
 	/**
 	 * Model
-	 *
-	 * @var
 	 */
-	public $__model = 'CoreWine\ORM\Field\Model\CollectionModelField';
-
+	public $__model = 'CoreWine\ORM\Field\CollectionModel\Model';
+	
 	/**
 	 * Name of model of Relation
 	 *

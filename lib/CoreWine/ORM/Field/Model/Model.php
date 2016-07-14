@@ -2,7 +2,9 @@
 
 namespace CoreWine\ORM\Field\Model;
 
-class ModelField extends Field{
+use CoreWine\ORM\Field\Field\Model as FieldModel;
+
+class Model extends FieldModel{
 
 	/**
 	 * Set Model

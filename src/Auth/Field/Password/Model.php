@@ -2,10 +2,11 @@
 
 namespace Auth\Field\Password;
 
-use CoreWine\ORM\Field\Model\Field;
+use CoreWine\ORM\Field\Field\Model as FieldModel;
+
 use Auth\Service\Auth;
 
-class Model extends Field{
+class Model extends FieldModel{
 
 	/**
 	 * Parse the value from value to raw

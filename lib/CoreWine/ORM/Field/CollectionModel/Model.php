@@ -1,8 +1,10 @@
 <?php
 
-namespace CoreWine\ORM\Field\Model;
+namespace CoreWine\ORM\Field\CollectionModel;
 
-class CollectionModelField extends Field{
+use CoreWine\ORM\Field\Field\Model as FieldModel;
+
+class Model extends FieldModel{
 
 	/**
 	 * has value raw

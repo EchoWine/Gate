@@ -1,16 +1,16 @@
 <?php
 
-namespace CoreWine\ORM\Field\Schema;
+namespace CoreWine\ORM\Field\Email;
 
-class EmailField extends Field{
+use CoreWine\ORM\Field\String\Schema as StringSchema;
+
+class Schema extends StringSchema{
 	
 	/**
 	 * Model
-	 *
-	 * @var string
 	 */
-	public $__model = 'CoreWine\ORM\Field\Model\EmailField';
-
+	public $__model = 'CoreWine\ORM\Field\Email\Model';
+	
 	/**
 	 * Name
 	 *
@@ -45,8 +45,6 @@ class EmailField extends Field{
 	 * @var bool
 	 */
 	public $unique = true;
-
-
-
 }
+
 ?>

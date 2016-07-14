@@ -1,13 +1,15 @@
 <?php
 
-namespace CoreWine\ORM\Field\Schema;
+namespace CoreWine\ORM\Field\ID;
 
-class IDField extends IntegerField{
+use CoreWine\ORM\Field\Integer\Schema as IntegerSchema;
+
+class Schema extends IntegerSchema{
 	
 	/**
 	 * Model
 	 */
-	public $__model = 'CoreWine\ORM\Field\Model\IDField';
+	public $__model = 'CoreWine\ORM\Field\ID\Model';
 
 	public $name = 'id';
 	public $label = 'id';
@@ -37,7 +39,6 @@ class IDField extends IntegerField{
 	public function alter($table){
 		$table -> id($this -> name);
 	}
-
 }
 
 ?>

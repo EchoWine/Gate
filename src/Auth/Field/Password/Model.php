@@ -1,11 +1,11 @@
 <?php
 
-namespace Auth\Field\Model;
+namespace Auth\Field\Password;
 
 use CoreWine\ORM\Field\Model\Field;
 use Auth\Service\Auth;
 
-class PasswordField extends Field{
+class Model extends Field{
 
 	/**
 	 * Parse the value from value to raw

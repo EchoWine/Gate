@@ -1,18 +1,17 @@
 <?php
 
-
-namespace Auth\Field\Schema;
+namespace Auth\Field\Password;
 
 use CoreWine\ORM\Field\Schema\Field;
 
-class PasswordField extends Field{
+class Schema extends Field{
 	
 	/**
 	 * Model
 	 *
 	 * @var string
 	 */
-	public $__model = 'Auth\Field\Model\PasswordField';
+	public $__model = 'Auth\Field\Password\Model';
 
 	/**
 	 * Name

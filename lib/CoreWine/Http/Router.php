@@ -2,6 +2,8 @@
 
 namespace CoreWine\Http;
 
+use CoreWine\Exceptions;
+
 class Router{
 
 	/**

@@ -158,6 +158,7 @@ class Auth extends Service{
 	 */
 	public static function getUserDisplay(){
 		if(!Auth::logged())return '[User not logged]';
+		print_r(Auth::user());
 		return Cfg::get('Auth.display') == 0 ? Auth::user() -> username : Auth::user() -> email;
 	}
 

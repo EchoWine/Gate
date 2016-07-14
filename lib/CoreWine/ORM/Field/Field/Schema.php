@@ -9,7 +9,7 @@ class Schema{
 	 *
 	 * @var string
 	 */
-	public $__model = 'CoreWine\ORM\Field\Field\Model';
+	public $__model = null;
 
 	/**
 	 * Name
@@ -432,7 +432,13 @@ class Schema{
 	 * @return Model
 	 */
 	public function new($value = null){
-		return new $this -> __model($this,$value);
+		$class = explode("\\",static::class);
+		unset($class[count($class) - 1]);
+		$class = implode("\\",$class);
+
+		$model = $this -> __model !== null ? $this -> __model : $class.'\Model';
+
+		return new $model($this,$value);
 	}
 
 	/**

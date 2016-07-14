@@ -5,11 +5,6 @@ namespace CoreWine\ORM\Field\ID;
 use CoreWine\ORM\Field\Integer\Schema as IntegerSchema;
 
 class Schema extends IntegerSchema{
-	
-	/**
-	 * Model
-	 */
-	public $__model = 'CoreWine\ORM\Field\ID\Model';
 
 	public $name = 'id';
 	public $label = 'id';

@@ -7,11 +7,6 @@ use CoreWine\ORM\Field\String\Schema as StringSchema;
 class Schema extends StringSchema{
 	
 	/**
-	 * Model
-	 */
-	public $__model = 'CoreWine\ORM\Field\Email\Model';
-	
-	/**
 	 * Name
 	 *
 	 * @var string

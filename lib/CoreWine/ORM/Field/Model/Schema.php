@@ -5,11 +5,6 @@ namespace CoreWine\ORM\Field\Model;
 use CoreWine\ORM\Field\Field\Schema as FieldSchema;
 
 class Schema extends FieldSchema{
-	
-	/**
-	 * Model
-	 */
-	public $__model = 'CoreWine\ORM\Field\Model\Model';
 
 	/**
 	 * Name of model of Relation

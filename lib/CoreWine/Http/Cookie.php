@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Response;
+namespace CoreWine\Http;
 
 //use InvalidArgumentException;
 //namespace CoreWine\Facility\Response;

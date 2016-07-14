@@ -5,11 +5,11 @@ namespace CoreWine;
 use CoreWine\Components\App;
 
 use CoreWine\TemplateEngine\Engine;
-use CoreWine\Request;
+use CoreWine\Http\Request;
 use CoreWine\Flash;
-use CoreWine\Router;
+use CoreWine\Http\Router;
 use CoreWine\SourceManager\Manager;
-use CoreWine\Response;
+use CoreWine\Http\Response;
 
 class FrameworkApp extends App{
 

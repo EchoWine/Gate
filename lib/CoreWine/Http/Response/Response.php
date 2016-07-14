@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Response;
+namespace CoreWine\Http\Response;
 
 /**
  *
@@ -178,7 +178,7 @@ class Response{
 	/** 
 	 * Send response
 	 *
-	 * @return \CoreWine\Response\Response
+	 * @return \CoreWine\Http\Response\Response
 	 */
 	public function send(){
 		$this -> sendHeaders();
@@ -190,7 +190,7 @@ class Response{
 	/**
      * Sends HTTP headers.
      *
-     * @return \CoreWine\Response\Response
+     * @return \CoreWine\Http\Response\Response
      */
 	public function sendHeaders() {
 		// sent already?
@@ -223,7 +223,7 @@ class Response{
 
 	/**
 	 * Send body
-	 * @return \CoreWine\Response\Response
+	 * @return \CoreWine\Http\Response\Response
 	 */
 	public function sendBody(){
 		echo $this -> getBody();
@@ -236,7 +236,7 @@ class Response{
 	 * Set HTTP Protocol version.
 	 *
 	 * @param string $version 
-	 * @return \CoreWine\Response\Response
+	 * @return \CoreWine\Http\Response\Response
 	 */
 	public function setVersion($version = HTTP_DEFAULT_PROTOCOL_VERSION) {
 		$this -> version = $version;

@@ -1,7 +1,7 @@
 <?php
 	
-	use CoreWine\Router;
-	use CoreWine\Request as Request;
+	use CoreWine\Http\Router;
+	use CoreWine\Http\Request;
 	use CoreWine\TemplateEngine\Engine;
 	
 	function isJson($s){

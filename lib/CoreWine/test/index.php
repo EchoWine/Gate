@@ -2,7 +2,7 @@
 
 include "../main.php";
 
-use CoreWine\Request as Request;
+use CoreWine\Http\Request as Request;
 
 Request::setCookie('test',time(true));
 Request::setSession('test',time(true));

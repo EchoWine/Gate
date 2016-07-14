@@ -8,7 +8,7 @@
 - JWT authentication (custom written)
 
 
-- CoreWine\Response\Response
+- CoreWine\Http\Response\Response
 
 Search functionality
 

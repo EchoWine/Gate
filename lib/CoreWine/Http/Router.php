@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine;
+namespace CoreWine\Http;
 
 class Router{
 
@@ -194,7 +194,7 @@ class Router{
 
 			$middleware = new $middleware();
 
-			if($middleware instanceof \CoreWine\Middleware){
+			if($middleware instanceof \CoreWine\Http\Middleware){
 				
 				$response = $middleware -> handle();
 

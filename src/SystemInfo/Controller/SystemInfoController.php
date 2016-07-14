@@ -4,7 +4,7 @@ namespace SystemInfo\Controller;
 
 use SystemInfo\Service\SystemInfo;
 use CoreWine\DataBase\DB;
-use CoreWine\Router;
+use CoreWine\Http\Router;
 
 use CoreWine\SourceManager\Controller as Controller;
 

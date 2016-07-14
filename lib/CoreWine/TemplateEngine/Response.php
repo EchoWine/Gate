@@ -2,7 +2,7 @@
 
 namespace CoreWine\TemplateEngine;
 
-use CoreWine\Response\Response as BasicResponse;
+use CoreWine\Http\Response\Response as BasicResponse;
 
 class Response extends BasicResponse{
 

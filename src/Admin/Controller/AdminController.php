@@ -2,8 +2,8 @@
 
 namespace Admin\Controller;
 
-use CoreWine\Router;
-use CoreWine\Request as Request;
+use CoreWine\Http\Router;
+use CoreWine\Http\Request as Request;
 use Auth\Service\Auth;
 
 use Api\Controller;

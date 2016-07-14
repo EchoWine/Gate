@@ -2,8 +2,8 @@
 
 namespace Admin\Controller;
 
-use CoreWine\Request;
-use CoreWine\Router;
+use CoreWine\Http\Request;
+use CoreWine\Http\Router;
 use CoreWine\Flash;
 use CoreWine\Cfg;
 

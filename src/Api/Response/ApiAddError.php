@@ -2,7 +2,7 @@
 
 namespace CoreWine\Api\Response;
 
-use CoreWine\Request;
+use CoreWine\Http\Request;
 
 class ApiAddError extends Error{
 

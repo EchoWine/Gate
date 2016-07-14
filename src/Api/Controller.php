@@ -5,7 +5,7 @@ namespace Api;
 use CoreWine\SourceManager\Controller as SourceController;
 use Api\Response;
 use Api\Exceptions;
-use CoreWine\Request;
+use CoreWine\Http\Request;
 
 abstract class Controller extends SourceController{
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Response;
+namespace CoreWine\Response\Http;
 //namespace CoreWine\Facility\Response;
 use CoreWine\Response\HeaderIteratorInterface as HeaderInterface;
 

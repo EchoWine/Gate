@@ -2,7 +2,7 @@
 
 include "../../main.php";
 
-use CoreWine\Router;
+use CoreWine\Http\Router;
 
 $x = "Global variable";
 

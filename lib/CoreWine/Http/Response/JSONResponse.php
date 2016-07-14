@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Response;
+namespace CoreWine\Http\Response;
 
 class JSONResponse extends Response{
 

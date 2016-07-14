@@ -2,7 +2,7 @@
 
 namespace Example\Controller;
 
-use CoreWine\Router;
+use CoreWine\Http\Router;
 
 use CoreWine\SourceManager\Controller as Controller;
 

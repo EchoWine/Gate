@@ -2,9 +2,9 @@
 
 namespace Admin\Middleware;
 
-use CoreWine\Request;
-use CoreWine\Router;
-use CoreWine\Middleware;
+use CoreWine\Http\Request;
+use CoreWine\Http\Router;
+use CoreWine\Http\Middleware;
 use Auth\Service\Auth;
 
 class Authenticate extends Middleware{

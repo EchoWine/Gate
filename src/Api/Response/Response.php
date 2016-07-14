@@ -2,7 +2,7 @@
 
 namespace Api\Response;
 
-use CoreWine\Response\JSONResponse as JSONResponse;
+use CoreWine\Http\Response\JSONResponse as JSONResponse;
 
 class Response extends JSONResponse{
 

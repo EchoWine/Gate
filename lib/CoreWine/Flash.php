@@ -2,6 +2,8 @@
 
 namespace CoreWine;
 
+use CoreWine\Http\Request;
+
 /**
  * Flash messages.
  */

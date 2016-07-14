@@ -2,7 +2,7 @@
 
 namespace CoreWine\SourceManager;
 
-use CoreWine\Router;
+use CoreWine\Http\Router;
 use CoreWine\TemplateEngine\Engine;
 use CoreWine\Exceptions as Exceptions;
 use CoreWine\TemplateEngine\Response as ViewResponse;

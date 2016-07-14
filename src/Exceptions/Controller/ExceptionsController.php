@@ -5,7 +5,7 @@ namespace Exceptions;
 use Exception;
 
 use Exceptions\FatalException;
-use CoreWine\Router;
+use CoreWine\Http\Router;
 use CoreWine\SourceManager\Controller;
 
 class ExceptionsController extends Controller{

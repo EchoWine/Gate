@@ -4,7 +4,7 @@ namespace Auth\Service;
 
 use CoreWine\DataBase\DB;
 use CoreWine\Cfg;
-use CoreWine\Request;
+use CoreWine\Http\Request;
 use CoreWine\Service;
 
 use Auth\Model\User;

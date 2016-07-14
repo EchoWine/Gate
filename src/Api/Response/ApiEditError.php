@@ -2,7 +2,7 @@
 
 namespace Api\Response;
 
-use CoreWine\Request;
+use CoreWine\Http\Request;
 
 class ApiEditError extends Error{
 

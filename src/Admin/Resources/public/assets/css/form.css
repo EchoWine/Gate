@@ -163,7 +163,10 @@
 	padding:5px 10px;
 	transition:ease-in-out 0.2s all;
 	height:29px;
+}
 
+.text-data{
+	min-height:190px;
 }
 
 .select-data:not(.disable):focus, .input-data:not(.disable):focus, .text-data:not(.disable):focus{

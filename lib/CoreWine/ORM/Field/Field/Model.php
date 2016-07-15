@@ -44,6 +44,15 @@ class Model{
 	}
 
 	/**
+	 * Get type
+	 *
+	 * @return string
+	 */
+	public function getType(){
+		$this -> getSchema() -> getType();
+	}
+
+	/**
 	 * Set Model
 	 */
 	public function setModel($model){

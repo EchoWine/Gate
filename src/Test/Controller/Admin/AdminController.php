@@ -26,35 +26,35 @@ class AdminController extends BasicController{
 	 *
 	 * @var array
 	 */
-	public $view_list = ['id','string','timestamp'];
+	public $view_list = ['id','string','timestamp','text'];
 
 	/**
 	 * View add
 	 *
 	 * @var array
 	 */
-	public $view_add = ['string','timestamp'];
+	public $view_add = ['string','timestamp','text'];
 
 	/**
 	 * View edit
 	 *
 	 * @var array
 	 */
-	public $view_edit = ['string','timestamp'];
+	public $view_edit = ['string','timestamp','text'];
 
 	/**
 	 * View get
 	 *
 	 * @var array
 	 */
-	public $view_get = ['id','string','timestamp'];
+	public $view_get = ['id','string','timestamp','text'];
 
 	/**
 	 * View search
 	 *
 	 * @var array
 	 */
-	public $view_search = ['id','string','timestamp'];
+	public $view_search = ['id','string','timestamp','text'];
 
 }
 

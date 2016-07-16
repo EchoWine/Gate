@@ -184,6 +184,15 @@ class SchemaBuilder{
 		return $this -> column($name,DB::SQL()::VARCHAR,$length);
 	}
 
+	/**
+	 * Defines the column string
+	 *
+	 * @param string $name
+	 * @return object $this
+	 */
+	public function text($name){
+		return $this -> column($name,DB::SQL()::TEXT);
+	}
 
 	/**
 	 * Return the SQL code for the selection

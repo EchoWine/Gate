@@ -125,8 +125,14 @@ class Engine{
 
 		throw new \Exception("The file '$filename' doesn't exists");
 		die();
-	
+	}
 
+	public static function include($filename,$vars = []){
+
+		foreach($vars as $name => $k)
+			$$name = $k;
+		
+		include self::$pathStorage.'/'.Engine::getInclude($filename);
 	}
 
 	/**

@@ -63,6 +63,7 @@ class Translator{
 		$content = $this -> t_include($content);
 		$content = $this -> t_comments($content);
 		// $content = $this -> t_array($content);
+		$content = $this -> t_switch($content);
 		$content = $this -> t_if($content);
 		$content = $this -> t_for($content);
 		$content = $this -> t_print($content);
@@ -134,11 +135,8 @@ class Translator{
 	 */
 	public function t_include($content){
 
-		# Include
-		preg_match_all('/{{include ([^\}]*)}}/iU',$content,$r);
-		foreach($r[1] as $n => $k){
-			$content = str_replace($r[0][$n],'<?php include '.$this -> getEngineCall().'::getInclude("'.$k.'"); ?>',$content);
-		}
+		$content = preg_replace('/{{include ([^\s]*) ([^\}]*)}}/iU','<?php '.$this -> getEngineCall().'::include("$1",$2); ?>',$content);
+		$content = preg_replace('/{{include ([^\}]*)}}/iU','<?php '.$this -> getEngineCall().'::include("$1"); ?>',$content);
 
 		return $content;
 	}

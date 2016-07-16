@@ -7,6 +7,7 @@ return [
 	'id' => CoreWine\ORM\Field\ID\Schema::class,
 	'timestamp' => CoreWine\ORM\Field\Timestamp\Schema::class,
 	'password' => Auth\Field\Password\Schema::class,
+	'text' => CoreWine\ORM\Field\Text\Schema::class,
 	'email' => CoreWine\ORM\Field\Email\Schema::class,
 
 ];

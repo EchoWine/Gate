@@ -172,6 +172,16 @@ class Schema{
 	}
 
 	/**
+	 * Get type
+	 *
+	 * @return string
+	 */
+	public function getType(){
+		$class = explode("\\",static::class);
+		return strtolower($class[count($class) - 2]);
+	}
+
+	/**
 	 * Call
 	 *
 	 * @param string $method

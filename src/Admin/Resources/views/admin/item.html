@@ -38,7 +38,7 @@
 			<form method='POST' item-data-form-add  data-item-table='{table}'>
 				{{for $fields_add as $field}}
 					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
-					<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
+					<div class='item-form-input'>{{include Admin/admin/field ['field' => $field,'extra_class' => 'item-form-element']}}</div>
 				{{/for}}
 
 				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>

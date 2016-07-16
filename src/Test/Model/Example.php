@@ -29,6 +29,8 @@ class Example extends Model{
 
 		$schema -> timestamp('timestamp');
 
+		$schema -> text('text');
+
 
 	}
 }

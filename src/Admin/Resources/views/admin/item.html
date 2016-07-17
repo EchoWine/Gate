@@ -170,6 +170,8 @@
 				<div class='flex-fill'></div>
 				
 				<div class='section-actions'>
+
+
 					<button type='button' class='button-action button-primary' data-modal='modal-item-add' data-modal-item-table='{{$table}}'>
 						<i class='fa fa-plus'></i>
 						<span>New</span>
@@ -190,6 +192,35 @@
 				</div>
 			</div>
 			
+
+			<div class='section-pagination flex-center'>
+				<div>If selected: &nbsp;</div>
+
+				<button type='button' class='button-action button-danger'  data-item-table='{{$table}}' data-item-multiple-delete>
+					<i class='fa fa-trash'></i>
+					<span>Delete</span>
+				</button>
+				<div> &nbsp;</div>
+				<button type='button' class='button-action button-warning'>
+					<i class='fa fa-pencil'></i>
+					<span>Edit</span>
+				</button>
+				<div> &nbsp;</div>
+				<button type='button' class='button-action button-primary'>
+					<i class='fa fa-file-o'></i>
+					<span>Copy</span>
+				</button>
+				<div> &nbsp;</div>
+
+				<div class='flex-fill'></div>
+				<div>
+					Page <span data-item-list-page>1</span> of <span data-item-list-pages>1</span> | 
+					Showing <span data-item-list-start>1</span> to <span data-item-list-end>1</span> 
+					of <span data-item-list-count>1</span> entries 
+					<button type='button' class='button-action' data-item-list-prev data-item-table='{{$table}}'>Previous</button>
+					<button type='button' class='button-action' data-item-list-next data-item-table='{{$table}}'>Next</button>
+				</div>
+			</div>
 
 			<div class='table'>
 

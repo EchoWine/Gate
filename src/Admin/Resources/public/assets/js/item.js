@@ -83,7 +83,6 @@ item.delete = function(url,params,callback){
 	item.ajax('DELETE',url,params,callback);
 };
 
-
 /**
  * Initalization
  */
@@ -541,4 +540,30 @@ $('body').on('click','[data-item-select-all]',function(){
 	
 	container.find('[data-item-select]').prop('checked', $(this).prop('checked'));
 
+});
+
+
+item.getSelectedRecords = function(container){
+	var checkbox = container.find('[data-item-select]:checked');
+
+	var ids = [];
+	$.map(checkbox,function(value){
+		ids.push($(value).attr('data-item-id'));
+	});
+
+	return ids;
+}
+
+/**
+ * Set event delete multiple
+ */
+$('body').on('click','[data-item-multiple-delete]',function(){
+
+	var table = item.getTable($(this).attr('data-item-table'));
+	var container = item.getContainerByTable(table);
+	var ids = item.getSelectedRecords(container);
+	console.log(ids);
+	$.map(ids,function(id){
+		item.remove(table,id);
+	});
 });

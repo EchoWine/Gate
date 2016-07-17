@@ -8,80 +8,6 @@ var item = {};
  */
 item.tables = [];
 
-/**
- * Make ajax call
- *
- * @param {string} type
- * @param {string} url
- * @param {object} params
- * @param {function} callback
- */
-item.ajax = function(type,url,params = {},callback){
-	console.log('Call to: '+url+'');
-	console.log(params);
-
-	$.ajax({
-		type: type,
-		url: url, 
-		data : params,
-		contentType: "application/x-www-form-urlencoded; charsetBySource=UTF-8",
-		success: function(data) {
-
-		console.log(data);
-			callback(data);
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log('Error during call: '+url);
-			console.log(errorThrown);
-			console.log(jqXHR);
-		},
-		dataType:'json'
-	});
-};
-
-/**
- * Make get call
- *
- * @param {string} url
- * @param {object} params
- * @param {function} callback
- */
-item.get = function(url,params,callback){
-	item.ajax('GET',url,params,callback);
-};
-
-/**
- * Make post call
- *
- * @param {string} url
- * @param {object} params
- * @param {function} callback
- */
-item.post = function(url,params,callback){
-	item.ajax('POST',url,params,callback);
-};
-
-/**
- * Make put call
- *
- * @param {string} url
- * @param {object} params
- * @param {function} callback
- */
-item.put = function(url,params,callback){
-	item.ajax('PUT',url,params,callback);
-};
-
-/**
- * Make delete call
- *
- * @param {string} url
- * @param {object} params
- * @param {function} callback
- */
-item.delete = function(url,params,callback){
-	item.ajax('DELETE',url,params,callback);
-};
 
 /**
  * Initalization
@@ -180,7 +106,7 @@ item.getList = function(table,params = {}){
 		
 	//template.setBySource('spinner-table','item-row',{});
 
-	item.get(table.list.url,params,function(response){
+	http.get(table.list.url,params,function(response){
 		var container = item.getContainerByTable(table);
 
 		if(response.status == 'success'){
@@ -262,7 +188,7 @@ item.listNext = function(table){
  */
 item.add = function(table,values){
 
-	item.post(table.add.url,values,function(data){
+	http.post(table.add.url,values,function(data){
 
 		if(data.status == 'success'){
 			item.getListWithParams(table);
@@ -281,7 +207,7 @@ item.add = function(table,values){
  */
 item.edit = function(table,id,values){
 
-	item.put(table.edit.url+"/"+id,values,function(data){
+	http.put(table.edit.url+"/"+id,values,function(data){
 
 		if(data.status == 'success'){
 			item.getListWithParams(table);
@@ -303,7 +229,7 @@ item.edit = function(table,id,values){
  */
 item.remove = function(table,id){
 
-	item.delete(table.delete.url+"/"+id,{},function(data){
+	http.delete(table.delete.url+"/"+id,{},function(data){
 
 		if(data.status == 'success'){
 			item.getListWithParams(table);
@@ -325,7 +251,7 @@ item.remove = function(table,id){
  */
 item.copy = function(table,id){
 
-	item.post(table.copy.url+"/"+id,{},function(data){
+	http.post(table.copy.url+"/"+id,{},function(data){
 
 		if(data.status == 'success'){
 			item.getListWithParams(table);
@@ -455,7 +381,7 @@ modal.addDataTo('modal-item-edit',function(container,data){
 	el.attr('data-item-table',data['data-modal-item-table']);
 	el.attr('data-item-id',id);
 
-	item.get(table.get.url+"/"+id,{filter:'edit'},function(data){
+	http.get(table.get.url+"/"+id,{filter:'edit'},function(data){
 		
 		table.edit.get(container,data.data.resource);
 
@@ -470,7 +396,7 @@ modal.addDataTo('modal-item-get',function(container,data){
 	el.attr('data-item-table',data['data-modal-item-table']);
 	el.attr('data-item-id',id);
 
-	item.get(table.get.url+"/"+id,{filter:'get'},function(data){
+	http.get(table.get.url+"/"+id,{filter:'get'},function(data){
 		table.get.get(container,data.data.resource);
 
 	});

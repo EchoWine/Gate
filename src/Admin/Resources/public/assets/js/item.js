@@ -419,7 +419,7 @@ item.getSelectedRecords = function(table){
 
 
 /** 
- * Update show result
+ * Show on change
  */
 $('[data-item-show]').on('change',function(){
 	var table = item.getTableByElement($(this));
@@ -428,7 +428,7 @@ $('[data-item-show]').on('change',function(){
 });
 
 /** 
- * Search
+ * Search on click
  */
 $('[data-item-search]').on('click',function(){
 	var table = item.getTableByElement($(this));
@@ -442,7 +442,7 @@ $('[data-item-search]').on('click',function(){
 });
 
 /**
- * Set event sort
+ * Sort on click
  */
 $('body').on('click','[data-item-sort-field]',function(){
 
@@ -468,11 +468,17 @@ $('body').on('click','[data-item-sort-field]',function(){
 
 });
 
+/**
+ * Prev page on click
+ */
 $('body').on('click','[data-item-list-prev]',function(){
 	var table = item.getTableByElement($(this));
 	item.listPrev(table);
 });
 
+/**
+ * next page on click
+ */
 $('body').on('click','[data-item-list-next]',function(){
 
 	var table = item.getTableByElement($(this));
@@ -480,7 +486,7 @@ $('body').on('click','[data-item-list-next]',function(){
 });
 
 /**
- * Set event add
+ * Add on submit
  */
 $('body').on('submit','[item-data-form-add]',function(e){
 
@@ -494,7 +500,7 @@ $('body').on('submit','[item-data-form-add]',function(e){
 });
 
 /**
- * Set event remove
+ * Remove on click
  */
 $('body').on('click','[data-item-remove]',function(){
 
@@ -505,7 +511,7 @@ $('body').on('click','[data-item-remove]',function(){
 });
 
 /**
- * Set event copy
+ * Copy on click
  */
 $('body').on('click','[data-item-copy]',function(){
 
@@ -516,7 +522,7 @@ $('body').on('click','[data-item-copy]',function(){
 });
 
 /**
- * Set event edit
+ * Edit on submit
  */
 $('body').on('submit','[item-data-form-edit]',function(e){
 
@@ -530,7 +536,9 @@ $('body').on('submit','[item-data-form-edit]',function(e){
 
 });
 
-
+/**
+ * Select all on click
+ */
 $('body').on('click','[data-item-select-all]',function(){
 	var table = item.getTable($(this).attr('data-item-table'));
 
@@ -540,9 +548,8 @@ $('body').on('click','[data-item-select-all]',function(){
 
 });
 
-
 /**
- * Set event delete multiple
+ * Delete multiple on click
  */
 $('body').on('click','[data-item-multiple-delete]',function(){
 
@@ -553,7 +560,6 @@ $('body').on('click','[data-item-multiple-delete]',function(){
 		item.remove(table,id);
 	});
 });
-
 
 modal.addDataTo('modal-item-edit',function(container,data){
 	var el = container.find('[item-data-form-edit]');

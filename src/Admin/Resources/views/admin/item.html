@@ -1,7 +1,7 @@
 {{extends Admin/admin/layout}}
 
 {{block page-content}}
-	
+	<div data-item-table-container='{{$table}}'>
 	<div class='templates' data-template='spinner-table'>
 
 		<div class='table-row'>
@@ -161,7 +161,7 @@
 	</div>
 
 	<div class='page-row'>
-		<div class='page-section page-section-content' data-item-table-container='{{$table}}'>
+		<div class='page-section page-section-content'>
 
 
 			<div class='section-header flex-center'>
@@ -310,6 +310,7 @@
 			</div>
 		</div>
 	</div>
+	</div>
 {{/block}}
 
 {{block scripts}}
@@ -328,6 +329,7 @@
 				get: function(container,data){
 					{{for $fields_get as $field}}
 						container.find('[data-name={{$field -> getName()}}]').html(data['{{$field -> getName()}}']);
+						console.log(container.find('[data-name={{$field -> getName()}}]'));
 					{{/for}}
 				},
 			},

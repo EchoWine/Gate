@@ -16,7 +16,7 @@ item.ini = function(){
 	for(i in item.tables){
 		table = item.tables[i];
 		
-		item.updateIconSort(table,table.list.sortByField,table.list.sortByDirection);
+		item.updateSortHTML(table,table.list.sortByField,table.list.sortByDirection);
 		item.getListWithParams(table);
 
 	};
@@ -42,50 +42,78 @@ item.getTable = function(name){
 	return item.tables[name];
 };
 
-item.handleAlert = function(table,data,container_modal){
+/**
+ * Update the list of all records
+ *
+ * @param {object} table
+ * @param {array} params
+ */
+item.getList = function(table,params = {}){
+		
+	//template.setBySource('spinner-table','item-row',{});
 
-	if(data.status == 'success' || !container){
-		item.getListWithParams(table);
-		modal.closeActual();
-		item.addAlert('alert-success','alert-global',data);
-	}
+	api.all(table.url,params,function(response){
 
-	if(data.status == 'error'){
-		item.addAlert('alert-danger',container_modal,data);
-	}
+		item.handleList(table,response);
+
+	});
 };
 
 
 /**
  * Get
+ * 
+ * @param {object} table
+ * @param {int} id
  */
 item.get = function(table,id){
 
-	api.get(table.url,id,function(data){
+	api.get(table.url,id,function(response){
 
-		table.get.get(container,data.data.resource);
+		item.handleGet(table,response);
 	});
 }
 
+/**
+ * Get for edit
+ * 
+ * @param {object} table
+ * @param {int} id
+ */
+item.getForEdit = function(table,id){
+
+	api.get(table.url,id,function(response){
+
+		item.handleGetForEdit(table,response);
+	});
+}
+
+	
 /** 
  * Add a row
+ *
+ * @param {object} table
+ * @param {array} values
  */
 item.add = function(table,values){
 
 	api.add(table.url,values,function(data){
 
-		item.handleAlert(table,data,'alert-modal-add');
+		item.handleBasic(table,data,'alert-modal-add');
 	});
 }
 
 /** 
  * Edit a row
+ *
+ * @param {object} table
+ * @param {int} id
+ * @param {array} values
  */
 item.edit = function(table,id,values){
-
 	api.edit(table.url,id,values,function(data){
 
-		item.handleAlert(table,data,'alert-modal-edit');
+		item.handleBasic(table,data,'alert-modal-edit');
 	});
 }
 
@@ -93,13 +121,13 @@ item.edit = function(table,id,values){
  * Remove a row
  *
  * @param {object} table
- * @param {string} id
+ * @param {int} id
  */
 item.remove = function(table,id){
 
 	api.delete(table.url,id,function(data){
 
-		item.handleAlert(table,data);
+		item.handleBasic(table,data);
 	});
 };
 
@@ -107,16 +135,15 @@ item.remove = function(table,id){
  * Copy a row
  *
  * @param {object} table
- * @param {string} id
+ * @param {int} id
  */
 item.copy = function(table,id){
 
 	api.copy(table.url,id,function(data){
 
-		item.handleAlert(table,data);
+		item.handleBasic(table,data);
 	});
 };
-
 
 /**
  * Update the list of all records
@@ -125,7 +152,7 @@ item.copy = function(table,id){
  */
 item.getListWithParams = function(table){
 
-	var container = $('[data-item-table-container='+table.name+']');
+	var container = item.getContainerByTable(table);
 
 	// Show and pages
 	var params = {}
@@ -146,245 +173,93 @@ item.getListWithParams = function(table){
 	item.getList(table,params);
 };
 
-item.addParamSearch = function(){
 
-};
 
 /**
- * Update the list of all records
+ * Handle get response
  *
  * @param {object} table
- * @param {array} params
+ * @param {array} response
  */
-item.getList = function(table,params = {}){
-		
-	//template.setBySource('spinner-table','item-row',{});
-
-	api.all(table.url,params,function(response){
-		var container = item.getContainerByTable(table);
-
-		if(response.status == 'success'){
-			var rows = '';
-
-			data = response.data;
-			results = data.results;
-			$.map(results,function(row){
-				row.table = table.name;
-				rows += template.get(table.template.row,row);
-			});
-
-			template.setByHtml(rows,table.template.row);
-
-			table.list.page = data.pagination.page;
-			table.list.pages = data.pagination.pages;
-			table.list.count = data.pagination.count;
-
-			// Update
-			container.find('[data-item-list-page]').html(data.pagination.page);
-			container.find('[data-item-list-pages]').html(data.pagination.pages);
-			container.find('[data-item-list-count]').html(data.pagination.count);
-			container.find('[data-item-list-start]').html(data.pagination.from);
-			container.find('[data-item-list-end]').html(data.pagination.to);
-
-			item.updateListPagination(table);
-
-		}
-
-		if(response.status == 'error'){
-			item.addAlert('alert-danger','alert-global',response);
-		}
-
-	});
+item.handleGet = function(table,response){
+	var container = item.getContainerByTable(table);
+	table.get.get(container,response.data.resource);
 };
 
-item.getTableByElement = function(el){
-	return item.getTable(el.attr('data-item-table'));
-};
+item.handleGetForEdit = function(table,response){
+	var container = item.getContainerByTable(table);
+	table.edit.get(container,response.data.resource);
+}
 
-item.getIdByElement = function(el){
-	return el.attr('data-item-id');
-};
-
-
-item.getContainerByTable = function(table){
-	return container = $('[data-item-table-container='+table.name+']');
-};
-
-item.updateListPagination = function(table){
+/**
+ * Handle list response
+ *
+ * @param {object} table
+ * @param {array} response
+ */
+item.handleList = function(table,response){
 
 	var container = item.getContainerByTable(table);
 
-	if(table.list.page == 1)
-		container.find('[data-item-list-prev]').addClass('disable');
-	else
-		container.find('[data-item-list-prev]').removeClass('disable');
-	
+	if(response.status == 'success'){
 
-	if(table.list.page == table.list.pages)
-		container.find('[data-item-list-next]').addClass('disable');
-	else
-		container.find('[data-item-list-next]').removeClass('disable');
-	
-};
+		var rows = '';
 
-item.listPrev = function(table){
-	if(table.list.page > 1){
-		table.list.page--;
-		item.getListWithParams(table);
-	}
+		// Get data response
+		var data = response.data;
 
-	item.updateListPagination(table);
+		// Get results data
+		var results = data.results;
 
-};
+		// Build the rows
+		$.map(results,function(row){
+			row.table = table.name;
+			rows += template.get(table.template.row,row);
+		});
 
-item.listNext = function(table){
-	if(table.list.page < table.list.pages){
-		table.list.page++;
-		item.getListWithParams(table);
-	}
+		template.setByHtml(rows,table.template.row);
 
-	item.updateListPagination(table);
-};
-
-
-/**
- * Update icon sort
- */
-item.updateIconSort = function(table,field,direction){
-	var container = $('[data-item-table-container='+table.name+']');
-	container.find('[data-item-sort-none]').removeClass('hide');
-	container.find('[data-item-sort-asc]').addClass('hide');
-	container.find('[data-item-sort-desc]').addClass('hide');
-
-	var sort = container.find('[data-item-sort-field='+field+']');
-	var sort_direction = direction == 'asc' ? '[data-item-sort-asc]' : '[data-item-sort-desc]';
-
-	sort.find('[data-item-sort-none]').addClass('hide');
-	sort.find(sort_direction).removeClass('hide');
-};
-
-item.getOppositeSort = function(sort){
-	return sort == 'asc' ? 'desc' : 'asc';
-};
-
-
-/** 
- * Update show result
- */
-$('[data-item-show]').on('change',function(){
-	var table = item.getTable($(this).attr('data-item-table'));
-	table.list.show = $(this).val();
-	item.getListWithParams(table);
-});
-
-/** 
- * Search
- */
-$('[data-item-search]').on('click',function(){
-	var table = item.getTable($(this).attr('data-item-table'));
-
-	var container = item.getContainerByTable(table);	
-	var values = table.search.action(container.find('.table-row-search').first(9));
-
-	table.search.data = values;
-
-	item.getListWithParams(table);
-});
-
-/**
- * Set event sort
- */
-$('body').on('click','[data-item-sort-field]',function(){
-
-	var table = item.getTable($(this).attr('data-item-table'));
-	var field = $(this).attr('data-item-sort-field');
-
-	var direction = 'asc';
-
-	if(table.list.sortByField == field){
-		direction = table.list.sortByDirection; 
-	}else{
+		table.list.page = data.pagination.page;
+		table.list.pages = data.pagination.pages;
+		table.list.count = data.pagination.count;
+		table.list.from = data.pagination.from;
+		table.list.to = data.pagination.to;
+		table.list.show = data.pagination.show;
+		item.updateListHTML(table);
 
 	}
 
-	direction = item.getOppositeSort(direction);
+	if(response.status == 'error'){
+		item.addAlert('alert-danger','alert-global',response);
+	}
 
-	table.list.sortByDirection = direction;
-	table.list.sortByField = field;
-
-	item.getListWithParams(table);
-
-	item.updateIconSort(table,field,direction);
-
-});
-
-$('body').on('click','[data-item-list-prev]',function(){
-	var table = item.getTable($(this).attr('data-item-table'));
-	item.listPrev(table);
-});
-
-$('body').on('click','[data-item-list-next]',function(){
-
-	var table = item.getTable($(this).attr('data-item-table'));
-	item.listNext(table);
-});
-
+}
 /**
- * Set event add
- */
-$('body').on('submit','[item-data-form-add]',function(e){
-
-	e.preventDefault();
-
-	var table = item.getTable(table = $(this).attr('data-item-table'));
-	var values = table.add.action($(this));
-
-	item.add(table,values);
-
-});
-
-/**
- * Set event remove
- */
-$('body').on('click','[data-item-remove]',function(){
-
-	var table = item.getTableByElement($(this));
-	var id = item.getIdByelement($(this));
-
-	item.remove(table,id);
-});
-
-/**
- * Set event copy
- */
-$('body').on('click','[data-item-copy]',function(){
-
-	var table = item.getTableByElement($(this));
-	var id = item.getIdByelement($(this));
-
-	item.copy(table,id);
-});
-
-/**
- * Set event edit
- */
-$('body').on('submit','[item-data-form-edit]',function(e){
-
-	e.preventDefault();
-
-	var table = item.getTableByElement($(this));
-	var id = item.getIdByelement($(this));
-	var values = table.edit.action($(this));
-
-	item.edit(table,id,values);
-
-});
-
-
-/**
- * Add Status
+ * Handle basic response
  *
- * @param {object} alert
+ * @param {object} table
+ * @param {array} response
+ * @param {string} container_modal
+ */
+item.handleBasic = function(table,response,container_modal){
+
+	if(response.status == 'success' || !container){
+		item.getListWithParams(table);
+		modal.closeActual();
+		item.addAlert('alert-success','alert-global',response);
+	}
+
+	if(response.status == 'error'){
+		item.addAlert('alert-danger',container_modal,response);
+	}
+};
+
+/**
+ * Add Alert
+ *
+ * @param {string} type
+ * @param {string} destination
+ * @param {array} data
  */
 item.addAlert = function(type,destination,data){
 
@@ -404,16 +279,134 @@ item.addAlert = function(type,destination,data){
 };
 
 /**
- * Remove Status
+ * Update HTML list
  *
- * @param {object} alert
+ * @param {object} table
  */
-item.removeAlert = function(alert){
+item.updateListHTML = function(table){
+
+	var container = item.getContainerByTable(table);
+
+	container.find('[data-item-list-page]').html(table.list.page);
+	container.find('[data-item-list-pages]').html(table.list.pages);
+	container.find('[data-item-list-count]').html(table.list.count);
+	container.find('[data-item-list-start]').html(table.list.from);
+	container.find('[data-item-list-end]').html(table.list.to);
+	container.find('[data-item-show]').val(table.list.show);
+
+	if(table.list.page == 1)
+		container.find('[data-item-list-prev]').addClass('disable');
+	else
+		container.find('[data-item-list-prev]').removeClass('disable');
+	
+
+	if(table.list.page == table.list.pages)
+		container.find('[data-item-list-next]').addClass('disable');
+	else
+		container.find('[data-item-list-next]').removeClass('disable');
 	
 };
 
+/**
+ * Go to prev page
+ *
+ * @param {object} table
+ */
+item.listPrev = function(table){
+	if(table.list.page > 1){
+		table.list.page--;
+		item.getListWithParams(table);
+	}
 
-item.getSelectedRecords = function(container){
+};
+
+/**
+ * Go to next page
+ *
+ * @param {object} table
+ */
+item.listNext = function(table){
+	if(table.list.page < table.list.pages){
+		table.list.page++;
+		item.getListWithParams(table);
+	}
+};
+
+/**
+ * Update icon sort
+ *
+ * @param {object} table
+ * @param {string} field
+ * @param {string} direction
+ */
+item.updateSortHTML = function(table,field,direction){
+	var container = item.getContainerByTable(table);
+
+	container.find('[data-item-sort-none]').removeClass('hide');
+	container.find('[data-item-sort-asc]').addClass('hide');
+	container.find('[data-item-sort-desc]').addClass('hide');
+
+	var sort = container.find('[data-item-sort-field='+field+']');
+	var sort_direction = direction == 'asc' ? '[data-item-sort-asc]' : '[data-item-sort-desc]';
+
+	sort.find('[data-item-sort-none]').addClass('hide');
+	sort.find(sort_direction).removeClass('hide');
+};
+
+/**
+ * Get opposite direction
+ *
+ * @param {string} sort
+ *
+ * @return {string}
+ */
+item.getOppositeSort = function(sort){
+	return sort == 'asc' ? 'desc' : 'asc';
+};
+
+/**
+ * Get table object by dom element
+ *
+ * @param {DOM} el
+ *
+ * @return {object}
+ */
+item.getTableByElement = function(el){
+	return item.getTable(el.attr('data-item-table'));
+};
+
+/**
+ * Get value of id by dom element
+ *
+ * @param {DOM} el
+ *
+ * @return {int}
+ */
+item.getIdByElement = function(el){
+	return el.attr('data-item-id');
+};
+
+/**
+ * Get DOM element container by table object
+ *
+ * @param {object} table
+ *
+ * @return {DOM}
+ */
+item.getContainerByTable = function(table){
+	return $('[data-item-table-container='+table.name+']');
+};
+
+
+/**
+ * Get IDs of records selected
+ *
+ * @param {object} table
+ *
+ * @return {array}
+ */
+item.getSelectedRecords = function(table){
+	var container = item.getContainerByTable(table);
 	var checkbox = container.find('[data-item-select]:checked');
 
 	var ids = [];
@@ -425,10 +418,123 @@ item.getSelectedRecords = function(container){
 }
 
 
+/** 
+ * Update show result
+ */
+$('[data-item-show]').on('change',function(){
+	var table = item.getTableByElement($(this));
+	table.list.show = $(this).val();
+	item.getListWithParams(table);
+});
+
+/** 
+ * Search
+ */
+$('[data-item-search]').on('click',function(){
+	var table = item.getTableByElement($(this));
+
+	var container = item.getContainerByTable(table);	
+	var values = table.search.action(container.find('.table-row-search').first(9));
+
+	table.search.data = values;
+
+	item.getListWithParams(table);
+});
+
+/**
+ * Set event sort
+ */
+$('body').on('click','[data-item-sort-field]',function(){
+
+	var table = item.getTableByElement($(this));
+	var field = $(this).attr('data-item-sort-field');
+
+	var direction = 'asc';
+
+	if(table.list.sortByField == field){
+		direction = table.list.sortByDirection; 
+	}else{
+
+	}
+
+	direction = item.getOppositeSort(direction);
+
+	table.list.sortByDirection = direction;
+	table.list.sortByField = field;
+
+	item.getListWithParams(table);
+
+	item.updateSortHTML(table,field,direction);
+
+});
+
+$('body').on('click','[data-item-list-prev]',function(){
+	var table = item.getTableByElement($(this));
+	item.listPrev(table);
+});
+
+$('body').on('click','[data-item-list-next]',function(){
+
+	var table = item.getTableByElement($(this));
+	item.listNext(table);
+});
+
+/**
+ * Set event add
+ */
+$('body').on('submit','[item-data-form-add]',function(e){
+
+	e.preventDefault();
+
+	var table = item.getTableByElement($(this));
+	var values = table.add.action($(this));
+
+	item.add(table,values);
+
+});
+
+/**
+ * Set event remove
+ */
+$('body').on('click','[data-item-remove]',function(){
+
+	var table = item.getTableByElement($(this));
+	var id = item.getIdByElement($(this));
+
+	item.remove(table,id);
+});
+
+/**
+ * Set event copy
+ */
+$('body').on('click','[data-item-copy]',function(){
+
+	var table = item.getTableByElement($(this));
+	var id = item.getIdByElement($(this));
+
+	item.copy(table,id);
+});
+
+/**
+ * Set event edit
+ */
+$('body').on('submit','[item-data-form-edit]',function(e){
+
+	e.preventDefault();
+
+	var table = item.getTableByElement($(this));
+	var id = item.getIdByElement($(this));
+	var values = table.edit.action($(this));
+
+	item.edit(table,id,values);
+
+});
+
+
 $('body').on('click','[data-item-select-all]',function(){
 	var table = item.getTable($(this).attr('data-item-table'));
 
-	var container = $('[data-item-table-container='+table.name+']');
+	var container = item.getContainerByTable(table);
 	
 	container.find('[data-item-select]').prop('checked', $(this).prop('checked'));
 
@@ -442,8 +548,7 @@ $('body').on('click','[data-item-multiple-delete]',function(){
 
 	var table = item.getTable($(this).attr('data-item-table'));
 	var container = item.getContainerByTable(table);
-	var ids = item.getSelectedRecords(container);
-	console.log(ids);
+	var ids = item.getSelectedRecords(table);
 	$.map(ids,function(id){
 		item.remove(table,id);
 	});
@@ -457,11 +562,7 @@ modal.addDataTo('modal-item-edit',function(container,data){
 	el.attr('data-item-table',data['data-modal-item-table']);
 	el.attr('data-item-id',id);
 
-	http.get(table.get.url+"/"+id,{filter:'edit'},function(data){
-		
-		table.edit.get(container,data.data.resource);
-
-	});
+	item.getForEdit(table,id);
 });
 
 

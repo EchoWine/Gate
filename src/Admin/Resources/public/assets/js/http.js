@@ -12,7 +12,7 @@ var http = {};
  * @param {function} callback
  */
 http.ajax = function(type,url,params = {},callback){
-	
+
 	console.log('Call to: '+url+'');
 	console.log(params);
 
@@ -21,10 +21,9 @@ http.ajax = function(type,url,params = {},callback){
 		url: url, 
 		data : params,
 		contentType: "application/x-www-form-urlencoded; charsetBySource=UTF-8",
-		success: function(data) {
-
-		console.log(data);
-			callback(data);
+		success: function(response) {
+			console.log(response);
+			callback(response);
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('Error during call: '+url);

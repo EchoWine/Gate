@@ -225,6 +225,7 @@ class Pagination{
 	public function toArray(){
 		return [
 			'count' => $this -> getCount(),
+			'show' => $this -> getShow(),
 			'page' => $this -> getPage(),
 			'pages' => $this -> getPages(),
 			'from' => $this -> getFrom(),

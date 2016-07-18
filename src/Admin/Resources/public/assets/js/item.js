@@ -35,11 +35,88 @@ item.addTable = function(table){
  * Get a table
  *
  * @param {string} name
- * @return{object}
+ *
+ * @return {object}
  */
 item.getTable = function(name){
 	return item.tables[name];
 };
+
+item.handleAlert = function(table,data,container_modal){
+
+	if(data.status == 'success' || !container){
+		item.getListWithParams(table);
+		modal.closeActual();
+		item.addAlert('alert-success','alert-global',data);
+	}
+
+	if(data.status == 'error'){
+		item.addAlert('alert-danger',container_modal,data);
+	}
+};
+
+
+/**
+ * Get
+ */
+item.get = function(table,id){
+
+	api.get(table.url,id,function(data){
+
+		table.get.get(container,data.data.resource);
+	});
+}
+
+/** 
+ * Add a row
+ */
+item.add = function(table,values){
+
+	api.add(table.url,values,function(data){
+
+		item.handleAlert(table,data,'alert-modal-add');
+	});
+}
+
+/** 
+ * Edit a row
+ */
+item.edit = function(table,id,values){
+
+	api.edit(table.url,id,values,function(data){
+
+		item.handleAlert(table,data,'alert-modal-edit');
+	});
+}
+
+/**
+ * Remove a row
+ *
+ * @param {object} table
+ * @param {string} id
+ */
+item.remove = function(table,id){
+
+	api.delete(table.url,id,function(data){
+
+		item.handleAlert(table,data);
+	});
+};
+
+/**
+ * Copy a row
+ *
+ * @param {object} table
+ * @param {string} id
+ */
+item.copy = function(table,id){
+
+	api.copy(table.url,id,function(data){
+
+		item.handleAlert(table,data);
+	});
+};
+
 
 /**
  * Update the list of all records
@@ -69,29 +146,6 @@ item.getListWithParams = function(table){
 	item.getList(table,params);
 };
 
-/** 
- * Update show result
- */
-$('[data-item-show]').on('change',function(){
-	var table = item.getTable($(this).attr('data-item-table'));
-	table.list.show = $(this).val();
-	item.getListWithParams(table);
-});
-
-/** 
- * Search
- */
-$('[data-item-search]').on('click',function(){
-	var table = item.getTable($(this).attr('data-item-table'));
-
-	var container = item.getContainerByTable(table);	
-	var values = table.search.action(container.find('.table-row-search').first(9));
-
-	table.search.data = values;
-
-	item.getListWithParams(table);
-});
-
 item.addParamSearch = function(){
 
 };
@@ -106,7 +160,7 @@ item.getList = function(table,params = {}){
 		
 	//template.setBySource('spinner-table','item-row',{});
 
-	http.get(table.list.url,params,function(response){
+	api.all(table.url,params,function(response){
 		var container = item.getContainerByTable(table);
 
 		if(response.status == 'success'){
@@ -142,6 +196,15 @@ item.getList = function(table,params = {}){
 
 	});
 };
+
+item.getTableByElement = function(el){
+	return item.getTable(el.attr('data-item-table'));
+};
+
+item.getIdByElement = function(el){
+	return el.attr('data-item-id');
+};
+
 
 item.getContainerByTable = function(table){
 	return container = $('[data-item-table-container='+table.name+']');
@@ -183,87 +246,50 @@ item.listNext = function(table){
 	item.updateListPagination(table);
 };
 
-/** 
- * Add a row
- */
-item.add = function(table,values){
-
-	http.post(table.add.url,values,function(data){
-
-		if(data.status == 'success'){
-			item.getListWithParams(table);
-			modal.closeActual();
-			item.addAlert('alert-success','alert-global',data);
-		}
-
-		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-modal-add',data);
-		}
-	});
-}
-
-/** 
- * Edit a row
- */
-item.edit = function(table,id,values){
-
-	http.put(table.edit.url+"/"+id,values,function(data){
-
-		if(data.status == 'success'){
-			item.getListWithParams(table);
-			modal.closeActual();
-			item.addAlert('alert-success','alert-global',data);
-		}
-
-		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-modal-edit',data);
-		}
-	});
-}
 
 /**
- * Remove a row
- *
- * @param {object} table
- * @param {string} id
+ * Update icon sort
  */
-item.remove = function(table,id){
+item.updateIconSort = function(table,field,direction){
+	var container = $('[data-item-table-container='+table.name+']');
+	container.find('[data-item-sort-none]').removeClass('hide');
+	container.find('[data-item-sort-asc]').addClass('hide');
+	container.find('[data-item-sort-desc]').addClass('hide');
 
-	http.delete(table.delete.url+"/"+id,{},function(data){
+	var sort = container.find('[data-item-sort-field='+field+']');
+	var sort_direction = direction == 'asc' ? '[data-item-sort-asc]' : '[data-item-sort-desc]';
 
-		if(data.status == 'success'){
-			item.getListWithParams(table);
-			modal.closeActual();
-			item.addAlert('alert-success','alert-global',data);
-		}
-
-		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-global',data);
-		}
-	});
+	sort.find('[data-item-sort-none]').addClass('hide');
+	sort.find(sort_direction).removeClass('hide');
 };
 
-/**
- * Copy a row
- *
- * @param {object} table
- * @param {string} id
- */
-item.copy = function(table,id){
-
-	http.post(table.copy.url+"/"+id,{},function(data){
-
-		if(data.status == 'success'){
-			item.getListWithParams(table);
-			modal.closeActual();
-			item.addAlert('alert-success','alert-global',data);
-		}
-
-		if(data.status == 'error'){
-			item.addAlert('alert-danger','alert-global',data);
-		}
-	});
+item.getOppositeSort = function(sort){
+	return sort == 'asc' ? 'desc' : 'asc';
 };
+
+
+/** 
+ * Update show result
+ */
+$('[data-item-show]').on('change',function(){
+	var table = item.getTable($(this).attr('data-item-table'));
+	table.list.show = $(this).val();
+	item.getListWithParams(table);
+});
+
+/** 
+ * Search
+ */
+$('[data-item-search]').on('click',function(){
+	var table = item.getTable($(this).attr('data-item-table'));
+
+	var container = item.getContainerByTable(table);	
+	var values = table.search.action(container.find('.table-row-search').first(9));
+
+	table.search.data = values;
+
+	item.getListWithParams(table);
+});
 
 /**
  * Set event sort
@@ -304,26 +330,6 @@ $('body').on('click','[data-item-list-next]',function(){
 });
 
 /**
- * Update icon sort
- */
-item.updateIconSort = function(table,field,direction){
-	var container = $('[data-item-table-container='+table.name+']');
-	container.find('[data-item-sort-none]').removeClass('hide');
-	container.find('[data-item-sort-asc]').addClass('hide');
-	container.find('[data-item-sort-desc]').addClass('hide');
-
-	var sort = container.find('[data-item-sort-field='+field+']');
-	var sort_direction = direction == 'asc' ? '[data-item-sort-asc]' : '[data-item-sort-desc]';
-
-	sort.find('[data-item-sort-none]').addClass('hide');
-	sort.find(sort_direction).removeClass('hide');
-};
-
-item.getOppositeSort = function(sort){
-	return sort == 'asc' ? 'desc' : 'asc';
-};
-
-/**
  * Set event add
  */
 $('body').on('submit','[item-data-form-add]',function(e){
@@ -342,8 +348,8 @@ $('body').on('submit','[item-data-form-add]',function(e){
  */
 $('body').on('click','[data-item-remove]',function(){
 
-	var table = item.getTable($(this).attr('data-item-table'));
-	var id = $(this).attr('data-item-id');
+	var table = item.getTableByElement($(this));
+	var id = item.getIdByelement($(this));
 
 	item.remove(table,id);
 });
@@ -353,8 +359,8 @@ $('body').on('click','[data-item-remove]',function(){
  */
 $('body').on('click','[data-item-copy]',function(){
 
-	var table = item.getTable($(this).attr('data-item-table'));
-	var id = $(this).attr('data-item-id');
+	var table = item.getTableByElement($(this));
+	var id = item.getIdByelement($(this));
 
 	item.copy(table,id);
 });
@@ -366,41 +372,14 @@ $('body').on('submit','[item-data-form-edit]',function(e){
 
 	e.preventDefault();
 
-	var table = item.getTable($(this).attr('data-item-table'));
-	var id = $(this).attr('data-item-id');
+	var table = item.getTableByElement($(this));
+	var id = item.getIdByelement($(this));
 	var values = table.edit.action($(this));
 
 	item.edit(table,id,values);
 
 });
 
-modal.addDataTo('modal-item-edit',function(container,data){
-	var el = container.find('[item-data-form-edit]');
-	var id = data['data-modal-item-id'];
-
-	el.attr('data-item-table',data['data-modal-item-table']);
-	el.attr('data-item-id',id);
-
-	http.get(table.get.url+"/"+id,{filter:'edit'},function(data){
-		
-		table.edit.get(container,data.data.resource);
-
-	});
-});
-
-
-modal.addDataTo('modal-item-get',function(container,data){
-	var el = container.find('[item-data-form-get]');
-	var id = data['data-modal-item-id'];
-
-	el.attr('data-item-table',data['data-modal-item-table']);
-	el.attr('data-item-id',id);
-
-	http.get(table.get.url+"/"+id,{filter:'get'},function(data){
-		table.get.get(container,data.data.resource);
-
-	});
-});
 
 /**
  * Add Status
@@ -434,6 +413,69 @@ item.removeAlert = function(alert){
 };
 
 
+item.getSelectedRecords = function(container){
+	var checkbox = container.find('[data-item-select]:checked');
+
+	var ids = [];
+	$.map(checkbox,function(value){
+		ids.push($(value).attr('data-item-id'));
+	});
+
+	return ids;
+}
+
+
+$('body').on('click','[data-item-select-all]',function(){
+	var table = item.getTable($(this).attr('data-item-table'));
+
+	var container = $('[data-item-table-container='+table.name+']');
+	
+	container.find('[data-item-select]').prop('checked', $(this).prop('checked'));
+
+});
+
+
+/**
+ * Set event delete multiple
+ */
+$('body').on('click','[data-item-multiple-delete]',function(){
+
+	var table = item.getTable($(this).attr('data-item-table'));
+	var container = item.getContainerByTable(table);
+	var ids = item.getSelectedRecords(container);
+	console.log(ids);
+	$.map(ids,function(id){
+		item.remove(table,id);
+	});
+});
+
+
+modal.addDataTo('modal-item-edit',function(container,data){
+	var el = container.find('[item-data-form-edit]');
+	var id = data['data-modal-item-id'];
+
+	el.attr('data-item-table',data['data-modal-item-table']);
+	el.attr('data-item-id',id);
+
+	http.get(table.get.url+"/"+id,{filter:'edit'},function(data){
+		
+		table.edit.get(container,data.data.resource);
+
+	});
+});
+
+
+modal.addDataTo('modal-item-get',function(container,data){
+	var el = container.find('[item-data-form-get]');
+	var id = data['data-modal-item-id'];
+
+	el.attr('data-item-table',data['data-modal-item-table']);
+	el.attr('data-item-id',id);
+
+	item.get(table,id);
+});
+
+
 /**
  * Data in modal delete
  */
@@ -451,45 +493,10 @@ modal.addDataTo('modal-item-add',function(el,data){
 	el.attr('data-item-table',data['data-modal-item-table']);
 });
 
+
 /**
  * Initialize
  */
 $(document).ready(function(){
 	item.ini();
-});
-
-
-$('body').on('click','[data-item-select-all]',function(){
-	var table = item.getTable($(this).attr('data-item-table'));
-
-	var container = $('[data-item-table-container='+table.name+']');
-	
-	container.find('[data-item-select]').prop('checked', $(this).prop('checked'));
-
-});
-
-
-item.getSelectedRecords = function(container){
-	var checkbox = container.find('[data-item-select]:checked');
-
-	var ids = [];
-	$.map(checkbox,function(value){
-		ids.push($(value).attr('data-item-id'));
-	});
-
-	return ids;
-}
-
-/**
- * Set event delete multiple
- */
-$('body').on('click','[data-item-multiple-delete]',function(){
-
-	var table = item.getTable($(this).attr('data-item-table'));
-	var container = item.getContainerByTable(table);
-	var ids = item.getSelectedRecords(container);
-	console.log(ids);
-	$.map(ids,function(id){
-		item.remove(table,id);
-	});
 });

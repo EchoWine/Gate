@@ -317,15 +317,14 @@
 	<script>
 		item.addTable({
 			name:'{{$table}}',
+			url:'{{$api}}',
 			list:{
-				url:'{{$api}}',
 				sort_by_field:'{{$sort_by_field}}',
 				sort_by_direction:'{{$sort_by_direction}}',
 				show:10,
 				page:1
 			},
 			get:{
-				url:'{{$api}}',
 				get: function(container,data){
 					{{for $fields_get as $field}}
 						container.find('[data-name={{$field -> getName()}}]').html(data['{{$field -> getName()}}']);
@@ -333,7 +332,6 @@
 				},
 			},
 			add:{
-				url:'{{$api}}',
 				form: '#item-data-form-add',
 				action: function(form){
 					var values = {};
@@ -345,14 +343,12 @@
 				}
 			},
 			delete:{
-				url:'{{$api}}',
 				form: '#item-data-form-add',
 			},
 			copy:{
-				url:'{{$api}}',
+
 			},
 			edit:{
-				url:'{{$api}}',
 				get: function(container,data){
 					{{for $fields_edit as $field}}
 						container.find('[name={{$field -> getName()}}]').val(data['{{$field -> getName()}}']);

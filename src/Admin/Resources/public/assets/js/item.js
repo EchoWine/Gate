@@ -561,7 +561,7 @@ $('body').on('click','[data-item-multiple-delete]',function(){
 	});
 });
 
-modal.addDataTo('modal-item-edit',function(container,data){
+modal.on('modal-item-edit',function(container,data){
 	var el = container.find('[item-data-form-edit]');
 	var id = data['data-modal-item-id'];
 
@@ -572,7 +572,7 @@ modal.addDataTo('modal-item-edit',function(container,data){
 });
 
 
-modal.addDataTo('modal-item-get',function(container,data){
+modal.on('modal-item-get',function(container,data){
 	var el = container.find('[item-data-form-get]');
 	var id = data['data-modal-item-id'];
 
@@ -586,7 +586,7 @@ modal.addDataTo('modal-item-get',function(container,data){
 /**
  * Data in modal delete
  */
-modal.addDataTo('modal-item-delete',function(el,data){
+modal.on('modal-item-delete',function(el,data){
 	var del = el.find('[data-item-remove]');
 	del.attr('data-item-table',data['data-modal-item-table']);
 	del.attr('data-item-id',data['data-modal-item-id']);
@@ -595,7 +595,7 @@ modal.addDataTo('modal-item-delete',function(el,data){
 /**
  * Data in modal add
  */
-modal.addDataTo('modal-item-add',function(el,data){
+modal.on('modal-item-add',function(el,data){
 	var el = el.find('[item-data-form-add]');
 	el.attr('data-item-table',data['data-modal-item-table']);
 });

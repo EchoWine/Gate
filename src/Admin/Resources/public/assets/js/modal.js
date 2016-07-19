@@ -41,7 +41,7 @@ modal.open = function(id,data){
  * @param {string} id
  * @param {object} el
  */
-modal.addDataTo = function(id,callback){
+modal.on = function(id,callback){
 	modal.filterData[id] = callback;
 };
 

@@ -593,6 +593,17 @@ modal.on('modal-item-delete',function(el,data){
 });
 
 /**
+ * Data in modal delete multiple
+ */
+modal.on('modal-item-delete-multiple',function(el,data){
+	var del = el.find('[data-item-multiple-delete]');
+	var table = item.getTable(data['data-modal-item-table']);
+	var ids = item.getSelectedRecords(table);
+	el.find('.data-modal-item-ids').html(ids.join(","));
+	del.attr('data-item-table',data['data-modal-item-table']);
+});
+
+/**
  * Data in modal add
  */
 modal.on('modal-item-add',function(el,data){

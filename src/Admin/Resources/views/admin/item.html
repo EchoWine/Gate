@@ -1,7 +1,6 @@
 {{extends Admin/admin/layout}}
 
 {{block page-content}}
-	<div data-item-table-container='{{$table}}'>
 	<div class='templates' data-template='spinner-table'>
 
 		<div class='table-row'>
@@ -119,6 +118,30 @@
 	{{/includes}}
 
 
+	<!-- MODAL DELETE MULTIPLE CONFIRM -->
+	{{includes Admin/admin/__modal modal-delete-multiple}}
+		{{block __class}}modal-body-small{{/block}}
+		{{block id}}modal-item-delete-multiple{{/block}}
+		{{block title}}Are you sure?{{/block}}
+		{{block content}}
+			<form method='POST'>
+				<div>The items <span class='data-modal-item-ids'></span> will be deleted</div>
+				<div class='item-form-actions'>
+
+					<button type='button' class='button-action button-primary' data-item-multiple-delete data-item-table='{table}'>
+						<i class='fa fa-check'></i>
+						<span>Yes</span>
+					</button>
+					<button type='button' class='button-action button-danger modal-close'>
+						<i class='fa fa-remove'></i>
+						<span>No</span>
+					</button>
+				</div>
+			</form>
+		{{/block}}
+	{{/includes}}
+
+
 	<!-- ROW TEMPLATE -->
 	<div class='templates' data-template='item-row'>
 		<div class='table-row table-header'>
@@ -160,7 +183,7 @@
 		<div data-use-template='alert-global'></div>
 	</div>
 
-	<div class='page-row'>
+	<div class='page-row' data-item-table-container='{{$table}}'>
 		<div class='page-section page-section-content'>
 
 
@@ -196,7 +219,7 @@
 			<div class='section-pagination flex-center'>
 				<div>If selected: &nbsp;</div>
 
-				<button type='button' class='button-action button-danger'  data-item-table='{{$table}}' data-item-multiple-delete>
+				<button type='button' class='button-action button-danger' data-modal='modal-item-delete-multiple' data-modal-item-table='{{$table}}'>
 					<i class='fa fa-trash'></i>
 					<span>Delete</span>
 				</button>
@@ -310,7 +333,6 @@
 			</div>
 		</div>
 	</div>
-	</div>
 {{/block}}
 
 {{block scripts}}
@@ -328,7 +350,7 @@
 			get:{
 				get: function(container,data){
 					{{for $fields_get as $field}}
-						container.find('[data-name={{$field -> getName()}}]').html(data['{{$field -> getName()}}']);
+						$('#modal-item-get').find('[data-name={{$field -> getName()}}]').html(data['{{$field -> getName()}}']);
 					{{/for}}
 				},
 			},
@@ -352,7 +374,7 @@
 			edit:{
 				get: function(container,data){
 					{{for $fields_edit as $field}}
-						container.find('[name={{$field -> getName()}}]').val(data['{{$field -> getName()}}']);
+						$('#modal-item-edit').find('[name={{$field -> getName()}}]').val(data['{{$field -> getName()}}']);
 					{{/for}}
 				},
 				action: function(form){

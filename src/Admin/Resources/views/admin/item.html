@@ -329,7 +329,6 @@
 				get: function(container,data){
 					{{for $fields_get as $field}}
 						container.find('[data-name={{$field -> getName()}}]').html(data['{{$field -> getName()}}']);
-						console.log(container.find('[data-name={{$field -> getName()}}]'));
 					{{/for}}
 				},
 			},

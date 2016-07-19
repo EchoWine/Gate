@@ -1,6 +1,7 @@
 {{extends Admin/admin/layout}}
 
 {{block page-content}}
+
 	<div class='templates' data-template='spinner-table'>
 
 		<div class='table-row'>
@@ -27,158 +28,14 @@
 	</div>
 
 
-	<!-- MODAL ADD -->
-	{{includes Admin/admin/__modal modal-add}}
-		{{block __class}}{{/block}}
-		{{block id}}modal-item-add{{/block}}
-		{{block title}}Add new row{{/block}}
-		{{block content}}
-			<div data-use-template='alert-modal-add'></div>
-			<form method='POST' item-data-form-add  data-item-table='{table}'>
-				{{for $fields_add as $field}}
-					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
-					<div class='item-form-input'>{{include Admin/admin/field ['field' => $field,'extra_class' => 'item-form-element']}}</div>
-				{{/for}}
+	{{include Admin/admin/tmpl/row ['fields' => $fields_all]}}
 
-				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
-			</form>
-		{{/block}}
-	{{/includes}}
+	{{include Admin/admin/modal/add ['fields' => $fields_add]}}
+	{{include Admin/admin/modal/get ['fields' => $fields_get]}}
+	{{include Admin/admin/modal/edit ['fields' => $fields_edit]}}
+	{{include Admin/admin/modal/delete}}
+	{{include Admin/admin/modal/delete_multiple}}
 
-
-	<!-- MODAL VIEW -->
-	{{includes Admin/admin/__modal modal-get}}
-		{{block __class}}{{/block}}
-		{{block id}}modal-item-get{{/block}}
-		{{block title}}View{{/block}}
-		{{block content}}
-
-			{{for $fields_get as $field}}
-				<div class='item-form-label'>{{$field -> getLabel()}}</div>
-				<div class='item-form-input'><span data-name='{{$field -> getName()}}'></span></div>
-			{{/for}}
-
-			<div class='item-form-actions'>
-				
-				{# Edit Button #}
-				<button type='button' class='button-action button-warning' data-modal='modal-item-edit' data-modal-item-id='{id}' data-modal-item-table='{table}'>
-					<i class='fa fa-pencil'></i>
-					<span>Edit</span>
-				</button>
-
-				{# Delete Button #}
-				<button type='button' class='button-action button-danger' data-modal='modal-item-delete' data-modal-item-id='{id}' data-modal-item-table='{table}'>
-					<i class='fa fa-trash'></i>
-					<span>Delete</span>
-				</button>
-			</div>
-
-		{{/block}}
-	{{/includes}}
-
-	<!-- MODAL EDIT -->
-	{{includes Admin/admin/__modal modal-edit}}
-		{{block __class}}{{/block}}
-		{{block id}}modal-item-edit{{/block}}
-		{{block title}}Edit{{/block}}
-		{{block content}}
-			<div data-use-template='alert-modal-edit'></div>
-			<form method='POST' item-data-form-edit data-item-table='{table}' data-item-id='{id}'>
-				{{for $fields_edit as $field}}
-					<div class='item-form-label'>{{$field -> getLabel()}}:</div>
-					<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getName()}}'></div>
-				{{/for}}
-
-				<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Apply changes</button></div>
-			</form>
-		{{/block}}
-	{{/includes}}
-
-
-	<!-- MODAL DELETE CONFIRM -->
-	{{includes Admin/admin/__modal modal-delete}}
-		{{block __class}}modal-body-small{{/block}}
-		{{block id}}modal-item-delete{{/block}}
-		{{block title}}Are you sure?{{/block}}
-		{{block content}}
-			<form method='POST'>
-				<div>The item #<span class='data-modal-item-id'></span> will be deleted</div>
-				<div class='item-form-actions'>
-					<button type='button' class='button-action button-primary' data-item-remove data-item-id='{id}' data-item-table='{table}'>
-						<i class='fa fa-check'></i>
-						<span>Yes</span>
-					</button>
-					<button type='button' class='button-action button-danger modal-close'>
-						<i class='fa fa-remove'></i>
-						<span>No</span>
-					</button>
-				</div>
-			</form>
-		{{/block}}
-	{{/includes}}
-
-
-	<!-- MODAL DELETE MULTIPLE CONFIRM -->
-	{{includes Admin/admin/__modal modal-delete-multiple}}
-		{{block __class}}modal-body-small{{/block}}
-		{{block id}}modal-item-delete-multiple{{/block}}
-		{{block title}}Are you sure?{{/block}}
-		{{block content}}
-			<form method='POST'>
-				<div>The items <span class='data-modal-item-ids'></span> will be deleted</div>
-				<div class='item-form-actions'>
-
-					<button type='button' class='button-action button-primary' data-item-multiple-delete data-item-table='{table}'>
-						<i class='fa fa-check'></i>
-						<span>Yes</span>
-					</button>
-					<button type='button' class='button-action button-danger modal-close'>
-						<i class='fa fa-remove'></i>
-						<span>No</span>
-					</button>
-				</div>
-			</form>
-		{{/block}}
-	{{/includes}}
-
-
-	<!-- ROW TEMPLATE -->
-	<div class='templates' data-template='item-row'>
-		<div class='table-row table-header'>
-			<div class='table-col-select table-col'>
-				<input type='checkbox' id='select-{table}-{id}' class='check check-data check-small' data-item-select data-item-id='{id}' data-item-table='{table}'>
-				<label for='select-{table}-{id}' class='checkbox'></label>
-			</div>
-			{{for $fields_all as $field}}
-				<div class='table-col {# {{if $field -> isClassNumber() }}table-col-number{{/if}} #}'>
-					<span class='table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
-				</div>
-			{{/for}}
-			<div class='table-col table-col-action'>
-
-				{# View Button #}
-				<button type='button' class='button-action button-action-icon button-info' data-modal='modal-item-get' data-modal-item-id='{id}' data-modal-item-table='{table}'>
-					<i class="fa fa-file-text"></i>
-				</button>
-
-				{# Copy Button #}
-				<button type='button' class='button-action button-action-icon button-primary' data-item-copy data-item-id='{id}' data-item-table='{table}'>
-					<i class="fa fa-copy"></i>
-				</button>
-
-				{# Edit Button #}
-				<button type='button' class='button-action button-action-icon button-warning' data-modal='modal-item-edit' data-modal-item-id='{id}' data-modal-item-table='{table}'>
-					<i class='fa fa-pencil'></i>
-				</button>
-					
-				{# Delete Button #}
-				<button type='button' class='button-action button-action-icon button-danger' data-modal='modal-item-delete' data-modal-item-id='{id}' data-modal-item-table='{table}'>
-					<i class='fa fa-trash'></i>
-				</button>
-			</div>
-
-		</div>
-	</div>
 	<div class='page-section'>
 		<div data-use-template='alert-global'></div>
 	</div>
@@ -247,62 +104,8 @@
 
 			<div class='table'>
 
-				<div class='table-row table-header'>
-
-					{# Head #}
-
-					<div class='table-col-select table-col table-col-head'>
-							
-						<input type='checkbox' id='select-all-{table}' class='check check-data check-small' data-item-select-all data-item-table='{{$table}}'>
-						<label for='select-all-{table}' class='checkbox'></label>
-
-					</div>
-					{{for $fields_all as $field}}
-						{{if $field -> isSort()}}
-							<div class='table-col table-col-head table-col-sort {# {{if $field -> isClassNumber() }}table-col-number{{/if}} #}' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
-								<div class='table-col-text noselect'>
-									<span>{{$field -> getLabel()}}</span>
-
-									<i class='fa fa-sort' data-item-sort-none></i>
-									<i class='fa fa-sort-asc hide' data-item-sort-asc></i>
-									<i class='fa fa-sort-desc hide' data-item-sort-desc></i>
-								</div>
-							</div>
-						{{else}}
-
-							<div class='table-col table-col-head'>
-								<div class='table-col-text'>
-									<span>{{$field -> getLabel()}}</span>
-								</div>
-							</div>
-						{{/if}}
-					{{/for}}
-					<div class='table-col table-col-action'>
-						<div class='table-col-text'>
-							<span>Action</span>
-						</div>
-					</div>
-
-				</div>
-
-				{# Search #}
-
-				<div class='table-row table-header table-row-search'>
-					<div class='table-col-select table-col table-col-head'></div>
-					{{for $fields_search as $field}}
-
-						<div class='table-col table-col-head table-col-search'>
-							<input type='text' class='input-data' name='{{$field -> getName()}}'>
-						</div>
-
-					{{/for}}
-					<div class='table-col table-col-action'>
-						<button type='button' class='button-action button-action-icon button-primary' data-item-search data-item-table='{{$table}}'>
-							<i class='fa fa-search'></i>
-						</button>
-					</div>
-				</div>
-
+				{{include Admin/admin/structure/table/head ['table' => $table,'fields' => $fields_all]}}
+				{{include Admin/admin/structure/table/search ['table' => $table,'fields' => $fields_search]}}
 
 				<div data-use-template='item-row'>
 					<div class='table-row'>

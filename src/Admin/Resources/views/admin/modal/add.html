@@ -1,0 +1,16 @@
+{{includes Admin/admin/__modal modal-add}}
+	{{block __class}}{{/block}}
+	{{block id}}modal-item-add{{/block}}
+	{{block title}}Add new row{{/block}}
+	{{block content}}
+		<div data-use-template='alert-modal-add'></div>
+		<form method='POST' item-data-form-add  data-item-table='{table}'>
+			{{for $fields as $field}}
+				<div class='item-form-label'>{{$field -> getLabel()}}:</div>
+				<div class='item-form-input'>{{include Admin/admin/field ['field' => $field,'extra_class' => 'item-form-element']}}</div>
+			{{/for}}
+
+			<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Add</button></div>
+		</form>
+	{{/block}}
+{{/includes}}

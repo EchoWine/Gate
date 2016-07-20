@@ -192,7 +192,7 @@ class Router{
 	 * Call all middleware
 	 */
 	private static function middleware(){
-		foreach(self::$route -> middleware as $middleware){
+		foreach((array)self::$route -> middleware as $middleware){
 
 			$middleware = new $middleware();
 

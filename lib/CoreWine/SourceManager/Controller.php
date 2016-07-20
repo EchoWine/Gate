@@ -50,7 +50,6 @@ class Controller{
 	 * @return Route
 	 */
 	public function route($method = null){
-
 		if($method !== null){
 			return Router::any() -> callback(function() use($method){
 				if(!method_exists($this,$method)){

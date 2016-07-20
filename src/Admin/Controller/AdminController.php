@@ -11,13 +11,6 @@ use Api\Controller;
 abstract class AdminController extends Controller{
 
 	/**
-	 * Middleware
-	 *
-	 * @var Array
-	 */
-	public $middleware = ['Admin\Middleware\Authenticate'];
-
-	/**
 	 * Prefix url
 	 *
 	 * @var string
@@ -85,7 +78,8 @@ abstract class AdminController extends Controller{
 		$page = $this -> url;
 		$this -> route('index')
 		-> url("/".AdminController::PREFIX_URL.$page)
-		-> as(AdminController::PREFIX_ROUTE.$page);
+		-> as(AdminController::PREFIX_ROUTE.$page)
+		-> middleware('Admin\Middleware\Authenticate');
 
 	}
 

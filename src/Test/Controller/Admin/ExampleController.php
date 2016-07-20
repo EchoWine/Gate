@@ -5,7 +5,7 @@ namespace Test\Controller\Admin;
 use Admin\Controller\AdminController as BasicController;
 
 
-class AdminController extends BasicController{
+class ExampleController extends BasicController{
 
 	/**
 	 * ORM\Model

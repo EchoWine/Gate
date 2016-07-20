@@ -1,11 +1,11 @@
 <?php
 
 namespace CoreWine\Exceptions;
-use Exception;
+
 use CoreWine\TemplateEngine\Engine;
 
-use CoreWine\Exceptions\FatalException;
-use CoreWine\Exceptions\ErrorException;
+use Exception;
+use FatalErrorException;
 
 class Handler{
 
@@ -17,16 +17,33 @@ class Handler{
 	}
 
 	public function register(){
-
 		set_exception_handler([$this,'report']);
 		//ini_set( "display_errors", "off" );
 		error_reporting( E_ALL );
 		set_error_handler([$this,'error']);
+		register_shutdown_function([$this,'fatal_handler']);
 
 	}
 
+	public function fatal_handler(){
+		$errfile = "unknown file";
+		$errstr  = "shutdown";
+		$errno   = E_CORE_ERROR;
+		$errline = 0;
+
+		$error = error_get_last();
+
+		if( $error !== NULL) {
+			$errno   = $error["type"];
+			$errfile = $error["file"];
+			$errline = $error["line"];
+			$errstr  = $error["message"];
+			$this -> error($errno,$errstr,$errfile,$errline);
+		}
+	}
+
 	public function error($errno, $errstr, $errfile, $errline){
-		throw new FatalException($errstr, '', $errno, $errfile, $errline);
+		throw new FatalErrorException($errstr, '', $errno, $errfile, $errline);
 	}
 
 

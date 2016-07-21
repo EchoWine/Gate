@@ -4,9 +4,6 @@ namespace CoreWine\Exceptions;
 
 use CoreWine\TemplateEngine\Engine;
 
-use Exception;
-use FatalErrorException;
-
 class Handler{
 
 	public $renderClass;

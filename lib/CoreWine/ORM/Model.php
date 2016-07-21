@@ -79,8 +79,9 @@ class Model{
 	 */
 	public function __get($attribute){
 		
-		if($this -> isField($attribute))
+		if($this -> isField($attribute)){
 			return $this -> getField($attribute) -> getValue();
+		}
 		
 
 		return null;
@@ -273,7 +274,13 @@ class Model{
 	 * @return bool
 	 */
 	public function isField($name){
-		return isset($this -> fields[$name]);
+		foreach($this -> fields as $field){
+			if($field -> isAlias($name)){
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

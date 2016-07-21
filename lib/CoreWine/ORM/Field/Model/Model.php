@@ -45,8 +45,12 @@ class Model extends FieldModel{
 	 */
 	public function setValueRawToRepository($value_raw,$persist = false){
 
-		if($value_raw !== null)
-			$value_raw = $value_raw -> getPrimaryField() -> getValue();
+
+		if($this -> getLastAliasCalled() == $this -> getSchema() -> getName()){
+
+			if($value_raw !== null)
+				$value_raw = $value_raw -> getPrimaryField() -> getValue();
+		}
 		
 		$this -> value_raw = $value_raw;
 
@@ -64,6 +68,38 @@ class Model extends FieldModel{
 	 */
 	public function getValueRaw(){
 		return $this -> value_raw;
+	}
+
+
+	/**
+	 * Set the value
+	 *
+	 * @param mixed $value
+	 * @param bool $persist
+	 */
+	public function setValue($value = null,$persist = true){
+		if($this -> getLastAliasCalled() == $this -> getSchema() -> getColumn()){
+			$this -> setValueRawToRepository($value,true);
+			return;
+		}
+
+		$this -> value = $value;
+
+		if($persist){
+			$this -> setValueRawToRepository($this -> parseValueToRaw($value),true);
+			$this -> persist = $persist;
+		}
+	}
+
+
+	/**
+	 * Get the value
+	 *
+	 * @return mixed
+	 */
+	public function getValue(){
+
+		return $this -> getLastAliasCalled() == $this -> getSchema() -> getColumn() ? $this -> getValueRaw() : $this -> value;
 	}
 
 }

@@ -34,9 +34,25 @@ class ORMController extends Controller{
 		$got = new Serie();
 		$got -> name = 'Game of Thrones';
 		$got -> save();
-	
 
 		$ep = Episode::create(['name' => 'episode 1','serie' => $got]);
+		
+		echo $ep -> serie_id; # 1
+		echo $ep -> serie;
+		echo $ep -> serie == $got; # True
+		$ep -> serie_id = 2;
+		echo $ep -> serie == $got; # True Or False ?
+		echo $ep -> serie_id; # 2
+
+		$ep -> save();
+		echo $ep -> serie == null; # True
+		echo $ep -> serie_id; # 2
+		die();
+
+		print_r($ep -> serie_id);
+		print_r($ep -> serie_id);
+		die();
+
 		$ep2 = Episode::create(['name' => 'episode 2','serie' => $got]);
 		$ep2 -> prev = $ep;
 		$ep2 -> save();

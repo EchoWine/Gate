@@ -35,6 +35,16 @@ class Model{
 	public $persist;
 
 	/**
+	 * Alias
+	 */
+	public $alias = [];
+
+	/**
+	 * Last alias called
+	 */
+	public $last_alias_called;
+
+	/**
 	 * Construct
 	 */
 	public function __construct($schema,$value){
@@ -69,9 +79,17 @@ class Model{
 	}
 
 	/**
+	 * Get last alias called
+	 */
+	public function getLastAliasCalled(){
+		return $this -> last_alias_called;
+	}
+
+	/**
 	 * Check if alias exists
 	 */
 	public function isAlias($alias){
+		$this -> last_alias_called = $alias;
 		return in_array($alias,$this -> getAlias());
 	}
 

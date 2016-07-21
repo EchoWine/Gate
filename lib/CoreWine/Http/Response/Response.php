@@ -244,4 +244,20 @@ class Response{
 		return $this;
 	}
 
+	/**
+	 * Attach a cookie to the response
+	 *
+	 * @param CoreWine\Http\Cookie $cookie 		The cookie object
+	 * @return CoreWine\Http\Response 			
+	 */
+	public function attach(Cookie $cookie) {
+		if (isset($cookie) && ($cookie !== null)) {
+			$this -> header('Set-Cookie', $cookie);
+		} else {
+			throw new \InvalidArgumentException('Invalid cookie value.');
+		}
+
+		return $this;
+	}
+
 }

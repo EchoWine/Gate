@@ -2,14 +2,10 @@
 
 namespace CoreWine\Http;
 
-//use InvalidArgumentException;
-//namespace CoreWine\Facility\Response;
-
+// @todo config file support (?)
 
 /**
- *
  * Represents a Cookie.
- *
  */
 class Cookie {
 
@@ -26,7 +22,7 @@ class Cookie {
 	/**
 	 * @var int|string  
 	 */
-	protected $expire;
+	protected $expires;
 
 	/**
 	 * @var string  
@@ -61,22 +57,14 @@ class Cookie {
         'value' => '',
         'domain' => null,
         'hostonly' => null,
-        'path' => null,
+        'path' => '/',
         'expires' => null,
         'secure' => false,
         'httponly' => false
     ];
 
-    /**
-     * Cookie
-     *
-     * @var array
-     */
-    protected $cookies = [];
-
 
 	/**
-	 *
 	 * Constructor.
 	 *
 	 * All parameters as defined by the official PHP documentation. 
@@ -87,9 +75,8 @@ class Cookie {
 	 * @param string $path
 	 * @param string $domain
 	 * @param bool $secure
-	 *
 	 */
-	public function __construct($name, $value = null, $expire = 0, $path = '/', $domain, $secure = false) {
+	public function __construct($name = null, $value = null, $expires = 0, $path = '/', $domain = null, $secure = false) {
 
 		// Cookie's name is required.
 		if (empty($name) && !is_numeric($name)) {
@@ -97,17 +84,17 @@ class Cookie {
 		}
 
 		// check name's validity
-		if (!isNameValid($name)) {
+		if (!$this -> isNameValid($name)) {
 			throw new \InvalidArgumentException("Invalid Cookie's name.");
 		}
 
 		// expiration
-		if (!isExpirationValid($expire)) {
+		if (!$this -> isExpirationValid($expires)) {
 			throw new \InvalidArgumentException("Invalid Cookie's expiration time.");
 		}
 
 		// path
-		if (!isPathValid($path)) {
+		if (!$this -> isPathValid($path)) {
 			throw new \InvalidArgumentException("Invalid Cookie's domain path.");
 		}
 
@@ -115,10 +102,10 @@ class Cookie {
 		// provided by the configuration file.
 		//$this -> initialize($default_values);
 
-		// This is the only time an inline, one-to-one assignment is tollerated.
-		$this -> name = $name;
+		// This is the only time an inline, one-to-one assignment is tolerated.
+		$this -> name = $name;		
 		$this -> value = $value;
-		$this -> expire = $expire;
+		$this -> expires = $expires;
 		$this -> path = $path;
 		$this -> domain = $domain;
 		$this -> secure = $secure;
@@ -188,7 +175,7 @@ class Cookie {
 	 * @return string
 	 */
 	public function getExpirationTime() {
-		return $this -> expire;
+		return $this -> expires;
 	}
 
 	/**
@@ -232,11 +219,21 @@ class Cookie {
 	}
 
 
+	/**
+	 * Returns the cookie as a string
+	 *
+	 * @return string 				The Cookie as a string
+	 */
+	public function __toString() {
+		$strCookie = ' ' . $this -> name . '=' . $this -> value . ';';
+		$strCookie .= ' expires' . '='. $this -> expires . ';';
+		$strCookie .= ' path' . '=' .$this -> path . ';';
+		$strCookie .= ' domain' . '=' .$this -> domain . ';';
+		$strCookie .= ' secure' . '=';
+		$strCookie .= $this -> secure ? 'TRUE' : 'FALSE';
 
-
-
-	// transform cookie to string type
-	public function __toString() {}
+		return $strCookie;
+	}
 
 	// transform cookie to int type
 	public function toInteger() {}
@@ -245,7 +242,6 @@ class Cookie {
 	public function toCustomType() {}
 
 	/**
-	 *
 	 * Perform some booting operations.
 	 *
 	 * @param array $default_values default key-value pair array.
@@ -259,14 +255,13 @@ class Cookie {
 		// check structure conformity and (when needed) field definition conformity
 
 		$this -> setDefaults($default_values);
-
-		
+	
 	}
 
 	/**
+	 * Set cookie fields to default values.
 	 *
-	 * Set cookie fields to default values as defined in its dedicated configuration file. This does not set the name since it's required.
-	 *
+	 * @param array $default_values Array containing default values
 	 * @return null
 	 */
 	private function setDefaults(array $default_values = null) {
@@ -275,11 +270,12 @@ class Cookie {
 			foreach ($this -> defaults as $key => $value) {
 				$this -> cookies[$key] = $this -> defaults[$value];
 			}
+
 		} else {
 
 			//$this -> name = $default_values['name'];
 			$this -> value = $default_values['value'];
-			$this -> expire = $default_values['expire'];
+			$this -> expires = $default_values['expires'];
 			$this -> path = $default_values['path'];
 			$this -> domain = $default_values['domain'];
 			$this -> secure = $default_values['secure']; 
@@ -287,23 +283,6 @@ class Cookie {
 		}
 
 	}
-
-	/**
-	 *
-	 * Set cookie 
-	 *
-	 * @param string $name Cookie name
-	 * @param string $value Cookie value
-	 */
-	public function set($name, $value) {
-		// check $value, $name
-
-		$this -> cookies[$name] = $value;
-
-		return $this;
-	}
-
-
 
 
 }

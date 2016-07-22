@@ -26,35 +26,35 @@ class EpisodeController extends BasicController{
 	 *
 	 * @var array
 	 */
-	public $view_list = ['id','name'];
+	public $view_list = ['id','name','serie'];
 
 	/**
 	 * View add
 	 *
 	 * @var array
 	 */
-	public $view_add = ['name'];
+	public $view_add = ['name','serie'];
 
 	/**
 	 * View edit
 	 *
 	 * @var array
 	 */
-	public $view_edit = ['name'];
+	public $view_edit = ['name','serie'];
 
 	/**
 	 * View get
 	 *
 	 * @var array
 	 */
-	public $view_get = ['id','name'];
+	public $view_get = ['id','name','serie'];
 
 	/**
 	 * View search
 	 *
 	 * @var array
 	 */
-	public $view_search = ['id','name'];
+	public $view_search = ['id','name','serie'];
 
 }
 

@@ -6,6 +6,8 @@ use CoreWine\ORM\Field\Field\Model as FieldModel;
 
 class Model extends FieldModel{
 
+	public $value_updated = true;
+
 	/**
 	 * Set Model
 	 */
@@ -80,6 +82,8 @@ class Model extends FieldModel{
 	public function setValue($value = null,$persist = true){
 		if($this -> getLastAliasCalled() == $this -> getSchema() -> getColumn()){
 			$this -> setValueRawToRepository($value,true);
+			$this -> value = null;
+			$this -> value_updated = false;
 			return;
 		}
 
@@ -99,7 +103,17 @@ class Model extends FieldModel{
 	 */
 	public function getValue(){
 
-		return $this -> getLastAliasCalled() == $this -> getSchema() -> getColumn() ? $this -> getValueRaw() : $this -> value;
+		if($this -> getLastAliasCalled() == $this -> getSchema() -> getColumn())
+			return $this -> getValueRaw();
+
+		if(!$this -> value_updated){
+
+			$this -> value = $this -> getSchema() -> getRelation()::firstByPrimary($this -> getValueRaw());
+			$this -> value_updated = true;
+
+		}
+
+		return $this -> value;
 	}
 
 }

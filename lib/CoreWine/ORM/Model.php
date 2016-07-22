@@ -51,7 +51,7 @@ class Model{
 	 * @var array
 	 */
 	public static $callable_to_repository = [
-		'all','first','wherePrimary','where','count','firstByPrimary'
+		'all','first','wherePrimary','where','count','firstByPrimary','orderBy','orderByDesc','orderByAsc'
 	];
 
 	/**

@@ -3,6 +3,7 @@
 namespace CoreWine\ORM;
 
 use CoreWine\ORM\Response as Response;
+use CoreWine\Exceptions as Exceptions;
 
 class Model{
 
@@ -117,7 +118,7 @@ class Model{
 		if($this -> isField($method))
 			return $this -> getField($method);
 
-		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
+		throw new Exceptions\UndefinedMethodException(static::class,$method);
 		
 	}
 
@@ -147,7 +148,7 @@ class Model{
 			return call_user_func_array([static::repository(),$method],$arguments);
 		}	
 
-		throw new \Exception("Fatal error: Call to undefined method Model::{$method}()");
+		throw new Exceptions\UndefinedMethodException(static::class,$method);
 		
 	}
 

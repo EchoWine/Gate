@@ -44,9 +44,12 @@ class ORMController extends Controller{
 	 */
 	public function relation(){
 
-		DB::clearLog();
 
 		$time = microtime(true);
+		
+		Episode::truncate();
+		Serie::truncate();
+		DB::clearLog();
 		
 		# New serie
 		# Once the serie is saved into database, will retrieve automatically the primary key (id)
@@ -85,12 +88,11 @@ class ORMController extends Controller{
 		$this -> print($ep -> serie); # Query to retrieve new Serie execute in this moment
 		$this -> printLog();
 
-
 		echo "Saved episode";
 		$ep -> save();
 		$this -> printLog();
 
-	
+
 
 
 
@@ -173,8 +175,6 @@ class ORMController extends Controller{
 		echo microtime(true) - $time;
 		
 
-		Episode::truncate();
-		Serie::truncate();
 		DB::printLog();
 		die();
 

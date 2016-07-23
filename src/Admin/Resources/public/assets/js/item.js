@@ -202,29 +202,15 @@ item.handleList = function(table,response){
 	var container = item.getContainerByTable(table);
 
 	if(response.status == 'success'){
-
-		var rows = '';
-
-		// Get data response
 		var data = response.data;
-
-		// Get results data
-		var results = data.results;
-
-		// Build the rows
-		$.map(results,function(row){
-			row.table = table.name;
-			rows += template.get(table.template.row,row);
-		});
-
-		template.setByHtml(rows,table.template.row);
-
 		table.list.page = data.pagination.page;
 		table.list.pages = data.pagination.pages;
 		table.list.count = data.pagination.count;
 		table.list.from = data.pagination.from;
 		table.list.to = data.pagination.to;
 		table.list.show = data.pagination.show;
+		table.list.get(container,table,data.results);
+
 		item.updateListHTML(table);
 
 	}

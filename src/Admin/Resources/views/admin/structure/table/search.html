@@ -3,7 +3,7 @@
 	{{for $fields as $field}}
 
 		<div class='table-col table-col-head table-col-search'>
-			<input type='text' class='input-data' name='{{$field -> getName()}}'>
+			<input type='text' class='input-data' name='{{$field -> getSchema() -> getName()}}'>
 		</div>
 
 	{{/for}}

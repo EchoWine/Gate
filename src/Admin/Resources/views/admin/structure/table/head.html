@@ -7,10 +7,10 @@
 
 	</div>
 	{{for $fields as $field}}
-		{{if $field -> isSort()}}
-			<div class='table-col table-col-head table-col-sort {# {{if $field -> isClassNumber() }}table-col-number{{/if}} #}' data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
+		{{if $field -> getSchema()-> isSort()}}
+			<div class='table-col table-col-head table-col-sort {# {{if $field -> getSchema()-> isClassNumber() }}table-col-number{{/if}} #}' data-item-sort-field='{{$field -> getSchema()-> getName()}}' data-item-table='{{$table}}'>
 				<div class='table-col-text noselect'>
-					<span>{{$field -> getLabel()}}</span>
+					<span>{{$field -> getSchema()-> getLabel()}}</span>
 
 					<i class='fa fa-sort' data-item-sort-none></i>
 					<i class='fa fa-sort-asc hide' data-item-sort-asc></i>
@@ -21,7 +21,7 @@
 
 			<div class='table-col table-col-head'>
 				<div class='table-col-text'>
-					<span>{{$field -> getLabel()}}</span>
+					<span>{{$field -> getSchema()-> getLabel()}}</span>
 				</div>
 			</div>
 		{{/if}}

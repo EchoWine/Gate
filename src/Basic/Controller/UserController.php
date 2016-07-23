@@ -22,39 +22,40 @@ class UserController extends AdminController{
 	public $url = 'users';
 
 	/**
-	 * View list
+	 * Set views
 	 *
-	 * @var array
+	 * @param  $views
 	 */
-	public $view_list = ['id','username','email'];
+	public function views($views){
 
-	/**
-	 * View add
-	 *
-	 * @var array
-	 */
-	public $view_add = ['username','password','email'];
+		$views -> all(function($view){
+			$view -> id();
+			$view -> username();
+			$view -> email();
+		});
 
-	/**
-	 * View edit
-	 *
-	 * @var array
-	 */
-	public $view_edit = ['username','password','email'];
+		$views -> add(function($view){
+			$view -> username();
+			$view -> email();
+		});
 
-	/**
-	 * View get
-	 *
-	 * @var array
-	 */
-	public $view_get = ['id','username','email'];
+		$views -> edit(function($view){
+			$view -> username();
+			$view -> email();
+		});
 
-	/**
-	 * View search
-	 *
-	 * @var array
-	 */
-	public $view_search = ['id','username','email'];
+		$views -> get(function($view){
+			$view -> id();
+			$view -> username();
+			$view -> email();
+		});
+
+		$views -> search(function($view){
+			$view -> id();
+			$view -> username();
+			$view -> email();
+		});
+	}
 
 }
 

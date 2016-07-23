@@ -22,39 +22,40 @@ class EpisodeController extends BasicController{
 	public $url = 'episodes';
 
 	/**
-	 * View list
+	 * Set views
 	 *
-	 * @var array
+	 * @param $views
 	 */
-	public $view_list = ['id','name','serie'];
+	public function views($views){
 
-	/**
-	 * View add
-	 *
-	 * @var array
-	 */
-	public $view_add = ['name','serie'];
+		$views -> all(function($view){
+			$view -> id();
+			$view -> name();
+			$view -> serie() -> name();
+		});
 
-	/**
-	 * View edit
-	 *
-	 * @var array
-	 */
-	public $view_edit = ['name','serie'];
+		$views -> add(function($view){
+			$view -> name();
+			$view -> serie() -> name() -> select();
+		});
 
-	/**
-	 * View get
-	 *
-	 * @var array
-	 */
-	public $view_get = ['id','name','serie'];
+		$views -> edit(function($view){
+			$view -> name();
+			$view -> serie() -> name() -> select();
+		});
 
-	/**
-	 * View search
-	 *
-	 * @var array
-	 */
-	public $view_search = ['id','name','serie'];
+		$views -> get(function($view){
+			$view -> id();
+			$view -> name();
+			$view -> serie() -> name();
+		});
+
+		$views -> search(function($view){
+			$view -> id();
+			$view -> name();
+			$view -> serie() -> name();
+		});
+	}
 
 }
 

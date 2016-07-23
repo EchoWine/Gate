@@ -155,13 +155,15 @@ abstract class Controller extends SourceController{
 
 					$field = $this -> getSchema() -> getField($field);
 
-					$repository = $repository -> where(function($repository) use ($field,$values) {
-						foreach($values as $value){
-							$repository = $field -> searchRepository($repository,$value);
-						}
+					if(!empty($values)){
+						$repository = $repository -> where(function($repository) use ($field,$values) {
+							foreach($values as $value){
+								$repository = $field -> searchRepository($repository,$value);
+							}
 
-						return $repository;
-					});
+							return $repository;
+						});
+					}
 
 				}
 				

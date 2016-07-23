@@ -21,40 +21,36 @@ class SerieController extends BasicController{
 	 */
 	public $url = 'series';
 
-	/**
-	 * View list
-	 *
-	 * @var array
-	 */
-	public $view_list = ['id','name'];
 
 	/**
-	 * View add
+	 * Set views
 	 *
-	 * @var array
+	 * @param  $views
 	 */
-	public $view_add = ['name'];
+	public function views($views){
 
-	/**
-	 * View edit
-	 *
-	 * @var array
-	 */
-	public $view_edit = ['name'];
+		$views -> all(function($view){
+			$view -> id();
+			$view -> name();
+		});
 
-	/**
-	 * View get
-	 *
-	 * @var array
-	 */
-	public $view_get = ['id','name'];
+		$views -> add(function($view){
+			$view -> name();
+		});
 
-	/**
-	 * View search
-	 *
-	 * @var array
-	 */
-	public $view_search = ['id','name'];
+		$views -> edit(function($view){
+			$view -> name();		});
+
+		$views -> get(function($view){
+			$view -> id();
+			$view -> name();
+		});
+
+		$views -> search(function($view){
+			$view -> id();
+			$view -> name();
+		});
+	}
 
 }
 

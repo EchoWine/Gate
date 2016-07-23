@@ -6,7 +6,7 @@
 		<div data-use-template='alert-modal-add'></div>
 		<form method='POST' item-data-form-add  data-item-table='{table}'>
 			{{for $fields as $field}}
-				<div class='item-form-label'>{{$field -> getLabel()}}:</div>
+				<div class='item-form-label'>{{$field -> getSchema() -> getLabel()}}:</div>
 				<div class='item-form-input'>{{include Admin/admin/field ['field' => $field,'extra_class' => 'item-form-element']}}</div>
 			{{/for}}
 

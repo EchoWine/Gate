@@ -281,6 +281,28 @@ class Model{
 	}
 
 	/**
+	 * Get the value used in array
+	 *
+	 * When ORM\Model::toArray is called, this return the value of field
+	 *
+	 * @return mixed
+	 */
+	public function getValueToArray(){
+		return $this -> getValue();
+	}
+	
+	/**
+	 * Get the name used in array
+	 *
+	 * When ORM\Model::toArray is called, this return the name of field
+	 *
+	 * @return string
+	 */
+	public function getNameToArray(){
+		return $this -> getSchema() -> getName();
+	}
+
+	/**
 	 * Parse the value for add
 	 *
 	 * @param mixed $value

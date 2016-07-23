@@ -747,7 +747,7 @@ class Model{
 		foreach($this -> getFields() as $name => $field){
 			if($field -> hasValueRaw())
 				if($field -> getSchema() -> getEnableToArray())
-					$values[$name] = $field -> getValueRaw();
+					$values[$field -> getNameToArray()] = $field -> getValueToArray();
 		}
 
 		return $values;

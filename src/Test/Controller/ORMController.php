@@ -21,6 +21,24 @@ class ORMController extends Controller{
 
 	}
 		
+	public function printLog(){
+
+		$mex = '';
+		foreach(DB::log(true) as $k){
+			$mex .= $k."\n<br>";
+		}
+		$this -> print($mex);
+	}
+
+
+	public function print($mex){
+
+		echo "<div style='border:1px solid #efefef;padding:5px;margin:10px 0;font-size:12px'>";
+		echo $mex;
+		echo "</div>";
+	}
+
+
 	/**
 	 * @Route
 	 */
@@ -29,24 +47,51 @@ class ORMController extends Controller{
 		DB::clearLog();
 
 		$time = microtime(true);
-		# New Model
 		
-		$got = new Serie();
+		# New serie
+		# Once the serie is saved into database, will retrieve automatically the primary key (id)
+
+ 		$got = new Serie();
 		$got -> name = 'Game of Thrones';
+
+		echo "New serie: Game of Thrones";
+		$this -> print($got);
+
 		$got -> save();
 
+		echo "Save";
+		$this -> printLog();
 
-		$pof = new Serie();
-		$pof -> name = 'Person of Interest';
-		$pof -> save();
+		echo "Getting ID";
+		$this -> print($got);
+
+		$pof = Serie::create(['name' => 'Person of Interest']);
+
+		echo "Create a new serie Person of Interest";
+		$this -> printLog();
+
+		$this -> print($pof);
 
 		$ep = Episode::create(['name' => 'episode 1','serie' => $got]);
 
-		echo $ep -> serie_id == $ep -> serie -> id ? "Y" : "N";
+		echo "Create a new episode in Game of Thrones";
+		$this -> printLog();
+		$this -> print($ep);
 
 		$ep -> serie_id = $pof -> id;
-		echo $ep -> serie;
+		echo "Updated serie of episode";
+		$this -> print($ep -> serie_id);
+		$this -> print($ep);
+		$this -> print($ep -> serie); # Query to retrieve new Serie execute in this moment
+		$this -> printLog();
+
+
+		echo "Saved episode";
 		$ep -> save();
+		$this -> printLog();
+
+	
+
 
 
 		$ep2 = Episode::create(['name' => 'episode 2','serie' => $got]);
@@ -55,6 +100,8 @@ class ORMController extends Controller{
 		$ep -> next = $ep2;
 		$ep -> save();
 		$ep -> id;
+
+		DB::log();
 
 		$ep2 = Episode::where('name','episode 2') -> first();
 		$ep = Episode::where('name','episode 1') -> first();

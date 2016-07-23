@@ -137,6 +137,20 @@ class DB{
 		self::$log = [];
 	}
 
+
+	/**
+	 * Get log
+	 */
+	public static function log($clear = false){
+		$log = self::$log;
+		
+		if($clear)
+			self::clearLog();
+
+		return $log;
+	}
+
+
 	/**
 	 * Get last query executed
 	 *

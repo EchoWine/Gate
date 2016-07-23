@@ -110,7 +110,6 @@ abstract class Controller extends SourceController{
 	 */
 	public function all(){
 
-		try{
 
 			$repository = $this -> getRepository();
 
@@ -145,14 +144,26 @@ abstract class Controller extends SourceController{
 				$repository = $repository -> sortByField();
 			}
 
-			foreach((array)$search as $field => $value){
+			foreach((array)$search as $field => $values){
+
 
 				if(!$this -> getSchema() -> hasField($field)){
 					# ... some error
+				}else{
+
+					$values = self::getArrayParams($values);
+
+					$field = $this -> getSchema() -> getField($field);
+
+					$repository = $repository -> where(function($repository) use ($field,$values) {
+						foreach($values as $value){
+							$repository = $field -> searchRepository($repository,$value);
+						}
+
+						return $repository;
+					});
+
 				}
-				
-				$field = $this -> getSchema() -> getField($field);
-				$repository = $field -> searchRepository($repository,$value);
 				
 			}
 
@@ -166,10 +177,7 @@ abstract class Controller extends SourceController{
 				'pagination' => $results -> getPagination() -> toArray()
 			]);
 
-		}catch(\Exception $e){
-
-			return new Response\ApiException($e);
-		}
+	
 	}
 
 	/**
@@ -325,7 +333,16 @@ abstract class Controller extends SourceController{
 
 	}
 
+	public function getArrayParams($params){
 
+		$params = preg_split('|(?<!\\\);|', $params);
+		return array_walk(
+		    $params,
+		    function(&$item){
+		        $item = str_replace('\;', ';', $item);
+		    }
+		);
+	}
 }
 
 

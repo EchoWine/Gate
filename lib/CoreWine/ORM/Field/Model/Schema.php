@@ -46,7 +46,6 @@ class Schema extends FieldSchema{
 	public static function factory($relation = null,$name = null){
 		return new static($relation,$name);
 	}
-
 }
 
 ?>

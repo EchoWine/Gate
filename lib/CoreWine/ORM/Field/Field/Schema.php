@@ -550,7 +550,7 @@ class Schema{
 	 * @return Repository
 	 */
 	public function searchRepository($repository,$value){
-		return $repository -> whereLike($this -> getColumn(),'%'.$value.'%');
+		return $repository -> orWhereLike($this -> getColumn(),'%'.$value.'%');
 	}
 }
 ?>

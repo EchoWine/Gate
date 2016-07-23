@@ -34,6 +34,19 @@ class Schema extends IntegerSchema{
 	public function alter($table){
 		$table -> id($this -> name);
 	}
+
+
+	/**
+	 * Add the field to query to find the model
+	 *
+	 * @param Repository $repository
+	 *
+	 * @return Repository
+	 */
+	public function searchRepository($repository,$value){
+		return $repository -> orWhere($this -> getColumn(),(int)$value);
+	}
+
 }
 
 ?>

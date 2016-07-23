@@ -554,6 +554,11 @@ class QueryBuilder{
 			$t = clone $this;
 			$n -> builder -> prepare = $t -> builder -> prepare;
 			$n = $fun($n);
+			
+			if(!$n){
+				throw new \Exception("Closure must return QueryBuilder Object");
+			}
+
 			$sql = $n -> {$sql}(false);
 
 			if(!empty($sql)){

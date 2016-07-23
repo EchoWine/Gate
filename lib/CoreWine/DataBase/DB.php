@@ -5,7 +5,7 @@ namespace CoreWine\DataBase;
 use PDO;
 use PDOStatement;
 use PDOException;
-use CoreWine\Exceptions as Exceptions;
+use CoreWine\DataBase\Exceptions;
 
 /**
  * Database, permits to handle connections and calls to DataBase with PDO
@@ -143,7 +143,7 @@ class DB{
 	 */
 	public static function log($clear = false){
 		$log = self::$log;
-		
+
 		if($clear)
 			self::clearLog();
 

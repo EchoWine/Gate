@@ -173,7 +173,6 @@
 
 					// Build the rows
 					$.map(results,function(row){
-						row.table = table.name;
 
 						var record = {};
 
@@ -199,6 +198,7 @@
 							record[name] = value;
 						{{/for}}
 
+						record.table = table.name;
 						rows += template.get(table.template.row,record);
 					});
 

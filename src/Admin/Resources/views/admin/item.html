@@ -149,7 +149,9 @@
 						{{for $field -> getRelations() as $n => $relation}}
 
 							{{if $url = $field -> getUrl($n)}}
-								list_call_relations.push(api.all("{{$api_url}}{{$url}}",{},function(response){
+								var params = [];
+								params['search[id]'] = columns["{{$relation -> getColumn()}}"];
+								list_call_relations.push(api.all("{{$api_url}}{{$url}}",params,function(response){
 									table.list.relations["{{$field -> getSchema() -> getName()}}"] = response.data.results;	
 								}));
 							{{/if}}
@@ -174,7 +176,7 @@
 						row.table = table.name;
 
 						var record = {};
-						console.log(row);
+
 						{{for $views -> view('all') as $field}}
 
 							var data = row;

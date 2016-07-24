@@ -550,7 +550,8 @@ class QueryBuilder{
 	 */
 	public function locationClosure($fun,$builder,$sql){
 		if($fun instanceof Closure){
-			$n = DB::table($this -> getBuilderTable());
+			$n = clone $this;
+			$n -> builder = new Builder();
 			$t = clone $this;
 			$n -> builder -> prepare = $t -> builder -> prepare;
 			$n = $fun($n);
@@ -711,7 +712,7 @@ class QueryBuilder{
 	 * @param string $v3 optional name of the column of the second table
 	 * @return object $this
 	 */
-	public function leftJoin($table,$col1 = null,string $op_col2 = null,string $col2 = NULL){
+	public function leftJoin($table,$table2_col1 = null,string $op_col2 = null,string $col2 = NULL){
 
 		if($op_col2 !== null){
 			$this -> on($table2_col1,$op_col2,$col2);
@@ -797,7 +798,7 @@ class QueryBuilder{
 		}
 
 		if(is_object($table_fun) && ($table_fun instanceof Closure)){
-			$n = DB::table($t -> getBuilderTable());
+			$n = static::__construct($t -> getBuilderTable());
 			$n -> builder -> prepare = $t -> builder -> prepare;
 			$n -> builder -> orOn = $t -> builder -> orOn;
 			$n -> builder -> andOn = $t -> builder -> andOn;

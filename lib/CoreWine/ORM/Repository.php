@@ -292,7 +292,83 @@ class Repository extends QueryBuilder{
 			$direction = $this -> getSchema() -> getSortDefaultDirection();
 		}
 
-		return $this -> orderBy($field -> getColumn(),$direction);
+		return $this -> orderBy($field -> getObjectSchema() -> getTable().".".$field -> getColumn(),$direction);
+
+	}
+
+	/**
+	 * Select table/column
+	 *
+	 * @param mixed $select
+	 *
+	 * @return clone $this
+	 */
+	public function select($select){
+		if(!is_array($select))
+			$select = [$select];
+
+		foreach($select as $n => $sel){
+			if($sel instanceof Schema){
+				$select[$n] = $sel -> getTable().".*";
+			}	
+		}
+
+		return parent::select($select);
+	}
+
+	/**
+	 * Search a field through relations
+	 *
+	 * @param string $field name field
+	 * @param array $values
+	 *
+	 * @return clone $this
+	 */
+	public function find($field,$values){
+		if(empty($values))
+			return $this;
+
+		if(!is_array($values))
+			$values = [$values];
+
+		$t = clone $this;
+
+		$fields = explode(".",$field);
+
+		if(count($fields) > 1){
+
+			$fields = $this -> getSchema() -> getAllSchemaThroughArray($fields);
+
+			$field = $fields[count($fields) - 1];
+			unset($fields[count($fields) - 1]);
+
+		}else{
+			$field = $this -> getSchema() -> getField($fields[0]);
+			$fields = [];
+		}
+
+
+		$t = $t -> where(function($repository) use ($field,$values) {
+			foreach($values as $value){
+				$repository = $field -> searchRepository($repository,$value);
+			}
+
+			return $repository;
+		});
+
+		foreach((array)$fields as $field){
+			$t = $t -> leftJoin(
+				$field -> getRelation()::schema() -> getTable(),
+				$field -> getRelation()::schema() -> getTable().".".$field -> getRelation()::schema() -> getPrimaryColumn(),
+				$field -> getObjectSchema() -> getTable().".".$field -> getColumn()
+			);
+
+		}
+
+
+
+		return $t;
+
 
 	}
 }

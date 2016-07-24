@@ -203,6 +203,10 @@ class Model{
 		static::repository() -> alterSchema();
 		static::setSeed();
 
+		foreach(static::schema() -> getFields() as $field){
+			$field -> setObjectSchema(static::schema());
+		}
+
 		return $schema;
 	}
 

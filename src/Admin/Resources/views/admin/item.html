@@ -248,12 +248,11 @@
 			search:{
 				data: {},
 				action: function(form){
-					console.log(form);
 					var values = {};
 
 					{{for $views -> view('search') as $field}}
-						if(form.find('[name={{$field -> getSchema() -> getName()}}]').val() !== '')
-							values.{{$field -> getSchema()-> getName()}} = form.find('[name={{$field -> getSchema() -> getName()}}]').val();
+						if(form.find("[name='{{$field -> getName()}}']").val() !== '')
+							values["{{$field -> getName()}}"] = form.find("[name='{{$field -> getName()}}']").val();
 					{{/for}}
 					return values;
 				}

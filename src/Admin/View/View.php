@@ -65,8 +65,13 @@ class View{
 	 *
 	 * @return array
 	 */
-	public function isField($field){
-		return isset($this -> fields[$field]);
+	public function isField($field_name){
+		foreach($this -> getFields() as $field){
+			if($field_name == $field -> getName())
+				return true;
+		}
+
+		return false;
 	}
 }
 ?>

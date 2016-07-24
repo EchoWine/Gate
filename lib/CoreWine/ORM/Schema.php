@@ -151,5 +151,29 @@ class Schema{
 	}
 
 
+	/**
+	 * Return an array with all of schema relation
+	 *
+	 * @param string $fields
+	 *
+	 * @return array
+	 */
+	public function getAllSchemaThroughArray($fields){
+
+		$last_field = $this -> getField($fields[0]);
+		$return = [$last_field];
+		unset($fields[0]);
+
+
+		foreach($fields as $field){
+
+			$field = $last_field -> getRelation()::schema() -> getField($field);
+
+			$return[] = $field;
+			$last_field = $field;
+		}
+
+		return $return;
+	}
 }
 ?>

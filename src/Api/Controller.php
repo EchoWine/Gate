@@ -7,6 +7,7 @@ use Api\Response;
 use Api\Exceptions;
 use CoreWine\Http\Request;
 use Api\Service\Api;
+use CoreWine\DataBase\DB;
 
 abstract class Controller extends SourceController{
 
@@ -155,35 +156,19 @@ abstract class Controller extends SourceController{
 				$repository = $repository -> sortByField();
 			}
 
-			foreach((array)$search as $field => $values){
 
+			foreach((array)$search as $field => $params){
 
-				if(!$this -> getSchema() -> hasField($field)){
-					# ... some error
-				}else{
+				$values = self::getArrayParams($params);
 
-					$values = self::getArrayParams($values);
-
-					$field = $this -> getSchema() -> getField($field);
-					
-					if(!empty($values)){
-						$repository = $repository -> where(function($repository) use ($field,$values) {
-							foreach($values as $value){
-								$repository = $field -> searchRepository($repository,$value);
-							}
-
-							return $repository;
-						});
-					}
-
-				}
-				
+				$repository = $repository -> find($field,$values);
+			
 			}
 
 			$repository = $repository -> paginate($show,$page);
+			$repository = $repository -> select($this -> getSchema());
 
 			$results = $repository -> get();
-			
 
 			return new Response\ApiAllSuccess([
 				'results' => $results -> toArray(),
@@ -350,7 +335,7 @@ abstract class Controller extends SourceController{
 
 		$params = preg_split('|(?<!\\\);|', $params);
 
-		$params = array_walk(
+		array_walk(
 		    $params,
 		    function(&$item){
 		        $item = str_replace('\;', ';', $item);

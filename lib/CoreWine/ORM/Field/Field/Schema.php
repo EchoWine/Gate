@@ -147,6 +147,13 @@ class Schema{
 	public $enable_to_array = true;
 
 	/**
+	 * Schema object
+	 *
+	 * @var Schema
+	 */
+	public $object_schema;
+
+	/**
 	 * Regex of field
 	 */
 	public $regex = "/^(.){0,255}$/iU";
@@ -171,6 +178,15 @@ class Schema{
 		return $this;
 	}
 
+	public function setObjectSchema($object_schema){
+		$this -> object_schema = $object_schema;
+	}
+
+	public function getObjectSchema(){
+		return $this -> object_schema;
+	}
+
+
 	/**
 	 * Get type
 	 *
@@ -192,7 +208,7 @@ class Schema{
 		$parents = array_map(function($class){
 			$class = explode("\\",$class);
 			return strtolower($class[count($class) - 2]);
-		},class_parents(static::class));
+		},array_merge([static::class],class_parents(static::class)));
 		return in_array($type,$parents);
 	}
 
@@ -565,7 +581,7 @@ class Schema{
 	 * @return Repository
 	 */
 	public function searchRepository($repository,$value){
-		return $repository -> orWhereLike($this -> getColumn(),'%'.$value.'%');
+		return $repository -> orWhereLike($this -> getObjectSchema() -> getTable().".".$this -> getColumn(),'%'.$value.'%');
 	}
 }
 ?>

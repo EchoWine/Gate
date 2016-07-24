@@ -60,11 +60,13 @@ abstract class AdminController extends Controller{
 	 * @return Response
 	 */
 	public function index(){
-		$views = new Views($this -> getSchema());
+		$views = new Views($this -> getSchema(),$this -> getApiUrl());
+
 		$this -> views($views);
-		
+
 		return $this -> view('Admin/admin/item',[
 			'table' => $this -> url,
+			'api_url' => $this -> getApiUrl(),
 			'api' => $this -> getFullApiURL(),
 			'views' => $views,
 			'sort_by_field' => $this -> getSchema() -> getSortDefaultField() -> getName(),

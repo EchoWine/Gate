@@ -14,15 +14,13 @@ var http = {};
 http.ajax = function(type,url,params = {},callback){
 
 	console.log('Call to: '+url+'');
-	console.log(params);
 
-	$.ajax({
+	return $.ajax({
 		type: type,
 		url: url, 
 		data : params,
 		contentType: "application/x-www-form-urlencoded; charsetBySource=UTF-8",
 		success: function(response) {
-			console.log(response);
 			callback(response);
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -42,7 +40,7 @@ http.ajax = function(type,url,params = {},callback){
  * @param {function} callback
  */
 http.get = function(url,params,callback){
-	http.ajax('GET',url,params,callback);
+	return http.ajax('GET',url,params,callback);
 };
 
 /**
@@ -53,7 +51,7 @@ http.get = function(url,params,callback){
  * @param {function} callback
  */
 http.post = function(url,params,callback){
-	http.ajax('POST',url,params,callback);
+	return http.ajax('POST',url,params,callback);
 };
 
 /**
@@ -64,7 +62,7 @@ http.post = function(url,params,callback){
  * @param {function} callback
  */
 http.put = function(url,params,callback){
-	http.ajax('PUT',url,params,callback);
+	return http.ajax('PUT',url,params,callback);
 };
 
 /**
@@ -75,5 +73,5 @@ http.put = function(url,params,callback){
  * @param {function} callback
  */
 http.delete = function(url,params,callback){
-	http.ajax('DELETE',url,params,callback);
+	return http.ajax('DELETE',url,params,callback);
 };

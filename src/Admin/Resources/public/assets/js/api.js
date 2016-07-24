@@ -11,7 +11,7 @@ var api = {};
  * @param {closure} callback
  */
 api.all = function(table,filter,callback){
-	http.get(table,filter,callback);
+	return http.get(table,filter,callback);
 }
 
 /**
@@ -22,7 +22,7 @@ api.all = function(table,filter,callback){
  * @param {closure} callback
  */
 api.get = function(table,id,callback){
-	http.get(table+"/"+id,{filter:'get'},callback);
+	return http.get(table+"/"+id,{filter:'get'},callback);
 };
 
 /**
@@ -33,7 +33,7 @@ api.get = function(table,id,callback){
  * @param {closure} callback
  */
 api.add = function(table,values,callback){
-	http.post(table,values,callback);
+	return http.post(table,values,callback);
 };
 
 /**
@@ -45,7 +45,7 @@ api.add = function(table,values,callback){
  * @param {closure} callback
  */
 api.edit = function(table,id,values,callback){
-	http.put(table+"/"+id,values,callback);
+	return http.put(table+"/"+id,values,callback);
 };
 
 /**
@@ -56,7 +56,7 @@ api.edit = function(table,id,values,callback){
  * @param {closure} callback
  */
 api.delete = function(table,id,callback){
-	http.delete(table+"/"+id,{},callback);
+	return http.delete(table+"/"+id,{},callback);
 };
 
 /**
@@ -67,5 +67,19 @@ api.delete = function(table,id,callback){
  * @param {closure} callback
  */
 api.copy = function(table,id,callback){
-	http.post(table+"/"+id,{},callback);
+	return http.post(table+"/"+id,{},callback);
+};
+
+/**
+ * Call callback when all request are sent
+ *
+ * @param {array} calls
+ * @param {closure} callback
+ */
+api.group = function(calls,callback){
+
+	$.when.apply($,calls).then(callback,function(){
+
+	});
+
 };

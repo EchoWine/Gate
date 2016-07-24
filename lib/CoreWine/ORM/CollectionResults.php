@@ -22,7 +22,7 @@ class CollectionResults extends Collection{
         $return = [];
         foreach($this -> container as $item){
             if($item instanceof Model)
-                $return[] = $item -> toArray();
+                $return[$item -> getPrimaryValue()] = $item -> toArray();
             else{
                 $return[] = $item;
             }

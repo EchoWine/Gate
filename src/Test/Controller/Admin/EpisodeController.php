@@ -31,29 +31,29 @@ class EpisodeController extends BasicController{
 		$views -> all(function($view){
 			$view -> id();
 			$view -> name();
-			$view -> serie() -> name();
+			$view -> serie('series') -> name();
 		});
 
 		$views -> add(function($view){
 			$view -> name();
-			$view -> serie() -> name() -> select();
+			$view -> serie('series') -> name() -> select();
 		});
 
 		$views -> edit(function($view){
 			$view -> name();
-			$view -> serie() -> name() -> select();
+			$view -> serie('series') -> name() -> select();
 		});
 
 		$views -> get(function($view){
 			$view -> id();
 			$view -> name();
-			$view -> serie() -> name();
+			$view -> serie('series') -> name();
 		});
 
 		$views -> search(function($view){
 			$view -> id();
 			$view -> name();
-			$view -> serie() -> name();
+			$view -> serie('series') -> name();
 		});
 	}
 

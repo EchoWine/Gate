@@ -35,10 +35,24 @@ class ViewBuilder{
 	public $relations = [];
 
 	/**
+	 * urls
+	 *
+	 * @var array
+	 */
+	public $urls = [];
+
+	/**
 	 * Construct
 	 */
-	public function __construct($schema){
+	public function __construct($schema,$arguments){
 		$this -> schema = $schema;
+
+		$this -> relations[] = $schema;
+
+		if($this -> getSchema() -> getType() == "model"){
+			if(isset($arguments[0]))
+				$this -> urls[] = $arguments[0];
+		}
 	}
 
 	/**
@@ -57,12 +71,21 @@ class ViewBuilder{
 	 * @param array $arguments
 	 */
 	public function __call($method,$arguments){
-		if($this -> getSchema() -> getType() == "model"){
-			if($this -> getSchema() -> getRelation()::schema() -> isField($method)){
 
-				$field = $this -> getSchema() -> getRelation()::schema() -> getField($method);
-				$this -> schema = $field;
+		$last_relation = $this -> getLastRelation();
+
+		if($last_relation -> getType() == "model"){
+			if($last_relation -> getRelation()::schema() -> isField($method)){
+
+				$field = $last_relation -> getRelation()::schema() -> getField($method);
+				//$this -> schema = $field;
 				$this -> relations[] = $field;
+
+				if($field -> getType() == "model"){
+					if(isset($arguments[0]))
+						$this -> urls[] = $arguments[0];
+				}
+
 				return $this;
 			}
 		}
@@ -92,6 +115,27 @@ class ViewBuilder{
 	 */
 	public function getRelations(){
 		return $this -> relations;
+	}
+
+	public function getUrl($n){
+		return isset($this -> urls[$n]) ? $this -> urls[$n] : null;
+	}
+
+	/**
+	 * Get relations
+	 *
+	 * @return array
+	 */
+	public function getLastRelation(){
+		return $this -> relations[count($this -> relations) - 1];
+	}
+
+	public function getLabel(){
+		return $this -> getSchema() -> getLabel();
+	}
+
+	public function getName(){
+		return implode(".",array_map(function($item){ return $item -> getName(); },$this -> getRelations()));
 	}
 
 }

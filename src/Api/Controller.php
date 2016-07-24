@@ -6,6 +6,7 @@ use CoreWine\SourceManager\Controller as SourceController;
 use Api\Response;
 use Api\Exceptions;
 use CoreWine\Http\Request;
+use Api\Service\Api;
 
 abstract class Controller extends SourceController{
 
@@ -31,13 +32,23 @@ abstract class Controller extends SourceController{
 
 		$url = $this -> url;
 
-		
-		$this -> route('all') -> url("/api/{$url}") -> get();
-		$this -> route('add') -> url("/api/{$url}") -> post();
-		$this -> route('copy') -> url("/api/{$url}/{id}") -> post();
-		$this -> route('get') -> url("/api/{$url}/{id}") -> get();
-		$this -> route('edit') -> url("/api/{$url}/{id}") -> put();
-		$this -> route('delete') -> url("/api/{$url}/{id}") -> delete();
+		$this -> route('all') -> url("/api/v1/{$url}") -> get();
+		$this -> route('add') -> url("/api/v1/{$url}") -> post();
+		$this -> route('copy') -> url("/api/v1/{$url}/{id}") -> post();
+		$this -> route('get') -> url("/api/v1/{$url}/{id}") -> get();
+		$this -> route('edit') -> url("/api/v1/{$url}/{id}") -> put();
+		$this -> route('delete') -> url("/api/v1/{$url}/{id}") -> delete();
+
+	}
+
+	/**
+	 * Get basic path api 
+	 *
+	 * @return string
+	 */
+	public function getApiURL(){
+
+		return Api::url();
 	}
 
 	/**
@@ -47,7 +58,7 @@ abstract class Controller extends SourceController{
 	 */
 	public function getFullApiURL(){
 
-		return Request::getDirUrl()."api/{$this -> url}";
+		return Api::url()."{$this -> url}";
 	}
 
 	/**

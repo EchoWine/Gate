@@ -6,8 +6,8 @@
 		<div data-use-template='alert-modal-edit'></div>
 		<form method='POST' item-data-form-edit data-item-table='{table}' data-item-id='{id}'>
 			{{for $fields as $field}}
-				<div class='item-form-label'>{{$field -> getSchema() -> getLabel()}}:</div>
-				<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getSchema()-> getName()}}'></div>
+				<div class='item-form-label'>{{$field -> getLabel()}}:</div>
+				<div class='item-form-input'><input type='text' class='input-data' name='{{$field -> getSchema() -> getName()}}'></div>
 			{{/for}}
 
 			<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Apply changes</button></div>

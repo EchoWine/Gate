@@ -51,9 +51,9 @@ item.getTable = function(name){
 item.getList = function(table,params = {}){
 		
 	//template.setBySource('spinner-table','item-row',{});
-
+	
 	api.all(table.url,params,function(response){
-
+		
 		item.handleList(table,response);
 
 	});
@@ -209,7 +209,21 @@ item.handleList = function(table,response){
 		table.list.from = data.pagination.from;
 		table.list.to = data.pagination.to;
 		table.list.show = data.pagination.show;
-		table.list.get(container,table,data.results);
+
+		var columns = [];
+
+		$.map(data.results,function(row){
+			$.map(row,function(value,col){
+
+				if(typeof columns[col] == 'undefined'){
+					columns[col] = [];
+				}
+
+				columns[col].push(value);
+			});
+		})
+
+		table.list.get(container,table,data.results,columns);
 
 		item.updateListHTML(table);
 

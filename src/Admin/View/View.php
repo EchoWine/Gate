@@ -43,7 +43,7 @@ class View{
 	public function __call($method,$arguments){
 
 		if($this -> getSchema() -> isField($method)){
-			$builder = new ViewBuilder($this -> getSchema() -> getField($method));
+			$builder = new ViewBuilder($this -> getSchema() -> getField($method),$arguments);
 			$this -> fields[$method] = $builder;
 			return $builder;
 		}

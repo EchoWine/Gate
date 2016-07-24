@@ -133,20 +133,40 @@
 		item.addTable({
 			name:'{{$table}}',
 			url:'{{$api}}',
+			basic_url:'{{$api_url}}',
 			list:{
 				sort_by_field:'{{$sort_by_field}}',
 				sort_by_direction:'{{$sort_by_direction}}',
 				show:10,
 				page:1,
-				get: function(container,table,results){
+				relations:{},
+				get: function(container,table,results,columns){
 
-					var rows = '';
+					var list_call_relations = [];
 
 					{{for $views -> view('all') as $field}}
-						{{if $field -> getSchema() -> getType() == 'Model'}}
 
-						{{/if}}
+						{{for $field -> getRelations() as $n => $relation}}
+
+							{{if $url = $field -> getUrl($n)}}
+								list_call_relations.push(api.all("{{$api_url}}{{$url}}",{},function(response){
+									table.list.relations["{{$field -> getSchema() -> getName()}}"] = response.data.results;	
+								}));
+							{{/if}}
+
+
+						{{/for}}
+
 					{{/for}}
+
+					api.group(list_call_relations,function(){
+						table.list.parseGet(container,table,results,columns);
+					});
+					
+				},
+				parseGet: function(container,table,results,columns){
+					
+					var rows = '';
 
 					// Build the rows
 					$.map(results,function(row){
@@ -155,15 +175,29 @@
 						var record = {};
 
 						{{for $views -> view('all') as $field}}
-							record.{{$field -> getSchema() -> getName()}} = row.{{$field -> getSchema()-> getName()}};
-						{{/for}}
 
-						console.log(record);
+							var name = '{{$field -> getName()}}';
+
+							{{for $field -> getRelations() as $n => $relation}}
+								{{if $url = $field -> getUrl($n)}}
+
+									var relation = table.list.relations["{{$relation -> getName()}}"];
+						
+									row = relation[row["{{$relation -> getColumn()}}"]];
+
+								{{/if}}
+							{{/for}}
+
+							var value = row.{{$field -> getLastRelation() -> getName()}};
+
+							record[name] = value;
+						{{/for}}
 
 						rows += template.get(table.template.row,record);
 					});
 
 					template.setByHtml(rows,table.template.row);
+					
 				}
 			},
 			get:{

@@ -335,6 +335,17 @@ class Model{
 		return null;;
 	}
 
+
+	/**
+	 * Get the primary field value
+	 *
+	 * @return mixed
+	 */
+	public function getPrimaryValue(){
+
+		return $this -> getPrimaryField() -> getValue();
+	}
+
 	/**
 	 * Get the autoincrement field
 	 *

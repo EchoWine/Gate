@@ -165,7 +165,7 @@ abstract class Controller extends SourceController{
 					$values = self::getArrayParams($values);
 
 					$field = $this -> getSchema() -> getField($field);
-
+					
 					if(!empty($values)){
 						$repository = $repository -> where(function($repository) use ($field,$values) {
 							foreach($values as $value){
@@ -349,12 +349,19 @@ abstract class Controller extends SourceController{
 	public function getArrayParams($params){
 
 		$params = preg_split('|(?<!\\\);|', $params);
-		return array_walk(
+
+		$params = array_walk(
 		    $params,
 		    function(&$item){
 		        $item = str_replace('\;', ';', $item);
 		    }
 		);
+
+		if(!is_array($params))
+			$params = [$params];
+
+		return $params;
+
 	}
 }
 

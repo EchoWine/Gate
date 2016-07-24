@@ -15,7 +15,7 @@
 	display:flex;
 }
 
-.table .table-col{
+.table-col{
 	border-bottom:1px solid #ddd;
 	text-align:left;
 	padding:10px 15px;
@@ -35,7 +35,7 @@
 }
 
 .table-col-number{
-	max-width:60px;
+	max-width:79px;
 }
 
 .table-col-text{
@@ -52,6 +52,12 @@
 
 .table-col-search .input-data{
 	width:100%;
+	font-family:verdana;
+	padding:5px 8px;
+}
+
+.table-col-search{
+	padding: 10px 6px;
 }
 
 .table .table-col-action{

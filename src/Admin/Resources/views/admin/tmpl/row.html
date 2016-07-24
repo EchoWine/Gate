@@ -5,7 +5,7 @@
 			<label for='select-{table}-{id}' class='checkbox'></label>
 		</div>
 		{{for $fields as $field}}
-			<div class='table-col {# {{if $field -> getSchema() -> isClassNumber() }}table-col-number{{/if}} #}'>
+			<div class='table-col {{if $field -> getSchema() -> isType('integer')}}table-col-number{{/if}}'>
 				<span class='table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
 			</div>
 		{{/for}}

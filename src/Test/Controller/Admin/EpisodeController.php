@@ -32,6 +32,7 @@ class EpisodeController extends BasicController{
 			$view -> id();
 			$view -> name();
 			$view -> serie('series') -> name() -> label('name of serie');
+			$view -> prev('episodes') -> name() -> label('prev episode');
 			$view -> next('episodes') -> name() -> label('next episode');
 
 		});

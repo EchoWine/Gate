@@ -100,7 +100,7 @@
 			<div class='table'>
 
 				{{include Admin/admin/structure/table/head ['table' => $table,'fields' => $views -> view('all')]}}
-				{{include Admin/admin/structure/table/search ['table' => $table,'fields' => $views -> view('search')]}}
+				{{include Admin/admin/structure/table/search ['table' => $table,'views' => $views]}}
 
 				<div data-use-template='item-row'>
 					<div class='table-row'>

@@ -62,7 +62,21 @@ class Views{
 	 */
 	public function view($view){
 		return $this -> views[$view] -> getFields();
+	}	
+
+
+	/**
+	 * Return view by name
+	 *
+	 * @param string $view
+	 * @param ORM\Field\Schema $field
+	 *
+	 * @return bool
+	 */
+	public function isField($view,$field){
+		return $this -> views[$view] -> isField($field -> getName());
 	}
+
 
 	/**
 	 * Return if exists $view

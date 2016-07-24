@@ -59,5 +59,14 @@ class View{
 	public function getFields(){
 		return $this -> fields;
 	}
+
+	/**
+	 * Get all fields defined in view
+	 *
+	 * @return array
+	 */
+	public function isField($field){
+		return isset($this -> fields[$field]);
+	}
 }
 ?>

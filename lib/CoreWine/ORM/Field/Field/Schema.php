@@ -182,6 +182,21 @@ class Schema{
 	}
 
 	/**
+	 * Is type
+	 *
+	 * @param string $class
+	 *
+	 * @return bool
+	 */
+	public function isType($type){
+		$parents = array_map(function($class){
+			$class = explode("\\",$class);
+			return strtolower($class[count($class) - 2]);
+		},class_parents(static::class));
+		return in_array($type,$parents);
+	}
+
+	/**
 	 * Call
 	 *
 	 * @param string $method

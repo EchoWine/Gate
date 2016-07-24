@@ -1,10 +1,16 @@
 <div class='table-row table-header table-row-search'>
 	<div class='table-col-select table-col table-col-head'></div>
-	{{for $fields as $field}}
+	{{for $views -> view('all') as $field}}
 
-		<div class='table-col table-col-head table-col-search'>
+		{{if $views -> isField('search',$field)}}
+		<div class='table-col table-col-head table-col-search  {{if $field -> getSchema() -> isType('integer')}}table-col-number{{/if}}'>
 			<input type='text' class='input-data' name='{{$field -> getSchema() -> getName()}}'>
 		</div>
+		{{else}}
+		<div class='table-col table-col-head table-col-search'>
+
+		</div>
+		{{/if}}
 
 	{{/for}}
 	<div class='table-col table-col-action'>

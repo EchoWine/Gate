@@ -185,12 +185,16 @@
 								{{if $url = $field -> getUrl($n)}}
 
 									var relation = table.list.relations["{{$relation -> getName()}}"];
-									data = relation[data["{{$relation -> getColumn()}}"]];
+
+									if(data && data["{{$relation -> getColumn()}}"])
+										data = relation[data["{{$relation -> getColumn()}}"]];
+									else
+										data = null;
 
 								{{/if}}
 							{{/for}}
 
-							if(typeof data == "undefined")
+							if(typeof data == "undefined" || !data)
 								var value = 'undefined';
 							else
 								var value = data.{{$field -> getLastRelation() -> getName()}};

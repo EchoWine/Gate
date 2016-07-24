@@ -12,9 +12,7 @@ var http = {};
  * @param {function} callback
  */
 http.ajax = function(type,url,params = {},callback){
-
 	console.log('Call to: '+url+'');
-
 	return $.ajax({
 		type: type,
 		url: url, 

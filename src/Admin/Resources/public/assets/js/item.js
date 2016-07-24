@@ -517,7 +517,7 @@ $('body').on('click','[data-item-copy]',function(){
 
 	var table = item.getTableByElement($(this));
 	var id = item.getIdByElement($(this));
-
+	console.log(table);
 	item.copy(table,id);
 });
 

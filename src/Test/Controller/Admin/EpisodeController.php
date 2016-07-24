@@ -31,7 +31,9 @@ class EpisodeController extends BasicController{
 		$views -> all(function($view){
 			$view -> id();
 			$view -> name();
-			$view -> serie('series') -> name();
+			$view -> serie('series') -> name() -> label('name of serie');
+			$view -> next('episodes') -> name() -> label('next episode');
+
 		});
 
 		$views -> add(function($view){

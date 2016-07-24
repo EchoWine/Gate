@@ -168,27 +168,31 @@
 					
 					var rows = '';
 
+
 					// Build the rows
 					$.map(results,function(row){
 						row.table = table.name;
 
 						var record = {};
-
+						console.log(row);
 						{{for $views -> view('all') as $field}}
 
+							var data = row;
 							var name = '{{$field -> getName()}}';
 
 							{{for $field -> getRelations() as $n => $relation}}
 								{{if $url = $field -> getUrl($n)}}
 
 									var relation = table.list.relations["{{$relation -> getName()}}"];
-						
-									row = relation[row["{{$relation -> getColumn()}}"]];
+									data = relation[data["{{$relation -> getColumn()}}"]];
 
 								{{/if}}
 							{{/for}}
 
-							var value = row.{{$field -> getLastRelation() -> getName()}};
+							if(typeof data == "undefined")
+								var value = 'undefined';
+							else
+								var value = data.{{$field -> getLastRelation() -> getName()}};
 
 							record[name] = value;
 						{{/for}}

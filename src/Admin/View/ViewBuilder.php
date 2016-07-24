@@ -28,6 +28,13 @@ class ViewBuilder{
 	public $input = false;
 
 	/**
+	 * Label
+	 *
+	 * @var string
+	 */
+	public $label;
+
+	/**
 	 * Relations
 	 *
 	 * @var array
@@ -48,6 +55,7 @@ class ViewBuilder{
 		$this -> schema = $schema;
 
 		$this -> relations[] = $schema;
+		$this -> label($this -> getName());	
 
 		if($this -> getSchema() -> getType() == "model"){
 			if(isset($arguments[0]))
@@ -81,6 +89,8 @@ class ViewBuilder{
 				//$this -> schema = $field;
 				$this -> relations[] = $field;
 
+				$this -> label($this -> getName());	
+				
 				if($field -> getType() == "model"){
 					if(isset($arguments[0]))
 						$this -> urls[] = $arguments[0];
@@ -89,8 +99,8 @@ class ViewBuilder{
 				return $this;
 			}
 		}
-
-
+		$this -> label($this -> getName());	
+		
 		throw new Exceptions\UndefinedMethodException(static::class,$method);
 	}
 
@@ -106,6 +116,13 @@ class ViewBuilder{
 	 */
 	public function input(){
 		$this -> input = true;
+	}
+
+	/**
+	 * Set label
+	 */
+	public function label($label){
+		$this -> label = $label;
 	}
 
 	/**
@@ -131,7 +148,7 @@ class ViewBuilder{
 	}
 
 	public function getLabel(){
-		return $this -> getSchema() -> getLabel();
+		return $this -> label;
 	}
 
 	public function getName(){

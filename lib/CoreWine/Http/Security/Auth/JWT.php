@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Security\Auth;
+namespace CoreWine\Http\Security\Auth;
 
 // @todo: custom error types
 // use CoreWine\Security\Auth\JWT\(ErrorType)

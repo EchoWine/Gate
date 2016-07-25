@@ -129,6 +129,7 @@
 
 {{block scripts}}
 	{{parent}}
+
 	<script>
 		item.addTable({
 			name:'{{$table}}',
@@ -140,6 +141,7 @@
 				show:10,
 				page:1,
 				relations:{},
+				relations_ids:{},
 				get: function(container,table,results,columns){
 
 					var list_call_relations = [];
@@ -150,9 +152,36 @@
 
 							{{if $url = $field -> getUrl($n)}}
 								var params = [];
-								params['search[id]'] = columns["{{$relation -> getColumn()}}"];
+								var columns_relation = [];
+
+								// Initalize relations ids
+								if(!table.list.relations_ids["{{$relation -> getName()}}"]){
+									table.list.relations_ids["{{$relation -> getName()}}"] = [];
+								}
+
+								// Remove null value and prevent double request for the same resource
+								$.map(columns["{{$relation -> getColumn()}}"],function(val){
+									if(val != null && table.list.relations_ids["{{$relation -> getName()}}"].indexOf(val) !== -1){
+										columns_relation.push(val);
+									}
+								});
+
+								// Merge new request with previous one
+								table.list.relations_ids["{{$relation -> getName()}}"] = $.extend(
+									table.list.relations_ids["{{$relation -> getName()}}"],
+									columns_relation
+								);
+
+								params['search[id]'] = columns_relation;
+
+								// Make the request
 								list_call_relations.push(api.all("{{$api_url}}{{$url}}",params,function(response){
-									table.list.relations["{{$field -> getSchema() -> getName()}}"] = response.data.results;	
+
+									// Merge the result with previous one
+									table.list.relations["{{$relation -> getName()}}"] = $.extend(
+										table.list.relations["{{$relation -> getName()}}"],
+										response.data.results
+									);
 								}));
 							{{/if}}
 
@@ -161,6 +190,7 @@
 
 					{{/for}}
 
+					// When all requests will be sent, calls the closure
 					api.group(list_call_relations,function(){
 						table.list.parseGet(container,table,results,columns);
 					});

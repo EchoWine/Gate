@@ -22,39 +22,45 @@ class ExampleController extends BasicController{
 	public $url = 'examples';
 
 	/**
-	 * View list
+	 * Set views
 	 *
-	 * @var array
+	 * @param  $views
 	 */
-	public $view_list = ['id','string','timestamp','text'];
+	public function views($views){
 
-	/**
-	 * View add
-	 *
-	 * @var array
-	 */
-	public $view_add = ['string','timestamp','text'];
+		$views -> all(function($view){
+			$view -> id();
+			$view -> string();
+			$view -> timestamp() -> label('time');
+			$view -> text();
+		});
 
-	/**
-	 * View edit
-	 *
-	 * @var array
-	 */
-	public $view_edit = ['string','timestamp','text'];
+		$views -> add(function($view){
+			$view -> string();
+			$view -> timestamp();
+			$view -> text();
+		});
 
-	/**
-	 * View get
-	 *
-	 * @var array
-	 */
-	public $view_get = ['id','string','timestamp','text'];
+		$views -> edit(function($view){
+			$view -> string();
+			$view -> timestamp();
+			$view -> text();
+		});
 
-	/**
-	 * View search
-	 *
-	 * @var array
-	 */
-	public $view_search = ['id','string','timestamp','text'];
+		$views -> get(function($view){
+			$view -> id();
+			$view -> string();
+			$view -> timestamp();
+			$view -> text();
+		});
+
+		$views -> search(function($view){
+			$view -> id();
+			$view -> string();
+			$view -> timestamp();
+			$view -> text();
+		});
+	}
 
 }
 

@@ -39,7 +39,8 @@ class SerieController extends BasicController{
 		});
 
 		$views -> edit(function($view){
-			$view -> name();		});
+			$view -> name();
+		});
 
 		$views -> get(function($view){
 			$view -> id();

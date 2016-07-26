@@ -263,8 +263,10 @@ item.rowToColumns = function(results){
  */
 item.handleRelationsList = function(table,columns,end){
 
+	table.list.relations.columns[table.name] = columns;
+	//table.list.relations.ids[table.name] = columns['id'];
+
 	// Handle relations
-	console.log(table.list.relations.schema);
 
 	// This vars are used to count each end of relations request
 	// in order to know when the end must be called
@@ -283,7 +285,7 @@ item.handleRelationsList = function(table,columns,end){
 		}
 
 		// Make first call 
-		item.nextRelation(table,columns,relations[0],end);
+		item.handleNextRelation(table,relations[0],end);
 		table.list.relations.total++;
 	}
 
@@ -296,59 +298,90 @@ item.handleRelationsList = function(table,columns,end){
  * Handle next relation with another call api
  *
  * @param {object} table
- * @param {array} columns
  * @param {object} relation
  * @param {closure} end
  */
-item.nextRelation = function(table,columns,relation,end){
+item.handleNextRelation = function(table,relation,end){
 
-	console.log(relation);
 	var params = [];
 	var columns_relation = [];
 
 	// Initalize relations ids
-	if(!table.list.relations.ids[relation.name]){
-		table.list.relations.ids[relation.name] = [];
+	if(typeof table.list.relations.ids[relation.url] == 'undefined'){
+		table.list.relations.ids[relation.url] = [];
+	}
+
+	// Initalize relations columns
+	if(typeof table.list.relations.columns[table.name] == 'undefined'){
+		table.list.relations.columns[table.name] = [];
+	}
+
+	// Initalize relations columns
+	if(typeof table.list.relations.columns[table.name][relation.column] == 'undefined'){
+		table.list.relations.columns[table.name][relation.column] = [];
 	}
 
 	// Remove null value and prevent double request for the same resource
-	$.map(columns[relation.column],function(val){
-		if(val != null && table.list.relations.ids[relation.name].indexOf(val) !== -1){
+	$.map(table.list.relations.columns[table.name][relation.column],function(val){
+		if(val != null && table.list.relations.ids[relation.url].indexOf(val) == -1){
 			columns_relation.push(val);
 		}
 	});
 
 	// Merge ids of new request with ids of previous one
-	table.list.relations.ids[relation.name] = $.extend(
-		table.list.relations.ids[relation.name],
+	table.list.relations.ids[relation.url] = $.merge(
+		table.list.relations.ids[relation.url],
 		columns_relation
 	);
+	params['search[id]'] = columns_relation.join(";");
 
-	params['search[id]'] = columns_relation;
+	if(columns_relation.length == 0){
+
+		item.nextRelation(table,relation,end);
+		return;
+	}
 
 	// Make the request
-	api.all(table.basic_url+table.name,params,function(response){
+	api.all(table.basic_url+relation.url,params,function(response){
 
 		// Merge the result with previous one
-		table.list.relations[relation.name] = $.extend(
-			table.list.relations[relation.name],
+		table.list.relations.values[relation.url] = $.extend(
+			table.list.relations.values[relation.url],
 			response.data.results
 		);
 
-		if(relation.next)
-			item.nextRelation(table,item.rowToColumns(response.data.results),relation.next,end);
-		else{
-			table.list.relations.count++;
-		}
+		// Merge ids of new request with ids of previous one
+		table.list.relations.columns[relation.url] = $.extend(
+			table.list.relations.columns[relation.url],
+			item.rowToColumns(response.data.results)
+		);
 
-		if(table.list.relations.total == table.list.relations.count){
-			end();
-		}
+		item.nextRelation(table,relation,end);
 
 
 	});
 
 }
+
+/**
+ * Go to next query
+ *
+ * @param {object} table
+ * @param {object} relation
+ * @param {closure} end
+ */
+item.nextRelation = function(table,relation,end){
+
+	if(relation.next)
+		item.handleNextRelation(table,relation.next,end);
+	else{
+		table.list.relations.count++;
+	}
+
+	if(table.list.relations.total == table.list.relations.count){
+		end();
+	}
+};
 
 /**
  * Handle basic response
@@ -633,7 +666,6 @@ $('body').on('click','[data-item-copy]',function(){
 
 	var table = item.getTableByElement($(this));
 	var id = item.getIdByElement($(this));
-	console.log(table);
 	item.copy(table,id);
 });
 

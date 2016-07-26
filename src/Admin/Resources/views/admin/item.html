@@ -141,7 +141,9 @@
 				show:10,
 				page:1,
 				relations:{
+					columns:{},
 					ids:{},
+					values:{},
 					schema:{{json_encode($views -> view('all') -> getMinimalRelation())}}
 				},
 				relations_ids:{},
@@ -162,14 +164,17 @@
 							var name = '{{$field -> getName()}}';
 
 							{{for $field -> getRelations() as $n => $relation}}
+
+							// -- Relation: {{$field -> getName()}}:{{$relation -> getName()}}
+
 								{{if $url = $field -> getUrl($n)}}
 
-									var relation = table.list.relations["{{$relation -> getName()}}"];
-
+									var relation = table.list.relations.values["{{$url}}"];
 									if(data && data["{{$relation -> getColumn()}}"])
 										data = relation[data["{{$relation -> getColumn()}}"]];
 									else
 										data = null;
+
 
 								{{/if}}
 							{{/for}}
@@ -181,6 +186,7 @@
 
 							record[name] = value;
 						{{/for}}
+
 
 						record.table = table.name;
 						rows += template.get(table.template.row,record);

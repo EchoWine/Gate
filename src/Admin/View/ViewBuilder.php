@@ -147,6 +147,19 @@ class ViewBuilder{
 		return $this -> relations[count($this -> relations) - 1];
 	}
 
+	/**
+	 * Get relations
+	 *
+	 * @return array
+	 */
+	public function getLastColumnRelation(){
+		return $this -> relations[count($this -> relations) - 2];
+	}
+
+	public function countRelations(){
+		return count($this -> relations);
+	}
+
 	public function getLabel(){
 		return $this -> label;
 	}

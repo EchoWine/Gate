@@ -28,11 +28,11 @@
 	</div>
 
 
-	{{include Admin/admin/tmpl/row ['fields' => $views -> view('all')]}}
+	{{include Admin/admin/tmpl/row ['fields' => $views -> fields('all')]}}
 
-	{{include Admin/admin/modal/add ['fields' => $views -> view('add')]}}
-	{{include Admin/admin/modal/get ['fields' => $views -> view('get')]}}
-	{{include Admin/admin/modal/edit ['fields' => $views -> view('edit')]}}
+	{{include Admin/admin/modal/add ['fields' => $views -> fields('add')]}}
+	{{include Admin/admin/modal/get ['fields' => $views -> fields('get')]}}
+	{{include Admin/admin/modal/edit ['fields' => $views -> fields('edit')]}}
 	{{include Admin/admin/modal/delete}}
 	{{include Admin/admin/modal/delete_multiple}}
 
@@ -99,7 +99,7 @@
 
 			<div class='table'>
 
-				{{include Admin/admin/structure/table/head ['table' => $table,'fields' => $views -> view('all')]}}
+				{{include Admin/admin/structure/table/head ['table' => $table,'fields' => $views -> fields('all')]}}
 				{{include Admin/admin/structure/table/search ['table' => $table,'views' => $views]}}
 
 				<div data-use-template='item-row'>
@@ -140,63 +140,13 @@
 				sort_by_direction:'{{$sort_by_direction}}',
 				show:10,
 				page:1,
-				relations:{},
-				relations_ids:{},
-				get: function(container,table,results,columns){
-
-					var list_call_relations = [];
-
-					{{for $views -> view('all') as $field}}
-
-						{{for $field -> getRelations() as $n => $relation}}
-
-							{{if $url = $field -> getUrl($n)}}
-								var params = [];
-								var columns_relation = [];
-
-								// Initalize relations ids
-								if(!table.list.relations_ids["{{$relation -> getName()}}"]){
-									table.list.relations_ids["{{$relation -> getName()}}"] = [];
-								}
-
-								// Remove null value and prevent double request for the same resource
-								$.map(columns["{{$relation -> getColumn()}}"],function(val){
-									if(val != null && table.list.relations_ids["{{$relation -> getName()}}"].indexOf(val) !== -1){
-										columns_relation.push(val);
-									}
-								});
-
-								// Merge new request with previous one
-								table.list.relations_ids["{{$relation -> getName()}}"] = $.extend(
-									table.list.relations_ids["{{$relation -> getName()}}"],
-									columns_relation
-								);
-
-								params['search[id]'] = columns_relation;
-
-								// Make the request
-								list_call_relations.push(api.all("{{$api_url}}{{$url}}",params,function(response){
-
-									// Merge the result with previous one
-									table.list.relations["{{$relation -> getName()}}"] = $.extend(
-										table.list.relations["{{$relation -> getName()}}"],
-										response.data.results
-									);
-								}));
-							{{/if}}
-
-
-						{{/for}}
-
-					{{/for}}
-
-					// When all requests will be sent, calls the closure
-					api.group(list_call_relations,function(){
-						table.list.parseGet(container,table,results,columns);
-					});
-					
+				relations:{
+					ids:{},
+					schema:{{json_encode($views -> view('all') -> getMinimalRelation())}}
 				},
-				parseGet: function(container,table,results,columns){
+				relations_ids:{},
+					
+				get: function(container,table,results,columns){
 					
 					var rows = '';
 
@@ -206,7 +156,7 @@
 
 						var record = {};
 
-						{{for $views -> view('all') as $field}}
+						{{for $views -> fields('all') as $field}}
 
 							var data = row;
 							var name = '{{$field -> getName()}}';
@@ -242,7 +192,7 @@
 			},
 			get:{
 				get: function(container,data){
-					{{for $views -> view('get') as $field}}
+					{{for $views -> fields('get') as $field}}
 						$('#modal-item-get').find('[data-name={{$field -> getSchema()-> getName()}}]').html(data['{{$field -> getSchema() -> getName()}}']);
 					{{/for}}
 				},
@@ -252,7 +202,7 @@
 				action: function(form){
 					var values = {};
 
-					{{for $views -> view('add') as $field}}
+					{{for $views -> fields('add') as $field}}
 						values.{{$field -> getSchema() -> getName()}} = form.find('[name={{$field -> getSchema()-> getName()}}]').val();
 					{{/for}}
 					return values;
@@ -266,14 +216,14 @@
 			},
 			edit:{
 				get: function(container,data){
-					{{for $views -> view('edit') as $field}}
+					{{for $views -> fields('edit') as $field}}
 						$('#modal-item-edit').find('[name={{$field -> getSchema()-> getName()}}]').val(data['{{$field -> getSchema() -> getName()}}']);
 					{{/for}}
 				},
 				action: function(form){
 					var values = {};
 
-					{{for $views -> view('edit') as $field}}
+					{{for $views -> fields('edit') as $field}}
 						values.{{$field -> getSchema()-> getName()}} = form.find('[name={{$field -> getSchema() -> getName()}}]').val();
 					{{/for}}
 					return values;
@@ -284,7 +234,7 @@
 				action: function(form){
 					var values = {};
 
-					{{for $views -> view('search') as $field}}
+					{{for $views -> fields('search') as $field}}
 						if(form.find("[name='{{$field -> getName()}}']").val() !== '')
 							values["{{$field -> getName()}}"] = form.find("[name='{{$field -> getName()}}']").val();
 					{{/for}}

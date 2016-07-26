@@ -73,5 +73,29 @@ class View{
 
 		return false;
 	}
+
+	/**
+	 * Return an array with basic information of relations of all fields
+	 *
+	 * @return array
+	 */
+	public function getMinimalRelation(){
+		$return = [];
+		foreach($this -> getFields() as $field){
+			$partials = [];
+			foreach($field -> getRelations() as $n => $relation){
+				if($field -> getUrl($n)){
+					$partial = [];
+					$partial['column'] = $relation -> getColumn();
+					$partial['name'] = $relation -> getName();
+					$partial['url'] = $field -> getUrl($n);
+					$partials[] = $partial;
+				}
+			}
+			if(!empty($partials))
+				$return[$field -> getName()] = $partials;
+		}
+		return $return;
+	}
 }
 ?>

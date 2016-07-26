@@ -60,9 +60,21 @@ class Views{
 	 *
 	 * @return bool
 	 */
-	public function view($view){
+	public function fields($view){
 		return $this -> views[$view] -> getFields();
 	}	
+
+	/**
+	 * Return view by name
+	 *
+	 * @param string $view
+	 *
+	 * @return bool
+	 */
+	public function view($view){
+		return $this -> views[$view];
+	}	
+
 
 
 	/**

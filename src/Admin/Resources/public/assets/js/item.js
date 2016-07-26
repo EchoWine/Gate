@@ -210,22 +210,17 @@ item.handleList = function(table,response){
 		table.list.to = data.pagination.to;
 		table.list.show = data.pagination.show;
 
-		var columns = [];
+		var columns = item.rowToColumns(data.results);
 
-		$.map(data.results,function(row){
-			$.map(row,function(value,col){
+		item.handleRelationsList(table,columns,function(){
 
-				if(typeof columns[col] == 'undefined'){
-					columns[col] = [];
-				}
+			// Report result only when all relations call will be made
+			table.list.get(container,table,data.results,columns);
 
-				columns[col].push(value);
-			});
-		})
+			item.updateListHTML(table);
+		});
 
-		table.list.get(container,table,data.results,columns);
 
-		item.updateListHTML(table);
 
 	}
 
@@ -234,6 +229,127 @@ item.handleList = function(table,response){
 	}
 
 }
+
+/**
+ * Convert given rows result into column results
+ *
+ * @param {array} results
+ *
+ * @return {array}
+ */
+item.rowToColumns = function(results){
+	var columns = [];
+
+	$.map(results,function(row){
+		$.map(row,function(value,col){
+
+			if(typeof columns[col] == 'undefined'){
+				columns[col] = [];
+			}
+
+			columns[col].push(value);
+		});
+	})
+
+	return columns;
+}
+
+/**
+ * Handle the relations in list
+ *
+ * @param {object} table
+ * @param {array} columns
+ * @param {closure} end
+ */
+item.handleRelationsList = function(table,columns,end){
+
+	// Handle relations
+	console.log(table.list.relations.schema);
+
+	// This vars are used to count each end of relations request
+	// in order to know when the end must be called
+	table.list.relations.count = 0;
+	table.list.relations.total = 0;
+
+	for(field in table.list.relations.schema){
+		relations = table.list.relations.schema[field];
+
+		// Set a pointer "next" that point to the next object
+		prev = null;
+		var keys = Object.keys(relations);
+		for(i = keys.length - 2; i >= 0;i--){
+			relation = relations[i];
+			relation.next = relations[i+1];
+		}
+
+		// Make first call 
+		item.nextRelation(table,columns,relations[0],end);
+		table.list.relations.total++;
+	}
+
+
+
+
+};
+
+/**
+ * Handle next relation with another call api
+ *
+ * @param {object} table
+ * @param {array} columns
+ * @param {object} relation
+ * @param {closure} end
+ */
+item.nextRelation = function(table,columns,relation,end){
+
+	console.log(relation);
+	var params = [];
+	var columns_relation = [];
+
+	// Initalize relations ids
+	if(!table.list.relations.ids[relation.name]){
+		table.list.relations.ids[relation.name] = [];
+	}
+
+	// Remove null value and prevent double request for the same resource
+	$.map(columns[relation.column],function(val){
+		if(val != null && table.list.relations.ids[relation.name].indexOf(val) !== -1){
+			columns_relation.push(val);
+		}
+	});
+
+	// Merge ids of new request with ids of previous one
+	table.list.relations.ids[relation.name] = $.extend(
+		table.list.relations.ids[relation.name],
+		columns_relation
+	);
+
+	params['search[id]'] = columns_relation;
+
+	// Make the request
+	api.all(table.basic_url+table.name,params,function(response){
+
+		// Merge the result with previous one
+		table.list.relations[relation.name] = $.extend(
+			table.list.relations[relation.name],
+			response.data.results
+		);
+
+		if(relation.next)
+			item.nextRelation(table,item.rowToColumns(response.data.results),relation.next,end);
+		else{
+			table.list.relations.count++;
+		}
+
+		if(table.list.relations.total == table.list.relations.count){
+			end();
+		}
+
+
+	});
+
+}
+
 /**
  * Handle basic response
  *

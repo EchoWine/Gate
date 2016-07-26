@@ -1,6 +1,6 @@
 <div class='table-row table-header table-row-search'>
 	<div class='table-col-select table-col table-col-head'></div>
-	{{for $views -> view('all') as $field}}
+	{{for $views -> fields('all') as $field}}
 
 		{{if $views -> isField('search',$field)}}
 		<div class='table-col table-col-head table-col-search  {{if $field -> getSchema() -> isType('integer')}}table-col-number{{/if}}'>

@@ -12,8 +12,7 @@ var http = {};
  * @param {function} callback
  */
 http.ajax = function(type,url,params = {},callback){
-	//console.log('Call to: '+url+'');
-	//console.log(params);
+	console.log(url);
 	return $.ajax({
 		type: type,
 		url: url, 
@@ -39,7 +38,8 @@ http.ajax = function(type,url,params = {},callback){
  * @param {function} callback
  */
 http.get = function(url,params,callback){
-	return http.ajax('GET',url,params,callback);
+
+	return http.ajax('GET',url+"?"+$.param(params),{},callback);
 };
 
 /**

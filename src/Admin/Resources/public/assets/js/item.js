@@ -157,6 +157,14 @@ item.getListWithParams = function(table){
 	// Show and pages
 	var params = {}
 
+	// Search
+	params.search = {};
+	$.map(table.search.data,function(value,key){
+		if(value != null)
+			params.search[key] = value;
+	});
+
+
 	// Show
 	params.show = table.list.show;
 
@@ -164,10 +172,8 @@ item.getListWithParams = function(table){
 	params.page = table.list.page
 
 	// Sorting
-	table.list.sortByDirection == 'asc' ? params.asc = table.list.sortByField : params.desc = table.list.sortByField;
+	table.list.sortByDirection == 'asc' ? params.asc = table.list.sort_by_field : params.desc = table.list.sort_by_field;
 
-	// Search
-	params.search = table.search.data;
 
 	// Send request
 	item.getList(table,params);
@@ -285,8 +291,8 @@ item.handleRelationsList = function(table,columns,end){
 		}
 
 		// Make first call 
-		item.handleNextRelation(table,relations[0],end);
 		table.list.relations.total++;
+		item.handleNextRelation(table,relations[0],end);
 	}
 
 
@@ -371,7 +377,6 @@ item.handleNextRelation = function(table,relation,end){
  * @param {closure} end
  */
 item.nextRelation = function(table,relation,end){
-
 	if(relation.next)
 		item.handleNextRelation(table,relation.next,end);
 	else{
@@ -583,7 +588,7 @@ $('[data-item-search]').on('click',function(){
 	var table = item.getTableByElement($(this));
 
 	var container = item.getContainerByTable(table);	
-	var values = table.search.action(container.find('.table-row-search').first(9));
+	var values = table.search.action(container.find('.table-row-search').first());
 
 	table.search.data = values;
 

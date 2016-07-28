@@ -73,7 +73,7 @@ class RelationQueryBuilder{
 	 *
 	 * @return string
 	 */
-	public function getRelationAlias($tab_from,$col_from,$tab_to,$col_to){
+	public function getRelationBuilder($tab_from,$col_from,$tab_to,$col_to){
 
 		foreach($this -> getRelations() as $relation){
 			if($relation -> is($tab_from,$col_from,$tab_to,$col_to)){
@@ -106,7 +106,7 @@ class RelationQueryBuilder{
 
 		if($this -> getModel()::schema() -> getTable() == $tab_from)
 			return $this -> getAlias();
-		
+
 		throw new \Exception("Error during creation alias in relations");
 	}
 	/**

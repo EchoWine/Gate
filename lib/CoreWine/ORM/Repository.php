@@ -346,6 +346,7 @@ class Repository extends QueryBuilder{
 	 * @return clone $this
 	 */
 	public function find($field,$values,$fun_alias = null){
+
 		if(empty($values))
 			return $this;
 
@@ -354,9 +355,10 @@ class Repository extends QueryBuilder{
 
 		$t = clone $this;
 
-		list($field,$values,$alias) = $t -> resolveRelationsQueryBuilder($t,$field,$values,$fun_alias);
+		# Resolve all relations
+		list($field,$alias) = $t -> resolveRelationsQueryBuilder($field,$values,$fun_alias);
 
-
+		# Search for the value
 		$t = $t -> where(function($repository) use ($field,$values,$alias){
 			foreach($values as $value){
 				$repository = $field -> searchRepository($repository,$value,$alias);
@@ -370,35 +372,59 @@ class Repository extends QueryBuilder{
 		return $t;
 	}
 
-	public function resolveRelationsQueryBuilder($repository,$field,$values,$fun_alias){
+	/**
+	 * Resolve relations building join query using a string that contains
+	 *
+	 * field_data: a field that contains some generic value (e.g. int/string etc...)
+	 * field_relation: a field that connects other objects/table, like a foreign key
+     *
+	 * The $field will look like 'x.y.z' or a simple 'a'
+	 * $field will be exploded in an array using '.'
+	 * Last value (e.g. z,a) of array indicates a field_data, others indicate a field_relation (e.g. x,y)
+	 * Each field_relation will be used to build a join query
+	 *
+	 * @param string $field
+	 * @param closure $fun_alias
+	 */
+	public function resolveRelationsQueryBuilder($field,$fun_alias){
 
 		$fields = explode(".",$field);
 
+		# Get alias of current (main) table
 		$alias = $this -> getRelationQueryBuilder() -> getAlias();
 
+		# If there is more than a field, then there must be at least a relation field
 		if(count($fields) > 1){	
 
+			# Get schema of all fields
 			$relations = $this -> getSchema() -> getAllSchemaThroughArray($fields);
 
+			# Remove last field, because last, as said before, isn't a relation_field, but a simple field
 			$last_field = $relations[count($fields) - 1];
 			unset($relations[count($fields) - 1]);
 
 			$alias_to = '';
 
+			# Build join query
 			foreach((array)$relations as $field){
 
-
+				# Get RelationBuilder 
 				$relation = $this -> getRelationQueryBuilder() 
-				-> getRelationAlias(
+				-> getRelationBuilder(
 					$field -> getObjectSchema() -> getTable(),
 					$field -> getColumn(),
 					$field -> getRelation()::schema() -> getTable(),
 					$field -> getRelation()::schema() -> getPrimaryColumn()
 				);
-								if($relation -> getNew()){
+				
+				# Only if this is a new relation, that isn't already used to build join query
+				if($relation -> getNew()){
+
 					$alias_from = $relation -> getAliasFrom();
 					$alias_to = $relation -> getAliasTo();
-					$repository = $repository -> leftJoin(
+
+					# Add join in repository
+					$this -> leftJoin(
 						$field -> getRelation()::schema() -> getTable()." as ".$alias_to,
 						$alias_to.".".$field -> getRelation()::schema() -> getPrimaryColumn(),
 						$alias_from.".".$field -> getColumn()
@@ -411,10 +437,12 @@ class Repository extends QueryBuilder{
 			$field = $last_field;
 
 		}else{
+
+			# This is a field_data
 			$field = $this -> getSchema() -> getField($fields[0]);
 		}
 
-		return [$field,$values,$alias];
+		return [$field,$alias];
 	}
 
 	public function getRepositoryAliasByField($field){

@@ -29,15 +29,27 @@ class Repository extends QueryBuilder{
 	public static $objects_ORM = [];
 
 	/**
+	 * Builder relations
+	 *
+	 * @var RelationQueryBuilder
+	 */
+	public $relation_querybuilder;
+
+
+	/**
 	 * Construct
 	 *
 	 * @param \ORM\Schema $model
 	 */
-	public function __construct($model){
+	public function __construct($model,$alias = null){
+
 		$this -> model = $model;
 
 
-		parent::__construct($this -> getSchema() -> getTable());
+		$this -> setRelationQueryBuilder(new RelationQueryBuilder($model,$alias));
+		$name = $this -> getRelationQueryBuilder() -> getNameTable();
+
+		parent::__construct($name);
 
 		$this -> setParserResult(function($rep,$results){
 			$return = [];
@@ -87,6 +99,14 @@ class Repository extends QueryBuilder{
 			return $return;
 		});
 
+	}
+
+	public function setRelationQueryBuilder($relation_query_builder){
+		$this -> relation_query_builder = $relation_query_builder;
+	}
+
+	public function getRelationQueryBuilder(){
+		return $this -> relation_query_builder;
 	}
 
 	public function getPagination(){
@@ -292,7 +312,7 @@ class Repository extends QueryBuilder{
 			$direction = $this -> getSchema() -> getSortDefaultDirection();
 		}
 
-		return $this -> orderBy($field -> getObjectSchema() -> getTable().".".$field -> getColumn(),$direction);
+		return $this -> orderBy($this -> getRelationQueryBuilder() -> getAlias().".".$field -> getColumn(),$direction);
 
 	}
 
@@ -321,10 +341,11 @@ class Repository extends QueryBuilder{
 	 *
 	 * @param string $field name field
 	 * @param array $values
+	 * @param closure $fun_alias
 	 *
 	 * @return clone $this
 	 */
-	public function find($field,$values){
+	public function find($field,$values,$fun_alias = null){
 		if(empty($values))
 			return $this;
 
@@ -333,43 +354,75 @@ class Repository extends QueryBuilder{
 
 		$t = clone $this;
 
-		$fields = explode(".",$field);
-
-		if(count($fields) > 1){
-
-			$fields = $this -> getSchema() -> getAllSchemaThroughArray($fields);
-
-			$field = $fields[count($fields) - 1];
-			unset($fields[count($fields) - 1]);
-
-		}else{
-			$field = $this -> getSchema() -> getField($fields[0]);
-			$fields = [];
-		}
+		list($field,$values,$alias) = $t -> resolveRelationsQueryBuilder($t,$field,$values,$fun_alias);
 
 
-		$t = $t -> where(function($repository) use ($field,$values) {
+		$t = $t -> where(function($repository) use ($field,$values,$alias){
 			foreach($values as $value){
-				$repository = $field -> searchRepository($repository,$value);
+				$repository = $field -> searchRepository($repository,$value,$alias);
 			}
 
 			return $repository;
 		});
 
-		foreach((array)$fields as $field){
-			$t = $t -> leftJoin(
-				$field -> getRelation()::schema() -> getTable(),
-				$field -> getRelation()::schema() -> getTable().".".$field -> getRelation()::schema() -> getPrimaryColumn(),
-				$field -> getObjectSchema() -> getTable().".".$field -> getColumn()
-			);
-
-		}
-
 
 
 		return $t;
+	}
+
+	public function resolveRelationsQueryBuilder($repository,$field,$values,$fun_alias){
+
+		$fields = explode(".",$field);
+
+		$alias = $this -> getRelationQueryBuilder() -> getAlias();
+
+		if(count($fields) > 1){	
+
+			$relations = $this -> getSchema() -> getAllSchemaThroughArray($fields);
+
+			$last_field = $relations[count($fields) - 1];
+			unset($relations[count($fields) - 1]);
+
+			$alias_to = '';
+
+			foreach((array)$relations as $field){
 
 
+				$relation = $this -> getRelationQueryBuilder() 
+				-> getRelationAlias(
+					$field -> getObjectSchema() -> getTable(),
+					$field -> getColumn(),
+					$field -> getRelation()::schema() -> getTable(),
+					$field -> getRelation()::schema() -> getPrimaryColumn()
+				);
+								if($relation -> getNew()){
+					$alias_from = $relation -> getAliasFrom();
+					$alias_to = $relation -> getAliasTo();
+					$repository = $repository -> leftJoin(
+						$field -> getRelation()::schema() -> getTable()." as ".$alias_to,
+						$alias_to.".".$field -> getRelation()::schema() -> getPrimaryColumn(),
+						$alias_from.".".$field -> getColumn()
+					);
+				}
+
+				$alias = $alias_to;
+			}
+
+			$field = $last_field;
+
+		}else{
+			$field = $this -> getSchema() -> getField($fields[0]);
+		}
+
+		return [$field,$values,$alias];
+	}
+
+	public function getRepositoryAliasByField($field){
+		$fields = explode(".",$field);
+		$field = $fields[count($fields) - 1];
+		unset($fields[count($fields) - 1]);
+		$field = implode("_",$fields);
+		return $field;
 	}
 }
 

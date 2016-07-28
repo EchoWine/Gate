@@ -780,7 +780,7 @@ class QueryBuilder{
 	 */
 	public function _join(string $ACT,$table,$table_fun = null,$last = null,$on = true){
 
-		$t = clone $this;
+		$t = $this;
 
 		if($table_fun == null)
 			$last = $table_fun;
@@ -809,9 +809,16 @@ class QueryBuilder{
 
 			if($last == null)$last = $table;
 
-		}else if(!Schema::hasTable($table)){
-			die("Schema: $table doesn't exists");
+		}else{
+
+
+			list($table_g,$table_alias) = DB::SQL()::GET_ALIAS($table);
+
+			if(!Schema::hasTable($table_g)){
+				throw new \Exception("Schema: $table doesn't exists");
+			}
 		}
+
 		if(empty($t -> builder -> orOn) && empty($t -> builder -> andOn)){
 			
 			list($table_g,$table_alias) = DB::SQL()::GET_ALIAS($table);

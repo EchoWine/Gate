@@ -111,8 +111,8 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return ORM\Repository
 	 */
-	public function getRepository(){
-		return $this -> getModel()::repository();
+	public function getRepository($alias = null){
+		return $this -> getModel()::repository($alias);
 	}
 
 	/**
@@ -123,7 +123,10 @@ abstract class Controller extends SourceController{
 	public function all(){
 
 
-			$repository = $this -> getRepository();
+			# Get repository alias _d0
+			# This will prevent error with joins between same table
+			$repository = $this -> getRepository('_d0');
+
 
 			# Request
 			$page = Request::get('page',1);
@@ -166,10 +169,12 @@ abstract class Controller extends SourceController{
 			}
 
 			$repository = $repository -> paginate($show,$page);
-			$repository = $repository -> select($this -> getSchema());
+			$repository = $repository -> select('_d0.*');
 
+			DB::clearLog();
 			$results = $repository -> get();
 
+			//print_r(DB::log(true));
 			return new Response\ApiAllSuccess([
 				'results' => $results -> toArray(),
 				'pagination' => $results -> getPagination() -> toArray()

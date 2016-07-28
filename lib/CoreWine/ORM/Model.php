@@ -213,9 +213,9 @@ class Model{
 	/**
 	 * Get static schema
 	 */
-	public static function repository(){
+	public static function repository($alias = null){
 		$repository = static::$__repository;
-		return new $repository(static::class);
+		return new $repository(static::class,$alias);
 	}
 
 	/**

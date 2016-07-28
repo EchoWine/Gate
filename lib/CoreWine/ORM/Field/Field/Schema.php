@@ -580,8 +580,12 @@ class Schema{
 	 *
 	 * @return Repository
 	 */
-	public function searchRepository($repository,$value){
-		return $repository -> orWhereLike($this -> getObjectSchema() -> getTable().".".$this -> getColumn(),'%'.$value.'%');
+	public function searchRepository($repository,$value,$table = null){
+
+		if(!$table)
+			$table = $this -> getObjectSchema() -> getTable();
+
+		return $repository -> orWhereLike($table.".".$this -> getColumn(),'%'.$value.'%');
 	}
 }
 ?>

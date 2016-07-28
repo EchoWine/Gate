@@ -43,7 +43,11 @@ class Schema extends IntegerSchema{
 	 *
 	 * @return Repository
 	 */
-	public function searchRepository($repository,$value){
+	public function searchRepository($repository,$value,$table = null){
+
+		if(!$table)
+			$table = $this -> getObjectSchema() -> getTable();
+		
 		return $repository -> orWhere($this -> getColumn(),(int)$value);
 	}
 

@@ -170,8 +170,14 @@
 								{{if $url = $field -> getUrl($n)}}
 
 									var relation = table.list.relations.values["{{$url}}"];
-									if(data && data["{{$relation -> getColumn()}}"])
-										data = relation[data["{{$relation -> getColumn()}}"]];
+									if(data && data["{{$relation -> getColumn()}}"]){
+										$.map(relation,function(value){
+											if(value.{{$relation -> getObjectSchema() -> getPrimaryField() -> getName()}} == data["{{$relation -> getColumn()}}"]){
+												data = value;
+												return;
+											}
+										});
+									}
 									else
 										data = null;
 
@@ -230,7 +236,7 @@
 					var values = {};
 
 					{{for $views -> fields('edit') as $field}}
-						values.{{$field -> getSchema()-> getName()}} = form.find('[name={{$field -> getSchema() -> getName()}}]').val();
+						values.{{$field -> getSchema() -> getName()}} = form.find('[name={{$field -> getSchema() -> getName()}}]').val();
 					{{/for}}
 					return values;
 				}

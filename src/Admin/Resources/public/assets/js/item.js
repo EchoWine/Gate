@@ -16,7 +16,7 @@ item.ini = function(){
 	for(i in item.tables){
 		table = item.tables[i];
 		
-		item.updateSortHTML(table,table.list.sortByField,table.list.sortByDirection);
+		item.updateSortHTML(table,table.list.sort_by_field,table.list.sort_by_direction);
 		item.getListWithParams(table);
 
 	};
@@ -172,7 +172,7 @@ item.getListWithParams = function(table){
 	params.page = table.list.page
 
 	// Sorting
-	table.list.sortByDirection == 'asc' ? params.asc = table.list.sort_by_field : params.desc = table.list.sort_by_field;
+	table.list.sort_by_direction == 'asc' ? params.asc = table.list.sort_by_field : params.desc = table.list.sort_by_field;
 
 
 	// Send request
@@ -500,7 +500,7 @@ item.updateSortHTML = function(table,field,direction){
 	container.find('[data-item-sort-asc]').addClass('hide');
 	container.find('[data-item-sort-desc]').addClass('hide');
 
-	var sort = container.find('[data-item-sort-field='+field+']');
+	var sort = container.find("[data-item-sort-field='"+field+"']");
 	var sort_direction = direction == 'asc' ? '[data-item-sort-asc]' : '[data-item-sort-desc]';
 
 	sort.find('[data-item-sort-none]').addClass('hide');
@@ -605,16 +605,16 @@ $('body').on('click','[data-item-sort-field]',function(){
 
 	var direction = 'asc';
 
-	if(table.list.sortByField == field){
-		direction = table.list.sortByDirection; 
+	if(table.list.sort_by_field == field){
+		direction = table.list.sort_by_direction; 
 	}else{
 
 	}
 
 	direction = item.getOppositeSort(direction);
 
-	table.list.sortByDirection = direction;
-	table.list.sortByField = field;
+	table.list.sort_by_direction = direction;
+	table.list.sort_by_field = field;
 
 	item.getListWithParams(table);
 

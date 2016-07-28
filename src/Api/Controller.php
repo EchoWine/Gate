@@ -140,19 +140,8 @@ abstract class Controller extends SourceController{
 			# SORTING
 			if($sort){
 
-				# If the not exists the field
-				if(!$this -> getSchema() -> hasField($sort))
-					return Response\ApiAllErrorParamSortNotExists();
-				
-
-				$field = $this -> getSchema() -> getField($sort);
-
-				# If the field isn't enabled to sorting
-				if(!$field -> isSort())
-					return Response\ApiAllErrorParamSortNotValid();
-				
-
-				$repository = $repository -> sortByField($field,$direction);
+			
+				$repository = $repository -> sortByField($sort,$direction);
 
 			}else{
 

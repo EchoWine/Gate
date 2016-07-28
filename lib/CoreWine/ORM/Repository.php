@@ -305,14 +305,22 @@ class Repository extends QueryBuilder{
 	 */
 	public function sortByField($field = null,$direction = null){
 		if($field == null){
-			$field = $this -> getSchema() -> getSortDefaultField();
+			$field = $this -> getSchema() -> getSortDefaultField() -> getName();
 		}
 
 		if($direction == null){
 			$direction = $this -> getSchema() -> getSortDefaultDirection();
 		}
 
-		return $this -> orderBy($this -> getRelationQueryBuilder() -> getAlias().".".$field -> getColumn(),$direction);
+		# Resolve all relations
+		list($field,$alias) = $this -> resolveRelationsQueryBuilder($field,function(){});
+
+
+		# If the field isn't enabled to sorting
+		//if(!$field -> isSort())
+			//return $this;
+
+		return $this -> orderBy($alias.".".$field -> getColumn(),$direction);
 
 	}
 
@@ -445,13 +453,6 @@ class Repository extends QueryBuilder{
 		return [$field,$alias];
 	}
 
-	public function getRepositoryAliasByField($field){
-		$fields = explode(".",$field);
-		$field = $fields[count($fields) - 1];
-		unset($fields[count($fields) - 1]);
-		$field = implode("_",$fields);
-		return $field;
-	}
 }
 
 ?>

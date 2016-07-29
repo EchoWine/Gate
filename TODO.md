@@ -19,7 +19,7 @@ ORM:
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'
 - [x] Rename 'src/item' in src/Api' and cleanup
 - [ ] Throw exception when ORM/Model relations is null and a field is invoked
-- [ ] Resolve problem about column/repository of field
+- [x] Resolve problem about column/repository of field
 - [x] Make clear distinction between Field/Entity and Field/Schema
 - [x] Make clear distinction between ORM/Entity and ORM/Schema
 - [ ] Improve ::copy in relations
@@ -29,7 +29,7 @@ ORM:
 - [x] Save relations N to 1 ORM
 - [x] Get relations 1 to N ORM
 - [x] Save relations 1 to N ORM
-- [ ] Improve relations (select which relations, get relation after retrieved)
+- [ ] Improve relations (::with() select which relations, get relation after retrieved)
 - [x] Create basic ORM
 	- [x] Create
 	- [x] Save

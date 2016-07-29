@@ -140,7 +140,7 @@ abstract class Controller extends SourceController{
 			# SORTING
 			if($sort){
 
-			
+				
 				$repository = $repository -> sortByField($sort,$direction);
 
 			}else{
@@ -160,10 +160,9 @@ abstract class Controller extends SourceController{
 			$repository = $repository -> paginate($show,$page);
 			$repository = $repository -> select('_d0.*');
 
-			DB::clearLog();
 			$results = $repository -> get();
 
-			//print_r(DB::log(true));
+			//print_r(DB::log(true)[0]);
 			return new Response\ApiAllSuccess([
 				'results' => $results -> toArray(),
 				'pagination' => $results -> getPagination() -> toArray()

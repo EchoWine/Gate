@@ -35,7 +35,6 @@ class Repository extends QueryBuilder{
 	 */
 	public $relation_querybuilder;
 
-
 	/**
 	 * Construct
 	 *
@@ -112,6 +111,7 @@ class Repository extends QueryBuilder{
 	public function getPagination(){
 		return $this -> pagination;
 	}
+
 
 	/**
 	 * Get

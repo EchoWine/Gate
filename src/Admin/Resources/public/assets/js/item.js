@@ -218,7 +218,7 @@ item.handleList = function(table,response){
 
 		var columns = item.rowToColumns(data.results);
 
-		item.handleRelationsList(table,columns,function(){
+		item.handleRelationsList(container,table,columns,function(){
 
 			// Report result only when all relations call will be made
 			table.list.get(container,table,data.results,columns);
@@ -236,38 +236,16 @@ item.handleList = function(table,response){
 
 }
 
-/**
- * Convert given rows result into column results
- *
- * @param {array} results
- *
- * @return {array}
- */
-item.rowToColumns = function(results){
-	var columns = [];
-
-	$.map(results,function(row){
-		$.map(row,function(value,col){
-
-			if(typeof columns[col] == 'undefined'){
-				columns[col] = [];
-			}
-
-			columns[col].push(value);
-		});
-	})
-
-	return columns;
-}
 
 /**
  * Handle the relations in list
  *
+ * @param {container} DOM
  * @param {object} table
  * @param {array} columns
  * @param {closure} end
  */
-item.handleRelationsList = function(table,columns,end){
+item.handleRelationsList = function(container,table,columns,end){
 
 	table.list.relations.columns[table.name] = columns;
 	//table.list.relations.ids[table.name] = columns['id'];
@@ -295,7 +273,9 @@ item.handleRelationsList = function(table,columns,end){
 		item.handleNextRelation(table,relations[0],end);
 	}
 
-
+	if(table.list.relations.total == 0){
+		end();
+	}
 
 
 };
@@ -387,6 +367,31 @@ item.nextRelation = function(table,relation,end){
 		end();
 	}
 };
+
+/**
+ * Convert given rows result into column results
+ *
+ * @param {array} results
+ *
+ * @return {array}
+ */
+item.rowToColumns = function(results){
+	var columns = [];
+
+	$.map(results,function(row){
+		$.map(row,function(value,col){
+
+			if(typeof columns[col] == 'undefined'){
+				columns[col] = [];
+			}
+
+			columns[col].push(value);
+		});
+	})
+
+	return columns;
+}
+
 
 /**
  * Handle basic response

@@ -27,6 +27,14 @@ class RelationQueryBuilder{
 
 	}
 
+	public function resetCountRelation(){
+		$this -> count_relations = 0;
+	}
+
+	public function addCountRelation(){
+		$this -> count_relations++;
+	}
+
 	/**
 	 * Get the model
 	 *
@@ -73,21 +81,22 @@ class RelationQueryBuilder{
 	 *
 	 * @return string
 	 */
-	public function getRelationBuilder($tab_from,$col_from,$tab_to,$col_to){
+	public function getRelationBuilder($relations_way,$tab_from,$col_from,$tab_to,$col_to){
+
+		$this -> addCountRelation();
+		$count = $this -> count_relations;
 
 		foreach($this -> getRelations() as $relation){
-			if($relation -> is($tab_from,$col_from,$tab_to,$col_to)){
+			if($relation -> is($relations_way,$tab_from,$col_from,$tab_to,$col_to)){
 				$relation -> setNew(0);
 				return $relation;
 			}
 		}
 
-		$relation = new RelationBuilder($tab_from,$col_from,$tab_to,$col_to);
-		$relation -> setNew(1);
-		$count = $this -> count_relations++;
+		$relation = new RelationBuilder($relations_way,$tab_from,$col_from,$tab_to,$col_to);
 
 		# Search for existen table
-		$relation -> setAliasFrom($this -> getAliasFrom($tab_from));
+		$relation -> setAliasFrom($this -> getAliasFrom($relations_way,$tab_from));
 
 		# Create new alias
 		$relation -> setAliasTo("_t".$count);
@@ -96,11 +105,14 @@ class RelationQueryBuilder{
 		return $relation;
 	}
 
-	public function getAliasFrom($tab_from){
+	public function getAliasFrom($relations_way,$tab_from){
 
+		$ways = explode(".",$relations_way);
+		unset($ways[count($ways) - 1]);
+		$relations_way = implode(".",$ways);
 
 		foreach($this -> getRelations() as $relation){
-			if($relation -> getTableTo() == $tab_from)
+			if($relation -> getFieldWay() == $relations_way)
 				return $relation -> getAliasTo();
 		}
 

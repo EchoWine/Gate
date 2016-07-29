@@ -9,23 +9,30 @@ class RelationBuilder{
 	public $col_from;
 	public $table_to;
 	public $col_to;
-	public $_new = 0;
 	public $alias_from;
 	public $alias_to;
+	public $relations_way;
+	public $_new = 1;
 
-	public function __construct($table_from,$col_from,$table_to,$col_to){
+	public function __construct($relations_way,$table_from,$col_from,$table_to,$col_to){
+		$this -> relations_way = $relations_way;
 		$this -> table_from = $table_from;
 		$this -> col_from = $col_from;
 		$this -> table_to = $table_to;
 		$this -> col_to = $col_to;
 	}
 
-	public function is($table_from,$col_from,$table_to,$col_to){
+	public function is($relations_way,$table_from,$col_from,$table_to,$col_to){
 		return $this -> table_from == $table_from && $this -> col_from == $col_from &&
-		$this -> table_to == $table_to && $this -> col_to == $col_to;
+		$this -> table_to == $table_to && $this -> col_to == $col_to &&
+		$this -> relations_way == $relations_way;
 
 	}
 
+	public function getFieldWay(){
+		return $this -> relations_way;
+	}
+	
 	public function setNew($new){
 		$this -> _new = $new;
 	}

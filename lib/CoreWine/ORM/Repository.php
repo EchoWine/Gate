@@ -304,6 +304,7 @@ class Repository extends QueryBuilder{
 	 * @param string $direction
 	 */
 	public function sortByField($field = null,$direction = null){
+
 		if($field == null){
 			$field = $this -> getSchema() -> getSortDefaultField() -> getName();
 		}
@@ -413,12 +414,18 @@ class Repository extends QueryBuilder{
 
 			$alias_to = '';
 
+			$this -> getRelationQueryBuilder() -> resetCountRelation();
+
+			$relations_way = $this -> getModel()::schema() -> getTable();
 			# Build join query
 			foreach((array)$relations as $field){
+
+				$relations_way .= ".".$field -> getName();
 
 				# Get RelationBuilder 
 				$relation = $this -> getRelationQueryBuilder() 
 				-> getRelationBuilder(
+					$relations_way,
 					$field -> getObjectSchema() -> getTable(),
 					$field -> getColumn(),
 					$field -> getRelation()::schema() -> getTable(),
@@ -426,11 +433,11 @@ class Repository extends QueryBuilder{
 				);
 				
 				# Only if this is a new relation, that isn't already used to build join query
+				
+				$alias_from = $relation -> getAliasFrom();
+				$alias_to = $relation -> getAliasTo();
+
 				if($relation -> getNew()){
-
-					$alias_from = $relation -> getAliasFrom();
-					$alias_to = $relation -> getAliasTo();
-
 					# Add join in repository
 					$this -> leftJoin(
 						$field -> getRelation()::schema() -> getTable()." as ".$alias_to,
@@ -438,6 +445,7 @@ class Repository extends QueryBuilder{
 						$alias_from.".".$field -> getColumn()
 					);
 				}
+				
 
 				$alias = $alias_to;
 			}

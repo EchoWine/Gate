@@ -155,6 +155,8 @@ class Response{
 	 */
 	public function setBody($body){
 		$this -> body = $body;
+
+		return $this;
 	}
 
 	/**
@@ -206,7 +208,7 @@ class Response{
 		// status
         header(sprintf('HTTP/%s %s %s', 
         	$this -> version, 
-        	$this -> status_code, 
+        	$this -> status_code,
         	$this -> status_message), 
         	true, $this -> status_code);
 
@@ -250,14 +252,23 @@ class Response{
 	 * @param CoreWine\Http\Cookie $cookie 		The cookie object
 	 * @return CoreWine\Http\Response 			
 	 */
-	public function attach(Cookie $cookie) {
+	public function attach(\CoreWine\Http\Cookie $cookie) {
 		if (isset($cookie) && ($cookie !== null)) {
-			$this -> header('Set-Cookie', $cookie);
+			// @todo fix the cookie as a string to a valid/accepted value
+			//$this -> header('Set-Cookie', $cookie);
+
+			setcookie($cookie -> getName(), 
+				$cookie -> getValue(), 
+				$cookie -> getExpirationTime(), 
+				$cookie -> getPath(), 
+				$cookie -> getDomain(), 
+				$cookie -> isSecure());
 		} else {
 			throw new \InvalidArgumentException('Invalid cookie value.');
 		}
 
 		return $this;
 	}
+
 
 }

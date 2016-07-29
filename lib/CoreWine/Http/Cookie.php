@@ -39,6 +39,8 @@ class Cookie {
 	 */
 	protected $secure;
 
+	protected $members = [];
+
 	/**
      * @var string ASCII codes not valid for for use in a cookie name
      *
@@ -53,10 +55,10 @@ class Cookie {
      *
      * @var array
      */
-    protected $defaults = [
+    protected static $defaults = [
         'value' => '',
         'domain' => null,
-        'hostonly' => null,
+        //'hostonly' => null,
         'path' => '/',
         'expires' => null,
         'secure' => false,
@@ -218,6 +220,9 @@ class Cookie {
 		return $this -> secure;
 	}
 
+	public static function getDefaults() {
+		return static::$defaults;
+	}
 
 	/**
 	 * Returns the cookie as a string
@@ -265,22 +270,19 @@ class Cookie {
 	 * @return null
 	 */
 	private function setDefaults(array $default_values = null) {
+		$values = [];
 
 		if (empty($default_values) || $default_values === null) {
-			foreach ($this -> defaults as $key => $value) {
-				$this -> cookies[$key] = $this -> defaults[$value];
-			}
-
+			$values = $this -> defaults;
 		} else {
-
-			//$this -> name = $default_values['name'];
-			$this -> value = $default_values['value'];
-			$this -> expires = $default_values['expires'];
-			$this -> path = $default_values['path'];
-			$this -> domain = $default_values['domain'];
-			$this -> secure = $default_values['secure']; 
-
+			$values = $default_values;
 		}
+
+			$this -> value = $values['value'];
+			$this -> expires = $values['expires'];
+			$this -> path = $values['path'];
+			$this -> domain = $values['domain'];
+			$this -> secure = $values['secure'];
 
 	}
 

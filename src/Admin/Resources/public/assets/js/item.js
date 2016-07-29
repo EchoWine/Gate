@@ -556,6 +556,32 @@ item.getContainerByTable = function(table){
 	return $('[data-item-table-container='+table.name+']');
 };
 
+/**
+ * Return selected checkbox
+ * 
+ * @param {object} table
+ * 
+ * @return {array}
+ */
+item.getSelectedCheckbox = function(table){
+
+	var container = item.getContainerByTable(table);
+	return checkbox = container.find('[data-item-select]:checked');
+}
+
+/**
+ * Return selected checkbox
+ * 
+ * @param {object} table
+ * 
+ * @return {array}
+ */
+item.getAllCheckbox = function(table){
+
+	var container = item.getContainerByTable(table);
+	return checkbox = container.find('[data-item-select]');
+}
+
 
 /**
  * Get IDs of records selected
@@ -564,11 +590,11 @@ item.getContainerByTable = function(table){
  *
  * @return {array}
  */
-item.getSelectedRecords = function(table){
-	var container = item.getContainerByTable(table);
-	var checkbox = container.find('[data-item-select]:checked');
+item.getSelectedIds = function(table){
+	checkbox = item.getSelectedCheckbox(table);
 
 	var ids = [];
+
 	$.map(checkbox,function(value){
 		ids.push($(value).attr('data-item-id'));
 	});
@@ -576,6 +602,21 @@ item.getSelectedRecords = function(table){
 	return ids;
 }
 
+/**
+ * Set animation for no selected rows
+ *
+ * @param {object} table
+ */
+item.animationNoSelectedRowMultiple = function(table){
+	checkbox = item.getAllCheckbox(table);
+
+	checkbox.addClass('required');
+
+	setTimeout(function(){
+		checkbox.removeClass('required');
+	},400);
+
+}
 
 /** 
  * Show on change
@@ -698,7 +739,7 @@ $('body').on('submit','[item-data-form-edit]',function(e){
  * Select all on click
  */
 $('body').on('click','[data-item-select-all]',function(){
-	var table = item.getTable($(this).attr('data-item-table'));
+	var table = item.getTableByElement($(this));
 
 	var container = item.getContainerByTable(table);
 	
@@ -711,12 +752,27 @@ $('body').on('click','[data-item-select-all]',function(){
  */
 $('body').on('click','[data-item-multiple-delete]',function(){
 
-	var table = item.getTable($(this).attr('data-item-table'));
+	var table = item.getTableByElement($(this));
 	var container = item.getContainerByTable(table);
-	var ids = item.getSelectedRecords(table);
+	var ids = item.getSelectedIds(table);
 	$.map(ids,function(id){
 		item.remove(table,id);
 	});
+});
+
+$('body').on('change','[data-item-multiple]',function(){
+	var table = item.getTableByElement($(this));
+	var ids = item.getSelectedIds(table);
+	if(ids.length == 0){
+		item.animationNoSelectedRowMultiple(table);
+	}else if($(this).val() == 'delete'){
+		modal.open(
+			'modal-item-delete-multiple',
+			{'data-modal-item-table':table.name}
+		);
+	}
+
+	$(this).val('none');
 });
 
 modal.on('modal-item-edit',function(container,data){
@@ -756,7 +812,7 @@ modal.on('modal-item-delete',function(el,data){
 modal.on('modal-item-delete-multiple',function(el,data){
 	var del = el.find('[data-item-multiple-delete]');
 	var table = item.getTable(data['data-modal-item-table']);
-	var ids = item.getSelectedRecords(table);
+	var ids = item.getSelectedIds(table);
 	el.find('.data-modal-item-ids').html(ids.join(","));
 	del.attr('data-item-table',data['data-modal-item-table']);
 });
@@ -768,6 +824,8 @@ modal.on('modal-item-add',function(el,data){
 	var el = el.find('[item-data-form-add]');
 	el.attr('data-item-table',data['data-modal-item-table']);
 });
+
+
 
 
 /**

@@ -2,7 +2,7 @@
 
 {{block page-content}}
 
-	<div class='templates' data-template='spinner-table'>
+	<div data-template='spinner-table'>
 
 		<div class='table-row'>
 			<div class='table-col'>
@@ -13,21 +13,21 @@
 	</div>
 	
 	<!-- ALERT DETAILS -->
-	<div class='templates' data-template='alert-details'>
+	<div data-template='alert-details'>
 		<li>{message}</li>
 	</div>
 
 	<!-- ALERT SUCCESS TEMPLATE -->	
-	<div class='templates' data-template='alert-success'>
+	<div data-template='alert-success'>
 		<div class='alert alert-success'>{message}<ul>{details}</ul></div>
 	</div>
 
 	<!-- ALERT DANGER TEMPLATE -->
-	<div class='templates' data-template='alert-danger'>
+	<div data-template='alert-danger'>
 		<div class='alert alert-danger'>{message}<ul>{details}</ul></div>
 	</div>
 
-	<div class='templates' data-template='autocomplete-container'>
+	<div data-template='autocomplete-container'>
 		<div class='autocomplete-container' data-autocomplete-container='{name}'>
 			<div class='autocomplete-results'>
 				{results}
@@ -35,7 +35,7 @@
 		</div>
 	</div>
 
-	<div class='templates' data-template='autocomplete-result'>
+	<div data-template='autocomplete-result'>
 		<div class='autocomplete-result' 
 			data-autocomplete-insert='{name}'
 			data-autocomplete-hidden='{column}'
@@ -55,7 +55,7 @@
 	{{include Admin/admin/modal/delete_multiple}}
 
 	<div class='page-section'>
-		<div data-use-template='alert-global'></div>
+		<div class='alert-global'></div>
 	</div>
 
 	<div class='page-row' data-item-table-container='{{$table}}'>
@@ -110,7 +110,7 @@
 				{{include Admin/admin/structure/table/head ['table' => $table,'fields' => $views -> fields('all')]}}
 				{{include Admin/admin/structure/table/search ['table' => $table,'views' => $views]}}
 
-				<div data-use-template='item-row'>
+				<div class='item-rows'>
 					<div class='table-row'>
 						<div class='table-col'>
 							{{include Admin/admin/__spinner}}
@@ -203,10 +203,10 @@
 
 
 						record.table = table.name;
-						rows += template.get(table.template.row,record);
+						rows += template.get('item-row',record);
 					});
 
-					template.setByHtml(rows,table.template.row);
+					template.html(rows,'.item-rows');
 					
 				}
 			},
@@ -267,10 +267,7 @@
 					{{/for}}
 					return values;
 				}
-			},
-			template: {
-				row: 'item-row'
-			},
+			}
 
 		});
 	</script>

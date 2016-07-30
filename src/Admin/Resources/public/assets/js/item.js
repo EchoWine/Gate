@@ -54,8 +54,6 @@ item.getTable = function(name){
  * @param {array} params
  */
 item.getList = function(table,params = {}){
-		
-	//template.setBySource('spinner-table','item-row',{});
 	
 	api.all(table.url,params,function(response){
 		
@@ -236,7 +234,7 @@ item.handleList = function(table,response){
 	}
 
 	if(response.status == 'error'){
-		item.addAlert('alert-danger','alert-global',response);
+		item.addAlert('alert-danger','.alert-global',response);
 	}
 
 }
@@ -410,7 +408,7 @@ item.handleBasic = function(table,response,container_modal){
 	if(response.status == 'success' || !container){
 		item.getListWithParams(table);
 		modal.closeActual();
-		item.addAlert('alert-success','alert-global',response);
+		item.addAlert('alert-success','.alert-global',response);
 	}
 
 	if(response.status == 'error'){
@@ -436,10 +434,10 @@ item.addAlert = function(type,destination,data){
 		});
 	}
 
-	template.setBySource(type,destination,{
+	template.set(type,{
 		message:data.message,
 		details:det
-	});
+	},destination);
 };
 
 /**

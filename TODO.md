@@ -70,6 +70,9 @@ ORM:
 	- [x] edit
 	- [x] delete
 	- [x] refactoring
+	- [x] delete multiple
+	- [ ] edit multiple
+	- [ ] copy multiple
 
 DataBase:
 - [ ] Option to cleanup table model, defined previously, and not exist

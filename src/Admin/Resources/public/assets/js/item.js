@@ -787,9 +787,8 @@ $('body').on('click','[data-item-multiple-delete]',function(){
 	var table = item.getTableByElement($(this));
 	var container = item.getContainerByTable(table);
 	var ids = item.getSelectedIds(table);
-	$.map(ids,function(id){
-		item.remove(table,id);
-	});
+	ids = ids.join(";");
+	item.remove(table,ids);
 });
 
 $('body').on('change','[data-item-multiple]',function(){

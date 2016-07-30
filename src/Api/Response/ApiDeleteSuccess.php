@@ -12,19 +12,28 @@ class ApiDeleteSuccess extends Success{
 	const CODE = 'success';
 
 	/**
-	 * Message
-	 */
-	const MESSAGE = "Resource was deleted with success";
-
-	/**
 	 * Construct
 	 *
 	 * @param ORM\Model $model
 	 */
-	public function __construct($model){
+	public function __construct($models){
 
-		parent::__construct(static::CODE,static::MESSAGE);
-		$this -> setData(['id' => $model -> id,'resource' => $model -> toArray()]) -> setRequest(Request::getCall());
+		$data = [];
+
+		foreach($models as $model){
+			$data[$model -> id] = $model -> toArray();
+		}
+
+		$ids = implode(", ",array_map(function($value){
+			return "#".$value;
+		},array_keys($data)));
+
+		$message = "Deleted: {$ids}";
+
+		parent::__construct(static::CODE,$message);
+
+
+		$this -> setData($data) -> setRequest(Request::getCall());
 
 	}
 }

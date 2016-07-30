@@ -278,15 +278,25 @@ abstract class Controller extends SourceController{
 
 		try{
 
-			# Return error if not found
-			if(!$model = $this -> getModel()::firstByPrimary($id))
-				return new Response\ApiNotFound();
+			$ids = explode(";",$id);
 
-			# Delete
-			$model -> delete();
+			$models = [];
+
+			foreach($ids as $id){
+
+				# Return error if not found
+				if(!$model = $this -> getModel()::firstByPrimary($id))
+					return new Response\ApiNotFound();
+
+				# Delete
+				$model -> delete();
+
+				$models[] = $model;
+
+			}
 			
 			# Return success
-			return new Response\ApiDeleteSuccess($model);
+			return new Response\ApiDeleteSuccess($models);
 
 		}catch(\Exception $e){
 

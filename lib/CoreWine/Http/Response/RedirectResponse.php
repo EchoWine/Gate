@@ -28,6 +28,17 @@ class RedirectResponse extends Response{
 		return $this;
 	}
 
+	/**
+	 * Redirects back (there's no warranty it will work)
+	 *
+	 * @return  \CoreWine\Http\Response\RedirectResponse				
+	 */
+	public function back() {
+		$this -> header('Location', 'javascript://history.go(-1)');
+
+		return $this;
+	}
+
 
 
 

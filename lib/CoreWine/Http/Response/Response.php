@@ -270,5 +270,61 @@ class Response{
 		return $this;
 	}
 
+	/**
+	 * The usual 'with' 
+	 *
+	 * @param string|array $name 		Either an array or the key of the array when $values is defined
+	 * @param array $values 			The array of values  
+	 * @return CoreWine\Http\Response 				
+	 */
+	public function with($name, array $values = null) {
+		// when $values is defined, a $name must be provided
+		if (isset($values) && ($values !== null)) {
+			// is $name a string?
+			if (!is_string($name)) {
+				throw new \InvalidArgumentException("Reference name must be a string.");
+			}
 
+			// $values must be an array when specified
+			if (!is_array($values)) {
+				throw new \InvalidArgumentException("Invalid argument. Array expected.");
+			}
+
+			\CoreWine\Flash::add($name, $values);
+			// no chaining: order matters. Example: $response -> with() -> back() is not
+			//allowed
+			//return null;
+
+			return $this;
+		} 
+
+		// No pair provided. $name must be an array then.
+		if (!is_array($name)) {
+			throw new \InvalidArgumentException("Invalid argument. Array expected.");
+			
+		} else {
+			// @todo validate it
+
+			// @todo fix this shit
+			$array = [];
+			$values = [];
+			$the_name = null;
+
+			foreach ($name as $key => $value) {
+				// use the first value as key
+				if ($the_name === null) {
+					$the_name = $key;
+				}
+				$values[$the_name] = $value;
+	
+			}
+
+			\CoreWine\Flash::add($the_name, $values);
+
+			return $this;
+		}
+
+		// we shouldn't be here. Something went wrong.
+		throw new Exception("Unexpected error.");
+	} 
 }

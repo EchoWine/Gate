@@ -1,0 +1,30 @@
+
+{{block error-messages}}
+			<h1>Stack: </h1>
+			<hr>
+				
+					<div class="row">
+						
+					
+					{{for Flash::get('error') as $error}}
+						<p>Errors: </p>
+						<div class="col-md-6">
+						{{for $error as $fields}}
+							{{for $fields as $value}}
+								<small>-- {{$value}}</small>
+							{{/for}}
+						{{/for}}
+						</div>
+					{{/for}}
+					</div>
+
+			<hr>
+				<h3>API like: </h3>
+					{{for Flash::get('oi') as $error}}
+						{{json_encode($error)}}
+					{{/for}}
+
+			
+{{/block}}
+
+

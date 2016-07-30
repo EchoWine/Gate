@@ -14,6 +14,13 @@ General:
 - [ ] CoreWine\Response html/json
 - [ ] Add __call exception
 - [ ] Add middleware
+- [ ] Close function alert
+- [ ] Api delete multiple
+- [ ] Form (autocomplete) model 1 to 1, N to 1;
+- [ ] Multiple search admin
+- [ ] Search in multiple column api
+- [ ] URL various modal: add/edit/get (with hash)
+- [ ] resolveRelation N to 1
 
 ORM:
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'

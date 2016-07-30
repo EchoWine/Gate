@@ -917,7 +917,7 @@ item.autocomplete.get = function(element,field_name,field_column,url,search,fiel
 	});
 };
 
-$('body').on('mousedown','[data-autocomplete-insert]',function(){
+$('body').on('click','[data-autocomplete-insert]',function(){
 
 	var name = $(this).attr('data-autocomplete-insert');
 	var label = $(this).attr('data-autocomplete-label');
@@ -937,6 +937,8 @@ $('body').on('keyup change focus','[data-autocomplete-name]',function(e){
 	});
 });
 
+
+
 item.autocomplete.retrieve = function(field,callback){
 	var name = field.attr('data-autocomplete-name');
 	var column = field.attr('data-autocomplete-column');
@@ -952,8 +954,29 @@ item.autocomplete.retrieve = function(field,callback){
 
 $('body').on('blur','[data-autocomplete-name]',function(e){
 	var name = $(this).attr('data-autocomplete-name');
-	item.autocomplete.remove(name);
+	//item.autocomplete.remove(name);
 });
+
+/**
+ * Close the modal when outside is clicked
+ */
+$(document).click(function(event){
+	if(!$(event.target).is('[data-autocomplete-name]')){
+
+		$.map($('[data-autocomplete-container]'),function(container){
+			container = $(container);
+			var name = container.attr('data-autocomplete-container');
+			if(!$("[data-autocomplete-name='"+name+"']").is(":focus")){
+				if(name){
+					item.autocomplete.remove(name);
+				}
+			}
+			
+		});
+	}
+	
+});
+
 
 /**
  * Initialize

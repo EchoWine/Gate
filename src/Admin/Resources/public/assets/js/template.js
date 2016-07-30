@@ -1,5 +1,6 @@
 var template = {};
 
+template.source = {};
 
 template.setByHtml = function(html,destination,callback){
 
@@ -41,10 +42,10 @@ template.get = function(source,vars,callback){
 
 template.getSourceByTemplate = function(source){
 
-	var source = $('[data-template='+source+']').first().clone();
+	var source = $.parseHTML("<div>"+template.source[source]+"</div>");
+	source = $(source);
 	source.children().addClass('template-new');
-
-	return source;
+	return source.clone();
 };
 
 template.vars = function(html,vars){
@@ -53,3 +54,12 @@ template.vars = function(html,vars){
 	};
 	return html;
 };
+
+$(document).ready(function(){
+	$.map($('.templates'),function(tmpl){
+		tmpl = $(tmpl);
+		var name = tmpl.attr('data-template');
+		template.source[name] = tmpl.html();
+		tmpl.html('');
+	});
+});

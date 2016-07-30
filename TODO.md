@@ -21,6 +21,10 @@ General:
 - [ ] Search in multiple column api
 - [ ] URL various modal: add/edit/get (with hash)
 - [ ] resolveRelation N to 1
+- [ ] Improve events autocomplete
+- [ ] Lock user
+- [ ] Fix add autocomplete
+- [ ] Obscure autocomplete when isn't loaded
 
 ORM:
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'

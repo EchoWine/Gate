@@ -18,14 +18,14 @@ class ViewBuilder{
 	 *
 	 * @var bool
 	 */
-	public $select = false;
+	public $select = null;
 
 	/**
 	 * Display a input
 	 *
-	 * @var bool
+	 * @var Component\Select
 	 */
-	public $input = false;
+	public $input = true;
 
 	/**
 	 * Label
@@ -107,8 +107,21 @@ class ViewBuilder{
 	/**
 	 * Display a select
 	 */
-	public function select(){
-		$this -> select = true;
+	public function select($url,$value,$label = null,$search = null){
+		$this -> select = new Component\Select($url,$value,$label,$search);
+		return $this;
+	}
+
+	public function isSelect(){
+		return $this -> select !== null;
+	}
+
+	public function isInput(){
+		return $this -> input;
+	}
+
+	public function getSelect(){
+		return $this -> select;
 	}
 
 	/**
@@ -116,6 +129,7 @@ class ViewBuilder{
 	 */
 	public function input(){
 		$this -> input = true;
+		return $this;
 	}
 
 	/**
@@ -123,6 +137,7 @@ class ViewBuilder{
 	 */
 	public function label($label){
 		$this -> label = $label;
+		return $this;
 	}
 
 	/**
@@ -168,5 +183,8 @@ class ViewBuilder{
 		return implode(".",array_map(function($item){ return $item -> getName(); },$this -> getRelations()));
 	}
 
+	public function getColumn(){
+		return $this -> getSchema() -> getColumn();
+	}
 }
 ?>

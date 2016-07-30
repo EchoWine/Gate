@@ -84,6 +84,7 @@ class Model extends FieldModel{
 			$this -> setValueRawToRepository($value,true);
 			$this -> value = null;
 			$this -> value_updated = false;
+			$this -> persist = $persist;
 			return;
 		}
 

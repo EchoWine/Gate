@@ -238,7 +238,7 @@ class Translator{
 		}
 		
 		# else if
-		preg_match_all('/{{elseif ([^\} ]*)}}/iU',$content,$r);
+		preg_match_all('/{{elseif ([^\}]*)}}/iU',$content,$r);
 	
 		foreach($r[0] as $n => $k)
 			$content = str_replace($k,'<?php }else if('.$r[1][$n].'){ ?>',$content);

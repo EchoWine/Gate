@@ -245,8 +245,10 @@ abstract class Controller extends SourceController{
 			# Get an "old model"
 			$old_model = clone $model;
 
+
 			$model -> fill(Request::all());
 			$model -> save();
+
 
 			# Get last validation
 			$errors = $this -> getModel()::getLastValidate();

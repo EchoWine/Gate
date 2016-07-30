@@ -364,19 +364,46 @@ class Repository extends QueryBuilder{
 
 		$t = clone $this;
 
-		# Resolve all relations
-		list($field,$alias) = $t -> resolveRelationsQueryBuilder($field,$values,$fun_alias);
+
+		$fields = [];
+
+		foreach(explode(";",$field) as $field){
+			if($field[0] === "'" || $field[0] === '"'){
+				$field = substr($field,1,count($field) - 2);
+				if(!empty($field))
+					$fields[] = ['field' => $field];
+			}else{
+				# Resolve all relations
+				list($field,$alias) = $t -> resolveRelationsQueryBuilder($field,$fun_alias);
+
+				if($field)
+					$fields[] = ['field' => $field,'alias' => $alias];
+			}
+
+		}
 
 		# Search for the value
-		$t = $t -> where(function($repository) use ($field,$values,$alias){
+		$t = $t -> where(function($repository) use ($fields,$values){
+
+
 			foreach($values as $value){
-				$repository = $field -> searchRepository($repository,$value,$alias);
+
+				if(count($fields) == 1){
+					$field = $fields[0]['field'];
+					$alias = $fields[0]['alias'];
+					$repository = $field -> searchRepository($repository,$value,$alias);
+				}else{
+					$field = array_map(function($value){
+						return empty($value['alias']) ? "'".$value['field']."'" : $value['alias'].".".$value['field'] -> getColumn();
+					},$fields);
+					
+					if(!empty($fields))
+						$repository = $repository -> whereLike("CONCAT(".implode(",",$field).")",'%'.$value.'%');
+				}
 			}
 
 			return $repository;
 		});
-
-
 
 		return $t;
 	}

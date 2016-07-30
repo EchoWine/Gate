@@ -13,6 +13,7 @@ var http = {};
  */
 http.ajax = function(type,url,params = {},callback){
 	console.log(url);
+	console.log(params);
 	return $.ajax({
 		type: type,
 		url: url, 
@@ -38,7 +39,6 @@ http.ajax = function(type,url,params = {},callback){
  * @param {function} callback
  */
 http.get = function(url,params,callback){
-
 	return http.ajax('GET',url+"?"+$.param(params),{},callback);
 };
 

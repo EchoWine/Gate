@@ -40,12 +40,13 @@ class EpisodeController extends BasicController{
 
 		$views -> add(function($view){
 			$view -> name();
-			$view -> serie('series') -> name() -> select();
+			$view -> serie('series') -> label('serie') -> select('series','id',"#{id} - {name}","'#';id;' - ';name");
 		});
 
 		$views -> edit(function($view){
 			$view -> name();
-			$view -> serie('series') -> name() -> select();
+			// $view -> serie('series') -> label('serie') -> select('series','id',"#{id} - {name}","'#';id;' - ';name");
+			$view -> serie('series') -> label('serie') -> select('series','id',"#{id} - {name}");
 		});
 
 		$views -> get(function($view){

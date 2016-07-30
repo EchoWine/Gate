@@ -27,12 +27,30 @@
 		<div class='alert alert-danger'>{message}<ul>{details}</ul></div>
 	</div>
 
+	<div class='templates' data-template='autocomplete-container'>
+		<div class='autocomplete-container' data-autocomplete-container='{name}'>
+			<div class='autocomplete-results'>
+				{results}
+			</div>
+		</div>
+	</div>
 
-	{{include Admin/admin/tmpl/row ['fields' => $views -> fields('all')]}}
+	<div class='templates' data-template='autocomplete-result'>
+		<div class='autocomplete-result' 
+			data-autocomplete-insert='{name}'
+			data-autocomplete-hidden='{column}'
+			data-autocomplete-label='{label}'
+			data-autocomplete-value='{value}'>
+			{label}
+		</div>
+	</div>
 
-	{{include Admin/admin/modal/add ['fields' => $views -> fields('add')]}}
-	{{include Admin/admin/modal/get ['fields' => $views -> fields('get')]}}
-	{{include Admin/admin/modal/edit ['fields' => $views -> fields('edit')]}}
+
+	{{include Admin/admin/tmpl/row ['table' => $table,'fields' => $views -> fields('all')]}}
+
+	{{include Admin/admin/modal/add ['table' => $table,'fields' => $views -> fields('add')]}}
+	{{include Admin/admin/modal/get ['table' => $table,'fields' => $views -> fields('get')]}}
+	{{include Admin/admin/modal/edit ['table' => $table,'fields' => $views -> fields('edit')]}}
 	{{include Admin/admin/modal/delete}}
 	{{include Admin/admin/modal/delete_multiple}}
 
@@ -121,6 +139,7 @@
 	{{parent}}
 
 	<script>
+		item.url = '{{$api_url}}';
 		item.addTable({
 			name:'{{$table}}',
 			url:'{{$api}}',
@@ -218,14 +237,20 @@
 			edit:{
 				get: function(container,data){
 					{{for $views -> fields('edit') as $field}}
-						$('#modal-item-edit').find('[name={{$field -> getSchema()-> getName()}}]').val(data['{{$field -> getSchema() -> getName()}}']);
+						var field = $('#modal-item-edit').find('[name={{$field -> getColumn()}}]');
+
+						field.val(data['{{$field -> getColumn()}}']);
+
+						{{if $field -> getSchema() -> getType() == 'model' && $field -> isSelect()}}
+							item.autocomplete.load(field,"{{$table}}.{{$field -> getName()}}");
+						{{/if}}
 					{{/for}}
 				},
 				action: function(form){
 					var values = {};
 
 					{{for $views -> fields('edit') as $field}}
-						values.{{$field -> getSchema() -> getName()}} = form.find('[name={{$field -> getSchema() -> getName()}}]').val();
+						values.{{$field -> getSchema() -> getColumn()}} = form.find('[name={{$field -> getSchema() -> getColumn()}}]').val();
 					{{/for}}
 					return values;
 				}

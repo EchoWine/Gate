@@ -17,7 +17,7 @@ template.setByHtml = function(html,destination,callback){
 template.setBySource = function(source,destination,vars,callback){
 
 	var source = template.getSourceByTemplate(source);
-	var html = template.filterVar(source.html(),vars);
+	var html = template.vars(source.html(),vars);
 
 	template.setByHtml(html,destination,callback);
 
@@ -47,7 +47,7 @@ template.getSourceByTemplate = function(source){
 	return source;
 };
 
-template.filterVar = function(html,vars){
+template.vars = function(html,vars){
 	for(col in vars){
 		html = html.replace(new RegExp('{'+col+'}', 'g'),vars[col]);
 	};

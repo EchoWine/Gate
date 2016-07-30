@@ -1,0 +1,31 @@
+.autocomplete-container{
+	position:relative;
+	top:0;
+	left:0;
+	height:0;
+}
+
+.autocomplete-input{
+	position:relative;
+}
+.autocomplete-results{
+	background:white;
+}
+
+.autocomplete-result{
+	padding:6px 10px;
+	background:white;
+
+	border:1px solid rgb(229, 229, 229);
+	border-width:1px 1px 0 1px;
+	cursor:pointer;
+}
+
+.autocomplete-result:hover{
+	background:rgba(0,0,0,0.05);
+}
+
+.autocomplete-results .autocomplete-result:last-child{
+
+	border-width:1px;
+}

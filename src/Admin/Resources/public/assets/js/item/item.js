@@ -170,6 +170,9 @@ item.updateListHTML = function(table){
 		container.find('[data-item-list-next]').addClass('disable');
 	else
 		container.find('[data-item-list-next]').removeClass('disable');
+
+	// Reset select all
+	$("[data-item-select-all][data-item-table='"+table.name+"']").prop('checked', false);
 	
 };
 

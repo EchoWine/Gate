@@ -22,7 +22,10 @@
 }
 
 .autocomplete-result:hover{
-	background:rgba(0,0,0,0.05);
+	background-color: #286090;
+	border-left-color: #2E6DA4;
+	border-right-color: #2E6DA4;
+	color:white;
 }
 
 .autocomplete-results .autocomplete-result:last-child{

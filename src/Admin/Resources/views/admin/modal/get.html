@@ -6,7 +6,7 @@
 
 		{{for $fields as $field}}
 			<div class='item-form-label'>{{$field -> getLabel()}}</div>
-			<div class='item-form-input'><span data-name='{{$field -> getSchema() -> getName()}}'></span></div>
+			<div class='item-form-input'><span data-name='{{$field -> getName()}}'></span></div>
 		{{/for}}
 
 		<div class='item-form-actions'>

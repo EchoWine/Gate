@@ -52,7 +52,7 @@ class EpisodeController extends BasicController{
 		$views -> get(function($view){
 			$view -> id();
 			$view -> name();
-			$view -> serie('series') -> name();
+			$view -> serie('series') -> name() -> label('name of serie');
 		});
 
 		$views -> search(function($view){

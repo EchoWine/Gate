@@ -192,7 +192,20 @@ item.getListWithParams = function(table){
  */
 item.handleGet = function(table,response){
 	var container = item.getContainerByTable(table);
-	table.get.get(container,response.data.resource);
+
+	var data = response.data;
+
+	var columns = item.rowToColumns(data.resource);
+
+	console.log(columns);
+	item.handleRelations(container,table,columns,function(){
+
+
+		table.get.get(container,table,data.resource);
+
+	});
+
+
 };
 
 item.handleGetForEdit = function(table,response){
@@ -219,9 +232,9 @@ item.handleList = function(table,response){
 		table.list.to = data.pagination.to;
 		table.list.show = data.pagination.show;
 
-		var columns = item.rowToColumns(data.results);
+		var columns = item.rowsToColumns(data.results);
 
-		item.handleRelationsList(container,table,columns,function(){
+		item.handleRelations(container,table,columns,function(){
 
 			// Report result only when all relations call will be made
 			table.list.get(container,table,data.results,columns);
@@ -248,7 +261,7 @@ item.handleList = function(table,response){
  * @param {array} columns
  * @param {closure} end
  */
-item.handleRelationsList = function(container,table,columns,end){
+item.handleRelations = function(container,table,columns,end){
 
 	table.list.relations.columns[table.name] = columns;
 	//table.list.relations.ids[table.name] = columns['id'];
@@ -342,7 +355,7 @@ item.handleNextRelation = function(table,relation,end){
 		// Merge ids of new request with ids of previous one
 		table.list.relations.columns[relation.url] = $.extend(
 			table.list.relations.columns[relation.url],
-			item.rowToColumns(response.data.results)
+			item.rowsToColumns(response.data.results)
 		);
 
 		item.nextRelation(table,relation,end);
@@ -378,7 +391,7 @@ item.nextRelation = function(table,relation,end){
  *
  * @return {array}
  */
-item.rowToColumns = function(results){
+item.rowsToColumns = function(results){
 	var columns = [];
 
 	$.map(results,function(row){
@@ -395,6 +408,22 @@ item.rowToColumns = function(results){
 	return columns;
 }
 
+/**
+ * Convert given row result into column result
+ *
+ * @param {array} row
+ *
+ * @return {array}
+ */
+item.rowToColumns = function(row){
+	var columns = [];
+
+	$.map(row,function(value,col){
+		columns[col] = [value];
+	});
+
+	return columns;
+};
 
 /**
  * Handle basic response

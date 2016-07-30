@@ -211,9 +211,41 @@
 				}
 			},
 			get:{
-				get: function(container,data){
+				get: function(container,table,row){
 					{{for $views -> fields('get') as $field}}
-						$('#modal-item-get').find('[data-name={{$field -> getSchema()-> getName()}}]').html(data['{{$field -> getSchema() -> getName()}}']);
+
+						var data = row;
+						var name = '{{$field -> getName()}}';
+
+						{{for $field -> getRelations() as $n => $relation}}
+
+						// -- Relation: {{$field -> getName()}}:{{$relation -> getName()}}
+
+							{{if $url = $field -> getUrl($n)}}
+
+								var relation = table.list.relations.values["{{$url}}"];
+								if(data && data["{{$relation -> getColumn()}}"]){
+									$.map(relation,function(value){
+										if(value.{{$relation -> getObjectSchema() -> getPrimaryField() -> getName()}} == data["{{$relation -> getColumn()}}"]){
+											data = value;
+											return;
+										}
+									});
+								}
+								else
+									data = null;
+
+
+							{{/if}}
+						{{/for}}
+
+						if(typeof data == "undefined" || !data)
+							var value = 'undefined';
+						else
+							var value = data.{{$field -> getLastRelation() -> getName()}};
+
+
+						$('#modal-item-get').find("[data-name='"+name+"']").html(value);
 					{{/for}}
 				},
 			},

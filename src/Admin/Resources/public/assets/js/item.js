@@ -882,9 +882,6 @@ item.autocomplete.load = function(hidden,name){
 item.autocomplete.get = function(element,field_name,field_column,url,search,field_label,field_primary,value,callback){
 
 	var params = {};
-	search = search.replace(/#/g, '%23');
-	search = search.replace(/\'/g, '%27');
-
 
 	params['search['+search+']'] = value;
 	params['show'] = 5;

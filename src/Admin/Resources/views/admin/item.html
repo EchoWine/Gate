@@ -223,7 +223,7 @@
 					var values = {};
 
 					{{for $views -> fields('add') as $field}}
-						values.{{$field -> getSchema() -> getName()}} = form.find('[name={{$field -> getSchema()-> getName()}}]').val();
+						values.{{$field -> getSchema() -> getColumn()}} = form.find('[name={{$field -> getSchema() -> getColumn()}}]').val();
 					{{/for}}
 					return values;
 				}
@@ -252,6 +252,7 @@
 					{{for $views -> fields('edit') as $field}}
 						values.{{$field -> getSchema() -> getColumn()}} = form.find('[name={{$field -> getSchema() -> getColumn()}}]').val();
 					{{/for}}
+
 					return values;
 				}
 			},

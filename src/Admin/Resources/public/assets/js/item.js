@@ -872,8 +872,10 @@ item.autocomplete.load = function(hidden,name){
 	api.all(item.url+url,params,function(response){
 		var results = response.data.results;
 		var row = results[0];
-		var label = template.vars(field_label,row);
-		field.val(label);
+		if(row){
+			var label = template.vars(field_label,row);
+			field.val(label);
+		}
 	});
 
 

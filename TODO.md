@@ -11,17 +11,17 @@ General:
 - [ ] Handle exception for unauthorized client in route /admin and redirect to login
 - [x] Throw exception php version < 7
 - [ ] Move route/test in TestControler
-- [ ] CoreWine\Response html/json
-- [ ] Add __call exception
-- [ ] Add middleware
+- [x] CoreWine\Response html/json
+- [x] Add __call exception
+- [x] Add middleware
 - [ ] Close function alert
 - [ ] Api delete multiple
 - [ ] Form (autocomplete) model 1 to 1, N to 1;
 - [ ] Multiple search admin
-- [ ] Search in multiple column api
+- [x] Search in multiple column api
 - [ ] URL various modal: add/edit/get (with hash)
 - [ ] resolveRelation N to 1
-- [ ] Improve events autocomplete
+- [x] Improve events autocomplete
 - [ ] Lock user
 - [ ] Fix add autocomplete
 - [ ] Obscure autocomplete when isn't loaded

@@ -28,41 +28,32 @@ class EpisodeController extends BasicController{
 	 */
 	public function views($views){
 
-		$views -> all(function($view){
-			$view -> id();
-			$view -> name();
-			$view -> serie('series') -> name() -> label('name of serie');
-			$view -> prev('episodes') -> name() -> label('prev episode');
-			$view -> next('episodes') -> name() -> label('next episode');
-			$view -> next('episodes') -> prev('episodes') -> name() -> label('next prev episode = current');
-
-		});
-
-		$views -> add(function($view){
-			$view -> name();
-			$view -> serie('series') -> label('serie') -> select('series','id',"#{id} - {name}","'#';id;' - ';name");
-		});
-
-		$views -> edit(function($view){
-			$view -> name();
+		$form = function($view){
+			$view -> name() -> label('Name');
 			// $view -> serie('series') -> label('serie') -> select('series','id',"#{id} - {name}","'#';id;' - ';name");
-			$view -> serie('series') -> label('serie') -> select('series','id',"#{id} - {name}");
-		});
+			$view -> serie('series') -> label('Serie') -> select('series','id',"#{id} - {name}");
+		};
 
-		$views -> get(function($view){
-			$view -> id();
-			$view -> name();
-			$view -> serie('series') -> name() -> label('name of serie');
-		});
+		$list = function($view){
+			$view -> id() -> label('#');
+			$view -> name() -> label('Name');
+			$view -> serie('series') -> name() -> label('Serie');
+			$view -> prev('episodes') -> name() -> label('Prev episode');
+			$view -> next('episodes') -> name() -> label('Next episode');
+			$view -> next('episodes') -> prev('episodes') -> name() -> label('Next prev episode = current');
+		};
 
-		$views -> search(function($view){
-			$view -> id();
+		$get = function($view){
+			$view -> id() -> label('#');
 			$view -> name();
-			$view -> serie('series') -> name() -> label('name of serie');
-			$view -> prev('episodes') -> name() -> label('prev episode');
-			$view -> next('episodes') -> name() -> label('next episode');
-			$view -> next('episodes') -> prev('episodes') -> name() -> label('next prev episode = current');
-		});
+			$view -> serie('series') -> name() -> label('Serie');
+		};
+
+		$views -> all($list);
+		$views -> add($form);
+		$views -> edit($form);
+		$views -> get($get);
+		$views -> search($list);
 	}
 
 }

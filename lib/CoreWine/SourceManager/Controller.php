@@ -61,6 +61,24 @@ class Controller{
 		}
 	}
 
+	// @todo get rid of the $this
+
+	/**
+	 * Returns a new instance of CoreWine\Http\Response\Response
+	 * @return CoreWine\Http\Response\Response 				
+	 */
+	public function response() {
+		return new \CoreWine\Http\Response\Response;
+	}
+
+	/**
+	 * Returns a new instance of CoreWine\Http\Response\RedirectResponse
+	 * @return CoreWine\Http\Response\RedirectResponse 				
+	 */
+	public function redirect() {
+		return new \CoreWine\Http\Response\RedirectResponse;
+	}
+
 
 }
 ?>

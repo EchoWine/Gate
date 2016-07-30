@@ -278,11 +278,9 @@ abstract class Controller extends SourceController{
 
 		try{
 
-			$ids = explode(";",$id);
-
 			$models = [];
 
-			foreach($ids as $id){
+			foreach(self::getArrayParams($id) as $id){
 
 				# Return error if not found
 				if(!$model = $this -> getModel()::firstByPrimary($id))
@@ -318,15 +316,24 @@ abstract class Controller extends SourceController{
 
 		try{
 
-			# Return error if not found
-			if(!$from_model = $this -> getModel()::firstByPrimary($id))
-				return new Response\ApiNotFound();
+			$models = [];
 
-			# Copy
-			$new_model = $this -> getModel()::copy($from_model);
+			foreach(self::getArrayParams($id) as $id){
+
+				# Return error if not found
+				if(!$from_model = $this -> getModel()::firstByPrimary($id))
+					return new Response\ApiNotFound();
+
+				# Copy
+				$new_model = $this -> getModel()::copy($from_model);
+
+
+				$models[] = ['from' => $from_model,'new' => $new_model];
+
+			}
 
 			# Return success
-			return new Response\ApiCopySuccess($new_model,$from_model);
+			return new Response\ApiCopySuccess($models);
 
 		}catch(\Exception $e){
 

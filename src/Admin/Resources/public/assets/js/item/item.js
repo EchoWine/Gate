@@ -476,6 +476,9 @@ $('body').on('change','[data-item-multiple]',function(){
 			'modal-item-delete-multiple',
 			{'data-modal-item-table':table.name}
 		);
+	}else if($(this).val() == 'copy'){
+		console.log('a');
+		item.request.copy(table,ids.join(";"));
 	}
 
 	$(this).val('none');

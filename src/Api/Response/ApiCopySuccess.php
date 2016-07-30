@@ -22,10 +22,23 @@ class ApiCopySuccess extends Success{
 	 * @param ORM\Model $new_model
 	 * @param ORM\Model $from_model
 	 */
-	public function __construct($new_model,$from_model){
+	public function __construct($models){
 
-		parent::__construct(static::CODE,static::MESSAGE);
-		$this -> setData(['id' => $new_model -> id,'resource' => $new_model -> toArray(),'from' => $from_model -> toArray()]) -> setRequest(Request::getCall());
+		$data = [];
+
+		foreach($models as $model){
+			$data[$model['new'] -> id] = $model['new'] -> toArray();
+		}
+
+		$ids = implode(", ",array_map(function($model){
+			return "#".$model['from'] -> id." => #".$model['new'] -> id;
+		},$models));
+
+		$message = "Copied: {$ids}";
+
+		parent::__construct(static::CODE,$message);
+
+		$this -> setData($data) -> setRequest(Request::getCall());
 
 	}
 }

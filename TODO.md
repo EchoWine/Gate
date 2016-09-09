@@ -15,18 +15,39 @@ General:
 - [x] Add __call exception
 - [x] Add middleware
 - [ ] Close function alert
-- [ ] Api delete multiple
-- [ ] Form (autocomplete) model 1 to 1, N to 1;
+- [x] Api delete multiple
+
+Api:
+	- [x] index
+		- [x] sort
+		- [x] pagination
+		- [x] search
+	- [x] add
+	- [x] get
+	- [x] edit
+	- [x] delete
+	- [x] refactoring
+	- [x] delete multiple
+	- [ ] edit multiple
+	- [ ] copy multiple
+	- [ ] Lock user
+
+Admin:
+- [x] List model 1 to 1, N to 1;
+- [ ] List model 1 to N;
+- [x] Form (autocomplete) model 1 to 1, N to 1;
+- [ ] Form (autocomplete) model 1 to N;
+- [ ] Group column (e.g. ID - Name))
 - [ ] Multiple search admin
 - [x] Search in multiple column api
 - [ ] URL various modal: add/edit/get (with hash)
-- [ ] resolveRelation N to 1
+
 - [x] Improve events autocomplete
-- [ ] Lock user
-- [ ] Fix add autocomplete
-- [ ] Obscure autocomplete when isn't loaded
+- [x] Fix add autocomplete
+- [?] Obscure autocomplete when isn't loaded
 
 ORM:
+- [ ] resolveRelation N to 1
 - [x] Move part of 'src/Item' under 'lib/CoreWine/Item'
 - [x] Rename 'src/item' in src/Api' and cleanup
 - [ ] Throw exception when ORM/Model relations is null and a field is invoked
@@ -60,19 +81,6 @@ ORM:
 		- [ ] DateTime
 		- [x] Timestamp
 
-- src/Api:
-	- [x] index
-		- [x] sort
-		- [x] pagination
-		- [x] search
-	- [x] add
-	- [x] get
-	- [x] edit
-	- [x] delete
-	- [x] refactoring
-	- [x] delete multiple
-	- [ ] edit multiple
-	- [ ] copy multiple
 
 DataBase:
 - [ ] Option to cleanup table model, defined previously, and not exist

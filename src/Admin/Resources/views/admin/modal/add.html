@@ -3,7 +3,7 @@
 	{{block id}}modal-item-add{{/block}}
 	{{block title}}Add new row{{/block}}
 	{{block content}}
-		<div data-use-template='alert-modal-add'></div>
+		<div class='alert-modal-add'></div>
 		<form method='POST' item-data-form-add  data-item-table='{table}'>
 			{{for $fields as $field}}
 				<div class='item-form-label'>{{$field -> getLabel()}}:</div>

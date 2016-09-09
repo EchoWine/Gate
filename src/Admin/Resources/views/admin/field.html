@@ -5,7 +5,7 @@
 		<textarea class='text-data {{$extra_class}}' name='{{$field -> getSchema() -> getName()}}'></textarea>
 	{{/case}}
 
-	{{case 'model'}}
+	{{case 'to_one'}}
 		{{if $field -> isSelect()}}
 			<input type='text' class='input-data {{$extra_class}} autocomplete-input'
 				autocomplete='off'

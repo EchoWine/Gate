@@ -123,11 +123,17 @@ class Manager{
 		if(!file_exists(PATH."/src/")){
 			mkdir(PATH."/src",0755);	
 		}
-		
+
 		# Create symlink to access 
 		if(!file_exists(PATH."/src/".$basePath)){
 			if(file_exists(PATH."/../src/".$basePath."/Resources/public/")){
-				symlink(PATH."/../src/".$basePath."/Resources/public/",PATH."/src/".$basePath);
+
+				try{
+
+					symlink(PATH."/../src/".$basePath."/Resources/public/",PATH."/src/".$basePath);
+				}catch(\Exception $e){
+					throw new \Exception($e);
+				}
 			}
 		}
 

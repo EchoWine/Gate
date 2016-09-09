@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\ORM\Field\CollectionModel;
+namespace CoreWine\ORM\Field\Relations\ToMany;
 
 use CoreWine\ORM\Field\Field\Model as FieldModel;
 
@@ -172,5 +172,17 @@ class Model extends FieldModel{
 		return $repository;
 	}
 
+	/**
+	 * Get the value used in array
+	 *
+	 * When ORM\Model::toArray is called, this return the value of field
+	 *
+	 * @return mixed
+	 */
+	public function getValueToArray(){
+		return array_map(function($model){
+			return $model -> getPrimaryField() -> getValue();
+		},(array)$this -> getValue());
+	}
 }
 ?>

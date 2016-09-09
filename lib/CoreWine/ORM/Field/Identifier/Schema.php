@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\ORM\Field\ID;
+namespace CoreWine\ORM\Field\Identifier;
 
 use CoreWine\ORM\Field\Integer\Schema as IntegerSchema;
 
@@ -48,7 +48,7 @@ class Schema extends IntegerSchema{
 		if(!$table)
 			$table = $this -> getObjectSchema() -> getTable();
 		
-		return $repository -> orWhere($this -> getColumn(),(int)$value);
+		return $repository -> orWhere($table.".".$this -> getColumn(),(int)$value);
 	}
 
 }

@@ -180,7 +180,8 @@ class Repository extends QueryBuilder{
 		foreach($schema -> getFields() as $field){
 			
 			# N -> 1 || 1 -> 1
-			if($field instanceof \CoreWine\ORM\Field\Model\Schema){
+
+			if($field -> getType() == 'to_one'){
 				foreach($results as $result){
 					if(!empty($result[$field -> getColumn()])){
 						if(!$this -> isObjectORM($field -> getRelation(),$result[$field -> getColumn()])){
@@ -192,7 +193,7 @@ class Repository extends QueryBuilder{
 			}
 
 			# 1 -> N
-			if($field instanceof \CoreWine\ORM\Field\CollectionModel\Schema){
+			if($field -> getType() == 'to_many'){
 				
 				$field_relation = null;
 
@@ -269,8 +270,8 @@ class Repository extends QueryBuilder{
 	/**
 	 * Get where primary
 	 */
-	public function firstByPrimary($value){
-		return $this -> wherePrimary($value) -> first();
+	public function first($value = null){
+		return $value == null ? parent::first() : $this -> wherePrimary($value) -> first();
 	}
 
 	/**
@@ -303,7 +304,7 @@ class Repository extends QueryBuilder{
 	 * @param ORM\Field $field
 	 * @param string $direction
 	 */
-	public function sortByField($field = null,$direction = null){
+	public function sortBy($field = null,$direction = null){
 
 		if($field == null){
 			$field = $this -> getSchema() -> getSortDefaultField() -> getName();
@@ -373,6 +374,8 @@ class Repository extends QueryBuilder{
 				if(!empty($field))
 					$fields[] = ['field' => $field];
 			}else{
+
+
 				# Resolve all relations
 				list($field,$alias) = $t -> resolveRelationsQueryBuilder($field,$fun_alias);
 
@@ -424,6 +427,7 @@ class Repository extends QueryBuilder{
 	 */
 	public function resolveRelationsQueryBuilder($field,$fun_alias){
 
+
 		$fields = explode(".",$field);
 
 		# Get alias of current (main) table
@@ -435,9 +439,13 @@ class Repository extends QueryBuilder{
 			# Get schema of all fields
 			$relations = $this -> getSchema() -> getAllSchemaThroughArray($fields);
 
+
+			if(empty($relations))
+				return [null,null];
+
 			# Remove last field, because last, as said before, isn't a relation_field, but a simple field
-			$last_field = $relations[count($fields) - 1];
-			unset($relations[count($fields) - 1]);
+			$last_field = $relations[count($relations) - 1];
+			unset($relations[count($relations) - 1]);
 
 			$alias_to = '';
 
@@ -481,8 +489,11 @@ class Repository extends QueryBuilder{
 
 		}else{
 
+
 			# This is a field_data
 			$field = $this -> getSchema() -> getField($fields[0]);
+
+
 		}
 
 		return [$field,$alias];

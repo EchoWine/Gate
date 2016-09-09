@@ -273,7 +273,7 @@
 
 						field.val(data['{{$field -> getColumn()}}']);
 
-						{{if $field -> getSchema() -> getType() == 'model' && $field -> isSelect()}}
+						{{if $field -> getSchema() -> getType() == 'to_one' && $field -> isSelect()}}
 							item.autocomplete.load(field,"{{$table}}.{{$field -> getName()}}");
 						{{/if}}
 					{{/for}}

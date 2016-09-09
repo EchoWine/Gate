@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\ORM\Field\Model;
+namespace CoreWine\ORM\Field\Relations\ToOne;
 
 use CoreWine\ORM\Field\Field\Model as FieldModel;
 
@@ -109,7 +109,7 @@ class Model extends FieldModel{
 
 		if(!$this -> value_updated){
 
-			$this -> value = $this -> getSchema() -> getRelation()::firstByPrimary($this -> getValueRaw());
+			$this -> value = $this -> getSchema() -> getRelation()::first($this -> getValueRaw());
 			$this -> value_updated = true;
 
 		}

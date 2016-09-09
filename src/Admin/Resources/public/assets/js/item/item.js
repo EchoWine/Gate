@@ -138,6 +138,8 @@ item.addAlert = function(type,destination,data){
 		});
 	}
 
+	console.log(destination);
+
 	template.set(type,{
 		message:data.message,
 		details:det
@@ -480,7 +482,6 @@ $('body').on('change','[data-item-multiple]',function(){
 			{'data-modal-item-table':table.name}
 		);
 	}else if($(this).val() == 'copy'){
-		console.log('a');
 		item.request.copy(table,ids.join(";"));
 	}
 

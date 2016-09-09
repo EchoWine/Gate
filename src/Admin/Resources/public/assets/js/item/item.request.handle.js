@@ -120,7 +120,7 @@ item.request.handle.relations = function(container,table,columns,end){
  */
 item.request.handle.nextRelation = function(table,relation,end){
 
-	var params = [];
+	var params = {};
 	var columns_relation = [];
 
 	// Initalize relations ids
@@ -150,16 +150,28 @@ item.request.handle.nextRelation = function(table,relation,end){
 		table.list.relations.ids[relation.url],
 		columns_relation
 	);
-	params['search[id]'] = columns_relation.join(";");
 
-	if(columns_relation.length == 0){
+
+	if(relation.type == 'toOne'){
+		params['search[id]'] = columns_relation.join(";");
+	}
+
+	if(relation.type == 'toMany'){
+		params['search['+relation.column+'.id]'] = table.list.relations.columns[table.name]['id'].join(";");
+	}
+
+
+	if(params.length == 0){
 
 		item.request.handle.endRelation(table,relation,end);
 		return;
 	}
+	console.log(params);
 
 	// Make the request
 	api.all(table.basic_url+relation.url,params,function(response){
+
+
 
 		// Merge the result with previous one
 		table.list.relations.values[relation.url] = $.extend(
@@ -209,13 +221,13 @@ item.request.handle.endRelation = function(table,relation,end){
  */
 item.request.handle.basic = function(table,response,container_modal){
 
-	if(response.status == 'success' || !container){
+	if(response.status == 'success' || !container_modal){
 		item.getListWithParams(table);
 		modal.closeActual();
 		item.addAlert('alert-success','.alert-global',response);
 	}
 
 	if(response.status == 'error'){
-		item.addAlert('alert-danger',container_modal,response);
+		item.addAlert('alert-danger','.'+container_modal,response);
 	}
 };

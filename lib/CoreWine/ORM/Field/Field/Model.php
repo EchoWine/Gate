@@ -76,6 +76,7 @@ class Model{
 	 */
 	public function iniAlias(){
 		$this -> alias = [$this -> getSchema() -> getName()];
+		$this -> getSchema() -> alias = $this -> alias;
 	}
 
 	/**

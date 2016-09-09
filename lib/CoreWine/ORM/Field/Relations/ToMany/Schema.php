@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\ORM\Field\CollectionModel;
+namespace CoreWine\ORM\Field\Relations\ToMany;
 
 use CoreWine\ORM\Field\Field\Schema as FieldSchema;
 
@@ -19,6 +19,13 @@ class Schema extends FieldSchema{
 	 * @var
 	 */
 	public $reference;
+
+	/**
+	 * Include field in toArray operations
+	 *
+	 * @var bool
+	 */
+	public $enable_to_array = false;
 
 	/**
 	 * Set relation

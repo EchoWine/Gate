@@ -86,9 +86,20 @@ class View{
 			foreach($field -> getRelations() as $n => $relation){
 				if($field -> getUrl($n)){
 					$partial = [];
-					$partial['column'] = $relation -> getColumn();
 					$partial['name'] = $relation -> getName();
 					$partial['url'] = $field -> getUrl($n);
+
+					switch($relation -> getType()){
+						case "to_one":
+							$partial['type'] = 'toOne';
+							$partial['column'] = $relation -> getColumn();
+						break;
+						case "to_many":
+							$partial['type'] = 'toMany';
+							$partial['column'] = $relation -> getReference();
+						break;
+					}
+
 					$partials[] = $partial;
 				}
 			}

@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\ORM\Field\Model;
+namespace CoreWine\ORM\Field\Relations\ToOne;
 
 use CoreWine\ORM\Field\Field\Schema as FieldSchema;
 

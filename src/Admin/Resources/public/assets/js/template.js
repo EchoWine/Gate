@@ -30,7 +30,7 @@ template.set = function(source,vars,destination){
 template.html = function(html,destination){
 
 	$(destination).html(html);
-
+	
 	setTimeout(function(){
 		$('.template-new').removeClass('template-new');
    	},50);

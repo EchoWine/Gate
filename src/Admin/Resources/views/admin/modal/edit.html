@@ -3,7 +3,7 @@
 	{{block id}}modal-item-edit{{/block}}
 	{{block title}}Edit{{/block}}
 	{{block content}}
-		<div data-use-template='alert-modal-edit'></div>
+		<div class='alert-modal-edit'></div>
 		<form method='POST' item-data-form-edit data-item-table='{table}' data-item-id='{id}'>
 			{{for $fields as $field}}
 				<div class='item-form-label'>{{$field -> getLabel()}}:</div>

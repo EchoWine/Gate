@@ -122,7 +122,7 @@ abstract class Controller extends SourceController{
 	 */
 	public function all(){
 
-
+		try{
 			# Get repository alias _d0
 			# This will prevent error with joins between same table
 			$repository = $this -> getRepository('_d0');
@@ -139,15 +139,13 @@ abstract class Controller extends SourceController{
 
 			# SORTING
 			if($sort){
-
 				
-				$repository = $repository -> sortByField($sort,$direction);
+				$repository = $repository -> sortBy($sort,$direction);
 
 			}else{
 
-				$repository = $repository -> sortByField();
+				$repository = $repository -> sortBy();
 			}
-
 
 			foreach((array)$search as $field => $params){
 
@@ -162,13 +160,17 @@ abstract class Controller extends SourceController{
 
 			$results = $repository -> get();
 
-			//print_r(DB::log(true)[0]);
 			return new Response\ApiAllSuccess([
 				'results' => $results -> toArray(),
 				'pagination' => $results -> getPagination() -> toArray()
 			]);
 
-	
+		}catch(\Exception $e){
+
+			# Return exception
+			return new Response\ApiException($e);
+		}
+
 	}
 
 	/**
@@ -182,7 +184,7 @@ abstract class Controller extends SourceController{
 
 	
 		# Return error if not found
-		if(!$model = $this -> getModel()::firstByPrimary($id))
+		if(!$model = $this -> getModel()::first($id))
 			return new Response\ApiNotFound();
 
 		switch(Request::get('filter')){
@@ -239,11 +241,11 @@ abstract class Controller extends SourceController{
 		try{
 
 			# Return error if not found
-			if(!$model = $this -> getModel()::firstByPrimary($id))
+			if(!$model = $this -> getModel()::first($id))
 				return new Response\ApiNotFound();
 
 			# Get an "old model"
-			$old_model = clone $model;
+			$old_model = $model -> getClone();
 
 
 			$model -> fill(Request::all());
@@ -283,7 +285,7 @@ abstract class Controller extends SourceController{
 			foreach(self::getArrayParams($id) as $id){
 
 				# Return error if not found
-				if(!$model = $this -> getModel()::firstByPrimary($id))
+				if(!$model = $this -> getModel()::first($id))
 					return new Response\ApiNotFound();
 
 				# Delete
@@ -321,7 +323,7 @@ abstract class Controller extends SourceController{
 			foreach(self::getArrayParams($id) as $id){
 
 				# Return error if not found
-				if(!$from_model = $this -> getModel()::firstByPrimary($id))
+				if(!$from_model = $this -> getModel()::first($id))
 					return new Response\ApiNotFound();
 
 				# Copy

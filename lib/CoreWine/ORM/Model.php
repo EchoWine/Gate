@@ -52,7 +52,7 @@ class Model{
 	 * @var array
 	 */
 	public static $callable_to_repository = [
-		'all','first','wherePrimary','where','count','firstByPrimary','orderBy','orderByDesc','orderByAsc'
+		'all','first','wherePrimary','where','count','first','orderBy','orderByDesc','orderByAsc'
 	];
 
 	/**
@@ -256,22 +256,6 @@ class Model{
 	}
 
 	/**
-	 * Get all fields and all alias
-	 *
-	 * @return array of fields
-	 */
-	public function getFieldsWithAlias(){
-		$return = [];
-		foreach($this -> getFields() as $field){
-			foreach($field -> getAlias() as $alias){
-				$return[$alias] = $field;
-			}
-		}
-		return $return;
-	}
-
-
-	/**
 	 * Is set a field
 	 *
 	 * @param string $name
@@ -322,7 +306,9 @@ class Model{
 		return null;
 	}
 
-
+	public function getClone(){
+		return clone $this;
+	}
 
 	/**
 	 * Get the primary field
@@ -760,10 +746,11 @@ class Model{
 		$values = [];
 
 		foreach($this -> getFields() as $name => $field){
-			if($field -> hasValueRaw())
-				if($field -> getSchema() -> getEnableToArray())
-					$values[$field -> getNameToArray()] = $field -> getValueToArray();
+			if($field -> getSchema() -> getEnableToArray()){
+				$values[$field -> getNameToArray()] = $field -> getValueToArray();
+			}
 		}
+
 
 		return $values;
 	}

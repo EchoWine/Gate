@@ -97,6 +97,21 @@ class Schema{
 	}
 
 	/**
+	 * Get all fields and all alias
+	 *
+	 * @return array of fields
+	 */
+	public function getFieldsWithAlias(){
+		$return = [];
+		foreach($this -> getFields() as $field){
+			foreach($field -> getAlias() as $alias){
+				$return[$alias] = $field;
+			}
+		}
+		return $return;
+	}
+	
+	/**
 	 * Get field
 	 *
 	 * @param string $name
@@ -161,13 +176,21 @@ class Schema{
 	public function getAllSchemaThroughArray($fields){
 
 		$last_field = $this -> getField($fields[0]);
+
+		if(!$last_field)
+			return [];
+
 		$return = [$last_field];
 		unset($fields[0]);
+
 
 
 		foreach($fields as $field){
 
 			$field = $last_field -> getRelation()::schema() -> getField($field);
+
+			if(!$field)
+				return $return;
 
 			$return[] = $field;
 			$last_field = $field;

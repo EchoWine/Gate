@@ -12,8 +12,6 @@ var http = {};
  * @param {function} callback
  */
 http.ajax = function(type,url,params = {},callback){
-	console.log(url);
-	console.log(params);
 	return $.ajax({
 		type: type,
 		url: url, 

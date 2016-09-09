@@ -57,7 +57,7 @@ class ViewBuilder{
 		$this -> relations[] = $schema;
 		$this -> label($this -> getName());	
 
-		if($this -> getSchema() -> getType() == "model"){
+		if($this -> getSchema() -> getType() == "to_one" || $this -> getSchema() -> getType() == "to_many"){
 			if(isset($arguments[0]))
 				$this -> urls[] = $arguments[0];
 		}
@@ -79,10 +79,10 @@ class ViewBuilder{
 	 * @param array $arguments
 	 */
 	public function __call($method,$arguments){
-
 		$last_relation = $this -> getLastRelation();
 
-		if($last_relation -> getType() == "model"){
+		if($last_relation -> getType() == "to_one" || $last_relation -> getType() == "to_many"){
+				
 			if($last_relation -> getRelation()::schema() -> isField($method)){
 
 				$field = $last_relation -> getRelation()::schema() -> getField($method);
@@ -90,8 +90,8 @@ class ViewBuilder{
 				$this -> relations[] = $field;
 
 				$this -> label($this -> getName());	
-				
-				if($field -> getType() == "model"){
+
+				if($field -> getType() == "to_one" || $field -> getType() == "to_many"){
 					if(isset($arguments[0]))
 						$this -> urls[] = $arguments[0];
 				}
@@ -99,6 +99,7 @@ class ViewBuilder{
 				return $this;
 			}
 		}
+
 		$this -> label($this -> getName());	
 		
 		throw new Exceptions\UndefinedMethodException(static::class,$method);

@@ -194,7 +194,11 @@ class Schema{
 	 */
 	public function getType(){
 		$class = explode("\\",static::class);
-		return strtolower($class[count($class) - 2]);
+		$class = $class[count($class) - 2];
+		$class = lcfirst($class);
+		$class = preg_replace("/([A-Z])/",'_$1',$class);
+		$class = strtolower($class);
+		return $class;
 	}
 
 	/**

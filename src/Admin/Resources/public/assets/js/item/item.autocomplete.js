@@ -58,6 +58,9 @@ item.autocomplete.get = function(element,field_name,field_column,url,search,fiel
 
 		var results = '';
 
+		// Reset all other containers
+		$("[data-autocomplete-container]").remove();
+
 		$.map(response.data.results,function(row){
 
 			results += template.get('autocomplete-result',{

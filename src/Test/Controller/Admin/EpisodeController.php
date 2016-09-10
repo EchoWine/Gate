@@ -32,6 +32,8 @@ class EpisodeController extends BasicController{
 			$view -> name() -> label('Name');
 			// $view -> serie('series') -> label('serie') -> select('series','id',"#{id} - {name}","'#';id;' - ';name");
 			$view -> serie('series') -> label('Serie') -> select('series','id',"#{id} - {name}");
+			$view -> prev('episodes') -> label('Previous') -> select('episodes','id',"#{id} - {name}");
+			$view -> next('episodes') -> label('Next') -> select('episodes','id',"#{id} - {name}");
 		};
 
 		$list = function($view){
@@ -40,7 +42,6 @@ class EpisodeController extends BasicController{
 			$view -> serie('series') -> name() -> label('Serie');
 			$view -> prev('episodes') -> name() -> label('Prev episode');
 			$view -> next('episodes') -> name() -> label('Next episode');
-			$view -> next('episodes') -> prev('episodes') -> name() -> label('Next prev episode = current');
 		};
 
 		$get = function($view){

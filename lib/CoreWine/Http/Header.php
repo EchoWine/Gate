@@ -2,7 +2,7 @@
 
 namespace CoreWine\Response\Http;
 
-use CoreWine\Utils\Collection as Collection;
+use CoreWine\Component\Collection as Collection;
 
 /*
  * Represents a Header collection

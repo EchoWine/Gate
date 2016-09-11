@@ -2,7 +2,7 @@
 
 namespace CoreWine;
 
-use CoreWine\Components\App;
+use CoreWine\Component\App;
 
 use CoreWine\TemplateEngine\Engine;
 use CoreWine\Http\Request;

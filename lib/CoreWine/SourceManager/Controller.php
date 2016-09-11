@@ -7,6 +7,11 @@ use CoreWine\TemplateEngine\Engine;
 use CoreWine\Exceptions as Exceptions;
 use CoreWine\TemplateEngine\Response as ViewResponse;
 
+use CoreWine\Http\Response\JSONResponse;
+use CoreWine\Http\Response\RedirectResponse;
+use CoreWine\Http\Response\Response;
+use CoreWine\Http\Request;
+
 class Controller{
 	
 	/**
@@ -56,7 +61,10 @@ class Controller{
 					throw new Exceptions\RouteException("No method $method; Check __routes() definition");
 				}
 
-				return call_user_func_array(array($this,$method), func_get_args());
+				$request = new Request();
+				$request -> retrieve();
+
+				return call_user_func_array(array($this,$method), array_merge([$request],func_get_args()));
 			}) -> middleware($this -> middleware);
 		}
 	}
@@ -68,7 +76,7 @@ class Controller{
 	 * @return CoreWine\Http\Response\Response 				
 	 */
 	public function response() {
-		return new \CoreWine\Http\Response\Response;
+		return new Response;
 	}
 
 	/**
@@ -76,11 +84,11 @@ class Controller{
 	 * @return CoreWine\Http\Response\RedirectResponse 				
 	 */
 	public function redirect() {
-		return new \CoreWine\Http\Response\RedirectResponse;
+		return new RedirectResponse;
 	}
 
 	public function json($params){
-		return (new \CoreWine\Http\Response\JSONResponse()) -> setBody($params);
+		return (new JSONResponse()) -> setBody($params);
 	}
 
 }

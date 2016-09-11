@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Utils;
+namespace CoreWine\Component;
 
 use Iterator;
 use ArrayAccess;

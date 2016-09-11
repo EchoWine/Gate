@@ -5,7 +5,7 @@ namespace Serie\Model;
 use CoreWine\ORM\Model;
 use CoreWine\ORM\Field\Schema as Field;
 
-class Serie extends Model{
+class Season extends Model{
 
 	/**
 	 * Table name

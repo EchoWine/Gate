@@ -2,8 +2,6 @@
 
 namespace CoreWine\Http;
 
-use CoreWine\Component\Bag;
-
 class Request{
 
 	/**
@@ -93,14 +91,6 @@ class Request{
 	public function __construct(){
 
 	}
-
-	public function retrieve(){
-		$this -> query = new Bag($_GET);
-		$this -> cookie = new Bag($_COOKIE);
-		$this -> request = new Bag($_POST);
-		$this -> server = new Bag($_SERVER);
-	}
-
 
 	public function setMethod($method){
 		$this -> method = $method;

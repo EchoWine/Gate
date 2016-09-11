@@ -2,7 +2,7 @@
 
 namespace CoreWine\DataBase;
 
-use CoreWine\Components\App;
+use CoreWine\Component\App;
 
 class Application extends App{
 

@@ -2,7 +2,7 @@
 
 namespace CoreWine\ORM;
 
-use CoreWine\Utils\Collection;
+use CoreWine\Component\Collection;
 
 class CollectionResults extends Collection{
 

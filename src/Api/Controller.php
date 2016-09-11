@@ -120,7 +120,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return results
 	 */
-	public function all(){
+	public function all(Request $request){
 
 		try{
 			# Get repository alias _d0
@@ -129,13 +129,13 @@ abstract class Controller extends SourceController{
 
 
 			# Request
-			$page = Request::get('page',1);
-			$show = Request::get('show',100);
-			$sort = Request::get('desc',null);
-			$sort = Request::get('asc',$sort);
-			$search = Request::get('search',[]);
+			$page = $request -> query -> get('page',1);
+			$show = $request -> query -> get('show',100);
+			$sort = $request -> query -> get('desc',null);
+			$sort = $request -> query -> get('asc',$sort);
+			$search = $request -> query -> get('search',[]);
 
-			$direction = $sort == Request::get('desc') ? 'desc' : 'asc';
+			$direction = $sort == $request -> query -> get('desc') ? 'desc' : 'asc';
 
 			# SORTING
 			if($sort){
@@ -180,14 +180,14 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return results
 	 */
-	public function get($id){
+	public function get(Request $request,$id){
 
 	
 		# Return error if not found
 		if(!$model = $this -> getModel()::first($id))
 			return new Response\ApiNotFound();
 
-		switch(Request::get('filter')){
+		switch($request -> query -> get('filter')){
 			case 'edit':
 
 			break;
@@ -204,12 +204,12 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function add(){
+	public function add(Request $request){
 
 		try{
 
 			# Create and retrieve a new model
-			$model = $this -> getModel()::create(Request::all());
+			$model = $this -> getModel()::create($request -> request -> all());
 
 			# Get last validation
 			$errors = $this -> getModel()::getLastValidate();
@@ -236,7 +236,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function edit($id){
+	public function edit(Request $request,$id){
 
 		try{
 
@@ -248,7 +248,7 @@ abstract class Controller extends SourceController{
 			$old_model = $model -> getClone();
 
 
-			$model -> fill(Request::all());
+			$model -> fill($request -> request -> all());
 			$model -> save();
 
 

@@ -5,15 +5,14 @@ namespace Serie\Model;
 use CoreWine\ORM\Model;
 use CoreWine\ORM\Field\Schema as Field;
 
-
-class Episode extends Model{
+class Anime extends Serie{
 
 	/**
 	 * Table name
 	 *
 	 * @var
 	 */
-	public static $table = 'episodes';
+	public static $table = 'anime';
 
 	/**
 	 * Set schema fields
@@ -22,15 +21,9 @@ class Episode extends Model{
 	 */
 	public static function setSchemaFields($schema){
 
-		
-		$schema -> id();
-	
-		$schema -> string('name');
-
-		$schema -> toOne(Season::class,'season');
+		parent::setSchemaFields($schema);
 
 	}
-
 }
 
 ?>

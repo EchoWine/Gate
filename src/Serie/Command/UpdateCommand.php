@@ -3,6 +3,7 @@
 namespace Serie\Command;
  
 use CoreWine\Console\Command;
+use CoreWine\Service\Serie;
 
 class UpdateCommand extends Command{
 
@@ -10,9 +11,7 @@ class UpdateCommand extends Command{
 
 	public function handle(){
 
-		echo "yeah";
-		die();
-	
+		Serie::update();
 
 	}
 }

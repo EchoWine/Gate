@@ -5,9 +5,7 @@ namespace Admin\Controller;
 use CoreWine\Http\Router;
 use CoreWine\Http\Request as Request;
 use Auth\Service\Auth;
-
 use Admin\View\Views;
-
 use Api\Controller;
 
 abstract class AdminController extends Controller{

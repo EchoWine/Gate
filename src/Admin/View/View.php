@@ -2,6 +2,8 @@
 
 namespace Admin\View;
 
+use CoreWine\Exceptions;
+
 class View{
 
 	/**

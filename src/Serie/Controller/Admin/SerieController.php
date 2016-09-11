@@ -29,7 +29,6 @@ class SerieController extends AdminController{
 		$views -> all(function($view){
 			$view -> id();
 			$view -> name();
-			$view -> episodes('episodes') -> name() -> label('Episodi');
 		});
 
 		$views -> add(function($view){

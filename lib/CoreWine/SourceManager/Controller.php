@@ -79,6 +79,9 @@ class Controller{
 		return new \CoreWine\Http\Response\RedirectResponse;
 	}
 
+	public function json($params){
+		return (new \CoreWine\Http\Response\JSONResponse()) -> setBody($params);
+	}
 
 }
 ?>

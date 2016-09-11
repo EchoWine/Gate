@@ -117,7 +117,7 @@ class Model{
 
 		if($this -> isField($method))
 			return $this -> getField($method);
-
+		
 		throw new Exceptions\UndefinedMethodException(static::class,$method);
 		
 	}

@@ -276,7 +276,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function delete($id){
+	public function delete(Request $request,$id){
 
 		try{
 
@@ -314,7 +314,7 @@ abstract class Controller extends SourceController{
 	 *
 	 * @return \Api\Response\Response
 	 */
-	public function copy($id){
+	public function copy(Request $request,$id){
 
 		try{
 

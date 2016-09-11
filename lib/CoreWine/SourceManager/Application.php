@@ -4,7 +4,7 @@ namespace CoreWine\SourceManager;
 
 use CoreWine\Components\App;
 
-class SourceManagerApp extends App{
+class Application extends App{
 
 	public function __construct(){
 	}

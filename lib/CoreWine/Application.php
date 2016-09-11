@@ -11,7 +11,7 @@ use CoreWine\Http\Router;
 use CoreWine\SourceManager\Manager;
 use CoreWine\Http\Response;
 
-class FrameworkApp extends App{
+class Application extends App{
 
 	public function __construct(){
 		class_alias("CoreWine\Flash","Flash");
@@ -21,7 +21,13 @@ class FrameworkApp extends App{
 		
 		# Load all sources
 		Manager::loadAll(PATH_SRC);
-			
+		
+		
+
+		if(php_sapi_name() == "cli")
+			return;
+
+
 		Manager::callControllersRoutes();
 		Router::setRequest();
 		Manager::callControllersChecks();
@@ -57,6 +63,7 @@ class FrameworkApp extends App{
 		
 
 		$response -> send();
+	
 
 	}
 

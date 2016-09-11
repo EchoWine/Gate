@@ -1,10 +1,9 @@
 <?php
 
-namespace Basic\Controller;
+namespace Serie\Controller\Admin;
 
 use CoreWine\Http\Router;
 use CoreWine\Http\Request;
-use Admin\Controller\AdminController;
 use Auth\Service\Auth;
 
 use CoreWine\SourceManager\Controller as Controller;
@@ -32,7 +31,7 @@ class DashboardController extends Controller{
 	 * Router to login
 	 */
 	public function indexRouter(){
-		return $this -> view('Admin/admin/dashboard');
+		return $this -> view('Serie/admin/dashboard');
 	}
 }
 

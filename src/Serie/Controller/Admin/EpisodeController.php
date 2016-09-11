@@ -1,18 +1,15 @@
 <?php
 
-namespace Test\Controller\Admin;
+namespace Serie\Controller\Admin;
 
-use Admin\Controller\AdminController as BasicController;
-
-
-class EpisodeController extends BasicController{
+class EpisodeController extends AdminController{
 
 	/**
 	 * ORM\Model
 	 *
 	 * @var
 	 */
-	public $model = 'Test\Model\Episode';
+	public $model = 'Serie\Model\Episode';
 
 	/**
 	 * Url

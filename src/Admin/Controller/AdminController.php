@@ -35,6 +35,13 @@ abstract class AdminController extends Controller{
 	public $__repository = 'Admin\Repository';
 
 	/**
+	 * View of item
+	 *
+	 * @var string
+	 */
+	public $view = 'Admin/admin/item';
+
+	/**
 	 * Set all Routers
 	 */
 	public function __routes(){
@@ -64,7 +71,7 @@ abstract class AdminController extends Controller{
 
 		$this -> views($views);
 
-		return $this -> view('Admin/admin/item',[
+		return $this -> view($this -> view,[
 			'table' => $this -> url,
 			'api_url' => $this -> getApiUrl(),
 			'api' => $this -> getFullApiURL(),

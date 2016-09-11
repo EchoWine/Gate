@@ -213,7 +213,7 @@ class Router{
 	 * @return string relative url
 	 */
 	public static function getRelativeUrl(){
-		return preg_replace("/(\?|&).*/",'',str_replace(dirname($_SERVER['PHP_SELF']),'',$_SERVER['REQUEST_URI']));
+		return preg_replace("/(\?|&).*/",'',str_replace(dirname(Request::server('PHP_SELF')),'',Request::server('REQUEST_URI')));
 	}
 
 	/**

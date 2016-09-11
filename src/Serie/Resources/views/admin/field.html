@@ -1,0 +1,29 @@
+<?php if(!isset($extra_class)) $extra_class = ''; ?>
+{{switch $field -> getSchema() -> getType()}}
+
+	{{case 'text'}}
+		<textarea class='text-data {{$extra_class}}' name='{{$field -> getSchema() -> getName()}}'></textarea>
+	{{/case}}
+
+	{{case 'to_one'}}
+		{{if $field -> isSelect()}}
+			<input type='text' class='input-data {{$extra_class}} autocomplete-input'
+				autocomplete='off'
+				data-autocomplete-name='{{$table}}.{{$field -> getName()}}'
+				data-autocomplete-column='{{$field -> getColumn()}}'
+				data-autocomplete-label='{{$field -> getSelect() -> getLabel()}}'
+				data-autocomplete-value='{{$field -> getSelect() -> getValue()}}'
+				data-autocomplete-search="{{($field -> getSelect() -> getSearch())}}"
+				data-autocomplete-url='{{$field -> getSelect() -> getUrl()}}' 
+			>
+		{{elseif $field -> isInput()}}
+
+			<input type='text' class='input-data {{$extra_class}} ' name='{{$field -> getName()}}' >
+		{{/if}}
+	{{/case}}
+
+	{{case default}}
+		<input type='text' class='input-data {{$extra_class}}' name='{{$field -> getName()}}'>
+	{{/case}}
+
+{{/switch}}

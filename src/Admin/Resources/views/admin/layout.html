@@ -6,8 +6,10 @@
 
 	<title>{{block title}}Administration{{/block}}</title>
 
-	<link rel='icon' type='image/x-icon' href='{{assets('assets/img/favicon.png')}}'>
-	<link rel='shortcut icon' type='image/x-icon' href='{{assets('assets/img/favicon.png')}}'>
+	{{block favicon}}
+		<link rel='icon' type='image/x-icon' href='{{assets('assets/img/favicon.png')}}'>
+		<link rel='shortcut icon' type='image/x-icon' href='{{assets('assets/img/favicon.png')}}'>
+	{{/block}}
 
 	{{block stylesheet}}
 		<link rel='stylesheet' href='{{assets('assets/css/font-awesome.css')}}'>
@@ -35,56 +37,17 @@
 
 			<div class='container container-column nav-container'>
 				<div class='header nav-header'>
-					<!--
-					<div class='nav-header-icon-container flex-center'><i class='fa fa-television' aria-hidden='true'></i></div>
-					<span class='nav-header-name'>Serie TV</span>
-					-->
+				
+					{{block nav_head}}
+						<div class='nav-header-icon-container flex-center'><i class='fa fa-glass' aria-hidden='true'></i></div>
+						<span class='nav-header-name'>Gate</span>
+					{{/block}}
 
-					<div class='nav-header-icon-container flex-center'><i class='fa fa-glass' aria-hidden='true'></i></div>
-					<span class='nav-header-name'>Gate CMS</span>
 					<i class='fa fa-list nav-header-menu-icon' aria-hidden='true'></i>
 				</div>
 				<div class='nav-content'>
 					{{block nav}}
-						<h5 class='nav-title'>Apps</h5>
-						<ul>
-							<li class='nav-link-container'>
-								<a class='nav-link' href='#'>
-									<i class='nav-link-icon fa fa-home'></i>
-									<span>Main</span>
-								</a>
-							</li>
-							<li class='nav-link-container'>
-								<a class='nav-link' href='#'>
-									<i class='nav-link-icon fa fa-table'></i>
-									<span>Data</span>
-								</a>
-							</li>
-						</ul>
-						<h5 class='nav-title'>Pages</h5>
-						<ul>
-							<li class='nav-link-container'>
-								<span class='nav-link'>
-									<i class='nav-link-icon fa fa-file'></i>
-									<span>Title</span>
-									<i class='nav-link-arrow fa fa-angle-left'></i>
-								</span>
-								<ul class='nav-links'>
-									<li>
-										<a class='nav-link nav-link-sub' href='#'>
-											<span>Sub 1</span>
-										</a>
-									</li>
-									<li>
-										<a class='nav-link nav-link-sub' href='#'>
-											<span>Sub 2</span>
-										</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
 					{{/block}}
-
 				</div>
 			</div>
 			<span></span>

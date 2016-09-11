@@ -1,2 +1,3 @@
 public/src/
 config/database.php
+*.log

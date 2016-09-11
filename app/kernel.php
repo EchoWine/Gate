@@ -3,6 +3,8 @@
 	# Error reporting
 	error_reporting(-1);
 	ini_set('display_errors', 'On');
+	ini_set("log_errors", 1);
+	ini_set("error_log", __DIR__."/php-error.log");
 
 	# Path
 	define('PATH',__DIR__.'/../public');
@@ -16,20 +18,19 @@
 
 
 	$apps = [
-		new CoreWine\Exceptions\ExceptionsApp(),
-		new CoreWine\Requirements\RequirementsApp(),
-		new CoreWine\TemplateEngine\TemplateEngineApp(),
-		new CoreWine\SourceManager\SourceManagerApp(),
-		new CoreWine\DataBase\DataBaseApp(),
-		new CoreWine\ORM\ORMApp(),
-		new CoreWine\FrameworkApp(),
+		new CoreWine\Exceptions\Application(),
+		new CoreWine\Requirements\Application(),
+		new CoreWine\TemplateEngine\Application(),
+		new CoreWine\SourceManager\Application(),
+		new CoreWine\DataBase\Application(),
+		new CoreWine\ORM\Application(),
+		new CoreWine\Application(),
 	];
 
 	foreach($apps as $app){
 		$app -> app();
 	}
 
-
-
+	
 
 ?>

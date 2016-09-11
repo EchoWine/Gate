@@ -1,25 +1,23 @@
 <?php
 
-namespace Basic\Controller;
+namespace Serie\Controller\Admin;
 
-use Admin\Controller\AdminController;
-
-
-class UserController extends AdminController{
+class SerieController extends AdminController{
 
 	/**
 	 * ORM\Model
 	 *
 	 * @var
 	 */
-	public $model = 'Auth\Model\User';
+	public $model = 'Serie\Model\Serie';
 
 	/**
 	 * Url
 	 *
 	 * @var
 	 */
-	public $url = 'users';
+	public $url = 'series';
+
 
 	/**
 	 * Set views
@@ -30,30 +28,26 @@ class UserController extends AdminController{
 
 		$views -> all(function($view){
 			$view -> id();
-			$view -> username();
-			$view -> email();
+			$view -> name();
+			$view -> episodes('episodes') -> name() -> label('Episodi');
 		});
 
 		$views -> add(function($view){
-			$view -> username();
-			$view -> email();
+			$view -> name();
 		});
 
 		$views -> edit(function($view){
-			$view -> username();
-			$view -> email();
+			$view -> name();
 		});
 
 		$views -> get(function($view){
 			$view -> id();
-			$view -> username();
-			$view -> email();
+			$view -> name();
 		});
 
 		$views -> search(function($view){
 			$view -> id();
-			$view -> username();
-			$view -> email();
+			$view -> name();
 		});
 	}
 

@@ -76,7 +76,7 @@ class Request{
 
 		self::startSession();
 
-		self::$method = $_SERVER['REQUEST_METHOD'];
+		self::$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
 
 		self::ini_REQUEST_GET();
 		self::ini_REQUEST_POST();
@@ -84,6 +84,10 @@ class Request{
 		self::ini_REQUEST_FILES();
 	}
 
+	public static function server($index){
+		return isset($_SERVER[$index]) ? $_SERVER[$index] : null;
+	}
+	
 	/** 
 	 * Ini put
 	 */

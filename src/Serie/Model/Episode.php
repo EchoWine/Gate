@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Model;
+namespace Serie\Model;
 
 use CoreWine\ORM\Model;
 use CoreWine\ORM\Field\Schema as Field;

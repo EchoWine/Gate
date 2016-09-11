@@ -4,7 +4,7 @@ namespace CoreWine\TemplateEngine;
 
 use CoreWine\Components\App;
 
-class TemplateEngineApp extends App{
+class Application extends App{
 
 	public function __construct(){
 

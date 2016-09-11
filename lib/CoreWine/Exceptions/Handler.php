@@ -3,6 +3,7 @@
 namespace CoreWine\Exceptions;
 
 use CoreWine\TemplateEngine\Engine;
+use CoreWine\Http\Request;
 
 class Handler{
 
@@ -45,14 +46,19 @@ class Handler{
 
 
 	public function report($e){
+		error_log("Caught $e");
 		$this -> render($e);
 	}
 	
 	public function render($e){
-		$class = basename(get_class($e));
-		
-		include dirname(__FILE__)."/files/error.php";
-		die();
+		if(Request::getMethod()){
+			$class = basename(get_class($e));
+			
+			include dirname(__FILE__)."/files/error.php";
+			die();
+		}else{
+			print_r($e);
+		}
 	}
 }
 

@@ -1,0 +1,13 @@
+<?php
+
+	include "kernel.php";
+
+	if(php_sapi_name() == "cli"){
+		$console = new CoreWine\Console\Console();
+		$console -> exec($argv);
+	}else{
+		echo "nope";
+	}
+
+
+?>

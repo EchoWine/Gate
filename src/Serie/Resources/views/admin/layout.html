@@ -1,0 +1,67 @@
+{{extends Admin/admin/layout}}
+
+{{block favicon}}
+	<link rel='icon' type='image/x-icon' href='{{assets('assets/img/favicon-tv.png')}}'>
+	<link rel='shortcut icon' type='image/x-icon' href='{{assets('assets/img/favicon-tv.png')}}'>
+{{/block}}
+
+{{block nav_head}}
+	<div class='nav-header-icon-container flex-center'>
+		<i class='fa fa-television' aria-hidden='true' style='padding-top:1px;font-size:18px;max-width:23px'></i>
+	</div>
+	<span class='nav-header-name'>Serie TV</span>
+{{/block}}
+
+{{block nav}}
+	<ul>
+		<li class='nav-link-container'>
+			<a class='nav-link' href='{{route('admin/dashboard')}}'>
+				<i class='nav-link-icon fa fa-home'></i>
+				<span>Dashboard</span>
+			</a>
+		</li>
+	</ul>
+	<ul>
+		<li class='nav-link-container'>
+			<a class='nav-link' href='{{route('admin/dashboard')}}'>
+				<i class='nav-link-icon fa fa-calendar'></i>
+				<span>Calendar</span>
+			</a>
+		</li>
+	</ul>
+	<ul>
+		<li class='nav-link-container'>
+			<a class='nav-link' href='{{route('admin/series')}}'>
+				<i class='nav-link-icon fa fa-film'></i>
+				<span>Film</span>
+			</a>
+		</li>
+		<li class='nav-link-container'>
+			<a class='nav-link' href='{{route('admin/series')}}'>
+				<i class='nav-link-icon fa fa-tv'></i>
+				<span>Serie</span>
+			</a>
+		</li>
+		<li class='nav-link-container'>
+			<a class='nav-link' href=''>
+				<i class='nav-link-icon fa fa-diamond'></i>
+				<span>Anime</span>
+			</a>
+		</li>
+		<li class='nav-link-container'>
+			<a class='nav-link' href=''>
+				<i class='nav-link-icon fa fa-book 	'></i>
+				<span>Manga</span>
+			</a>
+		</li>
+	</ul>
+	<h5 class='nav-title'>Administration</h5>
+	<ul>
+		<li class='nav-link-container'>
+			<a class='nav-link' href='{{route('admin/users')}}'>
+				<i class='nav-link-icon fa fa-user'></i>
+				<span>Users</span>
+			</a>
+		</li>
+	</ul>
+{{/block}}

@@ -5,8 +5,8 @@ namespace Serie\Controller\Api;
 use CoreWine\SourceManager\Controller as BasicController;
 use Api\Response;
 use Api\Exceptions;
-use CoreWine\Http\Request;
 use Serie\Service\Serie;
+use Request;
 
 class SearchController extends BasicController{
 
@@ -24,7 +24,7 @@ class SearchController extends BasicController{
 	 *
 	 * @return Response
 	 */
-	public function index($resource,$key){
+	public function index(Request $request,$resource,$key){
 		return $this -> json(Serie::discovery($resource,$key));
 	}
 }

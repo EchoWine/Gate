@@ -5,7 +5,7 @@ namespace Admin\Controller;
 use CoreWine\Http\Request;
 use CoreWine\Http\Router;
 use CoreWine\Flash;
-use CoreWine\Cfg;
+use CoreWine\Component\Cfg;
 
 use Auth\Service\Auth;
 use Auth\Repository\AuthRepository;

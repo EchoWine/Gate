@@ -73,3 +73,20 @@
 		</li>
 	</ul>
 {{/block}}
+
+{{block stylesheet}}
+	{{parent}}
+		
+		
+
+	<link rel='stylesheet' href='{{assets('src/Serie/assets/css/serie.css')}}'>
+{{/block}}
+{{block scripts}}
+	{{parent}}
+
+	<script src='{{assets('src/Serie/assets/js/serie.js')}}'></script>
+	<script>
+
+		Serie.url = "{{Api\Service\Api::url()}}";
+	</script>
+{{/block}}

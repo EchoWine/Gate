@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine;
+namespace CoreWine\Component;
 
 use CoreWine\Http\Request;
 

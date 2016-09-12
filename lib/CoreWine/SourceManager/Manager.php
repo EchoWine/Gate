@@ -2,7 +2,7 @@
 
 namespace CoreWine\SourceManager;
 
-use CoreWine\Cfg;
+use CoreWine\Component\Cfg;
 use CoreWine\TemplateEngine;
 use CoreWine\Console\Console;
 use CoreWine\Console\Command;

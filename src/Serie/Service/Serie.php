@@ -26,6 +26,8 @@ class Serie{
 	 */
 	public static function discovery($resource,$key){
 
+		$response = [];
+			
 		foreach(self::$sources as $source){
 
 			$source = new $source();

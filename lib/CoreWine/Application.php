@@ -14,7 +14,11 @@ use CoreWine\Http\Response;
 class Application extends App{
 
 	public function __construct(){
-		class_alias("CoreWine\Flash","Flash");
+		class_alias("CoreWine\Component\Bag","Bag");
+		class_alias("CoreWine\Component\Collection","Collection");
+		class_alias("CoreWine\Component\Flash","Flash");
+		class_alias("CoreWine\Http\Request","Request");
+		class_alias("CoreWine\Http\Response\Response","Response");
 	}
 
 	public function app(){

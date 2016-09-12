@@ -48,7 +48,7 @@ class Basic{
 	 * @return bool
 	 */
 	public function isResource($resource){
-		return in_array($resource,$this -> resources);
+		return $resource == 'all' || in_array($resource,$this -> resources);
 	}
 
 	/**

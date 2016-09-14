@@ -9,7 +9,7 @@
 	{{for $fields as $field}}
 		{{if $field -> getSchema() -> isSort()}}
 			<div class="table-col table-col-head table-col-sort {{if $field -> getSchema() -> isType('integer')}}table-col-number{{/if}}" data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
-				<div class='table-col-text noselect'>
+				<div class='table-col-text no-select'>
 					<span>{{$field -> getLabel()}}</span>
 
 					<i class='fa fa-sort' data-item-sort-none></i>

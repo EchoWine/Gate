@@ -54,7 +54,7 @@ ul,li{
 	cursor:default !important;
 }
 
-.flex-center{
+.ly-container-center{
 	display:flex;
 	align-items:center;
 	justify-content:center;
@@ -71,7 +71,7 @@ ul,li{
 	display:flex;
 }
 
-.container-column{
+.ly-element-column{
 	flex-direction: column;
 	flex-grow: 1;
 	flex-shrink: 1;
@@ -92,7 +92,7 @@ ul,li{
 	min-height:100%;
 }
 
-.noselect {
+.no-select {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -101,7 +101,7 @@ ul,li{
 	user-select: none;
 }
 
-.flex-fill{
+.ly-element-fill{
 	flex-grow:1;
 }
 

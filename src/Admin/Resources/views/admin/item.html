@@ -59,10 +59,10 @@
 		<div class='page-section page-section-content'>
 
 
-			<div class='section-header flex-center'>
+			<div class='section-header ly-container-center'>
 				<h3 class='section-title'>Some content here...</h3>
 
-				<div class='flex-fill'></div>
+				<div class='ly-element-fill'></div>
 				
 				<div class='section-actions'>
 
@@ -88,7 +88,7 @@
 			</div>
 			
 
-			<div class='section-pagination flex-center'>
+			<div class='section-pagination ly-container-center'>
 				<div>If selected: &nbsp;</div>
 				<select class='select-data' data-item-multiple data-item-table='{{$table}}'> 
 					<option value='none'>Select action...</option>
@@ -97,7 +97,7 @@
 					<option value='copy'>Copy</option>
 				</select>
 
-				<div class='flex-fill'></div>
+				<div class='ly-element-fill'></div>
 
 				{{include Admin/admin/structure/table/pagination ['table' => $table]}}
 			</div>
@@ -116,7 +116,7 @@
 				</div>
 
 			</div>
-			<div class='section-pagination flex-center'>
+			<div class='section-pagination ly-container-center'>
 				<div>
 					<select class='select select-data' data-item-show data-item-table='{{$table}}'>
 						<option value='10'>10</option>
@@ -125,7 +125,7 @@
 						<option value='100'>100</option>
 					</select>
 				</div>
-				<div class='flex-fill'></div>
+				<div class='ly-element-fill'></div>
 				{{include Admin/admin/structure/table/pagination ['table' => $table]}}
 			</div>
 		</div>

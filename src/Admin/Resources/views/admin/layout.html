@@ -42,13 +42,15 @@
 <body>
 
 	{{block body}}
-		<div class='ly-container main-container'>
+		<div class='ly-container ly-container-layout'>
 
-			<div class='container ly-element-column nav-container'>
+			<div class='ly-element-column ly-container-layout nav-container'>
 				<div class='header nav-header'>
 				
 					{{block nav_head}}
-						<div class='nav-header-icon-container ly-container-center'><i class='fa fa-glass' aria-hidden='true'></i></div>
+						<div class='ly-container-center nav-header-icon-container'>
+							<i class='fa fa-glass' aria-hidden='true'></i>
+						</div>
 						<span class='nav-header-name'>Gate</span>
 					{{/block}}
 
@@ -63,7 +65,7 @@
 			</span>
 		</li>
 
-			<div class='ly-container ly-element-column page-container'>
+			<div class='ly-element-column ly-container page-container'>
 				<div class='header page-header'>
 					<div class='page-header-main'></div>
 					<div class='page-header-separator'></div>
@@ -78,8 +80,6 @@
 					</div>
 				</div>
 				<div class='page-content'>
-
-
 					<div class='page-nav'>
 						{{block page-nav}}
 							<div class='page-nav-path'>

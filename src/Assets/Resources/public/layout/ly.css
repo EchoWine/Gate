@@ -2,6 +2,11 @@
 	display:flex;
 }
 
+.ly-container-layout{
+	display:flex;
+	min-height:100%;
+}
+
 .ly-container-center{
 	display:flex;
 	align-items:center;

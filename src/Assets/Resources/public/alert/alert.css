@@ -56,3 +56,8 @@
 	background-color: #D9EDF7;
 	border-color: #BCE8F1;
 }
+
+.alert{
+	opacity:1;
+	transition:opacity 0.2s ease-in-out;
+}

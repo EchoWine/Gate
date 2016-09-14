@@ -2,7 +2,7 @@
 
 namespace Api;
 
-use CoreWine\SourceManager\Controller as SourceController;
+use CoreWine\Http\Controller as SourceController;
 use Api\Response;
 use Api\Exceptions;
 use CoreWine\Http\Request;

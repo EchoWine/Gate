@@ -2,7 +2,7 @@
 
 namespace Serie\Controller\Api;
 
-use CoreWine\SourceManager\Controller as BasicController;
+use CoreWine\Http\Controller as BasicController;
 use Api\Response;
 use Api\Exceptions;
 use Serie\Service\Serie;

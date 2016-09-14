@@ -6,7 +6,7 @@ use Exception;
 
 use Exceptions\FatalException;
 use CoreWine\Http\Router;
-use CoreWine\SourceManager\Controller;
+use CoreWine\Http\Controller;
 
 class ExceptionsController extends Controller{
 

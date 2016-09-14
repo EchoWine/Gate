@@ -4,12 +4,12 @@ namespace Admin\Controller;
 
 use CoreWine\Http\Request;
 use CoreWine\Http\Router;
-use CoreWine\Flash;
+use CoreWine\Component\Flash;
 use CoreWine\Component\Cfg;
 
 use Auth\Service\Auth;
 use Auth\Repository\AuthRepository;
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 
 class AuthController extends Controller{
 

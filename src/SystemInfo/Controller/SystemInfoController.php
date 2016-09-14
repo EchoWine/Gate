@@ -6,12 +6,12 @@ use SystemInfo\Service\SystemInfo;
 use CoreWine\DataBase\DB;
 use CoreWine\Http\Router;
 
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 
 
 class SystemInfoController extends Controller{
 	
-
+	
 	public function __check(){
 
 		SystemInfo::load();

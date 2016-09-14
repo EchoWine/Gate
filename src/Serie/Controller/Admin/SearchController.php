@@ -2,7 +2,7 @@
 
 namespace Serie\Controller\Admin;
 
-use CoreWine\SourceManager\Controller as BasicController;
+use CoreWine\Http\Controller as BasicController;
 
 
 class SearchController extends BasicController{

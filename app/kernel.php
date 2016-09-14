@@ -21,10 +21,9 @@
 		new CoreWine\Exceptions\Application(),
 		new CoreWine\Requirements\Application(),
 		new CoreWine\TemplateEngine\Application(),
-		new CoreWine\SourceManager\Application(),
+		new CoreWine\Loader\Application(),
 		new CoreWine\DataBase\Application(),
 		new CoreWine\ORM\Application(),
-		new CoreWine\Application(),
 	];
 
 	foreach($apps as $app){

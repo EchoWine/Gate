@@ -4,7 +4,7 @@ namespace Example\Controller;
 
 use CoreWine\Http\Router;
 
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 
 class ExampleController extends Controller{
 

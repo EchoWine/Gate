@@ -1,11 +1,12 @@
 <?php
 
-namespace CoreWine\SourceManager;
+namespace CoreWine\Loader;
 
 use CoreWine\Component\Cfg;
 use CoreWine\TemplateEngine;
 use CoreWine\Console\Console;
 use CoreWine\Console\Command;
+use CoreWine\Http\Controller;
 
 class Manager{
   	

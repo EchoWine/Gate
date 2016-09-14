@@ -3,11 +3,18 @@
 namespace SystemInfo\Service;
 
 use CoreWine\DataBase\DB;
-use CoreWine\Service;
+use Service;
 
-class SystemInfo extends Service{
+class SystemInfo implements Service{
 	
+	public static function load(){
 
+	}
+	
+	public static function facade(){
+		return 'SystemInfo';
+	}
+	
 	public static function getInfoDB(){
 		return DB::getServerInfo();
 	}

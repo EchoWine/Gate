@@ -3,9 +3,9 @@
 namespace Test\Controller;
 
 use CoreWine\Http\Router;
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 use CoreWine\Http\Cookie as Cookie;
-use CoreWine\Flash;
+use CoreWine\Component\Flash;
 
 use Api\Response\Response as Response;
 use CoreWine\Http\Response\Response as BaseResponse;

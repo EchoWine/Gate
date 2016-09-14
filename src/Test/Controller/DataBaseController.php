@@ -5,7 +5,7 @@ namespace Test\Controller;
 use CoreWine\DataBase\DB;
 use CoreWine\Http\Router;
 
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 
 
 class DataBaseController extends Controller{

@@ -5,12 +5,12 @@ namespace Auth\Service;
 use CoreWine\DataBase\DB;
 use CoreWine\Component\Cfg;
 use CoreWine\Http\Request;
-use CoreWine\Service;
+use Service;
 
 use Auth\Model\User;
 use Auth\Model\Session;
 
-class Auth extends Service{
+class Auth implements Service{
 
 	/**
 	 * Auth\Entity\User
@@ -21,6 +21,10 @@ class Auth extends Service{
 	 * Auth\Entity\Session
 	 */
 	public static $session = null;
+
+	public static function facade(){
+		return 'Auth';
+	}
 
 	/**
 	 * Initilization

@@ -6,7 +6,7 @@ use CoreWine\Http\Router;
 use CoreWine\Http\Request;
 use Auth\Service\Auth;
 
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 
 class DashboardController extends Controller{
 

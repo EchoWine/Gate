@@ -4,7 +4,7 @@
 
 		require_once $file;
 
-		if(is_subclass_of($class,"CoreWine\Service")){
+		if(is_subclass_of($class,"Service")){
 			$name = explode('\\',$class);
 			$name = end($name);
 			class_alias($class, $name);

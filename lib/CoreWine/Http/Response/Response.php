@@ -290,7 +290,7 @@ class Response{
 				throw new \InvalidArgumentException("Invalid argument. Array expected.");
 			}
 
-			\CoreWine\Flash::add($name, $values);
+			\CoreWine\Component\Flash::add($name, $values);
 			// no chaining: order matters. Example: $response -> with() -> back() is not
 			//allowed
 			//return null;
@@ -319,7 +319,7 @@ class Response{
 	
 			}
 
-			\CoreWine\Flash::add($the_name, $values);
+			\CoreWine\Component\Flash::add($the_name, $values);
 
 			return $this;
 		}

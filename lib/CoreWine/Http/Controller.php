@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\SourceManager;
+namespace CoreWine\Http;
 
 use CoreWine\Http\Router;
 use CoreWine\TemplateEngine\Engine;

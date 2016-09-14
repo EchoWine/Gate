@@ -3,7 +3,7 @@
 namespace Test\Controller;
 
 use CoreWine\Http\Router;
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 use CoreWine\Http\Cookie as Cookie;
 
 use Api\Response\Response as Response;

@@ -1,14 +1,14 @@
 <?php
 
-namespace CoreWine;
+namespace CoreWine\Loader;
 
 use CoreWine\Component\App;
 
 use CoreWine\TemplateEngine\Engine;
 use CoreWine\Http\Request;
-use CoreWine\Flash;
+use CoreWine\Component\Flash;
 use CoreWine\Http\Router;
-use CoreWine\SourceManager\Manager;
+use CoreWine\Loader\Manager;
 use CoreWine\Http\Response;
 
 class Application extends App{
@@ -19,6 +19,7 @@ class Application extends App{
 		class_alias("CoreWine\Component\Flash","Flash");
 		class_alias("CoreWine\Http\Request","Request");
 		class_alias("CoreWine\Http\Response\Response","Response");
+		class_alias("CoreWine\Loader\Component\Service","Service");
 	}
 
 	public function app(){

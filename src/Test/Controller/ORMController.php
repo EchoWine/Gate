@@ -3,7 +3,7 @@
 namespace Test\Controller;
 
 use CoreWine\DataBase\DB;
-use CoreWine\SourceManager\Controller as Controller;
+use CoreWine\Http\Controller as Controller;
 
 use Test\Model\Hodor;
 use Test\Model\Serie;

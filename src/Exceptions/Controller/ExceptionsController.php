@@ -1,6 +1,6 @@
 <?php
 
-namespace Exceptions;
+namespace Exceptions\Controller;
 
 use Exception;
 
@@ -11,7 +11,7 @@ use CoreWine\Http\Controller;
 class ExceptionsController extends Controller{
 
 	public function __check(){
-		new CoreWine\Exceptions\Handler($this,'render');
+		new \CoreWine\Exceptions\Handler($this,'render');
 	}
 
 	public function render(Exception $e){

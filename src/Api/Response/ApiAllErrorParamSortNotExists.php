@@ -4,7 +4,7 @@ namespace Api\Response;
 
 use CoreWine\Http\Request;
 
-class ApiErrorAllShow extends Error{
+class ApiErrorParamSortNotExists extends Error{
 
 	/** 
 	 * Code

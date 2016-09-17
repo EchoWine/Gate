@@ -41,7 +41,7 @@ class Handler{
 	}
 
 	public function error($errno, $errstr, $errfile, $errline){
-		throw new FatalErrorException($errstr, '', $errno, $errfile, $errline);
+		$this -> report(new FatalErrorException($errstr, '', $errno, $errfile, $errline));
 	}
 
 

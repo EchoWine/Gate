@@ -2,7 +2,7 @@
 
 namespace Auth\Field\Password;
 
-use CoreWine\ORM\Field\Field\Model as FieldModel;
+use CoreWine\DataBase\ORM\Field\Field\Model as FieldModel;
 
 use Auth\Service\Auth;
 

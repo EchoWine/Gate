@@ -2,8 +2,8 @@
 
 namespace Test\Model;
 
-use CoreWine\ORM\Model;
-use CoreWine\ORM\Field\Schema as Field;
+use CoreWine\DataBase\ORM\Model;
+use CoreWine\DataBase\ORM\Field\Schema as Field;
 
 class Hodor extends Model{
 

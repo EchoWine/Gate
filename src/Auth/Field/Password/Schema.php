@@ -2,7 +2,7 @@
 
 namespace Auth\Field\Password;
 
-use CoreWine\ORM\Field\Field\Schema as FieldSchema;
+use CoreWine\DataBase\ORM\Field\Field\Schema as FieldSchema;
 
 class Schema extends FieldSchema{
 	

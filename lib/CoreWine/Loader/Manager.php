@@ -7,6 +7,7 @@ use CoreWine\TemplateEngine;
 use CoreWine\Console\Console;
 use CoreWine\Console\Command;
 use CoreWine\Http\Controller;
+use CoreWine\Loader\Component\Service;
 
 class Manager{
   	
@@ -139,6 +140,27 @@ class Manager{
 		
 			}
 		}
+
+
+		$files = self::getAllFiles($path."/Service");
+
+			
+		foreach($files as $file){
+			self::$files[] = $file;
+			require_once $file;
+			$name_class = str_replace(PATH_SRC,"",$file);
+			$name_class = str_replace("/","\\",$name_class);
+			$name_class = str_replace(".php","",$name_class);
+
+
+			if(is_subclass_of($name_class,Service::class)){
+				$last_name = explode("\\",$name_class);
+				$last_name = end($last_name);
+				class_alias($name_class,$last_name);
+		
+			}
+		}
+
 
 
 		if(!file_exists(PATH."/src/")){

@@ -1,0 +1,68 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "dcf730a1ad0dd023e1a6bf4b25d2ded2",
+    "content-hash": "8162ad6ed8f1dd4043e4b355e4133dbe",
+    "packages": [
+        {
+            "name": "echowine/database",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EchoWine/DataBase.git",
+                "reference": "f5ea8a1951715aa52ffbb0da2cbcbf2c41775ba2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EchoWine/DataBase/zipball/f5ea8a1951715aa52ffbb0da2cbcbf2c41775ba2",
+                "reference": "f5ea8a1951715aa52ffbb0da2cbcbf2c41775ba2",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CoreWine\\DataBase\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2016-09-16 23:08:28"
+        },
+        {
+            "name": "echowine/http",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EchoWine/Http.git",
+                "reference": "6a1486a61669019949e16d696d3d2874a83c8fa4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EchoWine/Http/zipball/6a1486a61669019949e16d696d3d2874a83c8fa4",
+                "reference": "6a1486a61669019949e16d696d3d2874a83c8fa4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CoreWine\\Http\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2016-09-16 22:32:58"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "echowine/http": 20,
+        "echowine/database": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

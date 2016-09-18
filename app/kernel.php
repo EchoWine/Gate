@@ -26,7 +26,7 @@
 	class_alias("CoreWine\Http\Response\Response","Response");
 
 
-	new \CoreWine\Exceptions\Handler('ExceptionsController','render');
+	new \Kernel\Exceptions\Handler('ExceptionsController','render');
 
 
 	\CoreWine\DataBase\DB::connect(include PATH_CONFIG.'/database.php');

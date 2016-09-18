@@ -21,7 +21,7 @@
 	
 	class_alias("CoreWine\Component\Bag","Bag");
 	class_alias("CoreWine\Component\Collection","Collection");
-	class_alias("CoreWine\Component\Flash","Flash");
+	class_alias("CoreWine\Http\Flash","Flash");
 	class_alias("CoreWine\Http\Request","Request");
 	class_alias("CoreWine\Http\Response\Response","Response");
 
@@ -36,7 +36,7 @@
 	\CoreWine\DataBase\ORM\SchemaBuilder::setFields(include PATH_CONFIG.'/orm.php');
 	
 	# Load all sources
-	\CoreWine\Loader\Manager::loadAll(PATH_SRC);
+	\Kernel\Manager::loadAll(PATH_SRC);
 	
 	
 
@@ -44,16 +44,16 @@
 		return;
 
 
-	\CoreWine\Loader\Manager::callControllersRoutes();
+	\Kernel\Manager::callControllersRoutes();
 	\CoreWine\Http\Router::setRequest();
-	\CoreWine\Loader\Manager::callControllersChecks();
+	\Kernel\Manager::callControllersChecks();
 
 
 	# Compile
 	\CoreWine\View\Engine::compile(PATH_APP,'Resources/views');
 
 
-	foreach(\CoreWine\Loader\Manager::$list as $name => $dir){
+	foreach(\Kernel\Manager::$list as $name => $dir){
 		\CoreWine\View\Engine::compile(
 			PATH_APP,
 			"Resources/".$name."/views",
@@ -61,7 +61,7 @@
 		);
 	}
 
-	foreach(\CoreWine\Loader\Manager::$list as $name => $dir){
+	foreach(\Kernel\Manager::$list as $name => $dir){
 		\CoreWine\View\Engine::compile(
 			PATH_SRC,
 			$name."/Resources/views",

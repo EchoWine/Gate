@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Exceptions;
+namespace Kernel\Exceptions;
 
 use CoreWine\View\Engine;
 use CoreWine\Http\Request;

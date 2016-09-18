@@ -8,7 +8,7 @@
         "echowine/component": "*@dev"
     },
     "autoload": {
-        "classmap": ["app/Kernel/"],
+        "classmap": ["app/"],
         "psr-4": {
             "": "src/"
         },

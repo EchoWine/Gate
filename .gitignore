@@ -3,3 +3,4 @@ config/database.php
 /vendor/
 *.log
 *.bat
+composer.lock

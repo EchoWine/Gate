@@ -1,13 +1,14 @@
 <?php
 
-namespace CoreWine\Loader;
+namespace Kernel;
+
+use Kernel\Service;
 
 use CoreWine\Component\Cfg;
 use CoreWine\View;
 use CoreWine\Console\Console;
 use CoreWine\Console\Command;
 use CoreWine\Http\Controller;
-use CoreWine\Loader\Component\Service;
 
 class Manager{
   	

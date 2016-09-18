@@ -3,10 +3,12 @@
     "require": {
         "echowine/http": "*@dev",
         "echowine/database": "*@dev",
-        "echowine/view": "*@dev"
+        "echowine/view": "*@dev",
+        "echowine/console": "*@dev",
+        "echowine/component": "*@dev"
     },
     "autoload": {
-        "classmap": ["lib/"],
+        "classmap": ["app/Kernel/"],
         "psr-4": {
             "": "src/"
         },

@@ -2,7 +2,7 @@
 
 namespace Api\Exceptions;
 
-use CoreWine\Exceptions\Exception;
+use Exception;
 
 class ModelNotExistsException extends Exception{
 	

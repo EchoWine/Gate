@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Exceptions;
+namespace Kernel\Exceptions;
 
 class Exception extends \Exception{
 

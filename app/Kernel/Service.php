@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreWine\Loader\Component;
+namespace Kernel;
 
 interface Service{
 

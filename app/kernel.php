@@ -16,12 +16,14 @@
 	include "../vendor/autoload.php";
 
 	
+	class_alias("Kernel\Service","Service");
+
+	
 	class_alias("CoreWine\Component\Bag","Bag");
 	class_alias("CoreWine\Component\Collection","Collection");
 	class_alias("CoreWine\Component\Flash","Flash");
 	class_alias("CoreWine\Http\Request","Request");
 	class_alias("CoreWine\Http\Response\Response","Response");
-	class_alias("CoreWine\Loader\Component\Service","Service");
 
 
 	new \CoreWine\Exceptions\Handler('ExceptionsController','render');

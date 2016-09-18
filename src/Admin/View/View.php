@@ -2,7 +2,7 @@
 
 namespace Admin\View;
 
-use CoreWine\Exceptions;
+use CoreWine\Component\Exceptions;
 
 class View{
 

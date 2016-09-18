@@ -1,55 +1,55 @@
-{{for Flash::get('error') as $message}}
+@foreach(Flash::get('error') as $message)
 	<div class='alert alert-danger'>
-		{{if is_array($message)}}
+		@if(is_array($message))
 			<ul>
-			{{for $message as $mex}}
+			@foreach($message as $mex)
 				<li>{{$mex}}</li>
-			{{/for}}
+			@endforeach
 			</ul>
-		{{else}}
+		@else
 			{{$message}}
-		{{/if}}
+		@endif
 	</div>
-{{/for}}
+@endforeach
 
-{{for Flash::get('warning') as $message}}
+@foreach(Flash::get('warning') as $message)
 	<div class='alert alert-warning'>
-		{{if is_array($message)}}
+		@if(is_array($message))
 			<ul>
-			{{for $message as $mex}}
+			@foreach($message as $mex)
 				<li>{{$mex}}</li>
-			{{/for}}
+			@endforeach
 			</ul>
-		{{else}}
+		@else
 			{{$message}}
-		{{/if}}
+		@endif
 	</div>
-{{/for}}
+@endforeach
 
-{{for Flash::get('success') as $message}}
+@foreach(Flash::get('success') as $message)
 	<div class='alert alert-success'>
-		{{if is_array($message)}}
+		@if(is_array($message))
 			<ul>
-			{{for $message as $mex}}
+			@foreach($message as $mex)
 				<li>{{$mex}}</li>
-			{{/for}}
+			@endforeach
 			</ul>
-		{{else}}
+		@else
 			{{$message}}
-		{{/if}}
+		@endif
 	</div>
-{{/for}}
+@endforeach
 
-{{for Flash::get('info') as $message}}
+@foreach(Flash::get('info') as $message)
 	<div class='alert alert-info'>
-		{{if is_array($message)}}
+		@if(is_array($message))
 			<ul>
-			{{for $message as $mex}}
+			@foreach($message as $mex)
 				<li>{{$mex}}</li>
-			{{/for}}
+			@endforeach
 			</ul>
-		{{else}}
+		@else
 			{{$message}}
-		{{/if}}
+		@endif
 	</div>
-{{/for}}
+@endforeach

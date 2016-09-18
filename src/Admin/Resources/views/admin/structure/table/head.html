@@ -6,9 +6,11 @@
 		<label for='select-all-{{$table}}' class='checkbox'></label>
 
 	</div>
-	{{for $fields as $field}}
-		{{if $field -> getSchema() -> isSort()}}
-			<div class="table-col table-col-head table-col-sort {{if $field -> getSchema() -> isType('integer')}}table-col-number{{/if}}" data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
+	@foreach($fields as $field)
+		@if($field -> getSchema() -> isSort())
+			<div class="table-col table-col-head table-col-sort @if($field -> getSchema() -> isType('integer'))
+				table-col-number
+			@endif" data-item-sort-field='{{$field -> getName()}}' data-item-table='{{$table}}'>
 				<div class='table-col-text no-select'>
 					<span>{{$field -> getLabel()}}</span>
 
@@ -17,15 +19,15 @@
 					<i class='fa fa-sort-desc hide' data-item-sort-desc></i>
 				</div>
 			</div>
-		{{else}}
+		@else
 
 			<div class='table-col table-col-head'>
 				<div class='table-col-text'>
 					<span>{{$field -> getSchema() -> getLabel()}}</span>
 				</div>
 			</div>
-		{{/if}}
-	{{/for}}
+		@endif
+	@endforeach
 	<div class='table-col table-col-action'>
 		<div class='table-col-text'>
 			<span>Action</span>

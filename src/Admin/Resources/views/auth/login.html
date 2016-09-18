@@ -1,11 +1,11 @@
-{{extends Admin/admin/layout}}
+@extends('Admin/admin/layout')
 
-{{block stylesheet}}
+@block('stylesheet')
 	{{parent}}
 	<link rel='stylesheet' href='{{assets('src/Admin/assets/css/auth/login.css')}}'>
-{{/block}}
+@endblock
 
-{{block body}}
+@block('body')
 	<div class='auth-container'>
 
 		<h1 class='auth-title'>Gate CMS</h1>
@@ -14,7 +14,7 @@
 
 		<form method='POST' action="{{route('admin/login/action')}}">
 			<div>
-				{{include Admin/admin/__flash}}
+				@include('Admin/admin/__flash')
 				<div>
 					<input type='text' name='user' value="{{post('user')}}" class='auth-input' placeholder='Username or Email' required autofocus autocomplete='off'>
 				</div>
@@ -37,4 +37,4 @@
 		</form>
 
 	</div>
-{{/block}}
+@endblock

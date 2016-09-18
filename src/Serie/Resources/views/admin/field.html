@@ -1,12 +1,12 @@
 <?php if(!isset($extra_class)) $extra_class = ''; ?>
-{{switch $field -> getSchema() -> getType()}}
+@switch($field -> getSchema() -> getType())
 
-	{{case 'text'}}
+	@case('text')
 		<textarea class='text-data {{$extra_class}}' name='{{$field -> getSchema() -> getName()}}'></textarea>
-	{{/case}}
+	@endcase
 
-	{{case 'to_one'}}
-		{{if $field -> isSelect()}}
+	@case('to_one')
+		@if($field -> isSelect())
 			<input type='text' class='input-data {{$extra_class}} autocomplete-input'
 				autocomplete='off'
 				data-autocomplete-name='{{$table}}.{{$field -> getName()}}'
@@ -16,14 +16,14 @@
 				data-autocomplete-search="{{($field -> getSelect() -> getSearch())}}"
 				data-autocomplete-url='{{$field -> getSelect() -> getUrl()}}' 
 			>
-		{{elseif $field -> isInput()}}
+		@elseif($field -> isInput())
 
 			<input type='text' class='input-data {{$extra_class}} ' name='{{$field -> getName()}}' >
-		{{/if}}
-	{{/case}}
+		@endif
+	@endcase
 
-	{{case default}}
+	@default
 		<input type='text' class='input-data {{$extra_class}}' name='{{$field -> getName()}}'>
-	{{/case}}
+	@endcase
 
-{{/switch}}
+@endswitch

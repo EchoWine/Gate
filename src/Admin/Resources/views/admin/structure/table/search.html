@@ -1,18 +1,18 @@
 <div class='table-row table-header table-row-search'>
 	<div class='table-col-select table-col table-col-head'></div>
-	{{for $views -> fields('all') as $field}}
+	@foreach($views -> fields('all') as $field)
 
-		{{if $views -> isField('search',$field)}}
-		<div class='table-col table-col-head table-col-search  {{if $field -> getSchema() -> isType('integer')}}table-col-number{{/if}}'>
-			{{include Admin/admin/field ['table' => $table,'field' => $field,'extra_class' => 'item-form-element']}}
+		@if($views -> isField('search',$field))
+		<div class='table-col table-col-head table-col-search  @if($field -> getSchema() -> isType('integer'))table-col-number@endif'>
+			@include('Admin/admin/field',['table' => $table,'field' => $field,'extra_class' => 'item-form-element'])
 		</div>
-		{{else}}
+		@else
 		<div class='table-col table-col-head table-col-search'>
 
 		</div>
-		{{/if}}
+		@endif
 
-	{{/for}}
+	@endforeach
 	<div class='table-col table-col-action'>
 		<button type='button' class='button-action button-action-icon button-primary' data-item-search data-item-table='{{$table}}'>
 			<i class='fa fa-search'></i>

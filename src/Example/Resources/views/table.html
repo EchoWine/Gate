@@ -1,10 +1,10 @@
-{{includes Example/row row1}}
+@embed('Example/row','row1')
 	
-	{{block section}}Section in the table{{/block}}
+	@block('section')Section in the table@endblock
 
-{{/includes}}
-{{includes Example/row row2}}
+@endembed
+@embed('Example/row','row2')
 	
-	{{block section}}Section in the table{{/block}}
+	@block('section')Section in the table@endblock
 
-{{/includes}}
+@endembed

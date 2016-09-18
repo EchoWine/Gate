@@ -1,57 +1,57 @@
-{{extends Example/base}}
+@extends('Example/base')
 
-{{block body}}
+@block('body')
 
 	<p>Welcome to Gate Framework: {{$yoho}}</p>
 	<p>This is a file extended by a Example/base file</p>
 
 	<h3>Includes some file with overwrite block...</h3>
 
-	{{includes Example/row row1}}
-		{{block section}}
+	@embed('Example/row','row1')
+		@block('section')
 			Yohohohohohoooo! Row extended and overwritten!!!
-		{{/block}}
-	{{/includes}}
+		@endblock
+	@endembed
 
 	<h3>This block will not overwrite the next block</h3>
-	{{block row}}
+	@block('row')
 		<p>Don't overwrite me, pls :(</p>
-	{{/block}}
+	@endblock
 
 
 
 	<h3>Includes some file with overwrite block...again...</h3>
 
-	{{includes Example/row row2}}
-		{{block section}}
+	@embed('Example/row','row2')
+		@block('section')
 			Yohohohohohoooo! Row extended and overwritten, again !!!
-		{{/block}}
-	{{/includes}}
+		@endblock
+	@endembed
 
 	<h3>Includes some file in includes with overwrite block...</h3>
 
-	{{includes Example/row row3}}
-		{{block section}}
-			{{block section_new}}
+	@embed('Example/row','row3')
+		@block('section')
+			@block('section_new')
 				<p> The force of includes may be with you</p>
-				{{includes Example/row row8}}
-					{{block section}}
+				@embed('Example/row','row8')
+					@block('section')
 						Yohohohohohoooo! Row extended and overwritten x2x2!!!
-					{{/block}}
-				{{/includes}}
-			{{/block}}
+					@endblock
+				@endembed
+			@endblock
 
-		{{/block}}
-	{{/includes}}
+		@endblock
+	@endembed
 
 
 	<h3>Includes some file without overwrite block...</h3>
 
-	{{includes Example/row uhm}}{{/includes}}
+	@embed('Example/row','uhm}}{{/includes')
 
 	<h3>Includes some file that is extended to other file... i'm lost</h3>
-	{{includes Example/jolly jolly}}
-		{{block section}}jolly extended is the way{{/block}}
-	{{/includes}}
+	@embed('Example/jolly','jolly')
+		@block('section')jolly extended is the way@endblock
+	@endembed
 
-{{/block}}
+@endblock

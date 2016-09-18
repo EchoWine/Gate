@@ -1,16 +1,16 @@
-{{includes Admin/admin/__modal modal-edit}}
-	{{block __class}}modal-body-small{{/block}}
-	{{block id}}modal-item-edit{{/block}}
-	{{block title}}Edit{{/block}}
-	{{block content}}
+@embed('Admin/admin/__modal','modal-edit')
+	@block('__class')modal-body-small@endblock
+	@block('id')modal-item-edit@endblock
+	@block('title')Edit@endblock
+	@block('content')
 		<div class='alert-modal-edit'></div>
 		<form method='POST' item-data-form-edit data-item-table='{table}' data-item-id='{id}'>
-			{{for $fields as $field}}
+			@foreach($fields as $field)
 				<div class='item-form-label'>{{$field -> getLabel()}}:</div>
-				<div class='item-form-input'>{{include Admin/admin/field ['table' => $table,'field' => $field,'extra_class' => 'item-form-element']}}</div>
-			{{/for}}
+				<div class='item-form-input'>@include('Admin/admin/field',['table' => $table,'field' => $field,'extra_class' => 'item-form-element'])</div>
+			@endforeach
 
 			<div class='item-form-actions'><button type='submit' class='button-action button-primary'>Apply changes</button></div>
 		</form>
-	{{/block}}
-{{/includes}}
+	@endblock
+@endembed

@@ -4,11 +4,15 @@
 			<input type='checkbox' id='select-{table}-{id}' class='check check-data check-small' data-item-select data-item-id='{id}' data-item-table='{table}'>
 			<label for='select-{table}-{id}' class='checkbox'></label>
 		</div>
-		{{for $fields as $field}}
-			<div class='table-col {{if $field -> getSchema() -> isType('integer')}}table-col-number{{/if}}'>
+		@foreach($fields as $field)
+			<div class='table-col 
+				@if($field -> getSchema() -> isType('integer'))
+					table-col-number
+				@endif
+				'>
 				<span class='table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
 			</div>
-		{{/for}}
+		@endforeach
 		<div class='table-col table-col-action'>
 
 			{# View Button #}

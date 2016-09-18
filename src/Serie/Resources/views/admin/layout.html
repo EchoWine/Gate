@@ -1,19 +1,19 @@
-{{extends Admin/admin/layout}}
+@extends('Admin/admin/layout')
 
-{{block favicon}}
+@block('favicon')
 	<link rel='icon' type='image/x-icon' href='{{assets('src/Serie/assets/img/favicon.png')}}'>
 	<link rel='shortcut icon' type='image/x-icon' href='{{assets('src/Serie/assets/img/favicon.png')}}'>
-{{/block}}
+@endblock
 
-{{block nav_head}}
+@block('nav_head')
 
 	<div class='ly-container-center nav-header-icon-container'>
 		<i class='fa fa-television' aria-hidden='true' style='padding-top:1px;font-size:18px;max-width:23px'></i>
 	</div>
 	<span class='nav-header-name'>TV Series</span>
-{{/block}}
+@endblock
 
-{{block nav}}
+@block('nav')
 	<ul>
 		<li class='nav-link-container'>
 			<a class='nav-link' href='{{route('admin/dashboard')}}'>
@@ -73,16 +73,16 @@
 			</a>
 		</li>
 	</ul>
-{{/block}}
+@endblock
 
-{{block stylesheet}}
+@block('stylesheet')
 	{{parent}}
 		
 		
 
 	<link rel='stylesheet' href='{{assets('src/Serie/assets/css/serie.css')}}'>
-{{/block}}
-{{block scripts}}
+@endblock
+@block('scripts')
 	{{parent}}
 
 	<script src='{{assets('src/Serie/assets/js/serie.js')}}'></script>
@@ -90,4 +90,4 @@
 
 		Serie.url = "{{Api\Service\Api::url()}}";
 	</script>
-{{/block}}
+@endblock

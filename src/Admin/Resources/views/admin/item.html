@@ -3,7 +3,7 @@
 
 		<div class='table-row'>
 			<div class='table-col'>
-				{{include Admin/admin/__spinner}}
+				@include('Admin/admin/__spinner')
 			</div>
 		</div>
 
@@ -43,13 +43,13 @@
 	</div>
 
 
-	{{include Admin/admin/tmpl/row ['table' => $table,'fields' => $views -> fields('all')]}}
+	@include('Admin/admin/tmpl/row',['table' => $table,'fields' => $views -> fields('all')])
 
-	{{include Admin/admin/modal/add ['table' => $table,'fields' => $views -> fields('add')]}}
-	{{include Admin/admin/modal/get ['table' => $table,'fields' => $views -> fields('get')]}}
-	{{include Admin/admin/modal/edit ['table' => $table,'fields' => $views -> fields('edit')]}}
-	{{include Admin/admin/modal/delete}}
-	{{include Admin/admin/modal/delete_multiple}}
+	@include('Admin/admin/modal/add',['table' => $table,'fields' => $views -> fields('add')])
+	@include('Admin/admin/modal/get',['table' => $table,'fields' => $views -> fields('get')])
+	@include('Admin/admin/modal/edit',['table' => $table,'fields' => $views -> fields('edit')])
+	@include('Admin/admin/modal/delete')
+	@include('Admin/admin/modal/delete_multiple')
 
 	<div class='page-section'>
 		<div class='alert-global'></div>
@@ -99,18 +99,18 @@
 
 				<div class='ly-element-fill'></div>
 
-				{{include Admin/admin/structure/table/pagination ['table' => $table]}}
+				@include('Admin/admin/structure/table/pagination',['table' => $table])
 			</div>
 
 			<div class='table'>
 
-				{{include Admin/admin/structure/table/head ['table' => $table,'fields' => $views -> fields('all')]}}
-				{{include Admin/admin/structure/table/search ['table' => $table,'views' => $views]}}
+				@include('Admin/admin/structure/table/head',['table' => $table,'fields' => $views -> fields('all')])
+				@include('Admin/admin/structure/table/search',['table' => $table,'views' => $views])
 
 				<div class='item-rows'>
 					<div class='table-row'>
 						<div class='table-col'>
-							{{include Admin/admin/__spinner}}
+							@include('Admin/admin/__spinner')
 						</div>
 					</div>
 				</div>
@@ -126,7 +126,7 @@
 					</select>
 				</div>
 				<div class='ly-element-fill'></div>
-				{{include Admin/admin/structure/table/pagination ['table' => $table]}}
+				@include('Admin/admin/structure/table/pagination',['table' => $table])
 			</div>
 		</div>
 	</div>
@@ -159,16 +159,16 @@
 
 							var record = {};
 
-							{{for $views -> fields('all') as $field}}
+							@foreach($views -> fields('all') as $field)
 
 								var data = row;
 								var name = '{{$field -> getName()}}';
 
-								{{for $field -> getRelations() as $n => $relation}}
+								@foreach($field -> getRelations() as $n => $relation)
 
 								// -- Relation: {{$field -> getName()}}:{{$relation -> getName()}}
 
-									{{if $url = $field -> getUrl($n)}}
+									@if($url = $field -> getUrl($n))
 
 										var relation = table.list.relations.values["{{$url}}"];
 										if(data && data["{{$relation -> getColumn()}}"]){
@@ -183,8 +183,8 @@
 											data = null;
 
 
-									{{/if}}
-								{{/for}}
+									@endif
+								@endforeach
 
 								if(typeof data == "undefined" || !data)
 									var value = 'undefined';
@@ -192,7 +192,7 @@
 									var value = data.{{$field -> getLastRelation() -> getName()}};
 
 								record[name] = value;
-							{{/for}}
+							@endforeach
 
 
 							record.table = table.name;
@@ -205,16 +205,16 @@
 				},
 				get:{
 					get: function(container,table,row){
-						{{for $views -> fields('get') as $field}}
+						@foreach($views -> fields('get') as $field)
 
 							var data = row;
 							var name = '{{$field -> getName()}}';
 
-							{{for $field -> getRelations() as $n => $relation}}
+							@foreach($field -> getRelations() as $n => $relation)
 
 							// -- Relation: {{$field -> getName()}}:{{$relation -> getName()}}
 
-								{{if $url = $field -> getUrl($n)}}
+								@if($url = $field -> getUrl($n))
 
 									var relation = table.list.relations.values["{{$url}}"];
 									if(data && data["{{$relation -> getColumn()}}"]){
@@ -229,8 +229,8 @@
 										data = null;
 
 
-								{{/if}}
-							{{/for}}
+								@endif
+							@endforeach
 
 							if(typeof data == "undefined" || !data)
 								var value = 'undefined';
@@ -239,7 +239,7 @@
 
 
 							$('#modal-item-get').find("[data-name='"+name+"']").html(value);
-						{{/for}}
+						@endforeach
 					},
 				},
 				add:{
@@ -247,9 +247,9 @@
 					action: function(form){
 						var values = {};
 
-						{{for $views -> fields('add') as $field}}
+						@foreach($views -> fields('add') as $field)
 							values.{{$field -> getSchema() -> getColumn()}} = form.find('[name={{$field -> getSchema() -> getColumn()}}]').val();
-						{{/for}}
+						@endforeach
 						return values;
 					}
 				},
@@ -261,22 +261,22 @@
 				},
 				edit:{
 					get: function(container,data){
-						{{for $views -> fields('edit') as $field}}
+						@foreach($views -> fields('edit') as $field)
 							var field = $('#modal-item-edit').find('[name={{$field -> getColumn()}}]');
 
 							field.val(data['{{$field -> getColumn()}}']);
 
-							{{if $field -> getSchema() -> getType() == 'to_one' && $field -> isSelect()}}
+							@if($field -> getSchema() -> getType() == 'to_one' && $field -> isSelect())
 								item.autocomplete.load(field,"{{$table}}.{{$field -> getName()}}");
-							{{/if}}
-						{{/for}}
+							@endif
+						@endforeach
 					},
 					action: function(form){
 						var values = {};
 
-						{{for $views -> fields('edit') as $field}}
+						@foreach($views -> fields('edit') as $field)
 							values.{{$field -> getSchema() -> getColumn()}} = form.find('[name={{$field -> getSchema() -> getColumn()}}]').val();
-						{{/for}}
+						@endforeach
 
 						return values;
 					}
@@ -286,10 +286,10 @@
 					action: function(form){
 						var values = {};
 
-						{{for $views -> fields('search') as $field}}
+						@foreach($views -> fields('search') as $field)
 							if(form.find("[name='{{$field -> getName()}}']").val() !== '')
 								values["{{$field -> getName()}}"] = form.find("[name='{{$field -> getName()}}']").val();
-						{{/for}}
+						@endforeach
 						return values;
 					}
 				}

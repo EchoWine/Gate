@@ -1,8 +1,8 @@
-{{includes Admin/admin/__modal modal-delete}}
-	{{block __class}}modal-body-small{{/block}}
-	{{block id}}modal-item-delete{{/block}}
-	{{block title}}Are you sure?{{/block}}
-	{{block content}}
+@embed('Admin/admin/__modal','modal-delete')
+	@block('__class')modal-body-small@endblock
+	@block('id')modal-item-delete@endblock
+	@block('title')Are you sure?@endblock
+	@block('content')
 		<form method='POST'>
 			<div>The item #<span class='data-modal-item-id'></span> will be deleted</div>
 			<div class='item-form-actions'>
@@ -16,5 +16,5 @@
 				</button>
 			</div>
 		</form>
-	{{/block}}
-{{/includes}}
+	@endblock
+@endembed

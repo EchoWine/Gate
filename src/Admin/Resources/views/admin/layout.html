@@ -4,14 +4,14 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>{{block title}}Administration{{/block}}</title>
+	<title>@block('title')Administration@endblock</title>
 
-	{{block favicon}}
+	@block('favicon')
 		<link rel='icon' type='image/x-icon' href='{{assets('src/Admin/assets/img/favicon.png')}}'>
 		<link rel='shortcut icon' type='image/x-icon' href='{{assets('src/Admin/assets/img/favicon.png')}}'>
-	{{/block}}
+	@endblock
 
-	{{block stylesheet}}
+	@block('stylesheet')
 
 		<link rel='stylesheet' href='{{assets('src/Assets/font-awesome/font-awesome.css')}}'>
 
@@ -36,29 +36,29 @@
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/section.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/item.css')}}'>
 		<link rel='stylesheet' href='{{assets('src/Admin/assets/css/autocomplete.css')}}'>
-	{{/block}}
+	@endblock
 
 </head>
 <body>
 
-	{{block body}}
+	@block('body')
 		<div class='ly-container ly-container-layout'>
 
 			<div class='ly-element-column ly-container-layout nav-container'>
 				<div class='header nav-header'>
 				
-					{{block nav_head}}
+					@block('nav_head')
 						<div class='ly-container-center nav-header-icon-container'>
 							<i class='fa fa-glass' aria-hidden='true'></i>
 						</div>
 						<span class='nav-header-name'>Gate</span>
-					{{/block}}
+					@endblock
 
 					<i class='fa fa-list nav-header-menu-icon' aria-hidden='true'></i>
 				</div>
 				<div class='nav-content'>
-					{{block nav}}
-					{{/block}}
+					@block('nav')
+					@endblock
 				</div>
 			</div>
 			<span></span>
@@ -81,7 +81,7 @@
 				</div>
 				<div class='page-content'>
 					<div class='page-nav'>
-						{{block page-nav}}
+						@block('page-nav')
 							<div class='page-nav-path'>
 								<i class='fa fa-home'></i>
 								<div class='page-nav-path-sub'><i class='fa fa-angle-right'></i></div>
@@ -90,22 +90,22 @@
 							<div class='page-title'>
 								<h1>Title</h1>
 							</div>
-						{{/block}}
+						@endblock
 					</div>
-					{{block page-content}}
+					@block('page-content')
 						<div class='page-row'>
 							<div class='page-section'>
 								Contenuto
 							</div>
 						</div>
-					{{/block}}
+					@endblock
 
 				</div>
 			</div>
 		</div>
-	{{/block}}
+	@endblock
 	
-	{{block scripts}}
+	@block('scripts')
 		<script src='{{assets('src/Assets/jquery/jquery-2.1.4.min.js')}}'></script>
 
 		<script src='{{assets('src/Assets/cookie/cookie.js')}}'></script>
@@ -126,6 +126,6 @@
 		<script>
 			nav.set('{{route()}}');
 		</script>
-	{{/block}}
+	@endblock
 </body>
 </html>

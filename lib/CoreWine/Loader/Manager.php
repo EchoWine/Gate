@@ -3,7 +3,7 @@
 namespace CoreWine\Loader;
 
 use CoreWine\Component\Cfg;
-use CoreWine\TemplateEngine;
+use CoreWine\View;
 use CoreWine\Console\Console;
 use CoreWine\Console\Command;
 use CoreWine\Http\Controller;

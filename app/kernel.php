@@ -29,7 +29,7 @@
 
 	\CoreWine\DataBase\DB::connect(include PATH_CONFIG.'/database.php');
 
-	\CoreWine\TemplateEngine\Engine::ini(PATH_APP."/cache/views");
+	\CoreWine\View\Engine::ini(PATH_APP."/cache/views");
 
 	\CoreWine\DataBase\ORM\SchemaBuilder::setFields(include PATH_CONFIG.'/orm.php');
 	
@@ -48,11 +48,11 @@
 
 
 	# Compile
-	\CoreWine\TemplateEngine\Engine::compile(PATH_APP,'Resources/views');
+	\CoreWine\View\Engine::compile(PATH_APP,'Resources/views');
 
 
 	foreach(\CoreWine\Loader\Manager::$list as $name => $dir){
-		\CoreWine\TemplateEngine\Engine::compile(
+		\CoreWine\View\Engine::compile(
 			PATH_APP,
 			"Resources/".$name."/views",
 			$name
@@ -60,14 +60,14 @@
 	}
 
 	foreach(\CoreWine\Loader\Manager::$list as $name => $dir){
-		\CoreWine\TemplateEngine\Engine::compile(
+		\CoreWine\View\Engine::compile(
 			PATH_SRC,
 			$name."/Resources/views",
 			$name
 		);
 	}
 
-	\CoreWine\TemplateEngine\Engine::translates();
+	\CoreWine\View\Engine::translates();
 
 	$response = \CoreWine\Http\Router::load();
 

@@ -2,7 +2,7 @@
 	
 	use CoreWine\Http\Router;
 	use CoreWine\Http\Request;
-	use CoreWine\TemplateEngine\Engine;
+	use CoreWine\View\Engine;
 	
 	function isJson($s){
 		json_decode($s);

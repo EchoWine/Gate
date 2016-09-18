@@ -2,7 +2,7 @@
 
 namespace CoreWine\Exceptions;
 
-use CoreWine\TemplateEngine\Engine;
+use CoreWine\View\Engine;
 use CoreWine\Http\Request;
 
 class Handler{

@@ -2,7 +2,8 @@
     "name": "echowine/gate",
     "require": {
         "echowine/http": "*@dev",
-        "echowine/database": "*@dev"
+        "echowine/database": "*@dev",
+        "echowine/view": "*@dev"
     },
     "autoload": {
         "classmap": ["lib/"],

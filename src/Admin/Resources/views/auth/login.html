@@ -1,8 +1,8 @@
 @extends('Admin/admin/layout')
 
 @block('stylesheet')
-	{{parent}}
 	<link rel='stylesheet' href='{{assets('src/Admin/assets/css/auth/login.css')}}'>
+	@parent
 @endblock
 
 @block('body')
@@ -37,4 +37,5 @@
 		</form>
 
 	</div>
+
 @endblock

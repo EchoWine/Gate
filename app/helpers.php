@@ -33,7 +33,7 @@
 		return $post != null ? $post : '';
 	}
 
-	function tmpl_js_var($name){
+	function brackets($name){
 		return '{'.$name.'}';
 	}
 	

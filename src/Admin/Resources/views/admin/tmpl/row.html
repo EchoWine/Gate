@@ -10,7 +10,7 @@
 					table-col-number
 				@endif
 				'>
-				<span class='table-col-text'>{{tmpl_js_var($field -> getName())}}</span>
+				<span class='table-col-text'>{{brackets($field -> getName())}}</span>
 			</div>
 		@endforeach
 		<div class='table-col table-col-action'>

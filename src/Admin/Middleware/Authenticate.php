@@ -14,8 +14,6 @@ class Authenticate extends Middleware{
 	 */
 	public function handle(){
 
-		Auth::load();
-
 		if(!Auth::logged()){
 			Request::redirect(Router::url('admin/login'));
 		}

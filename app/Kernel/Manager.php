@@ -103,6 +103,9 @@ class Manager{
 
 		self::$list[$basePath] = $path;
 
+		if(file_exists($path.'/boot.php'))
+			include $path.'/boot.php';
+
 		$files = self::getAllFiles($path."/Controller");
 
 		foreach($files as $file){

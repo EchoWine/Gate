@@ -13,7 +13,7 @@ class Api{
 	 */
 	public static function url(){
 
-		return Request::getDirUrl()."api/v1/";
+		return Request::getDirUrl()."api/v1/crud/";
 	}
 }
 

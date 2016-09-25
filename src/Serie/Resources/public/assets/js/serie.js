@@ -42,24 +42,34 @@ Serie.searching = function(state){
 
 $('.serie-search-form').on('submit',function(e){
 	e.preventDefault();
+
+	// Retrieve key searched
 	val = $(this).find('.serie-search-key').val();
 
+	// Set the searching mode to true
 	Serie.searching(true);
 
+	// Set spinner
 	$('.serie-search-results').html(template.get('serie-search-spinner'));
 
+	// Send the request to "discovery"
 	http.get(Serie.url+"all/discovery/"+val,{},function(response){
 
 		html = '';
 
+		// The response has sent, so set the "searching mode" to false
 		Serie.searching(false);
+
 		$.map(response,function(service){
 			$.map(service,function(resource){
+				
+				html += template.get('serie-search-result',{
+					source:resource.source,
+					id:resource.id,
+					title:resource.name,
+					banner:resource.banner
+				});
 
-				resource.id;
-				resource.banner;
-				resource.name;
-				html += template.get('serie-search-result',{title:resource.name,banner:resource.banner});
 			});
 		});
 
@@ -71,6 +81,22 @@ $('.serie-search-form').on('submit',function(e){
 		
 		$('.serie-search-results').html(html);
 	});
+});
+
+
+$('[serie-add]').on('click',function(e){
+
+	var info = $(this).attr('serie-add');
+	info = info.split(",");
+	info[0]; // Service name
+	info[1]; // ID resource
+
+	http.get(Serie.url+"add/",{service:info[0],id:info[1]},function(response){
+
+		console.log(response);
+	
+	});
+
 });
 
 $(document).ready(function(){

@@ -2,6 +2,8 @@
 
 namespace Serie\Api;
 
+use Serie\Api\TheTVDB as Object;
+
 class TheTVDB extends Basic{
 
 	/**
@@ -39,7 +41,13 @@ class TheTVDB extends Basic{
 	 */
 	protected $url_public = "http://www.thetvdb.com/";
 
-
+	/**
+	 * Perform the request to the api in order to discovery new series
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 */
 	public function requestDiscovery($params){
 
 		$url = $this -> url_api."GetSeries.php?".http_build_query($params);
@@ -85,7 +93,7 @@ class TheTVDB extends Basic{
 			}
 
 			$return[(int)$resource -> seriesid] = [
-				'api' => $this -> getName(),
+				'source' => $this -> getName(),
 				'type' => 'series',
 				'id' => (int)$resource -> seriesid,
 				'language' => (string)$resource -> language,
@@ -111,6 +119,39 @@ class TheTVDB extends Basic{
 		return $this -> requestDiscovery(['seriesname' => str_replace("%20","_",$key)]);
 	}
 
+	/**
+	 * Add a resource
+	 *
+	 * @param string $id
+	 */
+	public function add($id){
+
+		return $this -> requestAdd($id);
+	}
+
+	public function requestAdd($id){
+
+
+		$serie = $this -> get($id);
+	}
+
+	public function get($id){
+
+		$url = $this -> url_api.$this -> token."/series/".((int)$id)."/all/en.xml";
+		
+		try{
+
+			$resource = simplexml_load_string(file_get_contents($url));
+
+		}catch(Exception $e){
+
+			return ['error' => $e -> getMessage()];
+
+		}
+
+		return new Object\SerieObject($resource);
+
+	}
 
 
 

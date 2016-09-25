@@ -17,7 +17,7 @@ class Serie{
 	}
 
 	/**
-	 * Discovery new serie
+	 * Discovery new resources
 	 *
 	 * @param string $resource
 	 * @param string $key
@@ -34,6 +34,31 @@ class Serie{
 
 			if($source -> isResource($resource))
 				$response[$source -> getName()] = $source -> discovery($key);
+
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Add a new resource
+	 *
+	 * @param string $resource
+	 * @param string $source_name
+	 * @param mixed $id
+	 *
+	 * @return array
+	 */
+	public static function add($resource,$source_name,$id){
+
+		$response = [];
+			
+		foreach(self::$sources as $source){
+
+			$source = new $source();
+
+			if($source -> getName() == $source_name)
+				$response = $source -> add($id);
 
 		}
 

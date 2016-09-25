@@ -1,6 +1,7 @@
 {
     "name": "echowine/gate",
     "require": {
+        "phpunit/phpunit": "5.5.*",
         "echowine/http": "*@dev",
         "echowine/database": "*@dev",
         "echowine/view": "*@dev",

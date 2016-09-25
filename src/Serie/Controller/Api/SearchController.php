@@ -7,6 +7,7 @@ use Api\Response;
 use Api\Exceptions;
 use Serie\Service\Serie;
 use Request;
+use Auth\Model\User;
 
 class SearchController extends BasicController{
 
@@ -28,7 +29,11 @@ class SearchController extends BasicController{
 	 * @return Response
 	 */
 	public function discovery(Request $request,$resource,$key){
-		return $this -> json(Serie::discovery($resource,$key));
+		if(!($user = $this -> getUserByToken($request -> query -> get('token')))){
+			return $this -> json(['error' => 'token not correct']);
+		}
+
+		return $this -> json(Serie::discovery($user,$resource,$key));
 	}
 
 	/**
@@ -37,11 +42,19 @@ class SearchController extends BasicController{
 	 * @return Response
 	 */
 	public function add(Request $request,$resource){
+		if(!($user = $this -> getUserByToken($request -> request -> get('token')))){
+			return $this -> json(['error' => 'token not correct']);
+		}
 
 		return $this -> json(Serie::add(
+			$user,
 			$resource,
 			$request -> request -> get('source'),
 			$request -> request -> get('id'))
 		);
+	}
+
+	public function getUserByToken($token){
+		return User::where('token',$token) -> first();
 	}
 }

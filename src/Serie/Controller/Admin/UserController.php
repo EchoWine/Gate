@@ -34,23 +34,31 @@ class UserController extends AdminController{
 		$views -> add(function($view){
 			$view -> username();
 			$view -> email();
+			$view -> token();
+
 		});
 
 		$views -> edit(function($view){
 			$view -> username();
 			$view -> email();
+			$view -> token();
+
 		});
 
 		$views -> get(function($view){
 			$view -> id();
 			$view -> username();
 			$view -> email();
+			$view -> token();
+
 		});
 
 		$views -> search(function($view){
 			$view -> id();
 			$view -> username();
 			$view -> email();
+			$view -> token();
+
 		});
 	}
 

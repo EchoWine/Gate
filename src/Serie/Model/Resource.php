@@ -5,14 +5,7 @@ namespace Serie\Model;
 use CoreWine\DataBase\ORM\Model;
 use CoreWine\DataBase\ORM\Field\Schema as Field;
 
-class Serie extends Resource{
-
-	/**
-	 * Table name
-	 *
-	 * @var
-	 */
-	public static $table = 'series';
+abstract class Resource extends Model{
 
 	/**
 	 * Set schema fields
@@ -21,9 +14,13 @@ class Serie extends Resource{
 	 */
 	public static function setSchemaFields($schema){
 
-		parent::setSchemaFields($schema);
-
-		$schema -> toMany(Season::class,'seasons','serie_id');
+		$schema -> id();
+	
+		$schema -> string('name');
+	
+		$schema -> string('source_name');
+	
+		$schema -> string('source_id');
 
 	}
 }

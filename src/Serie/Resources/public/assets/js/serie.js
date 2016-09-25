@@ -53,7 +53,7 @@ $('.serie-search-form').on('submit',function(e){
 	$('.serie-search-results').html(template.get('serie-search-spinner'));
 
 	// Send the request to "discovery"
-	http.get(Serie.url+"all/discovery/"+val,{},function(response){
+	http.get(Serie.url+"all/discovery/"+val,{token:Serie.token},function(response){
 
 		html = '';
 
@@ -91,7 +91,7 @@ $('[serie-add]').on('click',function(e){
 	info[0]; // Service name
 	info[1]; // ID resource
 
-	http.get(Serie.url+"add/",{service:info[0],id:info[1]},function(response){
+	http.get(Serie.url+"add/",{token:Serie.token,service:info[0],id:info[1]},function(response){
 
 		console.log(response);
 	

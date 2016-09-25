@@ -33,7 +33,10 @@ class User extends Model{
 
 		$schema -> email();
 
+		$schema -> string('token');
+
 		$schema -> toMany(Session::class,'sessions','user_id');
+
 
 	}
 

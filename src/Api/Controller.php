@@ -33,7 +33,7 @@ abstract class Controller extends SourceController{
 
 		$url = $this -> url;
 
-		$this -> route('all') -> url("/crud/api/v1/crud/{$url}") -> get();
+		$this -> route('all') -> url("/api/v1/crud/{$url}") -> get();
 		$this -> route('add') -> url("/api/v1/crud/{$url}") -> post();
 		$this -> route('copy') -> url("/api/v1/crud/{$url}/{id}") -> post();
 		$this -> route('get') -> url("/api/v1/crud/{$url}/{id}") -> get();

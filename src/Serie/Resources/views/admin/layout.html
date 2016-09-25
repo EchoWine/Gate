@@ -88,6 +88,7 @@
 	<script src='{{assets('src/Serie/assets/js/serie.js')}}'></script>
 	<script>
 
-		Serie.url = "{{Api\Service\Api::url()}}";
+		Serie.url = "{{Serie\Service\Serie::url()}}";
+		Serie.token = '{{Auth::user() -> token}}';
 	</script>
 @endblock

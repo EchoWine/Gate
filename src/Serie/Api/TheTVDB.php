@@ -48,7 +48,7 @@ class TheTVDB extends Basic{
 	 *
 	 * @return array
 	 */
-	public function requestDiscovery($params){
+	public function all($params){
 
 		$url = $this -> url_api."GetSeries.php?".http_build_query($params);
 			
@@ -108,32 +108,6 @@ class TheTVDB extends Basic{
 
 		return $return;
 	}
-	
-	/**
-	 * Discovery a resource
-	 *
-	 * @param string $keys
-	 */
-	public function discovery($key){
-
-		return $this -> requestDiscovery(['seriesname' => str_replace("%20","_",$key)]);
-	}
-
-	/**
-	 * Add a resource
-	 *
-	 * @param string $id
-	 */
-	public function add($id){
-
-		return $this -> requestAdd($id);
-	}
-
-	public function requestAdd($id){
-
-
-		$serie = $this -> get($id);
-	}
 
 	public function get($id){
 
@@ -151,6 +125,29 @@ class TheTVDB extends Basic{
 
 		return new Object\SerieObject($resource);
 
+	}
+
+	
+	
+	/**
+	 * Discovery a resource
+	 *
+	 * @param string $keys
+	 */
+	public function discovery($key){
+
+		return $this -> all(['seriesname' => str_replace("%20","_",$key)]);
+	}
+
+	/**
+	 * Add a resource
+	 *
+	 * @param string $id
+	 */
+	public function add($id){
+
+
+		return $this -> get($id);
 	}
 
 

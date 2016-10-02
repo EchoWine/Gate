@@ -1,0 +1,51 @@
+@extends('WT/admin/layout')
+
+@block('page-content')
+
+	<div data-template='serie-search-result'>
+		<div class='serie-search-result'>
+			<div class='serie-search-title'>{title}</div>
+			<div class='serie-search-img'><img src='{banner}'></div>
+			<button class='button button-action button-primary' serie-add='{source},{id}'>ADD</button>
+		</div>
+	</div>
+
+	<div data-template='serie-search-waiting'>
+		<h3>{waiting}</h3>
+	</div>
+
+	<div data-template='serie-search-spinner'>
+		<div class='ly-element-fill'>
+			<div class="spinner">
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
+			</div>
+			<div class='serie-search-waiting'></div>
+		</div>
+	</div>
+
+	<div class='page-row'>
+		<div class='page-section page-section-content'>
+
+			<div class='section-header ly-container-center'>
+				<h3 class='section-title'>Search</h3>
+				<div class='ly-element-fill'></div>
+			</div>
+			<hr>
+		<form method='GET' class='serie-search-form'>
+				<div class='section-header ly-container-center'>
+					<input class='input input-data item-form-element serie-search-key'>
+					<button type='submit' class='button button-action button-primary'><i class='fa fa-search'></i></button>
+				</div>
+			</form>
+			<div class='section-inner'>
+				<h3>Results</h3>
+				<div class='serie-search-results'>
+				</div>
+			</div>
+		</div>
+	</div>
+@endblock

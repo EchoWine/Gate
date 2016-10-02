@@ -3,16 +3,15 @@
 namespace WT\Model;
 
 use CoreWine\DataBase\ORM\Model;
-use CoreWine\DataBase\ORM\Field\Schema as Field;
 
-class Anime extends Serie{
+class Genre extends Model{
 
 	/**
 	 * Table name
 	 *
 	 * @var
 	 */
-	public static $table = 'anime';
+	public static $table = 'genres';
 
 	/**
 	 * Set schema fields
@@ -21,7 +20,9 @@ class Anime extends Serie{
 	 */
 	public static function fields($schema){
 
-		parent::fields($schema);
+		$schema -> id();
+
+		$schema -> string('name') -> required();
 
 	}
 }

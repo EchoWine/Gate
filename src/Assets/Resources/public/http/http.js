@@ -22,6 +22,7 @@ http.ajax = function(type,url,params = {},callback){
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('Error during call: '+url);
+			console.log(params);
 			console.log(errorThrown);
 			console.log(jqXHR);
 		},

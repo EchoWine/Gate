@@ -1,14 +1,14 @@
-.serie-search-waiting h3{
+.wt-search-waiting h3{
 	text-align:center;
 }
 
-.serie-search-results{
+.wt-search-results{
 	display: flex;
 	padding: 10px 20px;
 	flex-wrap: wrap;
 }
 
-.serie-search-result{
+.wt-search-result{
 	margin: 3px;
     border: 1px solid #DDD;
     padding: 5px;
@@ -18,13 +18,13 @@
     text-decoration: none;
 }
 
-.serie-search-img img{
+.wt-search-img img{
     height: 240px;
     width: 100%;
     margin: 4px 0;
 }
 
-.serie-search-title{
+.wt-search-title{
 	background: rgb(238, 238, 238);
     color: #333;
     font-size: 14px;

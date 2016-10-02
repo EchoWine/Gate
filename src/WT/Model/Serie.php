@@ -3,9 +3,8 @@
 namespace WT\Model;
 
 use CoreWine\DataBase\ORM\Model;
-use CoreWine\DataBase\ORM\Field\Schema as Field;
 
-class Serie extends Resource{
+class Serie extends Model{
 
 	/**
 	 * Table name
@@ -21,7 +20,17 @@ class Serie extends Resource{
 	 */
 	public static function fields($schema){
 
-		parent::fields($schema);
+		$schema -> id();
+		
+		$schema -> string('name');
+
+		$schema -> string('genres');
+
+		$schema -> text('overview');
+
+		$schema -> string('status');
+
+		$schema -> toOne(Resource::class,'resource');
 
 		$schema -> toMany(Season::class,'seasons','serie_id');
 

@@ -45,7 +45,7 @@ class SearchController extends BasicController{
 		if(!($user = $this -> getUserByToken($request -> request -> get('token')))){
 			return $this -> json(['error' => 'token not correct']);
 		}
-
+		
 		return $this -> json(WT::add(
 			$user,
 			$resource,

@@ -28,8 +28,8 @@ WT.searching = function(state){
 	if(state){
 
 		var waiting = WT.waiting[WT.random(0,WT.waiting.length - 1)];
-		var html = template.get("serie-search-waiting",{waiting:waiting});
-		$('.serie-search-waiting').html(html);
+		var html = template.get("wt-search-waiting",{waiting:waiting});
+		$('.wt-search-waiting').html(html);
 
 		WT.interval = setTimeout(function(){
 			WT.searching(true);
@@ -40,17 +40,17 @@ WT.searching = function(state){
 	}
 };
 
-$('.serie-search-form').on('submit',function(e){
+$('.wt-search-form').on('submit',function(e){
 	e.preventDefault();
 
 	// Retrieve key searched
-	val = $(this).find('.serie-search-key').val();
+	val = $(this).find('.wt-search-key').val();
 
 	// Set the searching mode to true
 	WT.searching(true);
 
 	// Set spinner
-	$('.serie-search-results').html(template.get('serie-search-spinner'));
+	$('.wt-search-results').html(template.get('wt-search-spinner'));
 
 	// Send the request to "discovery"
 	http.get(WT.url+"all/discovery/"+val,{token:WT.token},function(response){
@@ -63,7 +63,7 @@ $('.serie-search-form').on('submit',function(e){
 		$.map(response,function(service){
 			$.map(service,function(resource){
 				
-				html += template.get('serie-search-result',{
+				html += template.get('wt-search-result',{
 					source:resource.source,
 					id:resource.id,
 					title:resource.name,
@@ -79,19 +79,20 @@ $('.serie-search-form').on('submit',function(e){
 			$(this).hide();
 		});
 		
-		$('.serie-search-results').html(html);
+		$('.wt-search-results').html(html);
 	});
 });
 
 
-$('[serie-add]').on('click',function(e){
+$('body').on('click','[wt-add]',function(e){
 
-	var info = $(this).attr('serie-add');
+	var info = $(this).attr('wt-add');
 	info = info.split(",");
 	info[0]; // Service name
 	info[1]; // ID resource
 
-	http.get(WT.url+"add/",{token:WT.token,service:info[0],id:info[1]},function(response){
+	console.log('awdw');
+	http.post(WT.url+"series/add",{token:WT.token,source:info[0],id:info[1]},function(response){
 
 		console.log(response);
 	

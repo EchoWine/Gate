@@ -7,39 +7,39 @@ class SerieObject{
 	/**
 	 * @var integer
 	 **/
-	protected $id;
+	public $id;
 
-	protected $name;
+	public $name;
 
-	protected $actors;
+	public $actors;
 
-	protected $airs_day_of_week;
+	public $airs_day_of_week;
 
-	protected $airs_time;
+	public $airs_time;
 
-	protected $genres = [];
+	public $genres = [];
 
-	protected $language;
+	public $language;
 
-	protected $network;
+	public $network;
 
-	protected $overview;
+	public $overview;
 
-	protected $rating;
+	public $rating;
 
-	protected $rating_count;
+	public $rating_count;
 
-	protected $status;
+	public $status;
 
-	protected $banner;
+	public $banner;
 
-	protected $fanart;
+	public $fanart;
 
-	protected $poster;
+	public $poster;
 
-	protected $first_aired_at;
+	public $first_aired_at;
 
-	protected $updated_at;
+	public $updated_at;
 
 	/**
 	 * Initialize the object with the response in xml
@@ -69,10 +69,10 @@ class SerieObject{
 		# Temp
 		$this -> actors = (string)$resource -> Series[0] -> Actors;
 		$this -> genres = (string)$resource -> Series[0] -> Genre;
-
+		$this -> genres = explode("|",$this -> genres);
 
 		foreach($resource -> Episode as $episode){
-			$this -> episode[] = new EpisodeObject($episode);
+			$this -> episodes[] = new EpisodeObject($episode);
 		}
 
 	}

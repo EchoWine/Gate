@@ -111,6 +111,7 @@ class TheTVDB extends Basic{
 
 	public function get($id){
 
+
 		$url = $this -> url_api.$this -> token."/series/".((int)$id)."/all/en.xml";
 		
 		try{

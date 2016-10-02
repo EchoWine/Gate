@@ -3,9 +3,15 @@
 namespace WT\Model;
 
 use CoreWine\DataBase\ORM\Model;
-use CoreWine\DataBase\ORM\Field\Schema as Field;
 
-abstract class Resource extends Model{
+class Resource extends Model{
+
+	/**
+	 * Table name
+	 *
+	 * @var
+	 */
+	public static $table = 'resources';
 
 	/**
 	 * Set schema fields
@@ -17,10 +23,16 @@ abstract class Resource extends Model{
 		$schema -> id();
 	
 		$schema -> string('name');
+
+		$schema -> string('source_type');
 	
 		$schema -> string('source_name');
 	
 		$schema -> string('source_id');
+
+		$schema -> datetime('updated_at');
+
+
 
 	}
 }

@@ -3,6 +3,7 @@
 namespace WT\Service;
 use WT\Api as Api;
 use WT\Model\Serie;
+use WT\Model\Resource;
 use Request;
 
 class WT{
@@ -53,19 +54,19 @@ class WT{
 	 *
 	 * @return array
 	 */
-	public static function add($user,$resource,$source_name,$id){
+	public static function add($user,$source_type,$source_name,$source_id){
 
 		$response = [];
 
-		$model = self::getModelByResource($resource);
+		$model = self::getModelByResource($source_type);
 
 		if(!$model){
 			throw new \Exception("Resource not valid");
 		}
 
-		$resource = $model::where(['source_name' => $source,'source_id' => $id]) -> get();
+		$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
 
-		if($resource){
+		if(false){
 
 			$resource -> id;
 
@@ -84,16 +85,33 @@ class WT{
 
 				$source = new $source();
 
-				if($source -> getName() == $source_name)
-					$response = $source -> add($id);
+				if($source -> getName() == $source_name){
+					$response = $source -> add($source_id);
+					break;
+				}
 
 			}
 
+			$resource = Resource::create([
+				'name' => $response -> name,
+				'source_type' => $source_type,
+				'source_name' => $source_name,
+				'source_id' => $source_id,
+				'updated_at' => (new \DateTime()) -> format('Y-m-d H:i:s')
+			]);
 
-			$resource = new $model();
-			$resource -> source_name = $source_name;
-			$resource -> source_id = $source_id;
-			$resource -> save();
+			$detail = new $model();
+
+			$detail -> name = $response -> name;
+			$detail -> overview = $response -> overview;
+			$detail -> status = $response -> status;
+
+			$detail -> save();
+			$detail -> resource = $resource;
+
+
+	
+			$detail -> save();
 		}
 
 			

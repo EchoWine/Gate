@@ -19,9 +19,9 @@ class Serie extends Resource{
 	 *
 	 * @param Schema $schema
 	 */
-	public static function setSchemaFields($schema){
+	public static function fields($schema){
 
-		parent::setSchemaFields($schema);
+		parent::fields($schema);
 
 		$schema -> toMany(Season::class,'seasons','serie_id');
 

@@ -19,7 +19,7 @@ class Hodor extends Model{
 	 *
 	 * @param Schema $schema
 	 */
-	public static function setSchemaFields($schema){
+	public static function fields($schema){
 
 		# ID
 		$schema -> id();

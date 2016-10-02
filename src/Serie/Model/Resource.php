@@ -12,7 +12,7 @@ abstract class Resource extends Model{
 	 *
 	 * @param Schema $schema
 	 */
-	public static function setSchemaFields($schema){
+	public static function fields($schema){
 
 		$schema -> id();
 	

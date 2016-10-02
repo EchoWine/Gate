@@ -19,9 +19,9 @@ class Anime extends Serie{
 	 *
 	 * @param Schema $schema
 	 */
-	public static function setSchemaFields($schema){
+	public static function fields($schema){
 
-		parent::setSchemaFields($schema);
+		parent::fields($schema);
 
 	}
 }

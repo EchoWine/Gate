@@ -125,12 +125,13 @@ class TheTVDB extends Basic{
 
 	public function get($id){
 
-
-		$url = $this -> url_api.$this -> token."/series/".$id."/all/en.xml";
 		
+		$client = new Client();
+
 		try{
 
-			$resource = Str::xml(file_get_contents($url));
+			$response = $client -> request($this -> url_api.$this -> token."/series/".$id."/all/en.xml");
+			$resource = Str::xml($response);
 
 		}catch(Exception $e){
 
@@ -138,7 +139,7 @@ class TheTVDB extends Basic{
 
 		}
 
-		return new Object\SerieObject($resource);
+		return Object\SerieObject::long($resource);
 
 	}
 

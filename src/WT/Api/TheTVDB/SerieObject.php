@@ -48,11 +48,9 @@ class SerieObject{
 	 */
 	public static function long($resource){
 
-		if(isset($resource -> Series[0]))
-			$serie = $resource -> Series[0];
-		else
-			$serie = $resource;
 
+		$serie = $resource -> Series;
+	
 		$obj = new self();
 
 		$obj -> id = $serie -> id;

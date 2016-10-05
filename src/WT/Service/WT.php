@@ -66,18 +66,17 @@ class WT{
 
 		$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
 
-		if(false){
+		if($resource){
 
 			$resource -> id;
 
-			/*
-			echo $resource -> id;
+			if($resource -> users -> has($user)){
+				# Already added user to resource
+			}else{
 
-			if($user -> $resource -> has($resource)){
-				$user -> $resource -> add($resource);
-				$user -> $resource -> save();
+				$resource -> users -> add($user);
+				$resource -> users -> save();
 			}
-			*/
 
 		}else{
 
@@ -112,6 +111,9 @@ class WT{
 
 	
 			$detail -> save();
+			
+			$resource -> users -> add($user);
+			$resource -> users -> save();
 		}
 
 			

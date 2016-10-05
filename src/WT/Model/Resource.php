@@ -33,6 +33,10 @@ class Resource extends Model{
 		$schema -> datetime('updated_at');
 
 
+        $schema -> toMany(ResourceUser::class,'resource_users','resource_id')
+                -> to('users','user');
+
+
 
 	}
 }

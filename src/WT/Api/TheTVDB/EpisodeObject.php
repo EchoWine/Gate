@@ -32,17 +32,18 @@ class EpisodeObject{
 	 */
 	public function __construct($resource){
 
-		$this -> id = (int)$resource -> id;
-		$this -> name = (string)$resource -> EpisodeName;
-		$this -> overview = (string)$resource -> Overview;
-		$this -> number = (string)$resource -> EpisodeNumber;
-		$this -> season = (string)$resource -> SeasonNumber;
+		
+		$this -> id = $resource -> id;
+		$this -> name = $resource -> EpisodeName;
+		$this -> overview = $resource -> Overview;
+		$this -> number = $resource -> EpisodeNumber;
+		$this -> season = $resource -> SeasonNumber;
 
-		$this -> rating = (float)$resource -> Rating;
-		$this -> rating_count = (int)$resource -> RatingCount;
+		$this -> rating = $resource -> Rating;
+		$this -> rating_count = $resource -> RatingCount;
 
-		$this -> aired_at = (string)$resource -> FirstAired;
-		$this -> updated_at = (string)$resource -> lastupdated;
+		$this -> aired_at = $resource -> FirstAired;
+		$this -> updated_at = $resource -> lastupdated;
 
 	}
 

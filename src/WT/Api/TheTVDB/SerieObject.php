@@ -46,35 +46,75 @@ class SerieObject{
 	 *
 	 * @param XML object
 	 */
-	public function __construct($resource){
+	public static function long($resource){
 
-		$this -> id = (int)$resource -> Series[0] -> id;
-		$this -> name = (string)$resource -> Series[0] -> SeriesName;
+		if(isset($resource -> Series[0]))
+			$serie = $resource -> Series[0];
+		else
+			$serie = $resource;
 
-		$this -> airs_day_of_week = (string)$resource -> Series[0] -> Airs_DayOfWeek;
-		$this -> airs_time = (string)$resource -> Series[0] -> Airs_Time;
-		$this -> language = (string)$resource -> Series[0] -> Language;
-		$this -> network = (string)$resource -> Series[0] -> Network;
-		$this -> overview = (string)$resource -> Series[0] -> Overview;
-		$this -> rating = (float)$resource -> Series[0] -> Rating;
-		$this -> rating_count = (int)$resource -> Series[0] -> RatingCount;
-		$this -> status = (string)$resource -> Series[0] -> Status;
-		$this -> banner = (string)$resource -> Series[0] -> banner;
-		$this -> fanart = (string)$resource -> Series[0] -> fanart;
-		$this -> poster = (string)$resource -> Series[0] -> poster;
-		$this -> first_aired_at = (string)$resource -> Series[0] -> FirstAired;
+		$obj = new self();
 
-		$this -> updated_at = (string)$resource -> Series[0] -> lastupdated;
+		$obj -> id = $serie -> id;
+		$obj -> name = $serie -> SeriesName;
+
+		$obj -> airs_day_of_week = $serie -> Airs_DayOfWeek;
+		$obj -> airs_time = $serie -> Airs_Time;
+		$obj -> language = $serie -> Language;
+		$obj -> network = $serie -> Network;
+		$obj -> overview = $serie -> Overview;
+		$obj -> rating = $serie -> Rating;
+		$obj -> rating_count = $serie -> RatingCount;
+		$obj -> status = $serie -> Status;
+		$obj -> banner = $serie -> banner;
+		$obj -> fanart = $serie -> fanart;
+		$obj -> poster = $serie -> poster;
+		$obj -> first_aired_at = $serie -> FirstAired;
+
+		$obj -> updated_at = $serie -> lastupdated;
 
 		# Temp
-		$this -> actors = (string)$resource -> Series[0] -> Actors;
-		$this -> genres = (string)$resource -> Series[0] -> Genre;
-		$this -> genres = explode("|",$this -> genres);
+		$obj -> actors = $serie -> Actors;
+		$obj -> genres = $serie -> Genre;
+		$obj -> genres = explode("|",$obj -> genres);
 
 		foreach($resource -> Episode as $episode){
-			$this -> episodes[] = new EpisodeObject($episode);
+			$obj -> episodes[] = new EpisodeObject($episode);
 		}
 
+		return $obj;
+
 	}
+
+	/**
+	 * Initialize the object with the response in xml
+	 *
+	 * @param XML object
+	 */
+	public static function short($resource){
+
+		$serie = $resource;
+
+
+		$obj = new self();
+
+		$obj -> id = $serie -> id;
+		$obj -> name = $serie -> SeriesName;
+		
+		if(isset($serie -> Language))
+			$obj -> language = $serie -> Language;
+		
+		if(isset($serie -> Network))
+			$obj -> network = $serie -> Network;
+
+		if(isset($serie -> Overview))
+			$obj -> overview = $serie -> Overview;
+	
+		$obj -> first_aired_at = $serie -> FirstAired;
+
+
+		return $obj;
+	}
+
 
 }

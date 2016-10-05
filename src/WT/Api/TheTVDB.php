@@ -3,6 +3,8 @@
 namespace WT\Api;
 
 use WT\Api\TheTVDB as Object;
+use CoreWine\Component\Str;
+use CoreWine\Http\Client;
 
 class TheTVDB extends Basic{
 
@@ -50,15 +52,16 @@ class TheTVDB extends Basic{
 	 */
 	public function all($params){
 
-		$url = $this -> url_api."GetSeries.php?".http_build_query($params);
-			
+
 		$return = [];
 
-		# @temp
+		$client = new Client();
 
 		try{
 
-			$resources = simplexml_load_string(file_get_contents($url));
+			# Search for series
+			$response = $client -> request($this -> url_api."GetSeries.php",'GET',$params);
+			$resources = Str::xml($response);
 
 		}catch(Exception $e){
 
@@ -66,22 +69,32 @@ class TheTVDB extends Basic{
 
 		}
 
+		if(!isset($resources -> Series))
+			return $return;
+
 
 		foreach($resources -> Series as $resource){
 
 			try{
-				$url = $this -> url_api.$this -> token."/series/".((int)$resource -> seriesid)."/banners.xml";
 
-				if(!($banners = @simplexml_load_string(file_get_contents($url))))
+				# Send request for banners
+				$response = $client -> request($this -> url_api.$this -> token."/series/".$resource -> seriesid."/banners.xml");
+
+				if(!($banners = Str::xml($response)))
 					return $return;
 
 
-				foreach($banners as $banner){
+			
+				foreach($banners -> Banner as $banner){
 					if($banner -> BannerType == 'poster'){
-						$banner = $this -> url_public."banners/".((string)$banner -> BannerPath);
 
-						if(file_get_contents($banner)){
+						# Get image
+						$response = $client -> request($this -> url_public."banners/".$banner -> BannerPath);
 
+						if($response){
+
+							# Save image
+							$banner = $this -> url_public."banners/".$banner -> BannerPath;
 							break;
 						}else{
 							$banner = '';
@@ -92,16 +105,17 @@ class TheTVDB extends Basic{
 
 			}
 
-			$return[(int)$resource -> seriesid] = [
+			$resource = Object\SerieObject::short($resource);
+			$return[$resource -> id] = [
 				'source' => $this -> getName(),
 				'type' => 'series',
-				'id' => (int)$resource -> seriesid,
-				'language' => (string)$resource -> language,
-				'name' => (string)$resource -> SeriesName,
+				'id' => $resource -> id,
+				'language' => $resource -> language,
+				'name' => $resource -> name,
 				'banner' => $banner,
-				'overview' => (string)$resource -> Overview,
-				'first_aired' => (string)$resource -> FirstAired,
-				'network' => (string)$resource -> Network,
+				'overview' => $resource -> overview,
+				'first_aired' => $resource -> first_aired_at,
+				'network' => $resource -> network,
 			];
 		}
 
@@ -112,11 +126,11 @@ class TheTVDB extends Basic{
 	public function get($id){
 
 
-		$url = $this -> url_api.$this -> token."/series/".((int)$id)."/all/en.xml";
+		$url = $this -> url_api.$this -> token."/series/".$id."/all/en.xml";
 		
 		try{
 
-			$resource = simplexml_load_string(file_get_contents($url));
+			$resource = Str::xml(file_get_contents($url));
 
 		}catch(Exception $e){
 

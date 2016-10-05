@@ -68,10 +68,10 @@ class WT{
 
 		if($resource){
 
-			$resource -> id;
-
 			if($resource -> users -> has($user)){
-				# Already added user to resource
+
+				# Some message ??
+
 			}else{
 
 				$resource -> users -> add($user);
@@ -104,14 +104,13 @@ class WT{
 			$detail -> name = $response -> name;
 			$detail -> overview = $response -> overview;
 			$detail -> status = $response -> status;
-
-			$detail -> save();
 			$detail -> resource = $resource;
 
-
-	
 			$detail -> save();
-			
+
+			# TEMP-FIX
+			$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
+
 			$resource -> users -> add($user);
 			$resource -> users -> save();
 		}

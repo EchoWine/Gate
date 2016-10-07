@@ -33,3 +33,11 @@
     text-overflow: ellipsis;
     padding: 4px 6px;
 }
+
+[wt-status-user='0'] *[wt-remove]{
+    display:none;
+}
+
+[wt-status-user='1'] *[wt-add]{
+    display:none;
+}

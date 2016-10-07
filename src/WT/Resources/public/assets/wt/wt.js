@@ -35,17 +35,13 @@ WT.searching = function(state){
 			WT.searching(true);
 
 		},5000);
+
 	}else{
 		
 	}
 };
 
-$('.wt-search-form').on('submit',function(e){
-	e.preventDefault();
-
-	// Retrieve key searched
-	val = $(this).find('.wt-search-key').val();
-
+WT.discovery = function(value){
 	// Set the searching mode to true
 	WT.searching(true);
 
@@ -55,46 +51,75 @@ $('.wt-search-form').on('submit',function(e){
 	// Send the request to "discovery"
 	http.get(WT.url+"all/discovery/"+val,{token:WT.token},function(response){
 
-		html = '';
+		html = {library:'',discovery:''};
 
 		// The response has sent, so set the "searching mode" to false
 		WT.searching(false);
 
 		$.map(response,function(service){
 			$.map(service,function(resource){
-				
-				html += template.get('wt-search-result',{
+
+				var part = (resource.user == 1) ? 'library' : 'discovery';
+
+				html[part] += template.get('wt-search-result',{
 					source:resource.source,
 					id:resource.id,
 					title:resource.name,
-					banner:resource.banner
+					banner:resource.banner,
+					user:resource.user ? 1 : 0,
+					library:resource.library ? 1 : 0
 				});
 
 			});
 		});
 
-		html = $(html);
+		WT.addResultSearch('.wt-search-library',html['library']);
 
-		html.find('img').on('error',function(){
-			$(this).hide();
-		});
-		
-		$('.wt-search-results').html(html);
+		WT.addResultSearch('.wt-search-discovery',html['discovery']);
 	});
+}
+WT.addResultSearch = function(classname,html){
+
+	html = $(html);
+	
+	html.find('img').on('error',function(){
+		$(this).hide();
+	});
+
+	$(classname).html(html);
+};
+
+$('.wt-search-form').on('submit',function(e){
+	e.preventDefault();
+
+	// Retrieve key searched
+	val = $(this).find('.wt-search-key').val();
+
+	WT.discovery(val);
 });
 
 
 $('body').on('click','[wt-add]',function(e){
 
-	var info = $(this).attr('wt-add');
-	info = info.split(",");
-	info[0]; // Service name
-	info[1]; // ID resource
+	var element = $(this);
+	info = $(this).attr('wt-add').split(",");
 
-	console.log('awdw');
 	http.post(WT.url+"series/add",{token:WT.token,source:info[0],id:info[1]},function(response){
 
-		console.log(response);
+		item.addAlert('alert-'+response.status,'.alert-global',response);
+
+	});
+
+});
+
+$('body').on('click','[wt-remove]',function(e){
+
+	var element = $(this);
+	info = $(this).attr('wt-remove').split(",");
+
+	http.post(WT.url+"series/remove",{token:WT.token,source:info[0],id:info[1]},function(response){
+
+		item.addAlert('alert-'+response.status,'.alert-global',response);
 	
 	});
 

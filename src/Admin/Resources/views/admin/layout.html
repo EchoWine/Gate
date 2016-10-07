@@ -92,7 +92,37 @@
 							</div>
 						@endblock
 					</div>
+					@block('alerts')
+
+						<!-- ALERT DETAILS -->
+						<div data-template='alert-details'>
+							<li>{message}</li>
+						</div>
+
+						<!-- ALERT SUCCESS TEMPLATE -->	
+						<div data-template='alert-success'>
+							<div class='alert alert-success'>{message}<ul>{details}</ul></div>
+						</div>
+
+						<!-- ALERT DANGER TEMPLATE -->
+						<div data-template='alert-danger'>
+							<div class='alert alert-danger'>{message}<ul>{details}</ul></div>
+						</div>
+
+						<!-- ALERT DANGER INFO -->
+						<div data-template='alert-info'>
+							<div class='alert alert-info'>{message}<ul>{details}</ul></div>
+						</div>
+						
+						<div class='page-section'>
+							<div class='alert-global'></div>
+						</div>
+
+
+					@endblock
 					@block('page-content')
+
+
 						<div class='page-row'>
 							<div class='page-section'>
 								Contenuto

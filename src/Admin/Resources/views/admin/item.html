@@ -9,21 +9,6 @@
 
 	</div>
 	
-	<!-- ALERT DETAILS -->
-	<div data-template='alert-details'>
-		<li>{message}</li>
-	</div>
-
-	<!-- ALERT SUCCESS TEMPLATE -->	
-	<div data-template='alert-success'>
-		<div class='alert alert-success'>{message}<ul>{details}</ul></div>
-	</div>
-
-	<!-- ALERT DANGER TEMPLATE -->
-	<div data-template='alert-danger'>
-		<div class='alert alert-danger'>{message}<ul>{details}</ul></div>
-	</div>
-
 	<div data-template='autocomplete-container'>
 		<div class='autocomplete-container' data-autocomplete-container='{name}'>
 			<div class='autocomplete-results'>
@@ -50,10 +35,6 @@
 	@include('Admin/admin/modal/edit',['table' => $table,'fields' => $views -> fields('edit')])
 	@include('Admin/admin/modal/delete')
 	@include('Admin/admin/modal/delete_multiple')
-
-	<div class='page-section'>
-		<div class='alert-global'></div>
-	</div>
 
 	<div class='page-row' data-item-table-container='{{$table}}'>
 		<div class='page-section page-section-content'>

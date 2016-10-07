@@ -36,8 +36,25 @@ class WT{
 
 			$source = new $source();
 
-			if($source -> isResource($resource))
+			if($source -> isResource($resource)){
 				$response[$source -> getName()] = $source -> discovery($key);
+
+				foreach($response[$source -> getName()] as $n => $k){
+					$resource = Resource::where(['source_name' => $source -> getName(),'source_id' => $k['id']]) -> first();
+					
+					if($resource){
+						$u = $resource -> users -> has($user);
+						$r = 1;
+					}else{
+						$r = 0;
+						$u = 0;
+					}
+					
+					$response[$source -> getName()][$n]['library'] = $r;
+					$response[$source -> getName()][$n]['user'] = $u;
+
+				}
+			}
 
 		}
 
@@ -56,67 +73,74 @@ class WT{
 	 */
 	public static function add($user,$source_type,$source_name,$source_id){
 
-		$response = [];
+		try{
+			$response = [];
 
-		$model = self::getModelByResource($source_type);
+			$model = self::getModelByResource($source_type);
 
-		if(!$model){
-			throw new \Exception("Resource not valid");
-		}
+			if(!$model){
+				throw new \Exception("Resource not valid");
+			}
 
-		$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
+			$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
 
-		if($resource){
+			if($resource){
 
-			if($resource -> users -> has($user)){
+				if($resource -> users -> has($user)){
 
-				# Some message ??
+					# Some message ??
+					return ['message' => 'Already added','status' => 'info'];
+
+				}else{
+
+					$resource -> users -> add($user);
+					$resource -> users -> save();
+				}
 
 			}else{
+
+				foreach(self::$sources as $source){
+
+					$source = new $source();
+
+					if($source -> getName() == $source_name){
+						$response = $source -> add($source_id);
+						break;
+					}
+
+				}
+
+				$resource = Resource::create([
+					'name' => $response -> name,
+					'source_type' => $source_type,
+					'source_name' => $source_name,
+					'source_id' => $source_id,
+					'updated_at' => (new \DateTime()) -> format('Y-m-d H:i:s')
+				]);
+
+				$detail = new $model();
+
+				$detail -> name = $response -> name;
+				$detail -> overview = $response -> overview;
+				$detail -> status = $response -> status;
+				$detail -> resource = $resource;
+
+				$detail -> save();
+
+				# TEMP-FIX
+				$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
 
 				$resource -> users -> add($user);
 				$resource -> users -> save();
 			}
 
-		}else{
+		}catch(\Exception $e){
 
-			foreach(self::$sources as $source){
-
-				$source = new $source();
-
-				if($source -> getName() == $source_name){
-					$response = $source -> add($source_id);
-					break;
-				}
-
-			}
-
-			$resource = Resource::create([
-				'name' => $response -> name,
-				'source_type' => $source_type,
-				'source_name' => $source_name,
-				'source_id' => $source_id,
-				'updated_at' => (new \DateTime()) -> format('Y-m-d H:i:s')
-			]);
-
-			$detail = new $model();
-
-			$detail -> name = $response -> name;
-			$detail -> overview = $response -> overview;
-			$detail -> status = $response -> status;
-			$detail -> resource = $resource;
-
-			$detail -> save();
-
-			# TEMP-FIX
-			$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
-
-			$resource -> users -> add($user);
-			$resource -> users -> save();
+			return ['message' => $e -> getMessage(),'status' => 'error'];
 		}
-
 			
-		return ['added'];
+		return ['message' => 'Resource added','status' => 'success'];
+		
 	}
 
 	/**

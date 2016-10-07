@@ -78,9 +78,8 @@ class WT{
 
 			$model = self::getModelByResource($source_type);
 
-			if(!$model){
-				throw new \Exception("Resource not valid");
-			}
+			if(!$model)
+				throw new \Exception("Resource type name invalid");
 
 			$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
 
@@ -141,6 +140,48 @@ class WT{
 			
 		return ['message' => 'Resource added','status' => 'success'];
 		
+	}
+
+	/**
+	 * Delete a resource
+	 *
+	 * @param string $user
+	 * @param string $resource
+	 * @param string $source_name
+	 * @param mixed $id
+	 *
+	 * @return array
+	 */
+	public static function delete($user,$source_type,$source_name,$source_id){
+
+		try{
+			$response = [];
+
+			$model = self::getModelByResource($source_type);
+
+			if(!$model)
+				throw new \Exception("Resource type name invalid");
+			
+			$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();
+
+			if(!$resource)
+				throw new \Exception("The resource doesn't exists");
+
+			if(!$resource -> users -> has($user))
+				throw new \Exception("The resource insn't in library");
+
+
+			$resource -> users -> remove($user);
+			$resource -> users -> save();
+
+
+		}catch(\Exception $e){
+
+			return ['status' => 'error','message' => $e -> getMessage()];
+		}
+			
+		
+		return ['status' => 'success','message' => 'Deleted'];
 	}
 
 	/**

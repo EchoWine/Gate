@@ -41,3 +41,16 @@
 [wt-status-user='1'] *[wt-add]{
     display:none;
 }
+
+.wt-section-container > div{
+    display:none;
+}
+
+.wt-section-container[data-status='0'] .wt-section-container-loading{
+    display:block;
+}
+
+.wt-section-container[data-status='1'] .wt-section-container-results{
+    display:block;
+
+}

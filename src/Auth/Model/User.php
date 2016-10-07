@@ -6,6 +6,8 @@ use CoreWine\DataBase\ORM\Model;
 use CoreWine\DataBase\ORM\Field\Schema as Field;
 use Auth\Field\Schema as AuthField;
 
+use WT\Model\ResourceUser;
+
 class User extends Model{
 
 	/**
@@ -36,6 +38,9 @@ class User extends Model{
 		$schema -> string('token');
 
 		$schema -> toMany(Session::class,'sessions','user_id');
+
+        $schema -> toMany(ResourceUser::class,'user_resources','user_id')
+                -> to('resources','resource');
 
 
 	}

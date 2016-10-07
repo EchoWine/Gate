@@ -27,6 +27,8 @@ WT.searching = function(state){
 
 	if(state){
 
+		$('.wt-section-container').attr('data-status',0);
+
 		var waiting = WT.waiting[WT.random(0,WT.waiting.length - 1)];
 		var html = template.get("wt-search-waiting",{waiting:waiting});
 		$('.wt-search-waiting').html(html);
@@ -37,7 +39,7 @@ WT.searching = function(state){
 		},5000);
 
 	}else{
-		
+		$('.wt-section-container').attr('data-status',1);
 	}
 };
 
@@ -46,7 +48,7 @@ WT.discovery = function(value){
 	WT.searching(true);
 
 	// Set spinner
-	$('.wt-search-results').html(template.get('wt-search-spinner'));
+	$('.wt-search-spinner-container').html(template.get('wt-search-spinner'));
 
 	// Send the request to "discovery"
 	http.get(WT.url+"all/discovery/"+val,{token:WT.token},function(response){
@@ -107,6 +109,9 @@ $('body').on('click','[wt-add]',function(e){
 	http.post(WT.url+"series/add",{token:WT.token,source:info[0],id:info[1]},function(response){
 
 		item.addAlert('alert-'+response.status,'.alert-global',response);
+		res = element.closest('.wt-search-result');
+		res.attr('wt-status-user',1);
+		res.appendTo($('.wt-search-library'));
 
 	});
 
@@ -120,6 +125,9 @@ $('body').on('click','[wt-remove]',function(e){
 	http.post(WT.url+"series/remove",{token:WT.token,source:info[0],id:info[1]},function(response){
 
 		item.addAlert('alert-'+response.status,'.alert-global',response);
+		res = element.closest('.wt-search-result');
+		res.attr('wt-status-user',0);
+		res.appendTo($('.wt-search-discovery'));
 	
 	});
 

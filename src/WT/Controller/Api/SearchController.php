@@ -19,9 +19,21 @@ class SearchController extends BasicController{
 		$this -> route('discovery') -> url("/api/v1/{resource}/discovery/{key}") -> get();
 		$this -> route('add') -> url("/api/v1/{resource}/add") -> post();
 		$this -> route('remove') -> url("/api/v1/{resource}/remove") -> post();
+		$this -> route('get') -> url("/api/v1/{resource}/{source}/{id}") -> get();
 
 		//$router -> get("/api/v1/{resource}/discovery/{key}","index")
 
+	}
+
+	/**
+	 * Retrieve user given a token
+	 *
+	 * @param string $token
+	 *
+	 * @return User
+	 */
+	public function getUserByToken($token){
+		return User::where('token',$token) -> first();
 	}
 
 	/**
@@ -65,7 +77,6 @@ class SearchController extends BasicController{
 			return $this -> json(['status' => 'error','message' => 'Token invalid']);
 		}
 		
-		
 		return $this -> json(WT::delete(
 			$user,
 			$resource,
@@ -74,14 +85,25 @@ class SearchController extends BasicController{
 		);
 	}
 
+
+
 	/**
-	 * Retrieve user given a token
+	 * @Route get
 	 *
-	 * @param string $token
-	 *
-	 * @return User
+	 * @return Response
 	 */
-	public function getUserByToken($token){
-		return User::where('token',$token) -> first();
+	public function get(Request $request,$resource,$source,$id){
+		
+		if(!($user = $this -> getUserByToken($request -> query -> get('token')))){
+			return $this -> json(['status' => 'error','message' => 'Token invalid']);
+		}
+		
+		return $this -> json(WT::get(
+			$user,
+			$resource,
+			$source,
+			$id
+		));
+
 	}
 }

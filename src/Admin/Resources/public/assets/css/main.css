@@ -45,6 +45,15 @@ ul,li{
 	padding:0;
 }
 
+a{
+	color:#007fbd;
+	text-decoration:none;
+}
+
+a:hover{
+	color:#45a9da;
+
+}
 
 .container{
 	position:relative;
@@ -76,4 +85,18 @@ ul,li{
 .alert.template-new{
 	opacity:0;
 	transition:opacity 0.2s ease-in-out;
+}
+
+
+.display-0,.display-1{
+    display:none;
+}
+
+[data-active='1'] .display-1{
+    display:initial;
+}
+
+
+[data-active='0'] .display-0{
+    display:initial;
 }

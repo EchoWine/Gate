@@ -69,42 +69,48 @@ class TheTVDB extends Basic{
 
 		}
 
+
 		if(!isset($resources -> Series))
 			return $return;
 
+		$series = $resources -> Series;
+		if(!is_array($series))
+			$series = [$series];
 
-		foreach($resources -> Series as $resource){
+		foreach($series as $resource){
 
 			try{
 
-				# Send request for banners
-				$response = $client -> request($this -> url_api.$this -> token."/series/".$resource -> seriesid."/banners.xml");
+				if($resource){
+					# Send request for banners
+					$response = $client -> request($this -> url_api.$this -> token."/series/".$resource -> seriesid."/banners.xml");
 
-				if(!($banners = Str::xml($response)))
-					throw new \Exception();
+					if(!($banners = Str::xml($response)))
+						throw new \Exception();
 
 
-				if(!isset($banners -> Banner))
-					throw new \Exception();
+					if(!isset($banners -> Banner))
+						throw new \Exception();
 
-				$banners = $banners -> Banner;
+					$banners = $banners -> Banner;
 
-				if(!is_array($banners))
-					$banners = [$banners];
+					if(!is_array($banners))
+						$banners = [$banners];
 
-				foreach($banners as $banner){
-					if($banner -> BannerType == 'poster'){
+					foreach($banners as $banner){
+						if($banner -> BannerType == 'poster'){
 
-						# Get image
-						$response = $client -> request($this -> url_public."banners/".$banner -> BannerPath);
+							# Get image
+							$response = $client -> request($this -> url_public."banners/".$banner -> BannerPath);
 
-						if($response){
+							if($response){
 
-							# Save image
-							$banner = $this -> url_public."banners/".$banner -> BannerPath;
-							break;
-						}else{
-							$banner = '';
+								# Save image
+								$banner = $this -> url_public."banners/".$banner -> BannerPath;
+								break;
+							}else{
+								$banner = '';
+							}
 						}
 					}
 				}

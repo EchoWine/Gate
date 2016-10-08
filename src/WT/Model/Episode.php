@@ -31,12 +31,17 @@ class Episode extends Model{
 
 		$schema -> integer('season_n');
 
+		$schema -> datetime('aired_at');
+
+		$schema -> datetime('updated_at');
+
 		$schema -> text('overview');
 
 		$schema -> toOne(Season::class,'season');
 
 		$schema -> toOne(Resource::class,'resource');
 
+		$schema -> toOne(Episode::class,'episodes','serie_id');
 	}
 
 }

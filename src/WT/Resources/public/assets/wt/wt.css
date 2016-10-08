@@ -61,5 +61,17 @@
 
 .wt-section-container[data-status='1'] .wt-section-container-results{
     display:block;
+}
 
+.wt-get-season{
+    padding:3px 1px;
+    cursor:pointer;
+}
+
+.wt-get-episode{
+    padding:1px 0;
+}
+
+.wt-get-episode:hover{
+    background:rgba(3,155,229,0.1);
 }

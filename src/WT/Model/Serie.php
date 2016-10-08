@@ -32,10 +32,28 @@ class Serie extends Model{
 
 		$schema -> file('poster');
 
+		$schema -> file('banner');
+
 		$schema -> toOne(Resource::class,'resource');
 
 		$schema -> toMany(Season::class,'seasons','serie_id');
 
+		$schema -> toMany(Episode::class,'episodes','serie_id');
+
+	}
+
+	public function toArray(){
+
+		$res = parent::toArray();
+
+		$res['poster'] = $this -> poster() -> getFullPath();
+		$res['banner'] = $this -> banner() -> getFullPath();
+
+		foreach(Episode::where('serie_id',$this -> id) -> get() as $episode){
+			$episodes[] = $episode -> toArray();
+		}
+
+		return array_merge($res,['episodes' => $episodes]);
 	}
 }
 

@@ -13,6 +13,11 @@ WT.waiting = [
     "Oh, a free Ipad, guess I just need to download this exe file. OH GOD WHAT IS HAPPENING? A VIRUS? WHERE IS MY MLG ANTIVIRUS?"
 ];
 
+WT.get = function(source_type,source_name,source_id,callback){
+
+	http.get(WT.url+info[0]+"/"+info[1]+"/"+info[2],{token:WT.token},callback);
+};
+
 WT.random = function(min,max){
     return Math.floor(Math.random()*(max-min+1)+min);
 };
@@ -102,12 +107,12 @@ $('.wt-search-form').on('submit',function(e){
 
 
 $('body').on('click','[wt-add]',function(e){
-
+	WT.searching(true);
 	var element = $(this);
 	info = $(this).attr('wt-add').split(",");
 
 	http.post(WT.url+"series/add",{token:WT.token,source:info[0],id:info[1]},function(response){
-
+		WT.searching(false);
 		item.addAlert('alert-'+response.status,'.alert-global',response);
 		res = element.closest('.wt-search-result');
 		res.attr('wt-status-user',1);
@@ -118,12 +123,12 @@ $('body').on('click','[wt-add]',function(e){
 });
 
 $('body').on('click','[wt-remove]',function(e){
-
+	WT.searching(true);
 	var element = $(this);
 	info = $(this).attr('wt-remove').split(",");
 
 	http.post(WT.url+"series/remove",{token:WT.token,source:info[0],id:info[1]},function(response){
-
+		WT.searching(false);
 		item.addAlert('alert-'+response.status,'.alert-global',response);
 		res = element.closest('.wt-search-result');
 		res.attr('wt-status-user',0);
@@ -133,6 +138,77 @@ $('body').on('click','[wt-remove]',function(e){
 
 });
 
-$(document).ready(function(){
 
+
+
+$('body').on('click','[wt-info]',function(e){
+
+	info = $(this).attr('wt-info').split(",");
+
+	WT.get(info[0],info[1],info[3],function(response){
+
+		// Group episode in season
+		var seasons = [];
+		for(var i in response.episodes){
+			episode = response.episodes[i];
+
+			if(typeof seasons[episode.season_n] == 'undefined')
+				seasons[episode.season_n] = [];
+
+			seasons[episode.season_n].push(episode);
+		}
+
+
+		// Templating seasons
+		html_seasons = '';
+		for(var i in seasons){
+			var season = seasons[i];
+			html_episodes = '';
+			
+			// Templating episodes
+			for(e = 0; e < season.length; e++){
+				episode = season[e];
+				html_episodes += template.get('wt-get-episode',{
+					number: episode.number,
+					name: episode.name,
+					season: episode.season_n,
+					aired_at : episode.aired_at
+				});
+
+			}
+
+			html_seasons += template.get('wt-get-season',{
+				'number': i,
+				'episodes': html_episodes,
+			});
+
+		}
+
+		content = template.get('wt-get-serie',{
+			name:response.name,
+			banner:response.banner,
+			overview:response.overview,
+			seasons: html_seasons
+		});
+
+
+
+
+		modal.open('modal-wt-get',{"modal-wt-get-body":content});
+	});
+
+});
+
+$(document).ready(function(){});
+
+
+// ----------------------------------------------------------------
+// 
+// 	DASHBOARD
+//
+// ----------------------------------------------------------------
+
+$('body').on('click','.wt-get-season',function(){
+	var status = $(this).closest('.wt-get-season-container').attr('data-active') == "1";
+	$(this).closest('.wt-get-season-container').attr('data-active',status == "1" ? "0" : "1");
 });

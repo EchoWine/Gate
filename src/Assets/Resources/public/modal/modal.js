@@ -33,6 +33,10 @@ modal.open = function(id,data){
 	modal.exeDataTo(id,el,data);
 
 	modal.actual = id;
+
+	// Set body active
+	$('body').addClass('body-modal-active');
+	el.parent().addClass('modal-container');
 };
 
 /**
@@ -87,6 +91,11 @@ modal.close = function(id){
    	},300);
 
 	modal.actual = null;
+
+
+	$('body').removeClass('body-modal-active');
+
+	$('#'+id).parent().removeClass('modal-container');
 };
 
 /**

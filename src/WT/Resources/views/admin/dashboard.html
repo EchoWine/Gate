@@ -1,12 +1,47 @@
 @extends('WT/admin/layout')
 
 @block('page-content')
+
+@embed('Admin/admin/__modal','modal-wt-get')
+	@block('__class')modal-body-medium@endblock
+	@block('id')modal-wt-get@endblock
+	@block('title')Information@endblock
+	@block('content')
+		<div class='modal-wt-get-body'>
+		</div>
+	@endblock
+@endembed
+
+
+<div data-template='wt-get-serie'>
+	<img src='{banner}'>
+	<p>{overview}</p>
+	{seasons}
+</div>
+
+<div data-template='wt-get-season'>
+	<div class='wt-get-season-container'  data-active='0'>
+		<div class='wt-get-season no-select'>
+			<a href='#'>
+				<i class="fa fa-angle-double-right display-0" aria-hidden="true"></i>
+				<i class="fa fa-angle-double-down display-1" aria-hidden="true"></i>
+				SEASON {number}
+			</a>
+			</div>
+		<div class='wt-get-episodes display-1'>{episodes}</div>
+	</div>
+</div>
+
+<div data-template='wt-get-episode'>
+	<div><a href='#'>{number} - {name} [{aired_at}]</a></div>
+</div>
+
 <div class='page-row'>
 
 	<div class='page-section page-section-content'>
-		<div>
+		<div class='wt-search-results'>
 			@foreach(Auth::user() -> getSeries() as $serie)
-				<div class='wt-search-result' wt-status-user='1'>
+				<div class='wt-search-result' wt-status-user='1' wt-info='{{$serie -> resource -> source_type}},{{$serie -> resource -> source_name}},{{$serie -> resource -> id}}'>
 					<div class='wt-search-title'>{{$serie -> name}}</div>
 					<div class='wt-search-img'><img src='{{$serie -> poster() -> getFullPath()}}'></div>
 				</div>

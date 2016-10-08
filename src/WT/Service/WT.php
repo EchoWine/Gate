@@ -126,19 +126,12 @@ class WT{
 				$detail -> status = $response -> status;
 				$detail -> resource = $resource;
 				$detail -> poster() -> setByUrl($response -> poster);
+				$detail -> banner() -> setByUrl($response -> banner);
 				$detail -> save();
 
 				if($source_type == 'series' && $source -> isResource('series')){
 
 					foreach($response -> episodes as $r_episode){
-
-						$resource_episode = Resource::create([
-							'name' => $r_episode -> name,
-							'source_type' => 'episode',
-							'source_name' => $source_name,
-							'source_id' => $r_episode -> id,
-							'updated_at' => (new \DateTime()) -> format('Y-m-d H:i:s')
-						]);
 
 						$season = Season::firstOrCreate([
 							'number' => $r_episode -> season,
@@ -152,8 +145,8 @@ class WT{
 						$episode -> aired_at = $r_episode -> aired_at;
 						$episode -> update_at = $r_episode -> updated_at;
 						$episode -> season = $season;
-						$episode -> season_n = $season -> number;
-						$episode -> resource = $resource_episode;
+						$episode -> season_n = $r_episode -> season;
+						$episode -> serie_id = $detail -> id;
 						$episode -> save();
 
 					}
@@ -189,6 +182,7 @@ class WT{
 	public static function delete($user,$source_type,$source_name,$source_id){
 
 		try{
+
 			$response = [];
 
 			$model = self::getModelByResource($source_type);
@@ -216,6 +210,26 @@ class WT{
 			
 		
 		return ['status' => 'success','message' => 'Deleted'];
+	}
+
+	/**
+	 * Get a resource
+	 *
+	 * @param string $user
+	 * @param string $resource
+	 * @param string $source_name
+	 * @param mixed $id
+	 *
+	 * @return array
+	 */
+	public static function get($user,$source_type,$source_name,$source_id){
+
+		$model = self::getModelByResource($source_type);
+
+		$model = $model::where('id',$source_id) -> first();
+		
+
+		return $model -> toArray();
 	}
 
 	/**

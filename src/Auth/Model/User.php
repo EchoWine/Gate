@@ -7,6 +7,7 @@ use CoreWine\DataBase\ORM\Field\Schema as Field;
 use Auth\Field\Schema as AuthField;
 
 use WT\Model\ResourceUser;
+use WT\Model\Serie;
 
 class User extends Model{
 
@@ -61,6 +62,18 @@ class User extends Model{
 
 	}
 	
+	public function getSeries(){
+		$return = [];
+
+		foreach($this -> resources -> all() as $resource){
+			if($resource -> source_type == 'series'){
+				$return[] = $resource -> id;
+			}
+		}
+
+
+		return empty($return) ? [] : Serie::whereIn('resource_id',$return) -> get();
+	}
 }
 
 ?>

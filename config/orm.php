@@ -10,6 +10,7 @@ return [
 	'text' => CoreWine\DataBase\ORM\Field\Text\Schema::class,
 	'email' => CoreWine\DataBase\ORM\Field\Email\Schema::class,
 	'datetime' => CoreWine\DataBase\ORM\Field\Datetime\Schema::class,
+	'file' => CoreWine\DataBase\ORM\Field\File\Schema::class,
 
 ];
 ?>

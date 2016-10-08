@@ -1,8 +1,18 @@
 @extends('WT/admin/layout')
 
 @block('page-content')
-<div id='content'>
-		
-	<div class='title'> <h1><span>Dashboard</span></h1></div>
+<div class='page-row'>
+
+	<div class='page-section page-section-content'>
+		<div>
+			@foreach(Auth::user() -> getSeries() as $serie)
+				<div class='wt-search-result' wt-status-user='1'>
+					<div class='wt-search-title'>{{$serie -> name}}</div>
+					<div class='wt-search-img'><img src='{{$serie -> poster() -> getFullPath()}}'></div>
+				</div>
+			@endforeach
+
+		</div>
+	</div>
 </div>
 @endblock

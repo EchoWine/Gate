@@ -18,11 +18,16 @@
     text-decoration: none;
 }
 
-.wt-search-img img{
+.wt-search-img{
     height: 240px;
-    width: 100%;
-    margin: 4px 0;
+    margin-top: 5px;
 }
+
+.wt-search-img img{
+    height: 100%;
+    width: 100%;
+}
+
 
 .wt-search-title{
 	background: rgb(238, 238, 238);
@@ -32,6 +37,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 4px 6px;
+}
+
+.wt-search-buttons{
+    margin-top:5px;
 }
 
 [wt-status-user='0'] *[wt-remove]{

@@ -123,6 +123,7 @@ class WT{
 				$detail -> overview = $response -> overview;
 				$detail -> status = $response -> status;
 				$detail -> resource = $resource;
+				$detail -> poster() -> setByUrl($response -> poster);
 
 				$detail -> save();
 

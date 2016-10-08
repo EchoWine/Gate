@@ -30,6 +30,8 @@ class Serie extends Model{
 
 		$schema -> string('status');
 
+		$schema -> file('poster');
+
 		$schema -> toOne(Resource::class,'resource');
 
 		$schema -> toMany(Season::class,'seasons','serie_id');

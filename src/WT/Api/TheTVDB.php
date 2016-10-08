@@ -81,11 +81,18 @@ class TheTVDB extends Basic{
 				$response = $client -> request($this -> url_api.$this -> token."/series/".$resource -> seriesid."/banners.xml");
 
 				if(!($banners = Str::xml($response)))
-					return $return;
+					throw new \Exception();
 
 
-			
-				foreach($banners -> Banner as $banner){
+				if(!isset($banners -> Banner))
+					throw new \Exception();
+
+				$banners = $banners -> Banner;
+
+				if(!is_array($banners))
+					$banners = [$banners];
+
+				foreach($banners as $banner){
 					if($banner -> BannerType == 'poster'){
 
 						# Get image
@@ -103,6 +110,7 @@ class TheTVDB extends Basic{
 				}
 			}catch(\Exception $e){
 
+				$banner = '';
 			}
 
 			$resource = Object\SerieObject::short($resource);
@@ -139,8 +147,10 @@ class TheTVDB extends Basic{
 
 		}
 
-		return Object\SerieObject::long($resource);
-
+		$o = Object\SerieObject::long($resource);
+		$o -> banner = $this -> url_public."banners/".$o -> banner;
+		$o -> poster = $this -> url_public."banners/".$o -> poster;
+		return $o;
 	}
 
 	

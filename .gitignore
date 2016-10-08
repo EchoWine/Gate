@@ -4,3 +4,4 @@ config/database.php
 *.log
 *.bat
 composer.lock
+public/uploads/

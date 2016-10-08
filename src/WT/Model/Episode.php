@@ -26,8 +26,16 @@ class Episode extends Model{
 		$schema -> id();
 	
 		$schema -> string('name');
+	
+		$schema -> integer('number');
+
+		$schema -> integer('season_n');
+
+		$schema -> text('overview');
 
 		$schema -> toOne(Season::class,'season');
+
+		$schema -> toOne(Resource::class,'resource');
 
 	}
 

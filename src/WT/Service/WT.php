@@ -3,6 +3,8 @@
 namespace WT\Service;
 use WT\Api as Api;
 use WT\Model\Serie;
+use WT\Model\Season;
+use WT\Model\Episode;
 use WT\Model\Resource;
 use Request;
 
@@ -124,8 +126,39 @@ class WT{
 				$detail -> status = $response -> status;
 				$detail -> resource = $resource;
 				$detail -> poster() -> setByUrl($response -> poster);
-
 				$detail -> save();
+
+				if($source_type == 'series' && $source -> isResource('series')){
+
+					foreach($response -> episodes as $r_episode){
+
+						$resource_episode = Resource::create([
+							'name' => $r_episode -> name,
+							'source_type' => 'episode',
+							'source_name' => $source_name,
+							'source_id' => $r_episode -> id,
+							'updated_at' => (new \DateTime()) -> format('Y-m-d H:i:s')
+						]);
+
+						$season = Season::firstOrCreate([
+							'number' => $r_episode -> season,
+							'serie_id' => $detail -> id
+						]);
+
+						$episode = new Episode();
+						$episode -> name = $r_episode -> name;
+						$episode -> number = $r_episode -> number;
+						$episode -> overview = $r_episode -> overview;
+						$episode -> aired_at = $r_episode -> aired_at;
+						$episode -> update_at = $r_episode -> updated_at;
+						$episode -> season = $season;
+						$episode -> season_n = $season -> number;
+						$episode -> resource = $resource_episode;
+						$episode -> save();
+
+					}
+				}
+
 
 				# TEMP-FIX
 				$resource = Resource::where(['source_name' => $source_name,'source_id' => $source_id]) -> first();

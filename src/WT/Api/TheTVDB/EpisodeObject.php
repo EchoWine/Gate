@@ -2,28 +2,9 @@
 
 namespace WT\Api\TheTVDB;
 
-class EpisodeObject{
+use WT\Api\Object;
 
-	/**
-	 * @var integer
-	 **/
-	protected $id;
-
-	protected $name;
-
-	protected $number;
-
-	protected $season;
-
-	protected $overview;
-
-	protected $rating;
-
-	protected $rating_count;
-
-	protected $aired_at;
-
-	protected $updated_at;
+class EpisodeObject extends Object{
 
 	/**
 	 * Initialize the object with the response in xml

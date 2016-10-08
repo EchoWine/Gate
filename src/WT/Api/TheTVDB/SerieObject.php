@@ -2,44 +2,10 @@
 
 namespace WT\Api\TheTVDB;
 
-class SerieObject{
+use WT\Api\Object;
 
-	/**
-	 * @var integer
-	 **/
-	public $id;
+class SerieObject extends Object{
 
-	public $name;
-
-	public $actors;
-
-	public $airs_day_of_week;
-
-	public $airs_time;
-
-	public $genres = [];
-
-	public $language;
-
-	public $network;
-
-	public $overview;
-
-	public $rating;
-
-	public $rating_count;
-
-	public $status;
-
-	public $banner;
-
-	public $fanart;
-
-	public $poster;
-
-	public $first_aired_at;
-
-	public $updated_at;
 
 	/**
 	 * Initialize the object with the response in xml
@@ -76,6 +42,8 @@ class SerieObject{
 		$obj -> genres = $serie -> Genre;
 		$obj -> genres = explode("|",$obj -> genres);
 
+		$obj -> episodes = [];
+		
 		foreach($resource -> Episode as $episode){
 			$obj -> episodes[] = new EpisodeObject($episode);
 		}

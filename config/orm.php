@@ -11,6 +11,7 @@ return [
 	'email' => CoreWine\DataBase\ORM\Field\Email\Schema::class,
 	'datetime' => CoreWine\DataBase\ORM\Field\Datetime\Schema::class,
 	'file' => CoreWine\DataBase\ORM\Field\File\Schema::class,
+	'integer' => CoreWine\DataBase\ORM\Field\Integer\Schema::class,
 
 ];
 ?>

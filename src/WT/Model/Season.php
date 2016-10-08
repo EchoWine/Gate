@@ -23,7 +23,9 @@ class Season extends Model{
 
 		$schema -> id();
 	
-		$schema -> string('name');
+		$schema -> integer('number');
+
+		$schema -> toOne(Serie::class,'serie');
 
 		$schema -> toMany(Episode::class,'episodes','serie_id');
 

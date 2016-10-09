@@ -15,8 +15,15 @@ WT.waiting = [
 
 WT.get = function(source_type,source_name,source_id,callback){
 
-	http.get(WT.url+info[0]+"/"+info[1]+"/"+info[2],{token:WT.token},callback);
+	http.get(WT.url+source_type+"/"+source_name+"/"+source_id,{token:WT.token},callback);
 };
+
+
+WT.sync = function(source_type,source_id,callback){
+
+	http.post(WT.url+source_type+"/"+source_id,{token:WT.token},callback);
+};
+
 
 WT.random = function(min,max){
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -56,7 +63,8 @@ WT.discovery = function(value){
 	$('.wt-search-spinner-container').html(template.get('wt-search-spinner'));
 
 	// Send the request to "discovery"
-	http.get(WT.url+"all/discovery/"+val,{token:WT.token},function(response){
+
+	http.get(WT.url+"all/discovery/"+encodeURIComponent(val),{token:WT.token},function(response){
 
 		html = {library:'',discovery:''};
 
@@ -84,7 +92,8 @@ WT.discovery = function(value){
 
 		WT.addResultSearch('.wt-search-discovery',html['discovery']);
 	});
-}
+};
+
 WT.addResultSearch = function(classname,html){
 
 	html = $(html);
@@ -138,6 +147,16 @@ $('body').on('click','[wt-remove]',function(e){
 
 });
 
+$('body').on('click','[wt-sync]',function(e){
+	
+	info = $(this).attr('wt-sync').split(",");
+
+	WT.sync(info[0],info[1],function(response){
+		console.log(response);
+		item.addAlert('alert-'+response.status,'.alert-global',response);
+	});
+
+});
 
 
 
@@ -145,7 +164,7 @@ $('body').on('click','[wt-info]',function(e){
 
 	info = $(this).attr('wt-info').split(",");
 
-	WT.get(info[0],info[1],info[3],function(response){
+	WT.get(info[0],info[1],info[2],function(response){
 
 		// Group episode in season
 		var seasons = [];
@@ -184,14 +203,30 @@ $('body').on('click','[wt-info]',function(e){
 
 		}
 
+		switch(response.status){
+			case 'continuing':
+				status_type = 'primary';
+			break;
+			case 'ended':
+				status_type = 'danger';
+			break;
+			default:
+				status_type = 'default';
+			break;
+		}
+
 		content = template.get('wt-get-serie',{
+			id:response.id,
 			name:response.name,
 			banner:response.banner,
 			overview:response.overview,
-			seasons: html_seasons
+			updated_at:response.updated_at,
+			status:response.status,
+			status_type:status_type,
+			seasons: html_seasons,
+			resource_id: response.resource.source_id,
+			resource_name: response.resource.source_name
 		});
-
-
 
 
 		modal.open('modal-wt-get',{"modal-wt-get-body":content});

@@ -20,6 +20,7 @@ class SearchController extends BasicController{
 		$this -> route('add') -> url("/api/v1/{resource}/add") -> post();
 		$this -> route('remove') -> url("/api/v1/{resource}/remove") -> post();
 		$this -> route('get') -> url("/api/v1/{resource}/{source}/{id}") -> get();
+		$this -> route('sync') -> url("/api/v1/{resource}/{id}") -> post();
 
 		//$router -> get("/api/v1/{resource}/discovery/{key}","index")
 
@@ -85,8 +86,6 @@ class SearchController extends BasicController{
 		);
 	}
 
-
-
 	/**
 	 * @Route get
 	 *
@@ -102,6 +101,24 @@ class SearchController extends BasicController{
 			$user,
 			$resource,
 			$source,
+			$id
+		));
+	}
+
+	/**
+	 * @Route sync
+	 *
+	 * @return Response
+	 */
+	public function sync(Request $request,$resource,$id){
+		
+		if(!($user = $this -> getUserByToken($request -> request -> get('token')))){
+			return $this -> json(['status' => 'error','message' => 'Token invalid']);
+		}
+		
+		return $this -> json(WT::sync(
+			$user,
+			$resource,
 			$id
 		));
 

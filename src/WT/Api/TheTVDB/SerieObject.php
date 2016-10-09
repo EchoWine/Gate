@@ -29,11 +29,23 @@ class SerieObject extends Object{
 		$obj -> overview = $serie -> Overview;
 		$obj -> rating = $serie -> Rating;
 		$obj -> rating_count = $serie -> RatingCount;
-		$obj -> status = $serie -> Status;
+
+		switch($serie -> Status){
+			case 'Continuing':
+				$obj -> status = 'continuing';
+			break;
+			case 'Ended':
+				$obj -> status = 'ended';
+			break;
+		}
 		$obj -> banner = $serie -> banner;
 		$obj -> fanart = $serie -> fanart;
 		$obj -> poster = $serie -> poster;
-		$obj -> first_aired_at = $serie -> FirstAired;
+
+
+		if(isset($serie -> FirstAired)){
+			$obj -> first_aired_at = $serie -> FirstAired;
+		}
 
 		$obj -> updated_at = $serie -> lastupdated;
 
@@ -75,8 +87,9 @@ class SerieObject extends Object{
 
 		if(isset($serie -> Overview))
 			$obj -> overview = $serie -> Overview;
-	
-		$obj -> first_aired_at = $serie -> FirstAired;
+		
+		if(isset($serie -> FirstAired))
+			$obj -> first_aired_at = $serie -> FirstAired;
 
 
 		return $obj;

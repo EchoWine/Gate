@@ -100,15 +100,22 @@ class TheTVDB extends Basic{
 					foreach($banners as $banner){
 						if($banner -> BannerType == 'poster'){
 
-							# Get image
-							$response = $client -> request($this -> url_public."banners/".$banner -> BannerPath);
+							try{
 
-							if($response){
 
-								# Save image
-								$banner = $this -> url_public."banners/".$banner -> BannerPath;
-								break;
-							}else{
+								# Get image
+								$response = $client -> request($this -> url_public."banners/".$banner -> BannerPath);
+
+								if($response){
+
+									# Save image
+									$banner = $this -> url_public."banners/".$banner -> BannerPath;
+									break;
+								}else{
+									$banner = '';
+								}
+							}catch(\Exception $e){
+
 								$banner = '';
 							}
 						}
@@ -181,6 +188,7 @@ class TheTVDB extends Basic{
 
 		return $this -> get($id);
 	}
+
 
 
 }

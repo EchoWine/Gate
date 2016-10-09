@@ -127,6 +127,7 @@ class WT{
 				$detail -> resource = $resource;
 				$detail -> poster() -> setByUrl($response -> poster);
 				$detail -> banner() -> setByUrl($response -> banner);
+				$detail -> updated_at = (new \DateTime()) -> format('Y-m-d H:i:s'); 
 				$detail -> save();
 
 				if($source_type == 'series' && $source -> isResource('series')){
@@ -230,6 +231,98 @@ class WT{
 		
 
 		return $model -> toArray();
+	}
+
+
+	/**
+	 * Add a new resource
+	 *
+	 * @param string $user
+	 * @param string $resource
+	 * @param string $source_name
+	 * @param mixed $id
+	 *
+	 * @return array
+	 */
+	public static function sync($user,$resource_type,$id){
+
+		try{
+			$response = [];
+
+			$model = self::getModelByResource($resource_type);
+
+			if(!$model)
+				throw new \Exception("Resource type name invalid");
+
+			$resource = $model::where(['id' => $id]) -> first();
+
+			if(!$resource){
+
+				throw new \Exception("Resource not found");
+
+				
+
+			}else{
+
+				$source_name = $resource -> resource -> source_name;
+				$source_id = $resource -> resource -> source_id;
+
+				foreach(self::$sources as $source){
+
+					$source = new $source();
+
+					if($source -> getName() == $source_name){
+						$response = $source -> get($source_id);
+						break;
+					}
+
+				}
+
+				$resource_node = $resource -> resource;
+
+				$resource -> name = $response -> name;
+				$resource -> overview = $response -> overview;
+				$resource -> status = $response -> status;
+				$resource -> resource = $resource;
+				$resource -> poster() -> setByUrl($response -> poster);
+				$resource -> banner() -> setByUrl($response -> banner);
+				$resource -> updated_at = (new \DateTime()) -> format('Y-m-d H:i:s'); 
+				$resource -> save();
+
+				if($resource_type == 'series' && $source -> isResource('series')){
+
+					foreach($response -> episodes as $r_episode){
+
+						$season = Season::firstOrCreate([
+							'number' => $r_episode -> season,
+							'serie_id' => $resource -> id
+						]);
+
+						$episode = Episode::firstOrCreate([
+							'number' => $r_episode -> number,
+							'season_n' => $r_episode -> season,
+							'season_id' => $season -> id,
+							'serie_id' => $resource -> id
+						]);
+
+						$episode -> name = $r_episode -> name;
+						$episode -> overview = $r_episode -> overview;
+						$episode -> aired_at = $r_episode -> aired_at;
+						$episode -> update_at = $r_episode -> updated_at;
+						$episode -> save();
+
+					}
+				}
+
+			}
+
+		}catch(\Exception $e){
+
+			return ['message' => $e -> getMessage(),'status' => 'error'];
+		}
+			
+		return ['message' => 'Resource updated','status' => 'success'];
+		
 	}
 
 	/**

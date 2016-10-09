@@ -40,6 +40,8 @@ class Serie extends Model{
 
 		$schema -> toMany(Episode::class,'episodes','serie_id');
 
+		$schema -> datetime('updated_at');
+
 	}
 
 	public function toArray(){
@@ -53,7 +55,7 @@ class Serie extends Model{
 			$episodes[] = $episode -> toArray();
 		}
 
-		return array_merge($res,['episodes' => $episodes]);
+		return array_merge($res,['episodes' => $episodes,'resource' => $this -> resource -> toArray()]);
 	}
 }
 

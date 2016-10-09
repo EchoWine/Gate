@@ -20,7 +20,9 @@
 	padding:0px 6px;
 	font-size:12px;
 	height:23px;
+	font-weight:normal;
 }
+
 
 .button-action:not(.disable):hover{
   	background-color: #E6E6E6;

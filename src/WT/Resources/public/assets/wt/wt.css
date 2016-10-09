@@ -76,3 +76,57 @@
 .wt-get-episode:hover{
     background:rgba(3,155,229,0.1);
 }
+
+
+
+.wt-calendar-header{
+    padding:15px 15px;
+}
+
+.wt-calendar-day-container{
+    margin: 3px;
+    border: 1px solid #DDD;
+    padding: 2px;
+}
+
+.wt-calendar-day-container > *{
+        padding: 4px 6px;
+}
+
+.wt-calendar-day{
+    background: rgb(238, 238, 238);
+    color: #333;
+    font-size: 14px;
+}
+
+.wt-calendar-record{
+    color: black !important;
+    text-decoration: none !important;
+    cursor: default;
+    display: block;
+    background:white;
+}
+
+.wt-calendar-table{
+    width:100%;
+}
+
+.wt-calendar-table .head td{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 10px 0 20px;
+}
+
+.wt-calendar-table td{
+    width:14.28%;
+}
+
+.wt-calendar-record-info{
+    font-size:11px
+}
+
+.wt-current-day{
+    background: #3598dc;
+    border-color: #3598dc;
+}

@@ -5,6 +5,7 @@
 	ini_set('display_errors', 'On');
 	ini_set("log_errors", 1);
 	ini_set("error_log", __DIR__."/php-error.log");
+	ini_set("date.timezone", "Europe/Rome");
 
 	# Path
 	define('PATH',__DIR__.'/../public');

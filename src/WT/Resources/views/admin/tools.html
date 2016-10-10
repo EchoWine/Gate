@@ -1,0 +1,25 @@
+@extends('WT/admin/layout')
+
+@block('page-content')
+
+@embed('Admin/admin/__modal','modal-wt-sync-all')
+	@block('__class')modal-body-small@endblock
+	@block('id')modal-wt-sync-all@endblock
+	@block('title')Sync DataBase Api @endblock
+	@block('content')
+		<div class='wt-sync-current-status'>Initializing...</div>
+		<div class='wt-sync-current-progress'></div>
+		<div class='meter wt-sync-current-bar'><span></span></div>
+	@endblock
+@endembed
+
+
+<div class='ly-row'>
+	<div class='page-section page-section-content'>
+		<div class='section-inner'>
+			<h2>Actions</h2>
+			<button type='button' class='button button-action button-primary' wt-sync-all><i class="fa fa-refresh" aria-hidden="true"></i><span>Sync DataBase API</span></button>
+		</div>
+	</div>
+</div>
+@endblock

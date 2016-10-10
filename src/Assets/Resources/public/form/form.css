@@ -364,3 +364,22 @@
 	box-shadow: 0 0 3px #ec3232;
 	border:1px solid #ec3232;
 }
+
+.meter{
+	margin:5px 0;
+	height: 20px;
+	position: relative;
+	background: #333;
+	border-radius: 10px;
+	overflow:hidden;
+}
+
+.meter > span {
+	display: block;
+	height: 100%;
+	width:0%;
+	border-radius:10px;
+	position: relative;
+	overflow: hidden;
+	background:#039BE5;
+}

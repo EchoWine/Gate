@@ -21,6 +21,7 @@ class SearchController extends BasicController{
 		$this -> route('remove') -> url("/api/v1/{resource}/remove") -> post();
 		$this -> route('get') -> url("/api/v1/{resource}/{source}/{id}") -> get();
 		$this -> route('sync') -> url("/api/v1/{resource}/{id}") -> post();
+		$this -> route('all') -> url("/api/v1/all") -> get();
 
 		//$router -> get("/api/v1/{resource}/discovery/{key}","index")
 
@@ -34,6 +35,9 @@ class SearchController extends BasicController{
 	 * @return User
 	 */
 	public function getUserByToken($token){
+		if(!$token)
+			return null;
+		
 		return User::where('token',$token) -> first();
 	}
 
@@ -120,6 +124,23 @@ class SearchController extends BasicController{
 			$user,
 			$resource,
 			$id
+		));
+
+	}
+
+	/**
+	 * @Route
+	 *
+	 * @return Response
+	 */
+	public function all(Request $request){
+		
+		if(!($user = $this -> getUserByToken($request -> query -> get('token')))){
+			return $this -> json(['status' => 'error','message' => 'Token invalid']);
+		}
+		
+		return $this -> json(WT::all(
+			$user
 		));
 
 	}

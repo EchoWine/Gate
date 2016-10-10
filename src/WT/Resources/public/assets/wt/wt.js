@@ -19,6 +19,11 @@ WT.get = function(source_type,source_name,source_id,callback){
 };
 
 
+WT.all = function(callback){
+	http.get(WT.url+"all",{token:WT.token},callback);
+};
+
+
 WT.sync = function(source_type,source_id,callback){
 
 	http.post(WT.url+source_type+"/"+source_id,{token:WT.token},callback);
@@ -31,6 +36,63 @@ WT.random = function(min,max){
 
 WT.search = function(){
 
+};
+
+WT.stopSync = true;
+
+WT.syncAll = function(){
+
+	modal.open('modal-wt-sync-all',{},{"close":function(){
+		console.log("Stopping...");
+		WT.stopSync = true;
+	}});
+	
+	var status = $('.wt-sync-current-status');
+	var progress = $('.wt-sync-current-progress');
+	var bar = $('.wt-sync-current-bar');
+
+	var manager = function(results,i,attempt,length){
+
+		if(WT.stopSync)
+			return;
+
+		if(i >= length){
+			status.html("Completed");
+			progress.html("100%");
+			bar.find('span').css('width',"100%");
+			return;
+		}
+
+		resource = results[i];
+
+		attempt_text = attempt == 0 ? '' : ' #'+(attempt)+'';
+		status.html(resource.name+attempt_text);
+		p = (i + 1) * (length / 100);
+		p = parseFloat(p).toFixed(2);
+		progress.html(p+"%");
+		bar.find('span').css('width',p+"%");
+
+		WT.sync(resource.type,resource.id,function(response){
+			if(response.status == 'success'){
+				manager(results,i+1,1,length);
+			}else if(response.status == 'error'){
+				manager(results,i,attempt + 1,length);
+			}
+		});
+			
+	};
+
+	// Retrieve all resources
+	WT.all(function(response){
+		length = 0;
+		for(i in response){
+			length++;
+		}
+
+		WT.stopSync = false;
+
+		manager(response,0,1,length);
+	});
 };
 
 WT.searching = function(state){
@@ -235,6 +297,12 @@ $('body').on('click','[wt-info]',function(e){
 });
 
 $(document).ready(function(){});
+
+$('body').on('click','[wt-sync-all]',function(e){
+	
+	WT.syncAll();
+
+});
 
 
 // ----------------------------------------------------------------

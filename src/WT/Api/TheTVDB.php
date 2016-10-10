@@ -161,8 +161,12 @@ class TheTVDB extends Basic{
 		}
 
 		$o = Object\SerieObject::long($resource);
-		$o -> banner = $this -> url_public."banners/".$o -> banner;
-		$o -> poster = $this -> url_public."banners/".$o -> poster;
+		
+		if($o -> banner)
+			$o -> banner = $this -> url_public."banners/".$o -> banner;
+
+		if($o -> poster)
+			$o -> poster = $this -> url_public."banners/".$o -> poster;
 		return $o;
 	}
 

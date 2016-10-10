@@ -4,6 +4,7 @@ modal.actual = null;
 modal.opening = false;
 modal.filterData = {};
 modal.html = {};
+modal.events = {};
 
 /**
  * Open the modal
@@ -11,7 +12,19 @@ modal.html = {};
  * @param {string} id
  * @param {object} data
  */
-modal.open = function(id,data){
+modal.open = function(id,data,events){
+
+	if(!events){
+		events = {};
+	}
+
+	if(!events.close){
+		events.close = function(){};
+	}
+
+	modal.events[id] = {};
+	modal.events[id]['close'] = events.close;
+
 
 	modal.closeActual();
 	$('html,body').scrollTop(0);
@@ -96,6 +109,8 @@ modal.close = function(id){
 	$('body').removeClass('body-modal-active');
 
 	$('#'+id).parent().removeClass('modal-container');
+
+	modal.events[id].close();
 };
 
 /**

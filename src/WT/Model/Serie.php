@@ -44,7 +44,7 @@ class Serie extends Model{
 
 	}
 
-	public function toArray(){
+	public function toArrayComplete(){
 
 		$res = parent::toArray();
 
@@ -54,6 +54,7 @@ class Serie extends Model{
 		foreach(Episode::where('serie_id',$this -> id) -> get() as $episode){
 			$episodes[] = $episode -> toArray();
 		}
+		
 
 		return array_merge($res,['episodes' => $episodes,'resource' => $this -> resource -> toArray()]);
 	}

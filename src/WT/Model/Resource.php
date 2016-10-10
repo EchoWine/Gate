@@ -36,7 +36,6 @@ class Resource extends Model{
                 -> to('users','user');
 
 
-
 	}
 }
 

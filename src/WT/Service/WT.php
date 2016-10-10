@@ -7,6 +7,7 @@ use WT\Model\Season;
 use WT\Model\Episode;
 use WT\Model\Resource;
 use Request;
+use CoreWine\Component\Collection;
 
 class WT{
 
@@ -230,7 +231,7 @@ class WT{
 		$model = $model::where('id',$source_id) -> first();
 		
 
-		return $model -> toArray();
+		return $model -> toArrayComplete();
 	}
 
 
@@ -280,12 +281,18 @@ class WT{
 
 				$resource_node = $resource -> resource;
 
+
 				$resource -> name = $response -> name;
 				$resource -> overview = $response -> overview;
 				$resource -> status = $response -> status;
 				$resource -> resource = $resource;
-				$resource -> poster() -> setByUrl($response -> poster);
-				$resource -> banner() -> setByUrl($response -> banner);
+				
+				if($response -> poster)
+					$resource -> poster() -> setByUrl($response -> poster);
+
+				if($response -> banner)
+					$resource -> banner() -> setByUrl($response -> banner);
+
 				$resource -> updated_at = (new \DateTime()) -> format('Y-m-d H:i:s'); 
 				$resource -> save();
 
@@ -308,7 +315,7 @@ class WT{
 						$episode -> name = $r_episode -> name;
 						$episode -> overview = $r_episode -> overview;
 						$episode -> aired_at = $r_episode -> aired_at;
-						$episode -> update_at = $r_episode -> updated_at;
+						$episode -> updated_at = (new \DateTime()) -> format('Y-m-d H:i:s');
 						$episode -> save();
 
 					}
@@ -351,6 +358,17 @@ class WT{
 	public static function url(){
 
 		return Request::getDirUrl()."api/v1/";
+	}
+
+	public static function all($user){
+		$collection = new Collection();
+
+		$series = Serie::all() -> toArray(false);
+		$series = new Collection($series);
+		$series -> addParam('type','series');
+		$collection = $collection -> merge($series);
+
+		return $collection;
 	}
 }
 

@@ -5,3 +5,4 @@ config/database.php
 *.bat
 composer.lock
 public/uploads/
+public/api/

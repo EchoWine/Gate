@@ -118,6 +118,10 @@ WT.searching = function(state){
 };
 
 WT.discovery = function(value){
+	
+	if(!value)
+		return;
+
 	// Set the searching mode to true
 	WT.searching(true);
 
@@ -128,15 +132,17 @@ WT.discovery = function(value){
 
 	http.get(WT.url+"all/discovery/"+encodeURIComponent(val),{token:WT.token},function(response){
 
-		html = {library:'',discovery:''};
+		html = {'library':'','thetvdb':'','baka-updates':''};
 
 		// The response has sent, so set the "searching mode" to false
 		WT.searching(false);
 
-		$.map(response,function(service){
+		console.log(response);
+		$.map(response,function(service,key){
+			console.log(key);
 			$.map(service,function(resource){
 
-				var part = (resource.user == 1) ? 'library' : 'discovery';
+				var part = (resource.user == 1) ? 'library' : key;
 
 				html[part] += template.get('wt-search-result',{
 					source:resource.source,
@@ -150,9 +156,11 @@ WT.discovery = function(value){
 			});
 		});
 
+		console.log(html);
 		WT.addResultSearch('.wt-search-library',html['library']);
 
-		WT.addResultSearch('.wt-search-discovery',html['discovery']);
+		WT.addResultSearch('.wt-search-thetvdb',html['thetvdb']);
+		WT.addResultSearch('.wt-search-baka-updates',html['baka-updates']);
 	});
 };
 

@@ -3,16 +3,25 @@
 namespace WT\Command;
  
 use CoreWine\Console\Command;
-use Service\Serie;
+use WT\Service\WT;
 
 class UpdateCommand extends Command{
 
-	public static $signature = 'serie:update';
+	public static $signature = 'wt:update';
 
 	public function handle(){
 
-		Serie::update();
+		echo "Initialization...\n\n";
+		$update = WT::update();
 
+		foreach($update as $u){
+			echo "Updating... ".$u['name']."\n";
+
+			WT::sync(null,$u['type'],$u['id']);
+			
+		}
+
+		echo "\nCompleted";
 	}
 }
 

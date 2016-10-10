@@ -8,19 +8,16 @@ use WT\Model\Episode;
 use WT\Model\Resource;
 use Request;
 use CoreWine\Component\Collection;
+use CoreWine\DataBase\DB;
 
 class WT{
 
 	public static $sources = [
+		Api\BakaUpdates::class,
 		Api\TheTVDB::class,
 	];
 
-	/**
-	 * Update the database
-	 */
-	public static function update(){
 
-	}
 
 	/**
 	 * Discovery new resources
@@ -31,7 +28,7 @@ class WT{
 	 *
 	 * @return array
 	 */
-	public static function discovery($user,$resource,$key){
+	public static function discovery($user,$resource_type,$key){
 
 		$response = [];
 			
@@ -39,7 +36,8 @@ class WT{
 
 			$source = new $source();
 
-			if($source -> isResource($resource)){
+
+			if($source -> isResource($resource_type)){
 				$response[$source -> getName()] = $source -> discovery($key);
 
 				foreach($response[$source -> getName()] as $n => $k){
@@ -281,6 +279,8 @@ class WT{
 
 				$resource_node = $resource -> resource;
 
+				$resource_node -> updated_at = (new \DateTime()) -> format('Y-m-d H:i:s'); 
+				$resource_node -> save();
 
 				$resource -> name = $response -> name;
 				$resource -> overview = $response -> overview;
@@ -369,6 +369,43 @@ class WT{
 		$collection = $collection -> merge($series);
 
 		return $collection;
+	}
+	/**
+	 * Sync the series with update
+	 */
+	public static function update(){
+		$collection = new Collection();
+
+		foreach(self::$sources as $source){
+
+			$source = new $source();
+
+			if($source -> isResource('series')){
+				$res = $source -> update();
+
+
+				$r = Serie::leftJoin('resources','resources.id','series.resource_id') 
+				-> select('series.*');
+
+				# Select only the resource that are in the db and aren't updated
+				foreach($res as $k){
+					$r = $r -> orWhere(function($q) use ($k){
+						return $q -> where('resources.source_id',$k['id']) -> where('resources.updated_at','<',$k['updated_at']); 
+					});
+				}
+
+
+				$r = $r -> get();
+
+				$r = new Collection($r -> toArray());
+				$r -> addParam('type','series');
+				$collection = $collection -> merge($r);
+			}
+
+		}
+
+		return $collection;
+
 	}
 }
 

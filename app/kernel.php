@@ -8,13 +8,14 @@
 	ini_set("date.timezone", "Europe/Rome");
 
 	# Path
-	define('PATH',__DIR__.'/../public');
-	define('PATH_APP','../app');
-	define('PATH_SRC','../src');
-	define('PATH_LIB','../lib');
-	define('PATH_CONFIG','../config');
+	define('DIR',__DIR__."/");
+	define('PATH',DIR.'../public');
+	define('PATH_APP',DIR.'../app');
+	define('PATH_SRC',DIR.'../src');
+	define('PATH_LIB',DIR.'../lib');
+	define('PATH_CONFIG',DIR.'../config');
 
-	include "../vendor/autoload.php";
+	include DIR."../vendor/autoload.php";
 
 	
 	class_alias("Kernel\Service","Service");

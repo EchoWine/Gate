@@ -5,6 +5,7 @@ namespace WT\Api;
 use WT\Api\TheTVDB as Object;
 use CoreWine\Component\Str;
 use CoreWine\Http\Client;
+use CoreWine\Component\File;
 
 class TheTVDB extends Basic{
 
@@ -194,5 +195,34 @@ class TheTVDB extends Basic{
 	}
 
 
+	public function update(){
+		$zip_filename = "public/api/thetvdb/updates_day.zip";
+		$xml = "public/api/thetvdb/";
+
+		if(!file_exists($xml)){
+			mkdir($xml,0777,true);
+		}
+
+		$client = new Client();
+		$client -> download($this -> url_api.$this -> token."/updates/updates_day.zip",$zip_filename);
+
+		$zip = new \ZipArchive;
+
+		if($zip -> open($zip_filename) === TRUE){
+		    $zip -> extractTo($xml);
+		    $zip -> close();
+		}
+
+		$xml = Str::xml(file_get_contents($xml."updates_day.xml"));
+
+		$r = [];
+
+		foreach($xml -> Series as $serie){
+			$r[] = ['id' => $serie -> id,'updated_at' => date('Y-m-d H:i:s',$serie -> time)];
+		}
+
+		return $r;
+
+	}
 
 }

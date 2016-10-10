@@ -18,6 +18,10 @@
     text-decoration: none;
 }
 
+.wt-search-result .button{
+    margin-top:5px;
+}
+
 .wt-search-img{
     height: 240px;
     margin-top: 5px;

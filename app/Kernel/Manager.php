@@ -208,12 +208,12 @@ class Manager{
 
 	public static function callControllersRoutes(){
 		foreach(self::$controllers as $controller){
-			$controller -> __routes();
+			$controller -> __routes(new \CoreWine\Http\Controller\Router($controller));
 		}
 	}
 	public static function callControllersChecks(){
 		foreach(self::$controllers as $controller){
-			$controller -> __check();
+			$controller -> __boot();
 		}
 	}
 	

@@ -6,3 +6,4 @@ config/database.php
 composer.lock
 public/uploads/
 public/api/
+app/cache

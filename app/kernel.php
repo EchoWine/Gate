@@ -26,7 +26,9 @@
 	class_alias("CoreWine\Http\Flash","Flash");
 	class_alias("CoreWine\Http\Request","Request");
 	class_alias("CoreWine\Http\Response\Response","Response");
+	class_alias("CoreWine\Component\Cache","Cache");
 
+	Cache::setDir(PATH_APP.'/cache/data');
 
 	new \Kernel\Exceptions\Handler('ExceptionsController','render');
 

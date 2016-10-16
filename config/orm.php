@@ -9,7 +9,7 @@ return [
 	'password' => Auth\Field\Password\Schema::class,
 	'text' => CoreWine\DataBase\ORM\Field\Text\Schema::class,
 	'email' => CoreWine\DataBase\ORM\Field\Email\Schema::class,
-	'datetime' => CoreWine\DataBase\ORM\Field\Datetime\Schema::class,
+	'datetime' => CoreWine\DataBase\ORM\Field\DateTime\Schema::class,
 	'file' => CoreWine\DataBase\ORM\Field\File\Schema::class,
 	'integer' => CoreWine\DataBase\ORM\Field\Integer\Schema::class,
 	'updated_at' => CoreWine\DataBase\ORM\Field\UpdatedAt\Schema::class,

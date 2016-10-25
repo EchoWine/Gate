@@ -14,6 +14,7 @@ return [
 	'datetime' => CoreWine\DataBase\ORM\Field\DateTime\Schema::class,
 	'file' => CoreWine\DataBase\ORM\Field\File\Schema::class,
 	'integer' => CoreWine\DataBase\ORM\Field\Integer\Schema::class,
+	'float' => CoreWine\DataBase\ORM\Field\Float\Schema::class,
 	'updated_at' => CoreWine\DataBase\ORM\Field\UpdatedAt\Schema::class,
 	'created_at' => CoreWine\DataBase\ORM\Field\CreatedAt\Schema::class,
 

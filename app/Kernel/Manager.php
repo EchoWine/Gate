@@ -130,6 +130,7 @@ class Manager{
 
 		$files = self::getAllFiles($path."/Command");
 
+
 			
 		foreach($files as $file){
 			self::$files[] = $file;
@@ -141,6 +142,20 @@ class Manager{
 
 			if(is_subclass_of($name_class,Command::class)){
 				Console::addCommand($name_class);
+		
+			}
+		}
+
+		if(file_exists($path."/Exceptions/Handler.php")){
+
+			$name_class = str_replace(PATH_SRC,"",$path."/Exceptions/Handler.php");
+			$name_class = str_replace("/","\\",$name_class);
+			$name_class = str_replace(".php","",$name_class);
+
+	
+			if(is_subclass_of($name_class,\Kernel\Exceptions\ExceptionHandler::class)){
+
+				\Kernel\Exceptions\Handler::add($name_class);
 		
 			}
 		}

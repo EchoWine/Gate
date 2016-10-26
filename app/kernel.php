@@ -30,7 +30,8 @@
 
 	Cache::setDir(PATH_APP.'/cache/data');
 
-	new \Kernel\Exceptions\Handler('ExceptionsController','render');
+	\Kernel\Exceptions\Handler::register();
+	\Kernel\Exceptions\Handler::add(\Kernel\Exceptions\ExceptionHandler::class);
 
 
 	\CoreWine\DataBase\DB::connect(include PATH_CONFIG.'/database.php');
@@ -73,8 +74,9 @@
 		);
 	}
 
-	\CoreWine\View\Engine::translates();
 
+	\CoreWine\View\Engine::translates();
+	
 	$response = \CoreWine\Http\Router::load();
 
 	

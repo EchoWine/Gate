@@ -4,26 +4,21 @@ namespace Kernel\Exceptions;
 
 use CoreWine\View\Engine;
 use CoreWine\Http\Request;
+use CoreWine\Http\Response\Response;
 
 class Handler{
 
-	public $renderClass;
-	public $renderMethod;
+	public static $handlers = [];
 
-	public function __construct(){
-		$this -> register();
-	}
-
-	public function register(){
-		set_exception_handler([$this,'report']);
+	public static function register(){
+		set_exception_handler([self::class,'handle']);
 		//ini_set( "display_errors", "off" );
 		error_reporting( E_ALL );
-		set_error_handler([$this,'error']);
-		register_shutdown_function([$this,'fatal_handler']);
-
+		set_error_handler([self::class,'error']);
+		register_shutdown_function([self::class,'fatal']);
 	}
 
-	public function fatal_handler(){
+	public static function fatal(){
 		$errfile = "unknown file";
 		$errstr  = "shutdown";
 		$errno   = E_CORE_ERROR;
@@ -36,30 +31,47 @@ class Handler{
 			$errfile = $error["file"];
 			$errline = $error["line"];
 			$errstr  = $error["message"];
-			$this -> error($errno,$errstr,$errfile,$errline);
+			self::error($errno,$errstr,$errfile,$errline);
 		}
 	}
 
-	public function error($errno, $errstr, $errfile, $errline){
-		$this -> report(new FatalErrorException($errstr, '', $errno, $errfile, $errline));
-	}
-
-
-	public function report($e){
-		error_log("Caught $e");
-		$this -> render($e);
+	public static function error($errno, $errstr, $errfile, $errline){
+		self::handle(new FatalErrorException($errstr, '', $errno, $errfile, $errline));
 	}
 	
-	public function render($e){
-		if(Request::getMethod()){
-			$class = basename(get_class($e));
-			
-			include dirname(__FILE__)."/files/error.php";
-			die();
-		}else{
-			print_r($e);
-		}
+	public static function add($handler){
+		static::$handlers[] = new $handler();
 	}
+
+	public static function handle($e){
+		$handlers = array_reverse(self::$handlers);
+		
+		foreach($handlers as $handler){
+			$handler -> report($e);
+		}
+
+		# if CLI print the message without render
+		if(php_sapi_name() == "cli"){
+			print_r($e);
+			return;
+		}
+
+		foreach($handlers as $handler){
+			$response = $handler -> render($e);
+
+			if($response){
+				if($response instanceof Response){
+					
+					return $response -> send();
+				
+				}else{
+
+				}
+			}
+		}
+
+	}
+	
 }
 
 ?>

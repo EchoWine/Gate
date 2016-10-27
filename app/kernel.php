@@ -34,15 +34,21 @@
 	\Kernel\Exceptions\Handler::add(\Kernel\Exceptions\ExceptionHandler::class);
 
 
-	\CoreWine\DataBase\DB::connect(include PATH_CONFIG.'/database.php');
+
+	
+	\CoreWine\Http\Request::ini();
+
 
 	\CoreWine\View\Engine::ini(PATH_APP."/cache/views");
+
+	\CoreWine\DataBase\DB::connect(include PATH_CONFIG.'/database.php');
+
+	
 
 	\CoreWine\DataBase\ORM\SchemaBuilder::setFields(include PATH_CONFIG.'/orm.php');
 	
 	# Load all sources
 	\Kernel\Manager::loadAll(PATH_SRC);
-	
 	
 
 	if(php_sapi_name() == "cli")
@@ -74,6 +80,7 @@
 		);
 	}
 
+	
 
 	\CoreWine\View\Engine::translates();
 	

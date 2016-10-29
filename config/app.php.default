@@ -1,0 +1,29 @@
+<?php
+return [
+	
+	/** 
+	 * Root application
+	 */
+	'root' => '/',
+
+	/** 
+	 * Public folder
+	 */
+	'public' => 'public/',
+
+	/**
+	 * DataBase
+	 */
+	'database' => [
+		'driver' => 'mysql',
+		'hostname' => '127.0.0.1',
+		'database' => 'gate',
+		'username' => 'root',
+		'password' => '',
+		'charset'  => 'utf8',
+		'restore' => 5,
+		'alter_schema' => true,
+	]
+
+];
+?>

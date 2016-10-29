@@ -42,6 +42,7 @@ class Manager{
   	 * Basic path
   	 */
   	public static $src;
+  	
 
   	/**
   	 * Set path where are located src

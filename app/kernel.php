@@ -85,8 +85,10 @@
 		);
 	}
 
+	Cfg::set('app.path.drive.public',__DIR__."/../".Cfg::get('app.public'));
+
 	# File Path
-	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultFilePath(__DIR__."/../public/uploads/");
+	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultFilePath(__DIR__."/../".Cfg::get('app.public')."uploads/");
 
 	# Web Path
 	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultWebPath(Cfg::get('app.root').Cfg::get('app.public')."uploads/");

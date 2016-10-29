@@ -52,7 +52,8 @@ class Handler{
 
 		# if CLI print the message without render
 		if(php_sapi_name() == "cli"){
-			print_r($e);
+			
+			echo $e;
 			return;
 		}
 

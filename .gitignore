@@ -8,3 +8,4 @@ public/uploads/
 public/api/
 app/cache
 config/app.php
+public/tmp/

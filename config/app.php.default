@@ -7,6 +7,11 @@ return [
 	'root' => '/',
 
 	/** 
+	 * Host
+	 */
+	'host' => 'http://localhost',
+
+	/** 
 	 * Public folder
 	 */
 	'public' => 'public/',

@@ -36,7 +36,7 @@ class Handler{
 	}
 
 	public static function error($errno, $errstr, $errfile, $errline){
-		self::handle(new FatalErrorException($errstr, '', $errno, $errfile, $errline));
+		throw new FatalErrorException($errstr, '', $errno, $errfile, $errline);
 	}
 	
 	public static function add($handler){

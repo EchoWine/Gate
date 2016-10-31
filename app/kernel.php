@@ -55,20 +55,10 @@
 
 	\CoreWine\DataBase\DB::connect($config['database']);
 
-	
-
-	\CoreWine\DataBase\ORM\SchemaBuilder::setFields(include PATH_CONFIG.'/orm.php');
-	
-	# Load all sources
-	\Kernel\Manager::loadAll(PATH_SRC);
-
-
-
 
 	# Compile
 	\CoreWine\View\Engine::compile(PATH_APP,'Resources/views');
-
-
+	
 	foreach(\Kernel\Manager::$list as $name => $dir){
 		\CoreWine\View\Engine::compile(
 			PATH_APP,
@@ -76,6 +66,11 @@
 			$name
 		);
 	}
+
+	\CoreWine\DataBase\ORM\SchemaBuilder::setFields(include PATH_CONFIG.'/orm.php');
+	
+	# Load all sources
+	\Kernel\Manager::loadAll(PATH_SRC);
 
 	foreach(\Kernel\Manager::$list as $name => $dir){
 		\CoreWine\View\Engine::compile(
@@ -85,7 +80,10 @@
 		);
 	}
 
+
+
 	Cfg::set('app.path.drive.public',__DIR__."/../".Cfg::get('app.public'));
+	Cfg::set('app.web',Cfg::get('app.root').Cfg::get('app.public'));
 
 	# File Path
 	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultFilePath(__DIR__."/../".Cfg::get('app.public')."uploads/");
@@ -109,7 +107,6 @@
 	if(empty($response))
 		die("Current Router must return a Response");
 	
-
 	$response -> send();
 	
 

@@ -20,8 +20,8 @@
     	return $f;
 	}
 
-	function route($route = null){
-		return $route == null ? Router::active() : Router::url($route);
+	function route($route = null,$params = []){
+		return $route == null ? Router::active() : Router::url($route,$params);
 	}
 
 	function assets($url){

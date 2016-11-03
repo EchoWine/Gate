@@ -6,8 +6,7 @@
         "echowine/database": "*@dev",
         "echowine/view": "*@dev",
         "echowine/console": "*@dev",
-        "echowine/component": "*@dev",
-        "echowine/youtube": "*@dev"
+        "echowine/component": "*@dev"
     },
     "autoload": {
         "classmap": ["app/"],

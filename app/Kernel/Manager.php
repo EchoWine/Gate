@@ -134,16 +134,22 @@ class Manager{
 
 			
 		foreach($files as $file){
-			self::$files[] = $file;
-			require_once $file;
-			$name_class = str_replace(PATH_SRC,"",$file);
-			$name_class = str_replace("/","\\",$name_class);
-			$name_class = str_replace(".php","",$name_class);
+
+			$ext = pathinfo($file,PATHINFO_EXTENSION);
+
+			if($ext == 'php'){
+
+				self::$files[] = $file;
+				require_once $file;
+				$name_class = str_replace(PATH_SRC,"",$file);
+				$name_class = str_replace("/","\\",$name_class);
+				$name_class = str_replace(".php","",$name_class);
 
 
-			if(is_subclass_of($name_class,Command::class)){
-				Console::addCommand($name_class);
-		
+				if(is_subclass_of($name_class,Command::class)){
+					Console::addCommand($name_class);
+			
+				}
 			}
 		}
 

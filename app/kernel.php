@@ -82,15 +82,14 @@
 
 
 
-	Cfg::set('app.path.drive.public',__DIR__."/../".Cfg::get('app.public'));
-	Cfg::set('app.path.drive',__DIR__."/../");
-	Cfg::set('app.web',Cfg::get('app.root').Cfg::get('app.public'));
+	Cfg::set('app.drive.public',__DIR__."/../".Cfg::get('app.public'));
+	Cfg::set('app.drive',__DIR__."/../");
 
 	# File Path
-	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultFilePath(__DIR__."/../".Cfg::get('app.public')."uploads/");
+	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultFilePath(Cfg::get('app.drive').Cfg::get('app.public')."uploads/");
 
 	# Web Path
-	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultWebPath(Cfg::get('app.root').Cfg::get('app.public')."uploads/");
+	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultWebPath(Cfg::get('app.web')."uploads/");
 
 	\CoreWine\View\Engine::translates();
 	
@@ -99,7 +98,7 @@
 
 	\Kernel\Manager::callControllersRoutes();
 	\CoreWine\Http\Router::setRequest();
-	\Kernel\Manager::callControllersChecks();
+	\Kernel\Manager::callControllersChecks(); 
 
 
 	$response = \CoreWine\Http\Router::load();

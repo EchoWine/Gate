@@ -3,7 +3,7 @@ return [
 
 	'toOne' => CoreWine\DataBase\ORM\Field\Relations\ToOne\Schema::class,
 	'toMany' => CoreWine\DataBase\ORM\Field\Relations\ToMany\Schema::class,
-	'belongsToOne' => CoreWine\DataBase\ORM\Field\Relations\BelongsToMany\Schema::class,
+	'belongsToOne' => CoreWine\DataBase\ORM\Field\Relations\BelongsToOne\Schema::class,
 	'throughMany' => CoreWine\DataBase\ORM\Field\Relations\ThroughMany\Schema::class,
 	'string' => CoreWine\DataBase\ORM\Field\String\Schema::class,
 	'id' => CoreWine\DataBase\ORM\Field\Identifier\Schema::class,

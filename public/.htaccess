@@ -1,5 +1,5 @@
 Header set X-Content-Type-Options nosniff
-
+Header set X-Frame-Options deny
 Header set Cache-Control "no-cache, no-store, must-revalidate, private"
 Header set Pragma "no-cache"
 Header set X-XSS-Protection 1

@@ -1,3 +1,9 @@
+Header set X-Content-Type-Options nosniff
+
+Header set Cache-Control "no-cache, no-store, must-revalidate, private"
+Header set Pragma "no-cache"
+Header set X-XSS-Protection 1
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews
@@ -14,3 +20,9 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+    Header set Cache-Control "max-age=290304000, private"
+    Header set Pragma "cache"
+</FilesMatch>

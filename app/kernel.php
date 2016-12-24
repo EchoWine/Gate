@@ -59,6 +59,9 @@
 	# Compile
 	\CoreWine\View\Engine::compile(PATH_APP,'Resources/views');
 	
+	\CoreWine\View\Engine::translates();
+
+	
 	foreach(\Kernel\Manager::$list as $name => $dir){
 		\CoreWine\View\Engine::compile(
 			PATH_APP,

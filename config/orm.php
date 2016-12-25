@@ -13,6 +13,7 @@ return [
 	'email' => CoreWine\DataBase\ORM\Field\Email\Schema::class,
 	'datetime' => CoreWine\DataBase\ORM\Field\DateTime\Schema::class,
 	'file' => CoreWine\DataBase\ORM\Field\File\Schema::class,
+	'files' => CoreWine\DataBase\ORM\Field\Files\Schema::class,
 	'integer' => CoreWine\DataBase\ORM\Field\Integer\Schema::class,
 	'float' => CoreWine\DataBase\ORM\Field\Float\Schema::class,
 	'updated_at' => CoreWine\DataBase\ORM\Field\UpdatedAt\Schema::class,

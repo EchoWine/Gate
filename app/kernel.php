@@ -90,9 +90,11 @@
 
 	# File Path
 	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultFilePath(Cfg::get('app.drive').Cfg::get('app.public')."uploads/");
+	\CoreWine\DataBase\ORM\Field\Files\Schema::setDefaultFilePath(Cfg::get('app.drive').Cfg::get('app.public')."uploads/");
 
 	# Web Path
 	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultWebPath(Cfg::get('app.web')."uploads/");
+	\CoreWine\DataBase\ORM\Field\Files\Schema::setDefaultWebPath(Cfg::get('app.web')."uploads/");
 
 	\CoreWine\View\Engine::translates();
 	

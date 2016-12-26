@@ -108,11 +108,9 @@
 
 	$response = \CoreWine\Http\Router::load();
 
-	
+
 	if(empty($response))
 		die("Current Router must return a Response");
 	
 	$response -> send();
-	
-
 ?>

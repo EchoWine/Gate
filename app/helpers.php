@@ -4,6 +4,8 @@
 	use CoreWine\Http\Request;
 	use CoreWine\View\Engine;
 	use CoreWine\Http\Exceptions\RouteException;
+	use CoreWine\Http\Response\RedirectResponse;
+
 
 	
 	function isJson($s){
@@ -33,6 +35,10 @@
 	function post($name){
 		$post = Request::post($name);
 		return $post != null ? $post : '';
+	}
+
+	function redirect($url){
+		return new RedirectResponse($url);
 	}
 
 	function brackets($name){

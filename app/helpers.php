@@ -3,6 +3,8 @@
 	use CoreWine\Http\Router;
 	use CoreWine\Http\Request;
 	use CoreWine\View\Engine;
+	use CoreWine\Http\Exceptions\RouteException;
+
 	
 	function isJson($s){
 		json_decode($s);
@@ -37,5 +39,8 @@
 		return '{'.$name.'}';
 	}
 	
+	function abort($code){
+		throw new RouteException();
+	}
 
 ?>

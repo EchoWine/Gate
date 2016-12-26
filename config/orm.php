@@ -18,6 +18,7 @@ return [
 	'float' => CoreWine\DataBase\ORM\Field\Float\Schema::class,
 	'updated_at' => CoreWine\DataBase\ORM\Field\UpdatedAt\Schema::class,
 	'created_at' => CoreWine\DataBase\ORM\Field\CreatedAt\Schema::class,
+	'collection' => CoreWine\DataBase\ORM\Field\Collection\Schema::class,
 
 ];
 ?>

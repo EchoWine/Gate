@@ -24,7 +24,7 @@ Header set X-XSS-Protection 1
 </IfModule>
 
 
-<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|ttf)$">
     Header set Cache-Control "max-age=290304000, private"
     Header set Pragma "cache"
 </FilesMatch>

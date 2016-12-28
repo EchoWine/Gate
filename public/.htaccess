@@ -2,6 +2,8 @@ Header set X-Content-Type-Options nosniff
 Header set X-Frame-Options deny
 Header set Cache-Control "no-cache, no-store, must-revalidate, private"
 Header set Pragma "no-cache"
+Header set Strict-Transport-Security "max-age=31536000"
+
 Header set X-XSS-Protection 1
 
 <IfModule mod_rewrite.c>

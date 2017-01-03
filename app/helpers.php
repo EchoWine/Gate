@@ -3,7 +3,7 @@
 	use CoreWine\Http\Router;
 	use CoreWine\Http\Request;
 	use CoreWine\View\Engine;
-	use CoreWine\Http\Exceptions\RouteException;
+	use CoreWine\Http\Exceptions\RouteNotFoundException;
 	use CoreWine\Http\Response\RedirectResponse;
 
 
@@ -46,7 +46,7 @@
 	}
 	
 	function abort($code){
-		throw new RouteException();
+		throw new RouteNotFoundException();
 	}
 
 	function web($url = ''){

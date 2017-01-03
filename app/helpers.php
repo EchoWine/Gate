@@ -49,4 +49,16 @@
 		throw new RouteException();
 	}
 
+	function web($url = ''){
+		return Cfg::get('app.web').$url;
+	}
+
+	function drive($url = ''){
+		return Cfg::get('app.drive').$url;
+	}
+
+	function media($url = ''){
+		return Cfg::get('app.drive')."public/uploads/".$url;
+	}
+
 ?>

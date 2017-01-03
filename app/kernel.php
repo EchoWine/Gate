@@ -51,6 +51,13 @@
 	
 	Cfg::add("app",$config);
 
+	Cfg::set('app.drive.public',__DIR__."/../".Cfg::get('app.public'));
+	Cfg::set('app.drive',__DIR__."/../");
+
+
+	\CoreWine\Console\Console::setDrive(drive());
+
+
 	\CoreWine\View\Engine::ini(PATH_APP."/cache/views");
 
 	\CoreWine\DataBase\DB::connect($config['database']);
@@ -85,9 +92,6 @@
 
 
 
-	Cfg::set('app.drive.public',__DIR__."/../".Cfg::get('app.public'));
-	Cfg::set('app.drive',__DIR__."/../");
-
 	# File Path
 	\CoreWine\DataBase\ORM\Field\File\Schema::setDefaultFilePath(Cfg::get('app.drive').Cfg::get('app.public')."uploads/");
 	\CoreWine\DataBase\ORM\Field\Files\Schema::setDefaultFilePath(Cfg::get('app.drive').Cfg::get('app.public')."uploads/");
@@ -109,8 +113,11 @@
 	$response = \CoreWine\Http\Router::load();
 
 
+
 	if(empty($response))
 		die("Current Router must return a Response");
 	
 	$response -> send();
+	
+
 ?>

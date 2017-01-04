@@ -29,7 +29,12 @@
 	}
 
 	function assets($url){
-		return Request::getDirUrl().$url;
+
+		try{
+			return Request::getDirUrl().$url."?t=".filemtime($url);
+		}catch(\Exception $e){
+			return '';
+		}
 	}
 
 	function post($name){

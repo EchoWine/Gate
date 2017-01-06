@@ -4,7 +4,7 @@
 		<div style='padding:20px;background:white;border-radius:15px;font-size:22px;border:1px solid #dedede'>
 
 			<span style='font-size:21px; display:block'>
-				<b><?php echo $class; ?></b>
+				<b><?php echo $e -> getClass(); ?></b>
 
 				<?php if(!empty($e -> getFile())): ?>
 					<?php echo $e -> getFile(); ?>
@@ -22,6 +22,7 @@
 			<?php $i = 1; ?>
 			<div style='font-size:14px'>
 				<?php if(!empty($e -> getFile())): ?>
+					<?php echo $i; ?>
 					<?php echo $e -> getFile(); ?>
 					in line <?php echo $e -> getLine();?>
 					<?php $i++; ?>
@@ -33,9 +34,8 @@
 			foreach($e -> getTrace() as $k):
 				?>
 				<div style='font-size:14px'>
-					<?php echo $i;?>
 					<?php if(isset($k['file'])): ?>
-						<?php echo $k['file'];?> in line <?php echo $k['line'];?>
+						<?php echo $i;?> <?php echo $k['file'];?> in line <?php echo $k['line'];?>
 					<?php endif; ?>
 				</div>
 

@@ -12,6 +12,7 @@ return [
 	'text' => CoreWine\DataBase\ORM\Field\Text\Schema::class,
 	'email' => CoreWine\DataBase\ORM\Field\Email\Schema::class,
 	'datetime' => CoreWine\DataBase\ORM\Field\DateTime\Schema::class,
+	'date' => CoreWine\DataBase\ORM\Field\Date\Schema::class,
 	'file' => CoreWine\DataBase\ORM\Field\File\Schema::class,
 	'files' => CoreWine\DataBase\ORM\Field\Files\Schema::class,
 	'integer' => CoreWine\DataBase\ORM\Field\Integer\Schema::class,

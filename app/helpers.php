@@ -37,9 +37,8 @@
 		}
 	}
 
-	function post($name){
-		$post = Request::post($name);
-		return $post != null ? $post : '';
+	function post($name,$value = null){
+		return Request::post($name,$value);
 	}
 
 	function redirect($url){

@@ -43,11 +43,11 @@ class Handler{
 		static::$handlers[] = new $handler();
 	}
 
-	public static function handle($ee){
+	public static function handle($e){
 		$handlers = array_reverse(self::$handlers);
 		
-		$e = Exception::cloneFrom($ee);
-		$e -> setFile(Engine::getFileNameByCache(basename($ee -> getFile(),".php")));
+		$e_container = Exception::cloneFrom($e);
+		$e_container -> setFile(Engine::getFileNameByCache(basename($e -> getFile(),".php")));
 
 
 		foreach($handlers as $handler){

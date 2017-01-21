@@ -4,7 +4,7 @@
 		<div style='padding:20px;background:white;border-radius:15px;font-size:22px;border:1px solid #dedede'>
 
 			<span style='font-size:21px; display:block'>
-				<b><?php echo $e -> getClass(); ?></b>
+				<b><?php echo get_class($e); ?></b>
 
 				<?php if(!empty($e -> getFile())): ?>
 					<?php echo $e -> getFile(); ?>

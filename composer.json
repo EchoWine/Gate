@@ -6,7 +6,8 @@
         "echowine/database": "*@dev",
         "echowine/view": "*@dev",
         "echowine/console": "*@dev",
-        "echowine/component": "*@dev"
+        "echowine/component": "*@dev",
+        "dompdf/dompdf": "^0.7.0"
     },
     "autoload": {
         "classmap": ["app/"],

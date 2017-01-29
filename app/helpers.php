@@ -65,4 +65,22 @@
 		return Cfg::get('app.drive')."public/uploads/".$url;
 	}
 
+	function view($__filename,$data){
+
+		ob_start();
+		Engine::startRoot();
+		Router::view($data);
+
+
+		foreach($GLOBALS as $n => $k){
+			$$n = $k;
+		}
+
+		include Engine::html($__filename);
+		Engine::endRoot();
+		$html = ob_get_contents();
+		ob_clean();
+
+		return $html;
+	}
 ?>
